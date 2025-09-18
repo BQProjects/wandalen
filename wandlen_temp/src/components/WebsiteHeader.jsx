@@ -232,7 +232,7 @@ const WebsiteHeader = () => {
                   </svg>
                 </button>
 
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute top-full right-0 left-auto mt-2 max-w-xs w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-x-auto">
                   <Link
                     to="/client/login"
                     className="block px-4 py-3 text-brown hover:bg-secondary rounded-t-lg transition-colors"
