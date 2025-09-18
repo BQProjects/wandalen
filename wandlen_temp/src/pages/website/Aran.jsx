@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Background from "../../assets/background.png";
 import BgVideo from "../../assets/BgVideo.mp4";
 import ForestTrail from "../../assets/forest_trail.png";
@@ -21,113 +21,52 @@ import Tablet_trail from "../../assets/Tablet_iPad_mini_trail.png";
 import Phone_trail from "../../assets/Phone_trail.png";
 import walking from "../../assets/walking.png";
 import camera from "../../assets/camera.png";
+import PreviewExperience from "../../components/PreviewExperience";
+import { Link } from "react-router-dom";
 
-const MessageUs = () => (
-  <div className="flex flex-col flex-shrink-0 justify-end items-center pt-[456px] pl-[20.625rem] pb-0 pr-0 w-[386px] h-[512px]">
-    <div className="button_message_icon flex justify-center items-center gap-4 p-4 rounded-lg bg-[#5b6502]">
-      <svg
-        width={24}
-        height={24}
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+const MessageUs = () => {
+  const [isOpen, setIsOpen] = useState(false); // For modal or tooltip
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50">
+      <button
+        onClick={() => setIsOpen(!isOpen)} // Toggle action (e.g., open chat modal)
+        className="flex justify-center items-center w-14 h-14 bg-[#5b6502] hover:bg-[#4a5501] rounded-lg shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50"
+        aria-label="Message Us"
       >
-        <path
-          d="M6 18L3.7 20.3C3.38334 20.6167 3.02067 20.6877 2.612 20.513C2.20333 20.3383 1.99933 20.0257 2 19.575V4C2 3.45 2.196 2.97933 2.588 2.588C2.98 2.19667 3.45067 2.00067 4 2H20C20.55 2 21.021 2.196 21.413 2.588C21.805 2.98 22.0007 3.45067 22 4V16C22 16.55 21.8043 17.021 21.413 17.413C21.0217 17.805 20.5507 18.0007 20 18H6ZM7 14H13C13.2833 14 13.521 13.904 13.713 13.712C13.905 13.52 14.0007 13.2827 14 13C13.9993 12.7173 13.9033 12.48 13.712 12.288C13.5207 12.096 13.2833 12 13 12H7C6.71667 12 6.47933 12.096 6.288 12.288C6.09667 12.48 6.00067 12.7173 6 13C5.99933 13.2827 6.09534 13.5203 6.288 13.713C6.48067 13.9057 6.718 14.0013 7 14ZM7 11H17C17.2833 11 17.521 10.904 17.713 10.712C17.905 10.52 18.0007 10.2827 18 10C17.9993 9.71733 17.9033 9.48 17.712 9.288C17.5207 9.096 17.2833 9 17 9H7C6.71667 9 6.47933 9.096 6.288 9.288C6.09667 9.48 6.00067 9.71733 6 10C5.99933 10.2827 6.09534 10.5203 6.288 10.713C6.48067 10.9057 6.718 11.0013 7 11ZM7 8H17C17.2833 8 17.521 7.904 17.713 7.712C17.905 7.52 18.0007 7.28267 18 7C17.9993 6.71733 17.9033 6.48 17.712 6.288C17.5207 6.096 17.2833 6 17 6H7C6.71667 6 6.47933 6.096 6.288 6.288C6.09667 6.48 6.00067 6.71733 6 7C5.99933 7.28267 6.09534 7.52033 6.288 7.713C6.48067 7.90567 6.718 8.00133 7 8Z"
-          fill="white"
-        />
-      </svg>
-    </div>
-  </div>
-);
-
-const Aran = () => {
-  // Device selector state for auto-looping
-  const [activeDevice, setActiveDevice] = useState(0);
-  // Tab state for organizations section
-  const [activeTab, setActiveTab] = useState('organizations');
-
-  const devices = [
-    {
-      id: 0,
-      name: "desktop",
-      image: Laptop_trail,
-      containerClass: "w-full max-w-4xl",
-      icon: (
         <svg
-          width={30}
-          height={30}
+          width={24}
+          height={24}
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M20.25 4.5C20.4489 4.5 20.6397 4.57902 20.7803 4.71967C20.921 4.86032 21 5.05109 21 5.25V16.5H3V5.25C3 5.05109 3.07902 4.86032 3.21967 4.71967C3.36032 4.57902 3.55109 4.5 3.75 4.5H20.25ZM3.75 3C3.15326 3 2.58097 3.23705 2.15901 3.65901C1.73705 4.08097 1.5 4.65326 1.5 5.25V18H22.5V5.25C22.5 4.65326 22.2629 4.08097 21.841 3.65901C21.419 3.23705 20.8467 3 20.25 3H3.75ZM0 18.75H24C24 19.3467 23.7629 19.919 23.341 20.341C22.919 20.7629 22.3467 21 21.75 21H2.25C1.65326 21 1.08097 20.7629 0.65901 20.341C0.237053 19.919 0 19.3467 0 18.75Z"
+            d="M6 18L3.7 20.3C3.38334 20.6167 3.02067 20.6877 2.612 20.513C2.20333 20.3383 1.99933 20.0257 2 19.575V4C2 3.45 2.196 2.97933 2.588 2.588C2.98 2.19667 3.45067 2.00067 4 2H20C20.55 2 21.021 2.196 21.413 2.588C21.805 2.98 22.0007 3.45067 22 4V16C22 16.55 21.8043 17.021 21.413 17.413C21.0217 17.805 20.5507 18.0007 20 18H6ZM7 14H13C13.2833 14 13.521 13.904 13.713 13.712C13.905 13.52 14.0007 13.2827 14 13C13.9993 12.7173 13.9033 12.48 13.712 12.288C13.5207 12.096 13.2833 12 13 12H7C6.71667 12 6.47933 12.096 6.288 12.288C6.09667 12.48 6.00067 12.7173 6 13C5.99933 13.2827 6.09534 13.5203 6.288 13.713C6.48067 13.9057 6.718 14.0013 7 14ZM7 11H17C17.2833 11 17.521 10.904 17.713 10.712C17.905 10.52 18.0007 10.2827 18 10C17.9993 9.71733 17.9033 9.48 17.712 9.288C17.5207 9.096 17.2833 9 17 9H7C6.71667 9 6.47933 9.096 6.288 9.288C6.09667 9.48 6.00067 6.71733 6 10C5.99933 10.2827 6.09534 10.5203 6.288 10.713C6.48067 10.9057 6.718 11.0013 7 11ZM7 8H17C17.2833 8 17.521 7.904 17.713 7.712C17.905 7.52 18.0007 7.28267 18 7C17.9993 6.71733 17.9033 6.48 17.712 6.288C17.5207 6.096 17.2833 6 17 6H7C6.71667 6 6.47933 6.096 6.288 6.288C6.09667 6.48 6.00067 6.71733 6 7C5.99933 7.28267 6.09534 7.52033 6.288 7.713C6.48067 7.90567 6.718 8.00133 7 8Z"
             fill="white"
           />
         </svg>
-      ),
-    },
-    {
-      id: 1,
-      name: "tablet",
-      image: Tablet_trail,
-      containerClass: "w-full max-w-2xl",
-      icon: (
-        <svg
-          width={30}
-          height={30}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M11 18H13M5.875 3H18.125C18.608 3 19 3.448 19 4V20C19 20.552 18.608 21 18.125 21H5.875C5.392 21 5 20.552 5 20V4C5 3.448 5.392 3 5.875 3Z"
-            stroke="#4B4741"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 2,
-      name: "mobile",
-      image: Phone_trail,
-      containerClass: "w-full max-w-sm",
-      icon: (
-        <svg
-          width={30}
-          height={30}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M16 3.25H8C7.04 3.25 6.25 4.04 6.25 5V19C6.25 19.96 7.04 20.75 8 20.75H16C16.96 20.75 17.75 19.96 17.75 19V5C17.75 4.04 16.96 3.25 16 3.25ZM16.25 19C16.25 19.14 16.14 19.25 16 19.25H8C7.86 19.25 7.75 19.14 7.75 19V5C7.75 4.86 7.86 4.75 8 4.75H16C16.14 4.75 16.25 4.86 16.25 5V19ZM13 16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16C11 15.45 11.45 15 12 15C12.55 15 13 15.45 13 16Z"
-            fill="#4B4741"
-          />
-        </svg>
-      ),
-    },
-  ];
+      </button>
+      {isOpen && (
+        <div className="absolute bottom-16 right-0 bg-white p-4 rounded-lg shadow-lg w-64">
+          <p className="text-sm">Contact us for more info!</p>
+          {/* Add form or link here */}
+        </div>
+      )}
+    </div>
+  );
+};
 
-  // Auto-loop through devices every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveDevice((prev) => (prev + 1) % devices.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [devices.length]);
-
-  const currentDevice = devices[activeDevice];
+const Aran = () => {
+  // Tab state for organizations section
+  const [activeTab, setActiveTab] = useState("organizations");
+  const scrollRef = useRef(null);
   return (
     <>
+      <style>{`.scroll-container::-webkit-scrollbar { display: none; }`}</style>
       {/* Main Section */}
       <div
-        className="relative w-full h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
+        className="relative w-full h-[86vh] bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{ backgroundImage: `url(${Background})` }}
       >
         {/* Background Overlay */}
@@ -143,114 +82,116 @@ const Aran = () => {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 flex flex-col items-start justify-start h-1/3 max-w-7xl mx-auto px-6 lg:px-8 pt-16">
+        <div className="relative z-10 flex flex-col items-start justify-start h-1/3 max-w-7xl mx-auto px-6 lg:px-8 pt-24">
           {/* Left Content - Text */}
           <div className="flex-1 max-w-2xl">
-            <h1 className="text-[32px] font-semibold text-[#A6A643] mb-4 font-['Poppins'] tracking-wide">
+            <h1 className="text-[32px] font-semibold text-[#A6A643] mb-4 font-poppins tracking-wide">
               Virtueel Wandelen
             </h1>
-            <h2 className="text-[64px] font-semibold text-white mb-6 leading-tight font-['Poppins']">
-              Wandel door je
+            <h2 className="text-6xl font-semibold text-white mb-6 leading-tight font-poppins">
+              Change your life
               <br />
-              herinneringen
+              memories
             </h2>
-            <p className="text-xl font-medium text-[#EDE4DC] mb-8 leading-relaxed font-['Poppins'] max-w-xl">
-              Virtueel Wandelen brengt de natuur tot leven met rustgevende
-              <br />
-              natuurwandelvideo's voor ouderen en mensen met dementie.
+            <p className="text-xl font-medium text-white mb-8 leading-relaxed font-poppins max-w-xl">
+              Virtueel Walken brings the natural life to life and rustiness
+              natural change videos for the outside world with denial.
             </p>
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-6">
-              <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] hover:bg-[#5B6502] meer_informatie text-white font-['Poppins'] text-xl font-medium leading-[136%]">
-                Request for quote
-              </button>
-              <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#5B6502] meer_informatie text-white font-['Poppins'] text-xl font-medium leading-[136%]">
-                View subscription plans
-              </button>
+              <Link to="/request-quote">
+                <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] hover:bg-[#5B6502] meer_informatie text-white font-poppins text-xl font-medium leading-[136%]">
+                  Request for quote
+                </button>
+              </Link>
+              <Link to="/subscribe">
+                <button className="cursor-pointer text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-poppins text-xl font-medium leading-[136%]">
+                  View subscription plans
+                </button>
+              </Link>
             </div>
           </div>
+        </div>
+        {/* Center Content - Scroll Indicator */}
+        <div className="w-full flex justify-center items-center absolute bottom-10 left-0">
+          <div className="flex flex-col items-center space-y-4">
+            {/* Microphone Icon */}
+            <svg
+              width={33}
+              height={46}
+              viewBox="0 0 33 46"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 16.5833C2 12.7156 3.53645 9.00626 6.27136 6.27136C9.00626 3.53645 12.7156 2 16.5833 2C20.4511 2 24.1604 3.53645 26.8953 6.27136C29.6302 9.00626 31.1667 12.7156 31.1667 16.5833V29.0833C31.1667 30.9984 30.7895 32.8948 30.0566 34.6641C29.3237 36.4335 28.2495 38.0411 26.8953 39.3953C25.5411 40.7495 23.9335 41.8237 22.1641 42.5566C20.3948 43.2895 18.4984 43.6667 16.5833 43.6667C14.6682 43.6667 12.7719 43.2895 11.0025 42.5566C9.2332 41.8237 7.62555 40.7495 6.27136 39.3953C4.91717 38.0411 3.84297 36.4335 3.11009 34.6641C2.37721 32.8948 2 30.9984 2 29.0833V16.5833Z"
+                stroke="#EDE4DC"
+                strokeWidth="3.125"
+              />
+              <path
+                d="M13.4609 15.543C13.4609 14.7142 13.7902 13.9193 14.3762 13.3333C14.9623 12.7472 15.7571 12.418 16.5859 12.418C17.4147 12.418 18.2096 12.7472 18.7956 13.3333C19.3817 13.9193 19.7109 14.7142 19.7109 15.543V19.7096C19.7109 20.5384 19.3817 21.3333 18.7956 21.9193C18.2096 22.5054 17.4147 22.8346 16.5859 22.8346C15.7571 22.8346 14.9623 22.5054 14.3762 21.9193C13.7902 21.3333 13.4609 20.5384 13.4609 19.7096V15.543Z"
+                stroke="#EDE4DC"
+                strokeWidth="3.125"
+              />
+              <path
+                d="M16.5859 2V12.4167"
+                stroke="#EDE4DC"
+                strokeWidth="3.125"
+                strokeLinecap="round"
+              />
+            </svg>
 
-          {/* Center Content - Scroll Indicator */}
-          <div className="w-full flex justify-center mt-7">
-            <div className="flex flex-col items-center space-y-4">
-              {/* Microphone Icon */}
+            {/* Scroll Arrows */}
+            <div className="flex flex-col space-y-1">
               <svg
-                width={33}
-                height={46}
-                viewBox="0 0 33 46"
+                width={19}
+                height={11}
+                viewBox="0 0 19 11"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="opacity-100"
               >
                 <path
-                  d="M2 16.5833C2 12.7156 3.53645 9.00626 6.27136 6.27136C9.00626 3.53645 12.7156 2 16.5833 2C20.4511 2 24.1604 3.53645 26.8953 6.27136C29.6302 9.00626 31.1667 12.7156 31.1667 16.5833V29.0833C31.1667 30.9984 30.7895 32.8948 30.0566 34.6641C29.3237 36.4335 28.2495 38.0411 26.8953 39.3953C25.5411 40.7495 23.9335 41.8237 22.1641 42.5566C20.3948 43.2895 18.4984 43.6667 16.5833 43.6667C14.6682 43.6667 12.7719 43.2895 11.0025 42.5566C9.2332 41.8237 7.62555 40.7495 6.27136 39.3953C4.91717 38.0411 3.84297 36.4335 3.11009 34.6641C2.37721 32.8948 2 30.9984 2 29.0833V16.5833Z"
+                  d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
+                  fill="#381207"
                   stroke="#EDE4DC"
-                  strokeWidth="3.125"
-                />
-                <path
-                  d="M13.4609 15.543C13.4609 14.7142 13.7902 13.9193 14.3762 13.3333C14.9623 12.7472 15.7571 12.418 16.5859 12.418C17.4147 12.418 18.2096 12.7472 18.7956 13.3333C19.3817 13.9193 19.7109 14.7142 19.7109 15.543V19.7096C19.7109 20.5384 19.3817 21.3333 18.7956 21.9193C18.2096 22.5054 17.4147 22.8346 16.5859 22.8346C15.7571 22.8346 14.9623 22.5054 14.3762 21.9193C13.7902 21.3333 13.4609 20.5384 13.4609 19.7096V15.543Z"
-                  stroke="#EDE4DC"
-                  strokeWidth="3.125"
-                />
-                <path
-                  d="M16.5859 2V12.4167"
-                  stroke="#EDE4DC"
-                  strokeWidth="3.125"
-                  strokeLinecap="round"
+                  strokeWidth="2.08333"
+                  className="animate-pulse"
                 />
               </svg>
-
-              {/* Scroll Arrows */}
-              <div className="flex flex-col space-y-1">
-                <svg
-                  width={19}
-                  height={11}
-                  viewBox="0 0 19 11"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-100"
-                >
-                  <path
-                    d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
-                    fill="#381207"
-                    stroke="#EDE4DC"
-                    strokeWidth="2.08333"
-                    className="animate-pulse"
-                  />
-                </svg>
-                <svg
-                  width={19}
-                  height={11}
-                  viewBox="0 0 19 11"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-70"
-                >
-                  <path
-                    d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
-                    fill="#381207"
-                    stroke="#D9BBAA"
-                    strokeWidth="2.08333"
-                    className="animate-pulse"
-                  />
-                </svg>
-                <svg
-                  width={19}
-                  height={11}
-                  viewBox="0 0 19 11"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-40"
-                >
-                  <path
-                    d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
-                    fill="#381207"
-                    stroke="#D9BBAA"
-                    strokeWidth="2.08333"
-                    className="animate-pulse"
-                  />
-                </svg>
-              </div>
+              <svg
+                width={19}
+                height={11}
+                viewBox="0 0 19 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="opacity-70"
+              >
+                <path
+                  d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
+                  fill="#381207"
+                  stroke="#D9BBAA"
+                  strokeWidth="2.08333"
+                  className="animate-pulse"
+                />
+              </svg>
+              <svg
+                width={19}
+                height={11}
+                viewBox="0 0 19 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="opacity-40"
+              >
+                <path
+                  d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
+                  fill="#381207"
+                  stroke="#D9BBAA"
+                  strokeWidth="2.08333"
+                  className="animate-pulse"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -263,30 +204,31 @@ const Aran = () => {
           <MessageUs />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mt-3">
           {/* Subtitle */}
-          <h2 className="text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#A6A643] mb-8 font-['Poppins'] tracking-wide">
-            Digitale wandelingen in de Overijsselse natuur
+          <h2 className="text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#A6A643] mb-8 font-[Poppins] ">
+            Digital transformations in the Overijsselse nature
           </h2>
 
           {/* Main Description */}
-          <p className="text-4xl justify-start text-[#381207] leading-relaxed mb-16 max-w-full mx-auto font-['Poppins']">
-            Stel je voor: een boswandeling, het ritselen van bladeren en
-            fluitende vogels. Voor mensen met dementie kan zo'n natuurbeleving
-            veel betekenen. Virtueel Wandelen brengt deze ervaring dichtbij,
-            gewoon vanuit huis of een zorginstelling. Het biedt rust,
-            ontspanning en herkenning
+          <p className="text-4xl justify-start text-[#381207] leading-relaxed mb-16 max-w-full mx-auto font-[Poppins] font-medium">
+            Imagine: a forest walk, the rustling of leaves and singing birds.
+            For people with dementia such a nature experience can mean a lot.
+            Virtual Walking brings this experience close, right from home or a
+            care facility. It offers peace, relaxation and recognition.
           </p>
 
           {/* Features Container */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-14 max-w-6xl mx-auto">
             {/* Feature 1 */}
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
                 <img src={leaf} alt="Leaf" className="w-80 h-80" />
               </div>
-              <h3 className="text-xl lg:text-2xl font-semibold text-[#381207] font-['Poppins']">
-                Explore Overijssel's Nature Videos
+              <h3 className="text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
+                Explore Overijssel's
+                <br />
+                Nature Videos
               </h3>
             </div>
 
@@ -295,8 +237,8 @@ const Aran = () => {
               <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
                 <img src={click} alt="click" className="w-80 h-80" />
               </div>
-              <h3 className="text-xl lg:text-2xl font-semibold text-[#381207] font-['Poppins']">
-                Enjoy Unique & Simple Viewing
+              <h3 className="text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
+                Enjoy Unique & Simple <br /> Viewing
               </h3>
             </div>
 
@@ -305,67 +247,14 @@ const Aran = () => {
               <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
                 <img src={human} alt="walk" className="w-80 h-80" />
               </div>
-              <h3 className="text-xl lg:text-2xl font-semibold text-[#381207] font-['Poppins']">
-                Watch Instantly with One Click
+              <h3 className="text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
+                Watch Instantly with <br /> One Click
               </h3>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Preview Experience Section */}
-      <div className="w-full bg-[#C1BE9B] py-1 lg:py-24 -mt-6">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {/* Header */}
-          <div className="flex flex-col items-start gap-2 w-[1136px] mb-14">
-            <div className="w-[564px] text-[#5b6502] font-['Poppins'] text-[2rem] font-semibold leading-[136%]">
-              Preview Your Experience
-            </div>
-            <div className="w-[835px] opacity-[0.8] text-[#381207] font-['Poppins'] text-5xl font-semibold leading-[136%]">
-              See how it looks on laptop, tablet, and mobile
-            </div>
-          </div>
-
-          {/* Video Preview */}
-          <div className="flex flex-col items-center space-y-8">
-            {/* Main Video Display with Device-Responsive Sizing */}
-            <div
-              className={`relative transition-all duration-500 ease-in-out ${currentDevice.containerClass}`}
-            >
-              <img
-                src={currentDevice.image}
-                alt={`Forest Trail - ${currentDevice.name} view`}
-                className="w-full h-full object-cover rounded-2xl shadow-2xl transition-all duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
-            </div>
-
-            {/* Device Selector with Auto-Loop */}
-            <div className="flex items-center gap-2">
-              {devices.map((device, index) => (
-                <button
-                  key={device.id}
-                  onClick={() => setActiveDevice(index)}
-                  className={`flex justify-center items-center p-1 w-8 h-8 rounded transition-all duration-300 ${
-                    activeDevice === index
-                      ? "bg-[#5b6502] scale-110"
-                      : "bg-[#e5e3df] hover:bg-[#d5d3cf]"
-                  }`}
-                >
-                  {device.icon}
-                </button>
-              ))}
-            </div>
-
-            {/* Device Name Indicator */}
-            <div className="text-center">
-              <span className="text-[#5b6502] font-['Poppins'] text-sm font-medium capitalize">
-                {currentDevice.name} View
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PreviewExperience />
       <DawnForest />
 
       {/* Discover Nature Videos Section */}
@@ -585,13 +474,13 @@ const Aran = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Header Section */}
           <div className="text-left mb-16">
-            <div className="text-[#A6A643] font-['Poppins'] text-xl lg:text-2xl font-semibold mb-4">
+            <div className="text-[#A6A643] font-['Poppins'] text-xl lg:text-[32px] font-semibold mb-4">
               Positive Experiences
             </div>
-            <h2 className="text-[#381207] font-['Poppins'] text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-8 text-left mx-auto">
-              Virtueel Wandelen creates warm, positive moments for all.
+            <h2 className="text-[#381207] font-['Poppins'] text-3xl lg:text-5xl xl:text-5xl font-bold leading-tight mb-8 text-left mx-auto">
+              Virtueel Wandelen creates warm, <br /> positive moments for all.
             </h2>
-            <button className="cursor-pointer inline-flex items-center px-8 py-4 bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50">
+            <button className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50">
               Watch Now
             </button>
           </div>
@@ -695,24 +584,32 @@ const Aran = () => {
           <div className="max-w-[1280px] mx-auto">
             {/* Header Section */}
             <div>
-              <div className="relative mb-16">
+              <div className="relative mb-32">
                 <img
                   src={Background2}
                   alt="background2"
                   className="absolute inset-0 w-[140%] h-[140%] -top-[10%] object-cover opacity-90 items-center rounded-3xl"
                 />
-                <div className="relative items-center text-[#a6a643] font-poppins text-lg font-medium mb-4 tracking-tight pl-12">
+                <div className="relative items-center text-[#a6a643] font-[Poppins] text-[32px] font-semibold mb-4 tracking-tight pl-12">
                   Discover Routes Near You
                 </div>
-                <div className="relative items-center text-white font-poppins text-4xl lg:text-5xl font-bold leading-tight max-w-[800px] pl-12">
+                <div className="relative items-center text-white font-[Poppins] text-4xl lg:text-5xl font-semibold leading-tight max-w-[800px] pl-12">
                   Explore beautiful journeys from participating municipalities.
                 </div>
               </div>
             </div>
             {/* Location Buttons */}
-            <div className="flex items-center gap-4 mb-16 flex-wrap">
+            <div className="flex items-center gap-4 mb-16">
               {/* Left Arrow */}
-              <button className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all">
+              <button
+                onClick={() =>
+                  scrollRef.current?.scrollBy({
+                    left: -200,
+                    behavior: "smooth",
+                  })
+                }
+                className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all"
+              >
                 <svg
                   width={20}
                   height={20}
@@ -731,32 +628,56 @@ const Aran = () => {
               </button>
 
               {/* Location Buttons */}
-              <div className="flex gap-4 flex-wrap">
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+              <div
+                ref={scrollRef}
+                className="scroll-container flex gap-4 overflow-x-auto whitespace-nowrap flex-1"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Dalfsen
                 </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Deventer
                 </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Haaksbergen
                 </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Hellendoorn
                 </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Hof van Twente
                 </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Olst-Wijhe
                 </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Ommen
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Raalte
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Rijssen-Holten
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Steenwijkerland
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Twenterand
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Wierden
                 </button>
               </div>
 
               {/* Right Arrow */}
-              <button className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all">
+              <button
+                onClick={() =>
+                  scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" })
+                }
+                className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all"
+              >
                 <svg
                   width={20}
                   height={20}
@@ -776,29 +697,24 @@ const Aran = () => {
             </div>
 
             {/* Bottom Section */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div className="text-white font-['Poppins'] text-2xl font-medium">
                 Your Turn to Inspire – New Every Month!
               </div>
 
               <div className="space-y-4 max-w-[600px]">
                 <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
-                  Have a scenic or special route we haven't covered yet?
-                </div>
-                <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
+                  Have a scenic or special route we haven't covered yet? <br />{" "}
                   Log in and submit your favorite – we might feature it in our
                   next video!
                 </div>
                 <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
                   We publish new videos and community-suggested routes every
-                  month,
-                </div>
-                <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
-                  so keep exploring and stay inspired.
+                  month, <br /> so keep exploring and stay inspired.
                 </div>
               </div>
 
-              <button className="cursor-pointer inline-flex items-center px-8 py-3 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-lg font-medium hover:bg-[#5B6502] transition-all">
+              <button className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all">
                 Explore this feature
               </button>
             </div>
@@ -808,39 +724,45 @@ const Aran = () => {
       <RequestCard />
 
       {/* Organizations Section */}
-      <div className={`flex flex-col justify-center items-center gap-12 p-20 w-full transition-all duration-500 ${
-        activeTab === 'organizations' ? 'bg-[#1f1915]' :
-        activeTab === 'families' ? 'bg-[#ede4dc]' :
-        activeTab === 'volunteer' ? 'bg-[#1f1915]' : 'bg-[#1f1915]'
-      }`}>
+      <div
+        className={`flex flex-col justify-center items-center gap-12 p-20 w-full transition-all duration-500 ${
+          activeTab === "organizations"
+            ? "bg-[#1f1915]"
+            : activeTab === "families"
+            ? "bg-[#ede4dc]"
+            : activeTab === "volunteer"
+            ? "bg-[#1f1915]"
+            : "bg-[#1f1915]"
+        }`}
+      >
         <div className="flex justify-center items-center">
           <div className="flex justify-center items-center gap-2 rounded-lg bg-[#f7f6f4]">
             <button
-              onClick={() => setActiveTab('organizations')}
+              onClick={() => setActiveTab("organizations")}
               className={`cursor-pointer flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg font-['Poppins'] text-2xl leading-[136%] transition-all ${
-                activeTab === 'organizations'
-                  ? 'bg-[#5b6502] text-white'
-                  : 'bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]'
+                activeTab === "organizations"
+                  ? "bg-[#5b6502] text-white"
+                  : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
             >
               Organizations
             </button>
             <button
-              onClick={() => setActiveTab('families')}
+              onClick={() => setActiveTab("families")}
               className={`cursor-pointer flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg font-['Poppins'] text-2xl leading-[136%] transition-all ${
-                activeTab === 'families'
-                  ? 'bg-[#5b6502] text-white'
-                  : 'bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]'
+                activeTab === "families"
+                  ? "bg-[#5b6502] text-white"
+                  : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
             >
               Families
             </button>
             <button
-              onClick={() => setActiveTab('volunteer')}
+              onClick={() => setActiveTab("volunteer")}
               className={`cursor-pointer flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg font-['Poppins'] text-2xl leading-[136%] transition-all ${
-                activeTab === 'volunteer'
-                  ? 'bg-[#5b6502] text-white'
-                  : 'bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]'
+                activeTab === "volunteer"
+                  ? "bg-[#5b6502] text-white"
+                  : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
             >
               Volunteer
@@ -852,191 +774,376 @@ const Aran = () => {
             <div className="flex flex-col items-start gap-6">
               <div className="flex flex-col items-start gap-4">
                 <div className="text-[#a6a643] font-['Poppins'] text-[2rem] font-semibold leading-[136%]">
-                  {activeTab === 'organizations' && 'Virtual Walking for Organizations'}
-                  {activeTab === 'families' && 'Virtual Walking at Home'}
-                  {activeTab === 'volunteer' && 'Virtual Walking as a Volunteer'}
+                  {activeTab === "organizations" &&
+                    "Virtual Walking for Organizations"}
+                  {activeTab === "families" && "Virtual Walking at Home"}
+                  {activeTab === "volunteer" &&
+                    "Virtual Walking as a Volunteer"}
                 </div>
                 <div className="w-[431px] text-white font-['Poppins'] text-5xl font-semibold leading-[136%]">
-                  {activeTab === 'organizations' && 'Calm moments, shared together.'}
-                  {activeTab === 'volunteer' && 'Share walks, spread joy.'}
+                  {activeTab === "organizations" &&
+                    "Calm moments, shared together."}
+                  {activeTab === "volunteer" && "Share walks, spread joy."}
                 </div>
                 <div className="w-[431px] text-[#381207] font-['Poppins'] text-5xl font-semibold leading-[136%]">
-                  {activeTab === 'families' && 'Nature’s beauty, just a click away.'}
+                  {activeTab === "families" &&
+                    "Nature’s beauty, just a click away."}
                 </div>
               </div>
               <div className="flex flex-col items-start gap-4 self-stretch">
-                {activeTab === 'organizations' && (
+                {activeTab === "organizations" && (
                   <>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Request a Quote Easily </span>
-                        Quick form for pricing, customization, and our personal visit.
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Request a Quote Easily{" "}
+                        </span>
+                        Quick form for pricing, customization, and our personal
+                        visit.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Promotes Well-Being </span>
-                        Calming effect for restlessness, encouraging peaceful moments.
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Promotes Well-Being{" "}
+                        </span>
+                        Calming effect for restlessness, encouraging peaceful
+                        moments.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Encourages Connection </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Encourages Connection{" "}
+                        </span>
                         Inspires conversation between residents and caregivers.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Flexible Access </span>
-                        Works seamlessly on tablets, laptops, and large shared screens.
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Flexible Access{" "}
+                        </span>
+                        Works seamlessly on tablets, laptops, and large shared
+                        screens.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 self-stretch border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Simple Onboarding </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Simple Onboarding{" "}
+                        </span>
                         Minimal admin setup and full guidance during start-up.
                       </div>
                     </div>
                   </>
                 )}
-                {activeTab === 'families' && (
+                {activeTab === "families" && (
                   <>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#7A756E]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] font-regular text-xl leading-[136%]">
-                        <span className="text-[#5B6502] font-medium"> Affordable Subscription  </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Affordable Subscription{" "}
+                        </span>
                         Enjoy unlimited access for only €12.99/month.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#7A756E]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-[#381207]font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#5B6502]"> 100+ Scenic Videos </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          100+ Scenic Videos{" "}
+                        </span>
                         Explore Overijssel, with fresh walks every month.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#7A756E]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#5B6502]"> Personal Touch </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          Personal Touch{" "}
+                        </span>
                         Request us to capture your favorite walking route.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#7A756E]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#5B6502]"> Real Impact </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          Real Impact{" "}
+                        </span>
                         Caregivers share stories of joy and relaxation.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#7A756E]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#5B6502]"> Simple & Instant </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-[#381207] font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Simple & Instant{" "}
+                        </span>
                         Nature at home with just a single button press.
                       </div>
                     </div>
                   </>
                 )}
-                {activeTab === 'volunteer' && (
+                {activeTab === "volunteer" && (
                   <>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Grow the Collection </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Grow the Collection{" "}
+                        </span>
                         Your walks help our library expand each week.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Film with Support </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Film with Support{" "}
+                        </span>
                         We set up the camera and guide your filming.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Walk Together </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Walk Together{" "}
+                        </span>
                         Alone on the path, but part of a bigger community.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Find Recognition </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Find Recognition{" "}
+                        </span>
                         More videos mean more smiles and shared moments.
                       </div>
                     </div>
                     <div className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df]">
                       <div className="flex items-center gap-2.5 pb-2">
-                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z" fill="#A6A643" />
+                        <svg
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M21 6.99984L9 18.9998L3.5 13.4998L4.91 12.0898L9 16.1698L19.59 5.58984L21 6.99984Z"
+                            fill="#A6A643"
+                          />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-xl leading-[136%]">
-                        <span className="text-[#a6a643]"> Find Recognition </span>
+                      <div className="flex flex-col items-start gap-0 pb-2 w-[524px] h-[5.0625rem] text-white font-['Poppins'] text-base leading-[136%]">
+                        <span className="text-[#a6a643] text-[24px] font-semibold pb-4">
+                          {" "}
+                          Find Recognition{" "}
+                        </span>
                         More videos mean more smiles and shared moments.
                       </div>
                     </div>
@@ -1044,28 +1151,38 @@ const Aran = () => {
                 )}
               </div>
             </div>
-            <div className="cursor-pointer hover:bg-[#5B6502] flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] meer_informatie text-white font-['Poppins'] text-xl font-medium leading-[136%]">
-              {activeTab === 'organizations' && 'Get a Quote'}
-              {activeTab === 'families' && 'Subscribe Now'}
-              {activeTab === 'volunteer' && 'Get a Quote'}
-            </div>
+            <Link
+              to={
+                activeTab === "organizations"
+                  ? "/request-quote"
+                  : activeTab === "families"
+                  ? "/subscribe"
+                  : "/volunteer-signup"
+              }
+            >
+              <div className="cursor-pointer hover:bg-[#5B6502] flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] meer_informatie text-white font-['Poppins'] text-xl font-medium leading-[136%]">
+                {activeTab === "organizations" && "Get a Quote"}
+                {activeTab === "families" && "Subscribe Now"}
+                {activeTab === "volunteer" && "Join as Volunteer"}
+              </div>
+            </Link>
           </div>
           <div className="self-stretch w-[508px] bg-gray-300 rounded-lg flex items-center justify-center">
-            {activeTab === 'organizations' && (
+            {activeTab === "organizations" && (
               <img
                 src={wheelchair}
                 alt="Virtual walking for organizations"
                 className="w-full h-full object-cover rounded-lg"
               />
             )}
-            {activeTab === 'families' && (
+            {activeTab === "families" && (
               <img
                 src={walking}
                 alt="Virtual Walking at Home"
                 className="w-full h-full object-cover rounded-lg"
               />
             )}
-            {activeTab === 'volunteer' && (
+            {activeTab === "volunteer" && (
               <img
                 src={camera}
                 alt="Virtual Walking as a Volunteer"
@@ -1079,21 +1196,21 @@ const Aran = () => {
       {/* Tina Section */}
       <div className="w-full bg-[#ede4dc] py-16 lg:py-20 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex justify-center">
-          <div className="bg-white rounded-2xl p-8 lg:p-12 max-w-5xl w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="bg-white rounded-2xl p-8 lg:p-18 max-w-6xl w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
               {/* Left Content */}
               <div className="space-y-8">
                 <div className="space-y-4">
-                  <h3 className="text-[#a6a643] font-['Poppins'] text-xl lg:text-2xl font-semibold">
-                    Tina -
+                  <h3 className="text-[#a6a643] font-['Poppins'] text-3xl lg:text-2xl font-semibold">
+                    Tina - Founder of Virtual Walking.
                   </h3>
-                  <blockquote className="text-[#381207] font-['Poppins'] text-xl lg:text-2xl font-medium leading-relaxed">
+                  <blockquote className="text-[#381207] font-['Poppins'] text-xl lg:text-2xl font-normal leading-relaxed w-xl text-justify">
                     "Together – with informal caregivers, care organizations and
                     volunteers – we bring nature to life for everyone who can no
                     longer visit it themselves."
                   </blockquote>
                 </div>
-                <button className="cursor-pointer px-8 py-4 bg-[#a6a643] text-white font-['Poppins'] text-xl font-medium rounded-lg transition-all hover:bg-[#8a8f39] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50">
+                <button className="cursor-pointer px-4 py-2 bg-[#a6a643] text-white font-['Poppins'] text-xl font-medium rounded-lg transition-all hover:bg-[#8a8f39] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50">
                   Read more about Tina
                 </button>
               </div>
