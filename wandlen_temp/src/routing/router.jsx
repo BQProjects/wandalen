@@ -23,7 +23,7 @@ import VolunteerSignupForm from "../pages/website/VolunteerSignup";
 import Blog from "../pages/website/Blog";
 
 // Client page imports (alphabetized)
-import Login from "../pages/client/Login";
+import Login from "../pages/website/Login";
 import PatientProfile from "../pages/client/PatientProfile";
 import SelectVideo from "../pages/client/SelectVideo";
 import VideoClient from "../pages/client/VideoClient";
@@ -59,8 +59,7 @@ import VolunteerDetail from "../pages/admin/VolunteerDetail";
 
 // Component imports
 import ProtectedRoute from "../components/ProtectedRoute";
-import VolunteerOTP from "../pages/volunteer/VolunteerOTP";
-import ClientOTP from "../pages/client/ClientOTP";
+import Otp from "../pages/website/OTP";
 import WhyNatureMatters from "../pages/website/WhyNatureMatters";
 import PowerofWalking from "../pages/website/PowerofWalking";
 import HealthandHappiness from "../pages/website/HealthandHappiness";
@@ -139,32 +138,24 @@ export const router = createBrowserRouter([
   },
   // Authentication routes without layouts (no headers)
   {
-    path: "/client/login",
+    path: "/login",
     element: <Login />,
   },
   {
-    path: "/organization/login",
-    element: <OrgLogin />,
-  },
-  {
     path: "/organization/signup",
-    element: <OrgSignup />,
-  },
-  {
-    path: "/volunteer/login",
-    element: <VolunteerLogin />,
+    element: <RequestAQuoteForm />,
   },
   {
     path: "/volunteer/signup",
     element: <VolunteerSignup />,
   },
   {
-    path: "/volunteer/otp-verify/:email",
-    element: <VolunteerOTP />,
+    path: "/client/otp-verify/:email",
+    element: <Otp />, // Client OTP verification
   },
   {
-    path: "/client/otp-verify/:email",
-    element: <ClientOTP />,
+    path: "/volunteer/otp-verify/:email",
+    element: <Otp />, // Volunteer OTP verification
   },
   // Protected client routes with layout
   {

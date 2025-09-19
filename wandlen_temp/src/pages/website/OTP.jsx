@@ -6,32 +6,51 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import LoginImg from "../../assets/LoginImg.png";
 
-const ClientOTP = () => {
+const Otp = () => {
   const [otp, setOtp] = useState("");
   const { email } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { setUserType, setSessionId, setUser } = useContext(AuthContext);
+  const { setUserType, setSessionId, setUser, login } = useContext(AuthContext);
   const { DATABASE_URL } = useContext(DatabaseContext);
+
+  // Determine user type from URL - no fallback, must match expected patterns
+  let userType;
+  if (location.pathname.includes("/volunteer/otp-verify/")) {
+    userType = "volunteer";
+  } else if (location.pathname.includes("/client/otp-verify/")) {
+    userType = "client";
+  } else if (location.pathname.includes("/otp-verify/")) {
+    console.warn(
+      "Using generic OTP route, user type detection may be unreliable"
+    );
+  } else {
+    throw new Error(
+      `Unexpected OTP route: ${location.pathname}. cannot determine user type.`
+    );
+  }
   const handleVerify = async () => {
     try {
       const res = await axios.post(`${DATABASE_URL}/utils/verify-otp`, {
         email,
         otp,
-        type: "client",
+        type: userType,
       });
       if (res.status === 200) {
         alert("OTP verification successful!");
-        setUserType("client");
-        // Redirect or perform further actions
+
+        // Set authentication context
+        login({ email: email }, userType);
         setSessionId(res.data.sessionId);
-        setUser({ email: email });
-        localStorage.setItem("userType", "client");
+
+        // Store in localStorage
+        localStorage.setItem("userType", userType);
         localStorage.setItem("user", JSON.stringify({ email: email }));
         localStorage.setItem("sessionId", res.data.sessionId);
         localStorage.setItem("userId", res.data.userId);
 
-        const from = location.state?.from?.pathname || "/client";
+        // Redirect to appropriate dashboard
+        const from = location.state?.from?.pathname || `/${userType}`;
         navigate(from);
       } else {
         alert("OTP verification failed. Please try again.");
@@ -101,4 +120,4 @@ const ClientOTP = () => {
   );
 };
 
-export default ClientOTP;
+export default Otp;

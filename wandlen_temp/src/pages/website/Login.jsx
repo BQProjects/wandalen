@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import LoginImg from "../../assets/LoginImg.png";
 
@@ -25,14 +26,44 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Determine the API endpoint and redirect path based on selected role
+    let apiEndpoint = "";
+    let redirectPath = "";
+
+    switch (selectedRole) {
+      case "caregiver":
+        apiEndpoint = `${DATABASE_URL}/client/login`;
+        redirectPath = `/client/otp-verify/${formData.email}`;
+        break;
+      case "volunteer":
+        apiEndpoint = `${DATABASE_URL}/volunteer/login`;
+        redirectPath = `/volunteer/otp-verify/${formData.email}`;
+        break;
+      case "organization":
+        apiEndpoint = `${DATABASE_URL}/organization/login`;
+        redirectPath = "/organization"; // Organizations might not need OTP
+        break;
+      default:
+        alert("Please select a role");
+        return;
+    }
+
     try {
-      const res = await axios.post(`${DATABASE_URL}/client/login`, formData);
+      const res = await axios.post(apiEndpoint, formData);
       if (res.status === 200) {
         alert("Login successful!");
         console.log(res.data);
-        navigate(`/client/otp-verify/${formData.email}`, {
-          state: location.state,
-        });
+
+        if (selectedRole === "organization") {
+          // For organizations, set auth context and navigate directly
+          const { login } = useContext(AuthContext);
+          login({ email: formData.email }, selectedRole);
+          navigate(redirectPath);
+        } else {
+          // For clients and volunteers, go to OTP verification
+          navigate(redirectPath, { state: location.state });
+        }
       } else {
         alert("Login failed. Please check your credentials and try again.");
       }
@@ -56,7 +87,7 @@ const Login = () => {
                   Welcome back!
                 </div>
                 <div className="text-[#7a756e] font-['Poppins'] text-lg leading-[normal]">
-                  Welcome back! Log in here.
+                  Please select your role and log in.
                 </div>
               </div>
               <div className="flex flex-col items-start gap-5">
@@ -94,6 +125,7 @@ const Login = () => {
                       value="caregiver"
                       checked={selectedRole === "caregiver"}
                       onChange={handleRoleChange}
+                      required
                     />
                     <label
                       htmlFor="caregiver"
@@ -109,6 +141,7 @@ const Login = () => {
                       value="volunteer"
                       checked={selectedRole === "volunteer"}
                       onChange={handleRoleChange}
+                      required
                     />
                     <label
                       htmlFor="volunteer"
@@ -124,6 +157,7 @@ const Login = () => {
                       value="organization"
                       checked={selectedRole === "organization"}
                       onChange={handleRoleChange}
+                      required
                     />
                     <label
                       htmlFor="organization"

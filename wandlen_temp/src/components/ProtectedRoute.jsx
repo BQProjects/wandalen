@@ -7,9 +7,9 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const location = useLocation();
 
   const getRedirectTo = (pathname) => {
-    if (pathname.startsWith("/client")) return "/client/login";
-    if (pathname.startsWith("/organization")) return "/organization/login";
-    if (pathname.startsWith("/volunteer")) return "/volunteer/login";
+    if (pathname.startsWith("/client")) return "/";
+    if (pathname.startsWith("/organization")) return "/";
+    if (pathname.startsWith("/volunteer")) return "/";
     if (pathname.startsWith("/admin")) return "/admin/login";
     return "/";
   };

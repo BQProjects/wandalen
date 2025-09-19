@@ -17,10 +17,18 @@ export const AuthProvider = ({ children }) => {
   });
 
   const login = (userData, type) => {
+    const userTypeMap = {
+      caregiver: "client",
+      volunteer: "volunteer",
+      organization: "organization",
+    };
+
+    const mappedType = userTypeMap[type] || type;
+
     setUser(userData);
-    setUserType(type);
+    setUserType(mappedType);
     localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("userType", type);
+    localStorage.setItem("userType", mappedType);
   };
 
   const logout = () => {

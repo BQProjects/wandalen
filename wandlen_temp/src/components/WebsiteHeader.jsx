@@ -219,39 +219,12 @@ const WebsiteHeader = () => {
 
               {/* Login options dropdown */}
               <div className="relative group">
-                <button className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-brown text-white text-center font-['Poppins'] text-xl font-medium leading-[136%] hover:bg-brown-hover transition-colors">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-brown text-white text-center font-['Poppins'] text-xl font-medium leading-[136%] hover:bg-brown-hover transition-colors"
+                >
                   Log in
-                  <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M4 6L8 10L12 6"
-                      stroke="white"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
                 </button>
-
-                <div className="absolute top-full right-0 left-auto mt-2 max-w-xs w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-x-auto">
-                  <Link
-                    to="/client/login"
-                    className="block px-4 py-3 text-brown hover:bg-secondary rounded-t-lg transition-colors"
-                  >
-                    Client Login
-                  </Link>
-                  <Link
-                    to="/organization/login"
-                    className="block px-4 py-3 text-brown hover:bg-secondary transition-colors"
-                  >
-                    Organization Login
-                  </Link>
-                  <Link
-                    to="/volunteer/login"
-                    className="block px-4 py-3 text-brown hover:bg-secondary rounded-b-lg transition-colors"
-                  >
-                    Volunteer Login
-                  </Link>
-                </div>
               </div>
             </>
           )}
