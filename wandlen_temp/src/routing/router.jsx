@@ -12,7 +12,7 @@ import Aran from "../pages/website/Aran";
 import BecomeVolunteer from "../pages/website/BecomeVolunteer";
 import CameraTips from "../pages/website/CameraTips";
 import ChooseYourExperience from "../pages/website/ChoseYourExperience";
-import HowItWorks from "../pages/volunteer/HOwItWork";
+import HowItWorks from "../pages/volunteer/HowItWork";
 import NatureWalking from "../pages/website/NatureWalking";
 import OurApproach from "../pages/website/OurApproach";
 import PaymentPageForIndividual from "../pages/website/PaymentPageForIndividual";

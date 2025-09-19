@@ -81,10 +81,19 @@ const PatientProfile = () => {
         {/* Centered Content */}
         <div className="relative text-center max-w-4xl mx-auto px-4">
           <div className="flex flex-col items-center">
-            <div
-              className="relative w-32 h-32 rounded-full bg-cover bg-center mb-4"
-              style={{ backgroundImage: `url(${profileData.profilePic})` }}
-            >
+            <div className="relative w-32 h-32 rounded-full bg-cover bg-center mb-4">
+              {profileData.profilePic ? (
+                <div
+                  className="w-full h-full rounded-full bg-cover bg-center"
+                  style={{ backgroundImage: `url(${profileData.profilePic})` }}
+                />
+              ) : (
+                <img
+                  src={UserIcon}
+                  alt="Default User Icon"
+                  className="w-16 h-16 text-[#7a756e]"
+                />
+              )}
               <svg
                 width={24}
                 height={24}

@@ -64,8 +64,7 @@ const SelectVideo = () => {
           </p>
         </div>
       </div>
-
-      {/* Rest of Page Content */}
+      
       <div className="mx-auto relative px-4 sm:px-10 md:px-20 pt-20">
         {/* Video Grid with Filters */}
         <VideoGridWithFilters
