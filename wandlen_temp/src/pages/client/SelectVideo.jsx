@@ -1,73 +1,36 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BgVideo from "../../assets/BgVideo.mp4";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const SelectVideo = () => {
   const navigate = useNavigate();
 
-  const videos = [
-    {
-      id: 1,
-      title: "Korte wandeling Holterberg",
-      duration: "15 min",
-      location: "Hellendoorn, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Opkomende zon", "Kinderen", "Wilde dieren", "Bos"],
-      views: 320,
-      likes: 123,
-    },
-    {
-      id: 2,
-      title: "Boswandeling met vogels",
-      duration: "25 min",
-      location: "Lemele, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Winter", "Sneeuw", "Gouden gras", "Vogels", "Bos"],
-      views: 450,
-      likes: 89,
-    },
-    {
-      id: 3,
-      title: "Strandwandeling zonsondergang",
-      duration: "30 min",
-      location: "Lemelerveld, Noordzee kust",
-      thumbnail: BgVideo,
-      tags: ["Winter", "Koeien", "Rustig briesje", "Strand"],
-      views: 200,
-      likes: 67,
-    },
-    {
-      id: 4,
-      title: "Bergpad met uitzicht",
-      duration: "20 min",
-      location: "Luttenberg, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Vogels", "Opkomende zon", "Heide"],
-      views: 300,
-      likes: 150,
-    },
-    {
-      id: 5,
-      title: "Rustige rivierwandeling",
-      duration: "50 min",
-      location: "Raalte, IJssel",
-      thumbnail: BgVideo,
-      tags: ["Kinderen", "Wilde dieren", "Water", "Zomer"],
-      views: 280,
-      likes: 95,
-    },
-    {
-      id: 6,
-      title: "Herfstkleuren in het bos",
-      duration: "22 min",
-      location: "Hellendoorn, Utrechtse Heuvelrug",
-      thumbnail: BgVideo,
-      tags: ["Sneeuw", "Gouden gras", "Herfst", "Bos"],
-      views: 400,
-      likes: 110,
-    },
-  ];
+  const [videos, setVideos] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+
+  const handleGetVideos = async () => {
+    try {
+      const res = await axios.get(
+        `${DATABASE_URL}/client/get-all-videos/1/10"`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+        }
+      );
+      setVideos(res.data.videos);
+      console.log(res.data.videos);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+  useEffect(() => {
+    handleGetVideos();
+  }, []);
 
   const handleVideoSelect = (id) => {
     navigate(`video/${id}`);

@@ -4,7 +4,7 @@ const sessionStoreSchema = new mongoose.Schema({
   sessionId: {
     type: String,
     required: true,
-    unique: true,
+    index: true,
   },
   data: {
     type: Object,
@@ -20,6 +20,9 @@ const sessionStoreSchema = new mongoose.Schema({
   expiresAt: { type: Date, required: true },
 });
 
-const SessionStore = mongoose.model("SessionStore", sessionStoreSchema);
+// ✅ Fix: reuse model if it already exists
+const SessionStore =
+  mongoose.models.SessionStore ||
+  mongoose.model("SessionStore", sessionStoreSchema);
 
 module.exports = SessionStore;

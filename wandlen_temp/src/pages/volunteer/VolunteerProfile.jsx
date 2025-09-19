@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UserIcon from "../../assets/UserIcon.svg";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const VolunteerProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+  const volunteerId = localStorage.getItem("userId");
+
   const [profileData, setProfileData] = useState({
-    fullName: "John Smith",
-    contactEmail: "john.smith@wellnesscenter.nl",
-    phone: "+31 612 345 678",
-    address: "123 Green Street, Amsterdam, NL",
-    accountEmail: "johnsmith.vw@gmail.com",
-    password: "*************",
+    fullName: "",
+    contactEmail: "",
+    phone: "",
+    address: "",
+    accountEmail: "",
+    password: "",
   });
 
   const handleInputChange = (e) => {
@@ -27,6 +33,48 @@ const VolunteerProfile = () => {
     setIsEditing(false);
   };
 
+  const getProfile = async () => {
+    try {
+      const res = await axios.get(
+        `${DATABASE_URL}/volunteer/getProfile/${volunteerId}`,
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      setProfileData({
+        fullName: res.data.firstName,
+        phone: res.data.phoneNumber,
+        address: res.data.address,
+        accountEmail: res.data.email,
+
+        password: "********",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const editProfile = async () => {
+    try {
+      const res = await axios.put(
+        `${DATABASE_URL}/volunteer/editProfile/${volunteerId}`,
+        {
+          firstName: profileData.fullName,
+          phoneNumber: profileData.phone,
+          address: profileData.address,
+          email: profileData.accountEmail,
+        },
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      console.log(res.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#ede4dc]">
       {/* Header Section */}
@@ -39,7 +87,7 @@ const VolunteerProfile = () => {
             </div>
             <div>
               <h1 className="text-4xl font-medium text-white mb-2">
-                John Smith
+                {profileData.fullName || "Volunteer Name"}
               </h1>
               <button className="px-4 py-2 border border-white/30 rounded-lg text-white text-sm hover:bg-white/10 transition">
                 Remove Image
@@ -189,7 +237,7 @@ const VolunteerProfile = () => {
           {isEditing ? (
             <>
               <button
-                onClick={handleSave}
+                onClick={editProfile}
                 className="px-6 py-3 bg-[#2a341f] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
               >
                 Save Changes

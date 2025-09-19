@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import OpkomendeZonIcon from "../../assets/opkomende-zon.svg";
 import OndergaandeZonIcon from "../../assets/ondergaande-zon.svg";
 import WinterIcon from "../../assets/winter.svg";
@@ -15,6 +15,8 @@ import RivierIcon from "../../assets/rivier.svg";
 import WaterIcon from "../../assets/water.svg";
 import ZomerIcon from "../../assets/zomer.svg";
 import PlantIcon from "../../assets/plant.svg";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 // Helper function to get tag icon based on tag content
 const getTagIcon = (tag) => {
@@ -126,6 +128,22 @@ const VideoCard = ({
   onDelete,
   videoId,
 }) => {
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+
+  const handleDelete = async (videoId) => {
+    try {
+      const res = await axios.delete(
+        `${DATABASE_URL}/volunteer/deleteVideo/${videoId}`,
+        {
+          headers: { Authorization: sessionId },
+        }
+      );
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
+
   return (
     <div
       className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105"
@@ -198,6 +216,7 @@ const VideoCard = ({
                   onClick={(e) => {
                     e.stopPropagation();
                     onDelete(videoId);
+                    handleDelete(videoId);
                   }}
                   className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
                   title="Delete video"
@@ -486,11 +505,11 @@ const VideoGridWithFilters = ({
             filteredVideos.map((video) => (
               <VideoCard
                 key={video.id}
-                videoId={video.id}
+                videoId={video._id}
                 title={video.title}
                 duration={video.duration}
                 location={video.location}
-                thumbnail={video.thumbnail}
+                thumbnail={video.imgUrl}
                 tags={video.tags || []}
                 views={video.views || 320}
                 likes={video.likes || 123}

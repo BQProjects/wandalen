@@ -7,11 +7,10 @@ const VideoSchema = new Schema(
     title: { type: String, required: true },
     url: {
       type: String,
-      required: true,
     },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      refPath: "uploaderModel", // Polymorphic reference
+      ref: "Volunteer",
       index: true,
     },
     uploaderModel: {
@@ -31,7 +30,7 @@ const VideoSchema = new Schema(
       type: String,
     },
     sound: {
-      type: Number,
+      type: String,
     },
     animals: {
       type: String,
@@ -43,7 +42,7 @@ const VideoSchema = new Schema(
       type: String,
     },
     duration: {
-      type: Number,
+      type: String,
     },
     reviews: [
       {
