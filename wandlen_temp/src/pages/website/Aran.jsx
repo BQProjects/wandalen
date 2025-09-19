@@ -1,13 +1,8 @@
 import React, { useState, useRef } from "react";
-import Background from "../../assets/background.png";
-import BgVideo from "../../assets/BgVideo.mp4";
-import ForestTrail from "../../assets/forest_trail.png";
 import DawnForest from "../../../src/components/DawnForest";
-import Scrollcard from "../../../src/components/common/scrollcard";
 import Background2 from "../../assets/Background2.png";
 import Testimonial from "../../components/common/TestimonialScroll";
 import FaqQuestions from "../../components/common/FaqQuestions";
-import WhyVirtualWalking from "../../components/WhyVirtualWalking";
 import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
 import RequestCard from "../../components/RequestCard";
@@ -16,12 +11,11 @@ import click from "../../assets/click.svg";
 import human from "../../assets/walkinghuman.svg";
 import wheelchair from "../../assets/wheelchair.png";
 import girl from "../../assets/girl.png";
-import Laptop_trail from "../../assets/laptop_trail.png";
-import Tablet_trail from "../../assets/Tablet_iPad_mini_trail.png";
-import Phone_trail from "../../assets/Phone_trail.png";
 import walking from "../../assets/walking.png";
 import camera from "../../assets/camera.png";
 import PreviewExperience from "../../components/PreviewExperience";
+import Mute from "../../assets/Mute.svg";
+import UnMute from "../../assets/UnMute.svg";
 import { Link } from "react-router-dom";
 
 const MessageUs = () => {
@@ -61,24 +55,43 @@ const Aran = () => {
   // Tab state for organizations section
   const [activeTab, setActiveTab] = useState("organizations");
   const scrollRef = useRef(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef(null);
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+    }
+  };
   return (
     <>
       <style>{`.scroll-container::-webkit-scrollbar { display: none; }`}</style>
       {/* Main Section */}
-      <div
-        className="relative w-full h-[86vh] bg-cover bg-center bg-no-repeat overflow-hidden"
-        style={{ backgroundImage: `url(${Background})` }}
-      >
-        {/* Background Overlay */}
-        <div className="absolute inset-0 bg-opacity-30"></div>
+      <div className="relative w-full h-[86vh] bg-cover bg-center bg-no-repeat overflow-hidden">
+        {/* Background Video */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover z-0 bg-[#2A341F]"
+          src="/BgVideo.mp4"
+          autoPlay
+          muted={isMuted}
+          loop
+          playsInline
+        />
 
-        {/* Background Image */}
-        <div className="absolute inset-0 z-5 flex items-center justify-center">
-          <img
-            src={Background}
-            alt="backgorund"
-            className="w-full h-full object-contain opacity-20"
-          />
+        {/* Color Overlay */}
+        <div className="absolute inset-0 bg-[#2A341F] opacity-25 z-5"></div>
+
+        {/* Mute Button */}
+        <div className="absolute bottom-4 left-4 z-20">
+          <button onClick={toggleMute}>
+            {isMuted ? (
+              <img src={Mute} alt="Mute" />
+            ) : (
+              <img src={UnMute} alt="Unmute" />
+            )}
+          </button>
         </div>
 
         {/* Main Content */}

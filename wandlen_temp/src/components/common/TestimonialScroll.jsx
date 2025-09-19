@@ -54,7 +54,7 @@ const Testimonial = () => {
   };
 
   return (
-    <div className="relative flex-shrink-0 bg-accent px-4 py-12 md:px-0 min-h-[300px]">
+    <div className="relative flex-shrink-0 bg-accent px-4 py-12 md:px-0 min-h-[380px]">
       {/* Left Arrow */}
       <img
         src={LeftArrow}
@@ -78,11 +78,11 @@ const Testimonial = () => {
         {/* Testimonial Card */}
         <div
           key={currentIndex}
-          className="rounded-2xl p-6 md:p-10 text-center text-secondary font-['Poppins'] text-base md:text-xl leading-relaxed max-w-3xl transition-opacity duration-500 ease-in-out"
+          className="rounded-2xl p-6 md:p-10 text-justify text-secondary font-['Poppins'] text-base md:text-xl leading-relaxed max-w-3xl transition-opacity duration-500 ease-in-out"
         >
           {(() => {
             const text = testimonials[currentIndex].text;
-            const maxLength = 180;
+            const maxLength = 120;
             if (text.length > maxLength && !expanded) {
               return (
                 <>
