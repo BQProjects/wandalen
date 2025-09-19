@@ -27,6 +27,7 @@ const VolunteerOTP = () => {
         localStorage.setItem("userType", "volunteer");
         localStorage.setItem("user", JSON.stringify({ email: email }));
         localStorage.setItem("sessionId", res.data.sessionId);
+        localStorage.setItem("userId", res.data.userId);
 
         navigate("/volunteer");
       } else {

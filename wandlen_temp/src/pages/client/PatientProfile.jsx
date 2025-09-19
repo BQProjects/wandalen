@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UserIcon from "../../assets/UserIcon.svg";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const PatientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+  const clientId = localStorage.getItem("userId");
   const [profileData, setProfileData] = useState({
-    fullName: "John Smith",
-    organizationName: "Sunrise Wellness Center",
-    contactEmail: "john.smith@wellnesscenter.nl",
-    phone: "+31 612 345 678",
-    address: "123 Green Street, Amsterdam, NL",
-    accountEmail: "johnsmith.vw@gmail.com",
-    password: "*************",
-    currentPlan: "Home Subscription (€12.99/month)",
-    validUntil: "Sept 21, 2025",
+    fullName: "",
+    organizationName: "",
+    contactEmail: "",
+    phone: "",
+    addressv: "",
+    accountEmail: "",
+    password: "",
+    currentPlan: "",
+    validUntil: "",
   });
 
   const handleInputChange = (e) => {
@@ -29,6 +34,32 @@ const PatientProfile = () => {
     // Reset to original values if needed
     setIsEditing(false);
   };
+
+  const getProfileData = async () => {
+    try {
+      const res = await axios.get(
+        `${DATABASE_URL}/client/get-account/${clientId}`,
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      setProfileData({
+        fullName: res.data.firstName,
+        organizationName: res.data.organizationName,
+        contactEmail: res.data.email,
+        phone: res.data.phoneNo,
+        address: res.data.address,
+        accountEmail: res.data.email,
+        password: res.data.password,
+        currentPlan: res.data.subscriptionType,
+        validUntil: res.data.endDate,
+      });
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#ede4dc]">

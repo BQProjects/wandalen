@@ -1,73 +1,79 @@
-import React, { useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BgVideo from "../../assets/BgVideo.mp4";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const VolunteerHome = () => {
   const navigate = useNavigate();
+  const [videos, setVideos] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+  const [req, setReq] = useState([]);
 
-  const videos = [
-    {
-      id: 1,
-      title: "Korte wandeling Holterberg",
-      duration: "15 min",
-      location: "Hellendoorn, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Opkomende zon", "Kinderen", "Wilde dieren", "Bos"],
-      views: 320,
-      likes: 123,
-    },
-    {
-      id: 2,
-      title: "Boswandeling met vogels",
-      duration: "25 min",
-      location: "Lemele, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Winter", "Sneeuw", "Gouden gras", "Vogels", "Bos"],
-      views: 450,
-      likes: 89,
-    },
-    {
-      id: 3,
-      title: "Strandwandeling zonsondergang",
-      duration: "30 min",
-      location: "Lemelerveld, Noordzee kust",
-      thumbnail: BgVideo,
-      tags: ["Winter", "Koeien", "Rustig briesje", "Strand"],
-      views: 200,
-      likes: 67,
-    },
-    {
-      id: 4,
-      title: "Bergpad met uitzicht",
-      duration: "20 min",
-      location: "Luttenberg, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Vogels", "Opkomende zon", "Heide"],
-      views: 300,
-      likes: 150,
-    },
-    {
-      id: 5,
-      title: "Rustige rivierwandeling",
-      duration: "50 min",
-      location: "Raalte, IJssel",
-      thumbnail: BgVideo,
-      tags: ["Kinderen", "Wilde dieren", "Water", "Zomer"],
-      views: 280,
-      likes: 95,
-    },
-    {
-      id: 6,
-      title: "Herfstkleuren in het bos",
-      duration: "70 min",
-      location: "Hellendoorn, Utrechtse Heuvelrug",
-      thumbnail: BgVideo,
-      tags: ["Sneeuw", "Gouden gras", "Herfst", "Bos"],
-      views: 400,
-      likes: 110,
-    },
-  ];
+  // const videos = [
+  //   {
+  //     id: 1,
+  //     title: "Korte wandeling Holterberg",
+  //     duration: "15 min",
+  //     location: "Hellendoorn, Nederland",
+  //     thumbnail: BgVideo,
+  //     tags: ["Opkomende zon", "Kinderen", "Wilde dieren", "Bos"],
+  //     views: 320,
+  //     likes: 123,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Boswandeling met vogels",
+  //     duration: "25 min",
+  //     location: "Lemele, Nederland",
+  //     thumbnail: BgVideo,
+  //     tags: ["Winter", "Sneeuw", "Gouden gras", "Vogels", "Bos"],
+  //     views: 450,
+  //     likes: 89,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Strandwandeling zonsondergang",
+  //     duration: "30 min",
+  //     location: "Lemelerveld, Noordzee kust",
+  //     thumbnail: BgVideo,
+  //     tags: ["Winter", "Koeien", "Rustig briesje", "Strand"],
+  //     views: 200,
+  //     likes: 67,
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Bergpad met uitzicht",
+  //     duration: "20 min",
+  //     location: "Luttenberg, Nederland",
+  //     thumbnail: BgVideo,
+  //     tags: ["Vogels", "Opkomende zon", "Heide"],
+  //     views: 300,
+  //     likes: 150,
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Rustige rivierwandeling",
+  //     duration: "50 min",
+  //     location: "Raalte, IJssel",
+  //     thumbnail: BgVideo,
+  //     tags: ["Kinderen", "Wilde dieren", "Water", "Zomer"],
+  //     views: 280,
+  //     likes: 95,
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Herfstkleuren in het bos",
+  //     duration: "70 min",
+  //     location: "Hellendoorn, Utrechtse Heuvelrug",
+  //     thumbnail: BgVideo,
+  //     tags: ["Sneeuw", "Gouden gras", "Herfst", "Bos"],
+  //     views: 400,
+  //     likes: 110,
+  //   },
+  // ];
 
   const handleVideoSelect = (id) => {
     navigate(`video/${id}`);
@@ -86,6 +92,40 @@ const VolunteerHome = () => {
       console.log("Deleting video with ID:", id);
     }
   };
+
+  const handleGetVideos = async () => {
+    try {
+      const res = await axios.get(
+        `${DATABASE_URL}/client/get-all-videos/1/10"`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+        }
+      );
+      setVideos(res.data.videos);
+      console.log(res.data.videos);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+  useEffect(() => {
+    handleGetVideos();
+  }, []);
+
+  const getAllRequests = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/volunteer/getAllRequests`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
+      setReq(res.data);
+    } catch (error) {
+      console.error("Error fetching requests:", error);
+    }
+  };
+  useEffect(() => {
+    getAllRequests();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f5f0] to-[#ede4dc]">
@@ -200,144 +240,36 @@ const VolunteerHome = () => {
                 </tr>
               </thead>
               <tbody>
+                {req.map((item, index) => (
+                  <tr className="border-b border-[#d9bbaa] bg-[#ede4dc]">
+                    <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
+                      {item.email}
+                    </td>
+                    <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
+                      {item.location}
+                    </td>
+                    <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
+                      <a
+                        href="https://maps.app.goo.gl/M2dmycCvDJEW1hGv8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.link}
+                      </a>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        onClick={() => {
+                          navigate("create-video");
+                        }}
+                        className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors"
+                      >
+                        Create Video
+                      </button>
+                    </td>
+                  </tr>
+                ))}
                 {/* Row 1 */}
-                <tr className="border-b border-[#d9bbaa] bg-[#ede4dc]">
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    name@example.com
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    Dalfsen
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
-                    <a
-                      href="https://maps.app.goo.gl/M2dmycCvDJEW1hGv8"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://maps.app.goo.gl/M2dmycCvDJEW1hGv8
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors">
-                      Create Video
-                    </button>
-                  </td>
-                </tr>
-                {/* Row 2 */}
-                <tr className="border-b border-[#d9bbaa]">
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    name@example.com
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    Deventer
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
-                    <a
-                      href="https://maps.app.goo.gl/21ZC1HqYdW4zJBqr9"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://maps.app.goo.gl/21ZC1HqYdW4zJBqr9
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors">
-                      Create Video
-                    </button>
-                  </td>
-                </tr>
-                {/* Row 3 */}
-                <tr className="border-b border-[#d9bbaa] bg-[#ede4dc]">
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    name@example.com
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    Haaksbergen
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
-                    <a
-                      href="https://maps.app.goo.gl/eipgo4m27JpeSbx39"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://maps.app.goo.gl/eipgo4m27JpeSbx39
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors">
-                      Create Video
-                    </button>
-                  </td>
-                </tr>
-                {/* Row 4 */}
-                <tr className="border-b border-[#d9bbaa]">
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    name@example.com
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    Hellendoorn
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
-                    <a
-                      href="https://maps.app.goo.gl/D4WMqAFz73jtzdsVA"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://maps.app.goo.gl/D4WMqAFz73jtzdsVA
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors">
-                      Create Video
-                    </button>
-                  </td>
-                </tr>
-                {/* Row 5 */}
-                <tr className="border-b border-[#d9bbaa] bg-[#ede4dc]">
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    name@example.com
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    Hof van Twente
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
-                    <a
-                      href="https://maps.app.goo.gl/zwF5ExxCu45pWQpu5"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://maps.app.goo.gl/zwF5ExxCu45pWQpu5
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors">
-                      Create Video
-                    </button>
-                  </td>
-                </tr>
-                {/* Row 6 */}
-                <tr className="border-b border-[#d9bbaa]">
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    name@example.com
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
-                    Olst-Wijhe
-                  </td>
-                  <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base underline hidden md:table-cell">
-                    <a
-                      href="https://maps.app.goo.gl/8GaPAncNxdc8NU7r8"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://maps.app.goo.gl/8GaPAncNxdc8NU7r8
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors">
-                      Create Video
-                    </button>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

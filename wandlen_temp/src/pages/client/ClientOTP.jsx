@@ -27,6 +27,7 @@ const ClientOTP = () => {
         localStorage.setItem("userType", "client");
         localStorage.setItem("user", JSON.stringify({ email: email }));
         localStorage.setItem("sessionId", res.data.sessionId);
+        localStorage.setItem("userId", res.data.userId);
 
         navigate("/client");
       } else {

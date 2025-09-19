@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UploadIcon from "../../assets/UploadIcon.svg";
 import LinkIcon from "../../assets/LinkIcon.svg";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const VolunteerCreateVideo = () => {
+  const { DATABASE_URL } = useContext(DatabaseContext);
   const location = useLocation();
   const navigate = useNavigate();
   const { editMode = false, videoId = null } = location.state || {};
+  const sessionId =
+    localStorage.getItem("sessionId") || useContext(AuthContext)?.sessionId;
 
   const [formData, setFormData] = useState({
     title: "",
@@ -18,6 +24,8 @@ const VolunteerCreateVideo = () => {
     soundStimuli: "",
     animals: "",
     tags: "",
+    imgUrl: "",
+    url: "",
   });
 
   const [coverImage, setCoverImage] = useState(null);
@@ -89,25 +97,131 @@ const VolunteerCreateVideo = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (editMode) {
-      // TODO: Integrate with backend API for updating video
-      console.log("Updating video:", {
-        id: videoId,
-        ...formData,
-        coverImage,
-        videoFile,
-      });
-      // Example: updateVideo(videoId, formDataObj).then(() => navigate('/volunteer'));
-      alert("Video updated successfully!");
-      navigate("/volunteer");
+      const data1 = new FormData();
+      data1.append("file", videoFile);
+      data1.append("upload_preset", "wandelen"); // from Cloudinary
+      data1.append("cloud_name", "dojwaepbj");
+
+      const res1 = await fetch(
+        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        {
+          method: "POST",
+          body: data1,
+        }
+      );
+
+      const data2 = new FormData();
+      data2.append("file", coverImage);
+      data2.append("upload_preset", "wandelen"); // from Cloudinary
+      data2.append("cloud_name", "dojwaepbj");
+
+      const res2 = await fetch(
+        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        {
+          method: "POST",
+          body: data2,
+        }
+      );
+
+      const result1 = await res1.json();
+      const result2 = await res2.json();
+
+      console.log(result1, result2);
+      const userId = localStorage.getItem("userId");
+
+      const res = await axios.post(
+        `${DATABASE_URL}/volunteer/editVideoInfo/${editMode}`,
+        {
+          title: formData.title,
+          url: result2.secure_url,
+          location: formData.location,
+          description: formData.description,
+          session: formData.session,
+          nature: formData.natureType,
+          sound: formData.soundStimuli,
+          animals: formData.animals,
+          tags: [formData.tags],
+          imgUrl: result1.secure_url,
+          duration: formData.duration,
+          id: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionId}`, // 👈 fix here
+          },
+        }
+      );
     } else {
       // TODO: Integrate with backend API for creating video
       console.log("Creating video:", { ...formData, coverImage, videoFile });
       // Example: createVideo(formDataObj).then(() => navigate('/volunteer'));
-      alert("Video created successfully!");
-      navigate("/volunteer");
+
+      const data1 = new FormData();
+      data1.append("file", videoFile);
+      data1.append("upload_preset", "wandelen"); // from Cloudinary
+      data1.append("cloud_name", "dojwaepbj");
+
+      const res1 = await fetch(
+        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        {
+          method: "POST",
+          body: data1,
+        }
+      );
+
+      const data2 = new FormData();
+      data2.append("file", coverImage);
+      data2.append("upload_preset", "wandelen"); // from Cloudinary
+      data2.append("cloud_name", "dojwaepbj");
+
+      const res2 = await fetch(
+        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        {
+          method: "POST",
+          body: data2,
+        }
+      );
+
+      const result1 = await res1.json();
+      const result2 = await res2.json();
+
+      console.log(result1, result2);
+      const userId = localStorage.getItem("userId");
+
+      const res = await axios.post(
+        `${DATABASE_URL}/volunteer/uploadVideos`,
+        {
+          title: formData.title,
+          url: result2.secure_url,
+          location: formData.location,
+          description: formData.description,
+          session: formData.session,
+          nature: formData.natureType,
+          sound: formData.soundStimuli,
+          animals: formData.animals,
+          tags: [formData.tags],
+          imgUrl: result1.secure_url,
+          duration: formData.duration,
+          id: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionId}`, // 👈 fix here
+          },
+        }
+      );
+      console.log(res);
+      if (res.status === 201) {
+        alert("Video uploaded successfully");
+        navigate("/volunteer");
+      } else {
+        alert("Video upload failed");
+      }
     }
   };
 
@@ -134,6 +248,36 @@ const VolunteerCreateVideo = () => {
     }
   };
 
+  const getVideoDetails = async () => {
+    try {
+      const res = await axios.get(
+        `${DATABASE_URL}/volunteer/getVideo/${videoId}`,
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      setFormData({
+        title: res.data.title,
+        description: res.data.description,
+        duration: res.data.duration,
+        location: res.data.location,
+        season: res.data.season,
+        natureType: res.data.nature,
+        soundStimuli: res.data.sound,
+        animals: res.data.animals,
+        tags: res.data.tags,
+        imgUrl: res.data.imgUrl,
+        url: res.data.url,
+      });
+    } catch (error) {
+      console.error("Error fetching video details:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (editMode) {
+      getVideoDetails();
+    }
+  }, [editMode]);
+
   return (
     <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -151,7 +295,11 @@ const VolunteerCreateVideo = () => {
               {coverImage ? (
                 <div className="text-center">
                   <img
-                    src={URL.createObjectURL(coverImage)}
+                    src={
+                      editMode
+                        ? formData.imgUrl
+                        : URL.createObjectURL(coverImage)
+                    }
                     alt="Cover preview"
                     className="max-w-full max-h-32 mx-auto mb-4 rounded"
                   />

@@ -1,6 +1,8 @@
 const VolunteerModel = require("../models/volunteerModel");
 const bcrypt = require("bcrypt");
 const smsStoreModel = require("../models/smsStoreModel");
+const VideoModel = require("../models/videoModel");
+const VideoRequestModel = require("../models/videoRequestModel");
 
 const volunteerLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -19,6 +21,7 @@ const volunteerLogin = async (req, res) => {
     const store = new smsStoreModel({
       email,
       otp,
+      who: client._id,
     });
 
     await store.save();
@@ -61,7 +64,6 @@ const uploadVideos = async (req, res) => {
   const {
     title,
     url,
-    volunteerId,
     location,
     description,
     session,
@@ -71,13 +73,14 @@ const uploadVideos = async (req, res) => {
     tags,
     imgUrl,
     duration,
-    requested,
+    id,
   } = req.body;
   try {
+    const requested = false;
+    //We need to add uploader info from the session
     const newVideo = new VideoModel({
       title,
       url,
-      uploadedBy: volunteerId,
       uploaderModel: "Volunteer",
       location,
       description,
@@ -88,6 +91,7 @@ const uploadVideos = async (req, res) => {
       tags,
       imgUrl,
       duration,
+      uploadedBy: id,
     });
     await newVideo.save();
     if (requested) {
@@ -152,6 +156,69 @@ const getAllRequests = async (req, res) => {
   }
 };
 
+const getVideo = async (req, res) => {
+  const { videoId } = req.params;
+  try {
+    const video = await VideoModel.findById(videoId);
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+    res.json(video);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteVideo = async (req, res) => {
+  const { videoId } = req.params;
+  try {
+    const deletedVideo = await VideoModel.findByIdAndDelete(videoId);
+    if (!deletedVideo) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+    res.json({ message: "Video deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getProfile = async (req, res) => {
+  const { volunteerId } = req.params;
+  try {
+    const volunteer = await VolunteerModel.findById(volunteerId).select(
+      "-password"
+    );
+    if (!volunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+    res.json(volunteer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const editProfile = async (req, res) => {
+  const { volunteerId } = req.params;
+  const updateData = req.body;
+  try {
+    const updatedVolunteer = await VolunteerModel.findByIdAndUpdate(
+      volunteerId,
+      updateData,
+      { new: true }
+    ).select("-password");
+    if (!updatedVolunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+    res.json({ message: "Profile updated successfully", updatedVolunteer });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   volunteerLogin,
   volunteerSigUp,
@@ -159,4 +226,8 @@ module.exports = {
   selfUploaded,
   editVideoInfo,
   getAllRequests,
+  getVideo,
+  deleteVideo,
+  getProfile,
+  editProfile,
 };

@@ -1,5 +1,5 @@
 const smsStoreModel = require("../models/smsStoreModel");
-const SessionStore = require("../models/sessionStore");
+const SessionStore = require("../models/SessionStore");
 const crypto = require("crypto");
 
 const verifyOtp = async (req, res) => {
@@ -33,8 +33,9 @@ const verifyOtp = async (req, res) => {
 
   res.json({
     message: "Login successful",
-    sessionId,
+    sessionId: newSession._id,
     expires: Date.now() + 24 * 60 * 60 * 1000,
+    userId: record.who,
   });
 };
 

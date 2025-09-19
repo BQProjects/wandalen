@@ -1,9 +1,20 @@
-const validateActiveSession = async (req, res, next) => {
-  const session = await SessionStore.findOne({
-    sessionId: req.headers.authorization,
-  });
+const SessionStore = require("../models/SessionStore");
 
-  if (!session || !session.isActive || session.expiresAt < Date.now()) {
+const validateActiveSession = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ error: "Unauthorized: Missing header" });
+  }
+
+  // Support "Bearer <token>"
+  const sessionId = authHeader.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : authHeader;
+
+  const session = await SessionStore.findById(sessionId);
+
+  if (!session || session.expiresAt < Date.now()) {
     return res.status(401).json({ error: "Unauthorized: No active session" });
   }
 

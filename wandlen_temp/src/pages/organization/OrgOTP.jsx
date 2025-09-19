@@ -5,7 +5,7 @@ import { data, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
-const ClientOTP = () => {
+const OrgOTP = () => {
   const [otp, setOtp] = useState("");
   const { email } = useParams();
   const navigate = useNavigate();
@@ -55,4 +55,4 @@ const ClientOTP = () => {
   );
 };
 
-export default ClientOTP;
+export default OrgOTP;
