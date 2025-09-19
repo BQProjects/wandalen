@@ -42,9 +42,63 @@ const MessageUs = () => {
         </svg>
       </button>
       {isOpen && (
-        <div className="absolute bottom-16 right-0 bg-white p-4 rounded-lg shadow-lg w-64">
-          <p className="text-sm">Contact us for more info!</p>
-          {/* Add form or link here */}
+        <div className="fixed bottom-4 right-4 z-50">
+          <div className="bg-white rounded-lg shadow-lg w-80 h-96 flex flex-col animate-slide-up">
+            <div className="flex justify-between items-center p-4 border-b bg-[#5b6502] text-white rounded-t-lg">
+              <h3 className="text-lg font-semibold">
+                Chat with Virtueel Wandelen
+              </h3>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-white hover:text-gray-200 text-xl font-bold"
+                aria-label="Close chat"
+              >
+                ×
+              </button>
+            </div>
+            <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+              <div className="mb-4">
+                <div className="flex items-start">
+                  <div className="bg-[#5b6502] text-white p-3 rounded-lg max-w-xs">
+                    <p className="text-sm">
+                      Hello! Welcome to BrainQuest. How can we assist you with
+                      virtual walking experiences today?
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mb-4 text-right">
+                <div className="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-xs inline-block">
+                  <p className="text-sm">
+                    I'm interested in learning more about your services.
+                  </p>
+                </div>
+              </div>
+              <div className="mb-4">
+                <div className="flex items-start">
+                  <div className="bg-[#5b6502] text-white p-3 rounded-lg max-w-xs">
+                    <p className="text-sm">
+                      Great! We offer immersive virtual walks through beautiful
+                      landscapes. Would you like to schedule a demo or get a
+                      quote?
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 border-t bg-white">
+              <div className="flex">
+                <input
+                  type="text"
+                  placeholder="Type your message..."
+                  className="flex-1 p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
+                />
+                <button className="bg-[#5b6502] text-white px-4 py-2 rounded-r-lg hover:bg-[#4a5501] transition-colors">
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

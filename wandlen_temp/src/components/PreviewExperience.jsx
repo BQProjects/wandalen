@@ -79,7 +79,7 @@ const PreviewExperience = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveDevice((prev) => (prev + 1) % devices.length);
-    }, 3000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [devices.length]);

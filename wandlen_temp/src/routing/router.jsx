@@ -61,6 +61,10 @@ import VolunteerDetail from "../pages/admin/VolunteerDetail";
 import ProtectedRoute from "../components/ProtectedRoute";
 import VolunteerOTP from "../pages/volunteer/VolunteerOTP";
 import ClientOTP from "../pages/client/ClientOTP";
+import WhyNatureMatters from "../pages/website/WhyNatureMatters";
+import PowerofWalking from "../pages/website/PowerofWalking";
+import HealthandHappiness from "../pages/website/HealthandHappiness";
+import NatureBenefits from "../pages/website/NatureBenefits";
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +118,22 @@ export const router = createBrowserRouter([
       {
         path: "choose-experience",
         element: <ChooseYourExperience />,
+      },
+      {
+        path: "nature-matters",
+        element: <WhyNatureMatters />,
+      },
+      {
+        path: "power-of-walking",
+        element: <PowerofWalking />,
+      },
+      {
+        path: "health-and-happiness",
+        element: <HealthandHappiness />,
+      },
+      {
+        path: "nature-benefits",
+        element: <NatureBenefits />,
       },
     ],
   },
