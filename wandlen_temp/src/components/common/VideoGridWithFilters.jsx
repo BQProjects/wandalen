@@ -448,7 +448,7 @@ const VideoGridWithFilters = ({
         </div>
       </div>
 
-      <div className="filtersysteem flex flex-col justify-end items-start pb-24 p-6 w-full">
+      <div className="filtersysteem flex flex-col justify-end items-start pb-24 w-full">
         {/* Filters */}
         {showFilters && (
           <div className="filters flex flex-wrap items-center gap-4 mb-8">

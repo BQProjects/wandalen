@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { data, useNavigate, useParams } from "react-router-dom";
+import { data, useNavigate, useParams, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import LoginImg from "../../assets/LoginImg.png";
 
 const ClientOTP = () => {
   const [otp, setOtp] = useState("");
   const { email } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUserType, setSessionId, setUser } = useContext(AuthContext);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const handleVerify = async () => {
@@ -29,7 +31,8 @@ const ClientOTP = () => {
         localStorage.setItem("sessionId", res.data.sessionId);
         localStorage.setItem("userId", res.data.userId);
 
-        navigate("/client");
+        const from = location.state?.from?.pathname || "/client";
+        navigate(from);
       } else {
         alert("OTP verification failed. Please try again.");
       }
@@ -39,19 +42,61 @@ const ClientOTP = () => {
     }
   };
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <input
-        type="text"
-        onChange={(e) => setOtp(e.target.value)}
-        className="border border-gray-300 rounded-md p-2 text-center text-2xl w-1/3"
-        placeholder="Enter OTP"
-      />
-      <button
-        onClick={handleVerify}
-        className="ml-4 bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-      >
-        Verify
-      </button>
+    <div className="min-h-screen bg-[#ede4dc]">
+      <div className="grid grid-cols-2 min-h-screen">
+        <div className="flex justify-center items-center">
+          <img
+            src={LoginImg}
+            alt="Login Image"
+            className="w-full h-[100vh] object-cover"
+          />
+        </div>
+        <div className="flex justify-center items-center py-8 px-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleVerify();
+            }}
+            className="inline-flex flex-col justify-center items-center gap-5"
+          >
+            <div className="flex flex-col items-start gap-10">
+              <div className="flex flex-col items-start">
+                <div className="text-[#381207] font-['Poppins'] text-[2.625rem] font-semibold leading-[normal]">
+                  Verify OTP
+                </div>
+                <div className="text-[#7a756e] font-['Poppins'] text-lg leading-[normal]">
+                  Enter the OTP sent to your email.
+                </div>
+              </div>
+              <div className="flex flex-col items-start gap-5">
+                <div className="flex flex-col items-start gap-2">
+                  <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+                    OTP
+                  </div>
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
+                    className="flex items-center gap-2.5 pl-[0.9375rem] pr-[0.9375rem] p-2 w-[22.5rem] h-11 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#b3b1ac] font-['Poppins'] leading-[normal] focus:outline-none focus:ring-2 focus:ring-[#2a341f] text-center text-2xl"
+                    placeholder="Enter OTP"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-start gap-2.5">
+              <div className="flex flex-col items-center gap-2.5">
+                <button
+                  type="submit"
+                  className="flex justify-center items-center pt-[0.6875rem] pb-2 px-0 w-[22.5rem] h-[2.8125rem] rounded-lg bg-[#5b6502] text-white text-center font-['Poppins'] font-medium leading-[normal] hover:bg-[#4a5201] transition"
+                >
+                  Verify
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

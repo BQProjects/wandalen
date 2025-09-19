@@ -6,6 +6,8 @@ import { useContext } from "react";
 const ClientHeader = () => {
   const { user, userType, isAuthenticated, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [activeItem, setActiveItem] = useState(null);
 
   const handleLogout = () => {
     logout();
@@ -61,10 +63,19 @@ const ClientHeader = () => {
       <div className="hidden md:flex items-center gap-6">
         <Link
           to="/client/"
-          className="flex justify-center items-center gap-2.5 body-2 text-[#381207] font-['Poppins'] text-xl font-medium leading-[136%] hover:text-[#5b6502] transition-colors"
+          className="flex flex-col justify-center items-start"
+          onMouseEnter={() => setHoveredItem("welcome")}
+          onMouseLeave={() => setHoveredItem(null)}
+          onClick={() => setActiveItem("welcome")}
         >
-          Welcome
+          <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
+            Welcome
+          </div>
+          {(hoveredItem === "welcome" || activeItem === "welcome") && (
+            <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
+          )}
         </Link>
+        {/* Language selector */}
         <div className="flex justify-center items-center gap-2">
           <svg
             width={24}
@@ -78,7 +89,7 @@ const ClientHeader = () => {
               fill="#4B4741"
             />
           </svg>
-          <div className="body-4 text-[#4b4741] font-['Poppins'] text-xl font-medium leading-[136%]">
+          <div className="body-5 text-[#381207] font-poppins text-xl font-medium leading-[136%]">
             English
           </div>
           <svg

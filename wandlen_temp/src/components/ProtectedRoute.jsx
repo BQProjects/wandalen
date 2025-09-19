@@ -2,9 +2,19 @@ import { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
-const ProtectedRoute = ({ children, allowedRoles = [], redirectTo = "/" }) => {
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const { isAuthenticated, userType } = useContext(AuthContext);
   const location = useLocation();
+
+  const getRedirectTo = (pathname) => {
+    if (pathname.startsWith("/client")) return "/client/login";
+    if (pathname.startsWith("/organization")) return "/organization/login";
+    if (pathname.startsWith("/volunteer")) return "/volunteer/login";
+    if (pathname.startsWith("/admin")) return "/admin/login";
+    return "/";
+  };
+
+  const redirectTo = getRedirectTo(location.pathname);
 
   // If not authenticated, redirect to login
   if (!isAuthenticated) {
