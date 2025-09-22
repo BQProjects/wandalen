@@ -20,6 +20,7 @@ app.use(
       "http://localhost:9090",
       "https://simple-jet-eta.vercel.app",
       "https://simple-quotes-alter.vercel.app",
+      "https://wandalen-nw69.vercel.app",
     ],
   })
 );
