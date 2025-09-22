@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import { useNavigate } from "react-router-dom";
 
 const RequestAQuoteForm = () => {
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     organizationName: "",
     contactEmail: "",
@@ -45,9 +51,14 @@ const RequestAQuoteForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Integrate with backend API for quote request
-    console.log("Quote Request:", formData);
-    // Example: fetch('/api/organization/request-quote', { method: 'POST', body: JSON.stringify(formData) });
+    try {
+      const response = axios.post(`${DATABASE_URL}/org/signup`, formData);
+      console.log("Form submitted successfully:", response.data);
+      alert("Form submitted successfully!");
+      navigate("/generate-pass/" + response.data._id);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (

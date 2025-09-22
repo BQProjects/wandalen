@@ -1,61 +1,26 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const ManageVideos = () => {
   const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
-  const users = [
-    {
-      firstName: "John",
-      lastName: "Lee",
-      phone: "+31 6 1234 5678",
-      email: "johnlee@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Mark",
-      lastName: "Ham",
-      phone: "+31 6 1234 5678",
-      email: "markham@gmail.com",
-      isVolunteer: true,
-    },
-    {
-      firstName: "Sandy",
-      lastName: "Rue",
-      phone: "+31 6 1234 5678",
-      email: "sandyrue@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Lisa",
-      lastName: "Mona",
-      phone: "+31 6 1234 5678",
-      email: "lisamona@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Betty",
-      lastName: "Walt",
-      phone: "+31 6 1234 5678",
-      email: "bettywalt@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Tom",
-      lastName: "Harris",
-      phone: "+31 6 1234 5678",
-      email: "tomharris@gmail.com",
-      isVolunteer: false,
-    },
-  ];
+  const getVideos = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/admin/all-videos`);
+      setUsers(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
 
-  // Create videos data based on users
-  const videos = users.map((user, index) => ({
-    videoTitle: `${user.firstName} ${user.lastName} Video`,
-    description: `Description for ${user.firstName}'s video.`,
-    submittedBy: `${user.firstName} ${user.lastName}`,
-    dateSubmitted: `Jun ${5 + index}, 2025`,
-  }));
+  useEffect(() => {
+    getVideos();
+  }, []);
 
   return (
     <div className="flex-1 bg-[#f7f6f4] p-6 overflow-y-auto">
@@ -170,7 +135,7 @@ const ManageVideos = () => {
         </div>
 
         {/* Data Rows */}
-        {videos.map((video, index) => (
+        {users.map((video, index) => (
           <div
             key={index}
             className={`flex items-center gap-6 self-stretch py-1 px-5 border-b border-b-[#d9bbaa] ${
@@ -180,7 +145,7 @@ const ManageVideos = () => {
             <div className="flex items-center gap-2 pr-2 w-[14.875rem]">
               <div className="flex flex-col items-start gap-2 p-2">
                 <div className="flex flex-col items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
-                  {video.videoTitle}
+                  {video.title}
                 </div>
               </div>
             </div>

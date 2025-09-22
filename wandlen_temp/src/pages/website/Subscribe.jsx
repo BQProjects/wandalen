@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Testimonial from "../../components/common/TestimonialScroll";
+import FaqQuestions from "../../components/common/FaqQuestions";
+import SubscribeCard from "../../components/SubscribeCard";
+import Footer from "../../components/Footer";
 
 // Subscription Card Component
 const SubscriptionCard = ({
@@ -213,6 +217,10 @@ const Subscribe = () => {
           </p>
         </div>
       </div>
+      <Testimonial />
+      <FaqQuestions />
+      <SubscribeCard />
+      <Footer />
     </div>
   );
 };

@@ -41,7 +41,7 @@ const Login = () => {
         redirectPath = `/volunteer/otp-verify/${formData.email}`;
         break;
       case "organization":
-        apiEndpoint = `${DATABASE_URL}/organization/login`;
+        apiEndpoint = `${DATABASE_URL}/org/login`;
         redirectPath = "/organization"; // Organizations might not need OTP
         break;
       default:

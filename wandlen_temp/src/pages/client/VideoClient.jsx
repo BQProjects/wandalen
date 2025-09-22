@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import BgVideo from "../../assets/BgVideo.mp4";
 import BackArrow from "../../assets/BackArrow.svg";
@@ -14,35 +14,61 @@ const VideoClient = () => {
   const { id } = useParams();
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
-  const [video, setVideo] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: "",
+    url: "",
+    views: 0,
+    likes: 0,
+  });
 
-  useEffect(() => {
-    const fetchVideo = async () => {
-      try {
-        console.log("Fetching video with ID:", id);
-        const res = await axios.get(
-          `${DATABASE_URL}/volunteer/getVideo/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${sessionId}`,
-            },
-          }
-        );
-        console.log("Video data received:", res.data);
-        console.log("Video URL (imgUrl):", res.data.imgUrl);
-        setVideo(res.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching video:", error);
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchVideo();
+  const getVideo = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/client/get-video/${id}`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
+      console.log(res.data);
+      setFormData({
+        name: res.data.title,
+        url: res.data.imgUrl,
+        views: res.data.views,
+        likes: res.data.likes,
+      });
+    } catch (error) {
+      console.error("Error fetching video:", error);
     }
-  }, [id, DATABASE_URL, sessionId]);
+  };
+
+  const addView = async () => {
+    try {
+      const res = await axios.put(
+        `${DATABASE_URL}/client/add-view/${id}`,
+        {},
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      console.log(res.data);
+      setFormData((prev) => ({ ...prev, views: prev.views + 1 }));
+    } catch (error) {
+      console.error("Error adding view:", error);
+    }
+  };
+
+  const addLike = async () => {
+    try {
+      const res = await axios.put(
+        `${DATABASE_URL}/client/add-like/${id}`,
+        {},
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      console.log(res.data);
+      setFormData((prev) => ({ ...prev, likes: prev.likes + 1 }));
+    } catch (error) {
+      console.error("Error adding like:", error);
+    }
+  };
+  useEffect(() => {
+    getVideo();
+    addView();
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
@@ -62,13 +88,13 @@ const VideoClient = () => {
 
               {/* Video Title */}
               <h2 className="text-2xl sm:text-3xl font-semibold text-brown mb-6 sm:mb-8">
-                {video ? video.title : "Loading..."}
+                {formData.name || "Winterwandeling Boetelerveld"}
               </h2>
 
               {/* Video Player */}
               <div className="bg-black rounded-lg sm:rounded-2xl overflow-hidden mb-6 sm:mb-8">
                 <video
-                  src={video ? video.imgUrl : BgVideo}
+                  src={formData.url || BgVideo}
                   controls
                   className="w-full h-auto object-cover"
                   style={{ aspectRatio: "16/9" }}
@@ -87,7 +113,10 @@ const VideoClient = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                 <div></div>
                 <div className="flex items-center gap-4">
-                  <button className="p-3 bg-secondary rounded-full hover:bg-accent transition-colors">
+                  <button
+                    onClick={() => addLike()}
+                    className="p-3 bg-secondary rounded-full hover:bg-accent transition-colors"
+                  >
                     <img src={Heart} alt="Heart" className="w-6 h-6" />
                   </button>
                 </div>

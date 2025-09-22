@@ -5,6 +5,7 @@ const ReviewModel = require("../models/reviewModel");
 const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
 const bcrypt = require("bcrypt");
+const CommentModel = require("../models/commentModel");
 
 const clientLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -168,6 +169,73 @@ const getAllReviews = async (req, res) => {
   }
 };
 
+const getVideo = async (req, res) => {
+  const { videoId } = req.params;
+  try {
+    const video = await VideoModel.findById(videoId).populate("comments");
+    if (!video) return res.status(404).json({ message: "Video not found" });
+    res.json(video);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const addView = async (req, res) => {
+  const { videoId } = req.params;
+  try {
+    const video = await VideoModel.findById(videoId);
+    if (!video.views) {
+      video.views = 0;
+    }
+    video.views += 1;
+    await video.save();
+    res.json({ message: "View added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const addLike = async (req, res) => {
+  const { videoId } = req.params;
+  try {
+    const video = await VideoModel.findById(videoId);
+    if (!video.likes) {
+      video.likes = 0;
+    }
+    video.likes += 1;
+    await video.save();
+    res.json({ message: "Like added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const addComment = async (req, res) => {
+  const { videoId } = req.params;
+  const { username, comment, stars, userId } = req.body;
+  try {
+    const video = await VideoModel.findById(videoId);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+    const newComment = new CommentModel({
+      userName: username,
+      commentText: comment,
+      stars,
+      userId,
+    });
+    await newComment.save();
+    video.comments.push(newComment._id);
+
+    await video.save();
+    res.json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -177,4 +245,9 @@ module.exports = {
   deleteAccount,
   addReview,
   getAllReviews,
+  getAccountInfo,
+  getVideo,
+  addView,
+  addLike,
+  addComment,
 };

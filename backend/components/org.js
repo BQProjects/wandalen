@@ -17,25 +17,11 @@ const orgLogin = async (req, res) => {
     const org = await OrgModel.findOne({ email }).select("+password");
     if (!org)
       return res.status(400).json({ message: "Invalid credentials cssdc" });
-
-    const isMatch = await bcrypt.compare(password, org.password);
-    if (!isMatch)
+    if (!org.password || org.password !== password) {
       return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-    // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-    const store = new smsStoreModel({
-      email,
-      otp,
-    });
-
-    await store.save();
-
-    // TODO: Send OTP via email/SMS (use org.contactPersonEmail or org.email)
-    console.log(`OTP for ${email}: ${otp}, IP: ${ip}`);
-
-    res.json({ message: "OTP sent to your email", ip });
+    res.status(201).json(org);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -43,23 +29,63 @@ const orgLogin = async (req, res) => {
 };
 
 const orgSignUp = async (req, res) => {
-  const { orgName, email, phoneNo, address, contactPersonEmail } = req.body;
+  const {
+    organizationName,
+    contactEmail,
+    phone,
+    address,
+    street,
+    postalCode,
+    city,
+    website,
+    fullName,
+    jobTitle,
+    emailAddress,
+    phoneContact,
+    totalClients,
+    numberLocations,
+    targetGroups,
+    estimatedClients,
+    startDate,
+    onboardingSupport,
+    onboardingExplanation,
+    additionalServices,
+    notes,
+    agreeToTerms,
+  } = req.body;
+
   try {
     const newOrg = new OrgModel({
-      orgName,
-      email,
-      password: "",
-      phoneNo,
-      address,
+      orgName: organizationName,
+      email: emailAddress,
+      password: "", // maybe auto-generated or handled later
+      phoneNo: phone,
+      address: address,
+      website,
       contactPerson: {
-        email: contactPersonEmail,
+        fullName,
+        jobTitle,
+        email: contactEmail,
+        phone: phoneContact,
       },
+      totalClients,
+      numberLocations,
+      targetGroups,
+      estimatedClients,
+      startDate,
+      onboardingSupport,
+      onboardingExplanation,
+      additionalServices,
+      notes,
+      agreeToTerms,
       requestStates: "requested",
     });
+
     await newOrg.save();
-    res.status(201).json({ message: "Organization registered successfully" });
+    console.log("New organization registered:", newOrg);
+    return res.status(201).json(newOrg);
   } catch (error) {
-    console.error(error);
+    console.error("Org sign-up error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

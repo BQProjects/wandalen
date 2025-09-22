@@ -12,7 +12,7 @@ import Aran from "../pages/website/Aran";
 import BecomeVolunteer from "../pages/website/BecomeVolunteer";
 import CameraTips from "../pages/website/CameraTips";
 import ChooseYourExperience from "../pages/website/ChoseYourExperience";
-import HowItWorks from "../pages/volunteer/HowItWork";
+import HowItWorks from "../pages/volunteer/HowItWorks";
 import NatureWalking from "../pages/website/NatureWalking";
 import OurApproach from "../pages/website/OurApproach";
 import PaymentPageForIndividual from "../pages/website/PaymentPageForIndividual";
@@ -21,6 +21,7 @@ import Subscribe from "../pages/website/Subscribe";
 import VideoTraining from "../pages/website/VideoTraning";
 import VolunteerSignupForm from "../pages/website/VolunteerSignup";
 import Blog from "../pages/website/Blog";
+import GeneratePassword from "../pages/website/GeneratePassword"; //To generate password for organization
 
 // Client page imports (alphabetized)
 import Login from "../pages/website/Login";
@@ -152,6 +153,10 @@ export const router = createBrowserRouter([
   {
     path: "/volunteer/otp-verify/:email",
     element: <Otp />, // Volunteer OTP verification
+  },
+  {
+    path: "/generate-pass/:id",
+    element: <GeneratePassword />,
   },
   // Protected client routes with layout
   {

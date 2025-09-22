@@ -1,5 +1,9 @@
 const OrgModel = require("../models/orgModel");
 const bcrypt = require("bcrypt");
+const ClientModel = require("../models/clientModel");
+const VolunteerModel = require("../models/volunteerModel");
+const VideoModel = require("../models/videoModel");
+const videoRequestModel = require("../models/videoRequestModel");
 
 const adminLogin = (req, res) => {
   const { username, password } = req.body;
@@ -17,7 +21,7 @@ const adminLogin = (req, res) => {
 
 const getAllOrgData = async (req, res) => {
   try {
-    const orgs = await OrgModel.find();
+    const orgs = await OrgModel.find().select("-password").populate("clients");
     res.status(200).json(orgs);
   } catch (error) {
     console.error(error);
@@ -51,7 +55,7 @@ const getOrginfo = async (req, res) => {
 
 const getAllOrgRequest = async (req, res) => {
   try {
-    const requests = await OrgModel.find({ requestStatus: "pending" })
+    const requests = await OrgModel.find({ requestStatus: "requested" })
       .populate("clients")
       .select("-password");
     res.status(200).json(requests);
@@ -77,6 +81,35 @@ const getOrgRequest = async (req, res) => {
   }
 };
 
+const getAllVolunteerData = async (req, res) => {
+  try {
+    const volunteers = await VolunteerModel.find().select("-password");
+    return res.status(200).json(volunteers);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getallVideoRequest = async (req, res) => {
+  try {
+    const requests = await videoRequestModel.find().sort({ createdAt: -1 });
+    return res.status(200).json(requests);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getAllvideos = async (req, res) => {
+  try {
+    const videos = await VideoModel.find().sort({ createdAt: -1 });
+    return res.status(200).json(videos);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -84,4 +117,7 @@ module.exports = {
   getOrginfo,
   getAllOrgRequest,
   getOrgRequest,
+  getAllVolunteerData,
+  getallVideoRequest,
+  getAllvideos,
 };

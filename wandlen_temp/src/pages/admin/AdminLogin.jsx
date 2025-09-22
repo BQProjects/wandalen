@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setUserType } = useContext(AuthContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -13,7 +15,17 @@ const AdminLogin = () => {
     // Then navigate to /admin
     console.log("Logging in with:", email, password);
     // Example: if login succeeds, navigate('/admin');
-    navigate("/admin");
+    if (email === "admin@test.com" && password === "admin123") {
+      localStorage.setItem("userType", "admin");
+      localStorage.setItem("user", JSON.stringify({ email: email }));
+      localStorage.setItem("sessionId", "dummy-session-id-for-admin");
+      localStorage.setItem("userId", "admin-user-id");
+      setUserType("admin");
+
+      navigate("/admin");
+    } else {
+      alert("Invalid credentials");
+    }
   };
 
   return (
