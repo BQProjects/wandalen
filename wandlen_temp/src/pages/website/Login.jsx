@@ -12,6 +12,7 @@ const Login = () => {
   });
   const [selectedRole, setSelectedRole] = useState("");
   const { DATABASE_URL } = useContext(DatabaseContext);
+  const { login, setUserType, setSessionId } = useContext(AuthContext); // Added missing context
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,7 +43,7 @@ const Login = () => {
         break;
       case "organization":
         apiEndpoint = `${DATABASE_URL}/org/login`;
-        redirectPath = "/organization"; // Organizations might not need OTP
+        redirectPath = "/organization"; // Direct navigation for org
         break;
       default:
         alert("Please select a role");
@@ -51,18 +52,30 @@ const Login = () => {
 
     try {
       const res = await axios.post(apiEndpoint, formData);
-      if (res.status === 200) {
-        alert("Login successful!");
-        console.log(res.data);
+      // Check status based on role (201 for org, 200 for others)
+      const successStatus = selectedRole === "organization" ? 201 : 200;
 
+      if (res.status === successStatus) {
+        alert("Login successful!");
         if (selectedRole === "organization") {
-          // For organizations, set auth context and navigate directly
-          const { login } = useContext(AuthContext);
           login({ email: formData.email }, selectedRole);
+
+          // Set auth context for org
+          setUserType("organization");
+          setSessionId(res.data._id);
+
+          // Store in localStorage (aligned with working code)
+          localStorage.setItem("userType", "organization");
+          localStorage.setItem("orgData", JSON.stringify(res.data));
+          localStorage.setItem("orgId", res.data._id);
+          localStorage.setItem("sessionId", res.data._id);
+
           navigate(redirectPath);
         } else {
           // For clients and volunteers, go to OTP verification
-          navigate(redirectPath, { state: location.state });
+          navigate(redirectPath, {
+            state: { otp: res.data.otp, ...location.state },
+          });
         }
       } else {
         alert("Login failed. Please check your credentials and try again.");

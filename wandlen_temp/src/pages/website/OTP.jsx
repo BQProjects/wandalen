@@ -13,6 +13,8 @@ const Otp = () => {
   const location = useLocation();
   const { setUserType, setSessionId, setUser, login } = useContext(AuthContext);
   const { DATABASE_URL } = useContext(DatabaseContext);
+  // Get OTP from state if passed (for testing)
+  const receivedOtp = location.state?.otp;
 
   // Determine user type from URL - no fallback, must match expected patterns
   let userType;
@@ -86,6 +88,12 @@ const Otp = () => {
                 <div className="text-[#7a756e] font-['Poppins'] text-lg leading-[normal]">
                   Enter the OTP sent to your email.
                 </div>
+                {/* Display OTP for testing if received */}
+                {receivedOtp && (
+                  <div className="text-[#381207] font-['Poppins'] text-lg leading-[normal]">
+                    <strong>Test OTP:</strong> {receivedOtp}
+                  </div>
+                )}
               </div>
               <div className="flex flex-col items-start gap-5">
                 <div className="flex flex-col items-start gap-2">

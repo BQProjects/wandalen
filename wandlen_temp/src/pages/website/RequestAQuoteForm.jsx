@@ -49,15 +49,16 @@ const RequestAQuoteForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = axios.post(`${DATABASE_URL}/org/signup`, formData);
+      const response = await axios.post(`${DATABASE_URL}/org/signup`, formData);
       console.log("Form submitted successfully:", response.data);
       alert("Form submitted successfully!");
       navigate("/generate-pass/" + response.data._id);
     } catch (error) {
       console.error("Error submitting form:", error);
+      alert("Failed to submit form. Please check your details and try again.");
     }
   };
 

@@ -38,7 +38,7 @@ const clientLogin = async (req, res) => {
     // TODO: Send OTP via email/SMS (use org.contactPersonEmail or org.email)
     console.log(`OTP for ${email}: ${otp}, IP: ${ip}`);
 
-    res.json({ message: "OTP sent to your email", ip });
+    res.json({ message: "OTP sent to your email", ip , otp}); // Send OTP in response for testing (remove in production)
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

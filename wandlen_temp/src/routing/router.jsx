@@ -135,6 +135,10 @@ export const router = createBrowserRouter([
         path: "nature-benefits",
         element: <NatureBenefits />,
       },
+      {
+        path: "generate-pass/:id",
+        element: <GeneratePassword />,
+      },
     ],
   },
   // Authentication routes without layouts (no headers)
@@ -153,10 +157,6 @@ export const router = createBrowserRouter([
   {
     path: "/volunteer/otp-verify/:email",
     element: <Otp />, // Volunteer OTP verification
-  },
-  {
-    path: "/generate-pass/:id",
-    element: <GeneratePassword />,
   },
   // Protected client routes with layout
   {
