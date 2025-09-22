@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const sessionStoreSchema = new mongoose.Schema({
+const SessionStoreSchema = new mongoose.Schema({
   sessionId: {
     type: String,
     required: true,
@@ -21,8 +21,6 @@ const sessionStoreSchema = new mongoose.Schema({
 });
 
 // ✅ Fix: reuse model if it already exists
-const SessionStore =
-  mongoose.models.SessionStore ||
-  mongoose.model("SessionStore", sessionStoreSchema);
+const SessionStoreModel = mongoose.model("SessionStore", SessionStoreSchema);
 
-module.exports = SessionStore;
+module.exports = SessionStoreModel;

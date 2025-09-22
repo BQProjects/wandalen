@@ -1,5 +1,5 @@
 const smsStoreModel = require("../models/smsStoreModel");
-const SessionStore = require("../models/SessionStore");
+const SessionStoreModel = require("../models/sessionStoreModel.js");
 const crypto = require("crypto");
 
 const verifyOtp = async (req, res) => {
@@ -15,16 +15,16 @@ const verifyOtp = async (req, res) => {
   // OTP valid, login success
   await smsStoreModel.findByIdAndDelete(record._id);
 
-  const session = await SessionStore.findOne({ email });
+  const session = await SessionStoreModel.findOne({ email });
 
   // Cancel previous session if exists
   if (session) {
-    await SessionStore.findByIdAndDelete(session._id);
+    await SessionStoreModel.findByIdAndDelete(session._id);
   }
 
   // Create new session with 24 hour expiry
   const sessionId = crypto.randomBytes(16).toString("hex");
-  const newSession = new SessionStore({
+  const newSession = new SessionStoreModel({
     sessionId,
     email,
     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),

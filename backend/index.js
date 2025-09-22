@@ -21,6 +21,7 @@ app.use(
       "https://simple-jet-eta.vercel.app",
       "https://simple-quotes-alter.vercel.app",
       "https://wandalen-nw69.vercel.app",
+      "https://wandalen.vercel.app",
     ],
   })
 );
