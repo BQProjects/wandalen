@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import WebsiteHeader from "../../components/WebsiteHeader";
 import { router } from "../../routing/router";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,25 +12,36 @@ const Login = () => {
     password: "",
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const { setUserType, setSessionId } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Integrate with backend API for organization login
-    console.log("Organization Login:", formData);
-    // Simulate successful login
-    setIsLoggedIn(true);
-    router.navigate("/organization/");
-    // Example: fetch('/api/organization/login', { method: 'POST', body: JSON.stringify(formData) })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     if (data.success) {
-    //       setIsLoggedIn(true);
-    //     }
-    //   });
+    try {
+      const res = await axios.post(`${DATABASE_URL}/org/login`, formData);
+      if (res.status === 201) {
+        console.log("Login successful:", res.data);
+        setUserType("organization");
+
+        localStorage.setItem("userType", "organization");
+        localStorage.setItem("orgData", JSON.stringify(res.data));
+        localStorage.setItem("orgId", res.data._id);
+        localStorage.setItem("sessionId", res.data._id);
+        setSessionId(res.data._id);
+        setIsLoggedIn(true);
+        navigate("/organization");
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Login failed. Please check your credentials.");
+    }
   };
 
   return (

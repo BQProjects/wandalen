@@ -6,11 +6,6 @@ const ProtectedRoute = ({ children, allowedRoles = [], redirectTo = "/" }) => {
   const { isAuthenticated, userType } = useContext(AuthContext);
   const location = useLocation();
 
-  // If not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to={redirectTo} state={{ from: location }} replace />;
-  }
-
   // If specific roles are required and user doesn't have the right role
   if (allowedRoles.length > 0 && !allowedRoles.includes(userType)) {
     // Redirect based on user type

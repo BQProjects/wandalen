@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const ManageVolunteer = () => {
   const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   const handleAdd = () => {
     navigate("/admin/volunteer-detail");
@@ -12,50 +16,19 @@ const ManageVolunteer = () => {
     navigate("/admin/volunteer-detail");
   };
 
-  const users = [
-    {
-      firstName: "John",
-      lastName: "Lee",
-      phone: "+31 6 1234 5678",
-      email: "johnlee@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Mark",
-      lastName: "Ham",
-      phone: "+31 6 1234 5678",
-      email: "markham@gmail.com",
-      isVolunteer: true,
-    },
-    {
-      firstName: "Sandy",
-      lastName: "Rue",
-      phone: "+31 6 1234 5678",
-      email: "sandyrue@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Lisa",
-      lastName: "Mona",
-      phone: "+31 6 1234 5678",
-      email: "lisamona@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Betty",
-      lastName: "Walt",
-      phone: "+31 6 1234 5678",
-      email: "bettywalt@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Tom",
-      lastName: "Harris",
-      phone: "+31 6 1234 5678",
-      email: "tomharris@gmail.com",
-      isVolunteer: false,
-    },
-  ];
+  const getVolunteers = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/admin/all-volunteers`);
+      setUsers(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching volunteers:", error);
+    }
+  };
+
+  useEffect(() => {
+    getVolunteers();
+  }, []);
 
   return (
     <div className="flex-1 bg-[#f7f6f4] p-6">

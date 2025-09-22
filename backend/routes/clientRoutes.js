@@ -9,6 +9,9 @@ const {
   getAllvideos,
   getAccountInfo,
   deleteAccount,
+  getVideo,
+  addView,
+  addLike,
 } = require("../components/client");
 
 const clientRouter = express.Router();
@@ -22,5 +25,8 @@ clientRouter.get("/get-reviews/:videoId", getAllReviews);
 clientRouter.get("/get-all-videos/:page/:limit/:search?", getAllvideos);
 clientRouter.get("/get-account/:clientId", getAccountInfo);
 clientRouter.delete("/delete-account", deleteAccount);
+clientRouter.get("/get-video/:videoId", getVideo);
+clientRouter.put("/add-view/:videoId", addView);
+clientRouter.put("/add-like/:videoId", addLike);
 
 module.exports = clientRouter;

@@ -61,6 +61,7 @@ import VolunteerDetail from "../pages/admin/VolunteerDetail";
 import ProtectedRoute from "../components/ProtectedRoute";
 import VolunteerOTP from "../pages/volunteer/VolunteerOTP";
 import ClientOTP from "../pages/client/ClientOTP";
+import GeneratePassword from "../pages/organization/GeneratePassword";
 
 export const router = createBrowserRouter([
   {
@@ -145,6 +146,10 @@ export const router = createBrowserRouter([
   {
     path: "/client/otp-verify/:email",
     element: <ClientOTP />,
+  },
+  {
+    path: "/generate-pass/:id",
+    element: <GeneratePassword />,
   },
   // Protected client routes with layout
   {

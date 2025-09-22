@@ -513,7 +513,7 @@ const VideoGridWithFilters = ({
                 tags={video.tags || []}
                 views={video.views || 320}
                 likes={video.likes || 123}
-                onSelect={() => onVideoSelect(video.id)}
+                onSelect={() => onVideoSelect(video._id)}
                 showStats={showStats}
                 isClientView={isClientView}
                 onEdit={onVideoEdit}

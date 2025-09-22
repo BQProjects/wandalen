@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const ManageQuote = () => {
   const navigate = useNavigate();
+
+  const [reqUsers, setReqUsers] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   const handleAdd = () => {
     navigate("/admin/add-customer");
@@ -11,6 +16,19 @@ const ManageQuote = () => {
   const handleEdit = () => {
     navigate("/admin/add-customer");
   };
+
+  const getUsers = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/admin/all-requests`);
+      setReqUsers(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   const users = [
     {
@@ -183,7 +201,7 @@ const ManageQuote = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {reqUsers.map((user, index) => (
               <tr
                 key={index}
                 className={`border-b border-b-[#d9bbaa] ${
