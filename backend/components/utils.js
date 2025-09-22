@@ -1,5 +1,5 @@
 const smsStoreModel = require("../models/smsStoreModel");
-const SessionStoreModel = require("../models/sessionStoreModel");
+const SessionStoreModel = require("../models/sessionStoreModel.js");
 const crypto = require("crypto");
 
 const verifyOtp = async (req, res) => {
