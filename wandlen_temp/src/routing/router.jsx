@@ -39,9 +39,9 @@ import VideoOrganization from "../pages/organization/VideoOrganization";
 // Volunteer page imports (alphabetized)
 import VolunteerCreateVideo from "../pages/volunteer/VolunteerCreateVideo";
 import VolunteerHome from "../pages/volunteer/VolunteerHome";
-import VolunteerLogin from "../pages/volunteer/VolunteerLogin";
+//import VolunteerLogin from "../pages/volunteer/VolunteerLogin"; not used anymore
 import VolunteerProfile from "../pages/volunteer/VolunteerProfile";
-import VolunteerSignup from "../pages/volunteer/VolunteerSignup";
+//import VolunteerSignup from "../pages/volunteer/VolunteerSignup"; not used anymore
 import VideoVolunteer from "../pages/volunteer/VideoVolunteer";
 
 // Admin page imports (alphabetized)
@@ -144,10 +144,6 @@ export const router = createBrowserRouter([
   {
     path: "/organization/signup",
     element: <RequestAQuoteForm />,
-  },
-  {
-    path: "/volunteer/signup",
-    element: <VolunteerSignup />,
   },
   {
     path: "/client/otp-verify/:email",

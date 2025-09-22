@@ -87,8 +87,8 @@ const PreviewExperience = () => {
   const currentDevice = devices[activeDevice];
 
   return (
-    <div className="w-full bg-[#C1BE9B] py-16 lg:py-12">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <div className="w-full bg-[#C1BE9B] py-16 lg:py-12 px-4 sm:px-10 md:px-20">
+      <div className=" mx-auto">
         {/* Header */}
         <div className="flex flex-col items-start gap-2 max-w-[1136px] mb-8">
           <div className="text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#5b6502] font-[Poppins]">

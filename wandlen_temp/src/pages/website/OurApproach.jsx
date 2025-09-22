@@ -3,7 +3,7 @@ import deermountain from "../../assets/deermountain.jpg";
 import PlantSvg from "../../assets/plant.svg";
 import ScrollDown from "../../assets/scrollDown.svg";
 import PartnersSection from "../../components/PartnersSection";
-import OurWalking from "../../components/WhyVirtualWalking";
+import OurWalking from "../../components/DawnForest";
 import Testimonial from "../../components/common/TestimonialScroll";
 import FaqQuestions from "../../components/common/FaqQuestions";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const OurApproach = () => {
     <div className="flex-shrink-0 bg-secondary">
       <div className="flex-shrink-0">
         {/* Title */}
-        <div className="inline-flex flex-col items-start gap-4 px-4 sm:px-10 md:px-20">
+        <div className="inline-flex flex-col items-start gap-4 px-4 sm:px-10 md:px-20 mt-10">
           <div className="text-primary font-[Poppins] text-xl md:text-[2rem] font-semibold leading-[136%]">
             Our Approach
           </div>
@@ -35,19 +35,19 @@ const OurApproach = () => {
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between mt-8 gap-10 md:gap-0">
           <img
             src={deermountain}
-            className="w-full max-w-[700px] h-auto md:h-[963px] rounded-2xl object-cover px-4 sm:px-10 md:px-20"
+            className="w-full max-w-[800px] h-auto md:h-[963px] rounded-2xl object-cover px-4 sm:px-10 md:px-20"
           />
           <div className="flex flex-col gap-6 w-full md:w-auto px-4 sm:px-10 md:px-0">
             <div className="flex flex-col items-start gap-4 px-4 sm:px-10 md:px-24">
               <div className="flex flex-col items-start gap-5">
-                <div className="w-full md:w-[500px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
+                <div className="w-full md:w-[550px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
                   Virtual Walking opens the door to nature for everyone —
                   regardless of physical limitations. Through authentic,
                   real-life walking videos, we bring the beauty, peace, and
                   familiarity of local landscapes to people who may no longer be
                   able to experience them in person.
                 </div>
-                <div className="w-full md:w-[500px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
+                <div className="w-full md:w-[550px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
                   From seniors with dementia to those with limited mobility, our
                   videos bring calm, spark recognition, and support well-being —
                   strengthening connections with the world and with oneself.
@@ -59,7 +59,7 @@ const OurApproach = () => {
             <div className="flex justify-start px-4 sm:px-10 md:px-24">
               <Link
                 to="/choose-experience"
-                className="flex items-center w-fit gap-2.5 py-2 px-5 rounded-lg bg-primary text-white font-poppins text-base sm:text-lg md:text-xl font-medium leading-[136%] hover:bg-opacity-90 transition-colors"
+                className="flex items-center w-fit gap-2.5 py-2 px-5 rounded-lg bg-primary text-white font-[Poppins]  text-base sm:text-lg md:text-xl font-medium leading-[136%] hover:bg-opacity-90 transition-colors"
               >
                 Start Your Journey
               </Link>

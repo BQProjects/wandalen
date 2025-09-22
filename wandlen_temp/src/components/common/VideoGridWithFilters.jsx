@@ -504,8 +504,8 @@ const VideoGridWithFilters = ({
           {filteredVideos.length > 0 ? (
             filteredVideos.map((video) => (
               <VideoCard
-                key={video.id}
-                videoId={video._id}
+                key={video._id || video.id}
+                videoId={video._id || video.id}
                 title={video.title}
                 duration={video.duration}
                 location={video.location}
@@ -513,7 +513,7 @@ const VideoGridWithFilters = ({
                 tags={video.tags || []}
                 views={video.views || 320}
                 likes={video.likes || 123}
-                onSelect={() => onVideoSelect(video.id)}
+                onSelect={() => onVideoSelect(video._id || video.id)}
                 showStats={showStats}
                 isClientView={isClientView}
                 onEdit={onVideoEdit}

@@ -45,8 +45,8 @@ function HowItWorks() {
         </div>
 
         {/* Section 2: Interactive Camera Guide */}
-        <section className="bg-secondary py-16">
-          <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+        <section className="bg-secondary py-16 px-4 sm:px-10 md:px-20">
+          <div className="mx-auto flex flex-col md:flex-row items-center gap-8">
             {/* SVG on the left */}
             <div className="flex-shrink-0">
               <img src={HowItWorkCam} alt="Camera Guide" />
@@ -78,9 +78,9 @@ function HowItWorks() {
           </div>
         </section>
 
-        <section className="bg-accent py-16">
+        <section className="bg-accent py-16 px-4 sm:px-10 md:px-20">
           <div
-            className="max-w-6xl mx-auto px-4 flex flex-col items-center"
+            className="mx-auto flex flex-col items-center"
             id="extrainstructions"
           >
             {/* Top Text - Left-Aligned */}
@@ -109,8 +109,8 @@ function HowItWorks() {
           </div>
         </section>
 
-        <section className="bg-secondary py-16">
-          <div className="max-w-6xl mx-auto px-4 flex flex-col items-center">
+        <section className="bg-secondary py-16 px-4 sm:px-10 md:px-20">
+          <div className="mx-auto px-4 flex flex-col items-center">
             {/* Title and Description */}
             <div className="flex flex-col items-start gap-1.5 w-full mb-8">
               <div className="self-stretch font-[Poppins] text-brand font-base text-[2rem] font-semibold leading-[136%]">

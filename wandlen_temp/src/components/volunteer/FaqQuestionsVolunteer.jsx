@@ -19,7 +19,7 @@ const FaqQuestionsVolunteer = () => {
     {
       question: "Do I have to film everything in 1 go?",
       answer:
-        "No, as soon as you have started filming and you want to stop for whatever reason (rest on a bench yourself, or blow your nose for example) you can stop the recording. If you want to continue, turn the camera back on and continue your walk. The editor puts the videos together. So you can also take a break in between if necessary.No, as soon as you have started filming and you want to stop for whatever reason (rest on a bench yourself, or blow your nose for example) you can stop the recording. If you want to continue, turn the camera back on and continue your walk. The editor puts the videos together. So you can also take a break in between if necessary.",
+        "No, as soon as you have started filming and you want to stop for whatever reason (rest on a bench yourself, or blow your nose for example) you can stop the recording. If you want to continue, turn the camera back on and continue your walk. The editor puts the videos together. So you can also take a break in between if necessary.",
     },
     {
       question:

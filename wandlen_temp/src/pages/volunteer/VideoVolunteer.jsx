@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import BgVideo from "../../assets/BgVideo.mp4";
 import BackArrow from "../../assets/BackArrow.svg";
@@ -7,9 +7,42 @@ import StarFilled from "../../assets/StarFilled.svg";
 import StarEmpty from "../../assets/StarEmpty.svg";
 import Quote from "../../assets/Quote.svg";
 import Footer from "../../components/Footer";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const VideoVolunteer = () => {
   const { id } = useParams();
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+  const [video, setVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        console.log("Fetching video with ID:", id);
+        const res = await axios.get(
+          `${DATABASE_URL}/volunteer/getVideo/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionId}`,
+            },
+          }
+        );
+        console.log("Video data received:", res.data);
+        console.log("Video URL (imgUrl):", res.data.imgUrl);
+        setVideo(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching video:", error);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchVideo();
+    }
+  }, [id, DATABASE_URL, sessionId]);
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
@@ -29,16 +62,22 @@ const VideoVolunteer = () => {
 
               {/* Video Title */}
               <h2 className="text-2xl sm:text-3xl font-semibold text-brown mb-6 sm:mb-8">
-                Winterwandeling Boetelerveld
+                {video ? video.title : "Loading..."}
               </h2>
 
               {/* Video Player */}
               <div className="bg-black rounded-lg sm:rounded-2xl overflow-hidden mb-6 sm:mb-8">
                 <video
-                  src={BgVideo}
+                  src={video ? video.imgUrl : BgVideo}
                   controls
                   className="w-full h-auto object-cover"
                   style={{ aspectRatio: "16/9" }}
+                  onError={(e) => {
+                    console.error("Video failed to load:", e);
+                    e.target.src = BgVideo;
+                  }}
+                  onLoadStart={() => console.log("Video loading started")}
+                  onCanPlay={() => console.log("Video can play")}
                 >
                   Your browser does not support the video tag.
                 </video>

@@ -20,7 +20,7 @@ const BecomeVolunteer = () => {
           <h1 className="text-4xl md:text-5xl font-semibold text-primary mb-6 font-['Poppins']">
             Become a Volunteer with Virtual Walking
           </h1>
-          <p className="text-xl md:text-2xl font-medium font-['Poppins'] max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-3xl font-medium font-['Poppins'] max-w-4xl mx-auto leading-relaxed space-x-1">
             For many - from seniors in care to those with limited mobility -
             nature can feel far away. Virtual Walking brings Overijssel's beauty
             indoors with calming walking videos that inspire relaxation and
@@ -139,13 +139,13 @@ const BecomeVolunteer = () => {
               <div className="flex flex-wrap gap-4 pt-4">
                 <button
                   className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
-                  onClick={() => (window.location.href = "/volunteer/signup")}
+                  onClick={() => (window.location.href = "/volunteer-signup")}
                 >
                   Join as Volunteer
                 </button>
                 <button
                   className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
-                  onClick={() => (window.location.href = "/volunteer/login")}
+                  onClick={() => (window.location.href = "/login")}
                 >
                   Already a Volunteer
                 </button>
@@ -174,7 +174,10 @@ const BecomeVolunteer = () => {
                 Joining is easy — just follow these steps
               </h2>
             </div>
-            <button className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block">
+            <button
+              className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block"
+              onClick={() => (window.location.href = "/volunteer-signup")}
+            >
               Know More
             </button>
           </div>
@@ -242,7 +245,7 @@ const BecomeVolunteer = () => {
 
             <div className="space-y-8 py-8 px-4">
               <div>
-                <p className="text-primary text-2xl font-['Poppins'] font-semibold mb-2">
+                <p className="text-primary text-2xl font-['Poppins'] font-semibold mb-2 mt-10">
                   Want to help?
                 </p>
                 <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-secondary">

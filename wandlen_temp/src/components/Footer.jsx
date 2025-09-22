@@ -51,22 +51,31 @@ const Footer = () => (
           <h4 className="text-lg md:text-xl font-semibold mb-4">Menu</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="#" className="hover:text-[#a6a643] transition-colors">
+              <a href="/" className="hover:text-[#a6a643] transition-colors">
                 Home
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#a6a643] transition-colors">
+              <a
+                href="/ourapproach"
+                className="hover:text-[#a6a643] transition-colors"
+              >
                 Our Vision
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#a6a643] transition-colors">
+              <a
+                href="/subscribe"
+                className="hover:text-[#a6a643] transition-colors"
+              >
                 Subscriptions
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#a6a643] transition-colors">
+              <a
+                href="/become-volunteer"
+                className="hover:text-[#a6a643] transition-colors"
+              >
                 Volunteer
               </a>
             </li>

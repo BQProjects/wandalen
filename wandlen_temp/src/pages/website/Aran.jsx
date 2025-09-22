@@ -149,9 +149,9 @@ const Aran = () => {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 flex flex-col items-start justify-start h-1/3 max-w-7xl mx-auto px-6 lg:px-8 pt-24">
+        <div className="relative z-10 flex flex-col items-start justify-start h-1/3 mx-auto pt-24">
           {/* Left Content - Text */}
-          <div className="flex-1 max-w-2xl">
+          <div className="flex-1 max-w-2xl px-4 sm:px-10 md:px-20">
             <h1 className="text-[32px] font-semibold text-[#A6A643] mb-4 font-poppins tracking-wide">
               Virtueel Wandelen
             </h1>
@@ -168,12 +168,12 @@ const Aran = () => {
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-6">
               <Link to="/request-quote">
-                <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] hover:bg-[#5B6502] meer_informatie text-white font-poppins text-xl font-medium leading-[136%]">
+                <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] hover:bg-[#5B6502] meer_informatie text-white font-[Poppins] text-xl font-medium leading-[136%]">
                   Request for quote
                 </button>
               </Link>
               <Link to="/subscribe">
-                <button className="cursor-pointer text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-poppins text-xl font-medium leading-[136%]">
+                <button className="cursor-pointer text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-[Poppins] text-xl font-medium leading-[136%]">
                   View subscription plans
                 </button>
               </Link>
@@ -325,8 +325,8 @@ const Aran = () => {
       <DawnForest />
 
       {/* Discover Nature Videos Section */}
-      <div className="flex-shrink-0 w-full min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-16 px-8">
-        <div className="w-full max-w-[1280px] mx-auto text-start">
+      <div className="flex-shrink-0 w-full min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-16 px-4 sm:px-10 md:px-20">
+        <div className="w-full mx-auto text-start">
           {/* Header Section */}
           <div className="mb-16">
             <div
@@ -537,8 +537,8 @@ const Aran = () => {
       </div>
 
       {/* Positive Experiences Section */}
-      <div className="w-full bg-[#EDE4DC] py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="w-full bg-[#EDE4DC] py-16 lg:py-24 px-4 sm:px-10 md:px-20">
+        <div className="mx-auto">
           {/* Header Section */}
           <div className="text-left mb-16">
             <div className="text-[#A6A643] font-['Poppins'] text-xl lg:text-[32px] font-semibold mb-4">
@@ -640,15 +640,15 @@ const Aran = () => {
 
       {/* Discover Routes Near You Section */}
       <div
-        className="relative w-full min-h-screen bg-cover bg-center bg-no-repeat"
+        className="relative w-full min-h-screen bg-cover bg-center bg-no-repeat px-4 sm:px-10 md:px-20"
         // style={{ backgroundImage: `url(${Background2})` }}
       >
         {/* Overlay */}
         <div className="absolute inset-0 bg-[#2A341F] bg-opacity-40"></div>
 
         {/* Content */}
-        <div className="relative z-10 w-full h-full py-16 px-8">
-          <div className="max-w-[1280px] mx-auto">
+        <div className="relative z-10 w-full h-full py-16">
+          <div className=" mx-auto">
             {/* Header Section */}
             <div>
               <div className="relative mb-32">
@@ -781,7 +781,10 @@ const Aran = () => {
                 </div>
               </div>
 
-              <button className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all">
+              <button
+                className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
+                onClick={() => (window.location.href = "/become-volunteer")}
+              >
                 Explore this feature
               </button>
             </div>
