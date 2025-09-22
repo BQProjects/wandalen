@@ -1,4 +1,4 @@
-const SessionStore = require("../models/SessionStore");
+const SessionStoreModel = require("../models/sessionStoreModel.js");
 
 const validateActiveSession = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -12,7 +12,7 @@ const validateActiveSession = async (req, res, next) => {
     ? authHeader.split(" ")[1]
     : authHeader;
 
-  const session = await SessionStore.findById(sessionId);
+  const session = await SessionStoreModel.findById(sessionId);
 
   if (!session || session.expiresAt < Date.now()) {
     return res.status(401).json({ error: "Unauthorized: No active session" });
