@@ -21,9 +21,10 @@ import Subscribe from "../pages/website/Subscribe";
 import VideoTraining from "../pages/website/VideoTraning";
 import VolunteerSignupForm from "../pages/website/VolunteerSignup";
 import Blog from "../pages/website/Blog";
+import GeneratePassword from "../pages/website/GeneratePassword"; //To generate password for organization
 
 // Client page imports (alphabetized)
-import Login from "../pages/client/Login";
+import Login from "../pages/website/Login";
 import PatientProfile from "../pages/client/PatientProfile";
 import SelectVideo from "../pages/client/SelectVideo";
 import VideoClient from "../pages/client/VideoClient";
@@ -39,9 +40,9 @@ import VideoOrganization from "../pages/organization/VideoOrganization";
 // Volunteer page imports (alphabetized)
 import VolunteerCreateVideo from "../pages/volunteer/VolunteerCreateVideo";
 import VolunteerHome from "../pages/volunteer/VolunteerHome";
-import VolunteerLogin from "../pages/volunteer/VolunteerLogin";
+//import VolunteerLogin from "../pages/volunteer/VolunteerLogin"; not used anymore
 import VolunteerProfile from "../pages/volunteer/VolunteerProfile";
-import VolunteerSignup from "../pages/volunteer/VolunteerSignup";
+//import VolunteerSignup from "../pages/volunteer/VolunteerSignup"; not used anymore
 import VideoVolunteer from "../pages/volunteer/VideoVolunteer";
 
 // Admin page imports (alphabetized)
@@ -59,9 +60,11 @@ import VolunteerDetail from "../pages/admin/VolunteerDetail";
 
 // Component imports
 import ProtectedRoute from "../components/ProtectedRoute";
-import VolunteerOTP from "../pages/volunteer/VolunteerOTP";
-import ClientOTP from "../pages/client/ClientOTP";
-import GeneratePassword from "../pages/organization/GeneratePassword";
+import Otp from "../pages/website/OTP";
+import WhyNatureMatters from "../pages/website/WhyNatureMatters";
+import PowerofWalking from "../pages/website/PowerofWalking";
+import HealthandHappiness from "../pages/website/HealthandHappiness";
+import NatureBenefits from "../pages/website/NatureBenefits";
 
 export const router = createBrowserRouter([
   {
@@ -116,40 +119,44 @@ export const router = createBrowserRouter([
         path: "choose-experience",
         element: <ChooseYourExperience />,
       },
+      {
+        path: "nature-matters",
+        element: <WhyNatureMatters />,
+      },
+      {
+        path: "power-of-walking",
+        element: <PowerofWalking />,
+      },
+      {
+        path: "health-and-happiness",
+        element: <HealthandHappiness />,
+      },
+      {
+        path: "nature-benefits",
+        element: <NatureBenefits />,
+      },
+      {
+        path: "generate-pass/:id",
+        element: <GeneratePassword />,
+      },
     ],
   },
   // Authentication routes without layouts (no headers)
   {
-    path: "/client/login",
+    path: "/login",
     element: <Login />,
   },
   {
-    path: "/organization/login",
-    element: <OrgLogin />,
-  },
-  {
     path: "/organization/signup",
-    element: <OrgSignup />,
-  },
-  {
-    path: "/volunteer/login",
-    element: <VolunteerLogin />,
-  },
-  {
-    path: "/volunteer/signup",
-    element: <VolunteerSignup />,
-  },
-  {
-    path: "/volunteer/otp-verify/:email",
-    element: <VolunteerOTP />,
+    element: <RequestAQuoteForm />,
   },
   {
     path: "/client/otp-verify/:email",
-    element: <ClientOTP />,
+    element: <Otp />, // Client OTP verification
   },
   {
-    path: "/generate-pass/:id",
-    element: <GeneratePassword />,
+    path: "/volunteer/otp-verify/:email",
+    element: <Otp />, // Volunteer OTP verification
   },
   // Protected client routes with layout
   {

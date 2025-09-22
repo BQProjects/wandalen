@@ -59,7 +59,7 @@ const SubscribeCard = () => (
 
           {/* Subscribe Button */}
           <div className="flex justify-end w-full mt-4">
-            <button className="px-12 py-4 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-[-0.2px] cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
+            <button className="px-4 py-2 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-[-0.2px] cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
               Subscribe
             </button>
           </div>

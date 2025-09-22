@@ -1,54 +1,26 @@
 import React, { useState } from "react";
-import {
-  Check,
-  Calendar,
-  MapPin,
-  Phone,
-  Mail,
-  Facebook,
-  Instagram,
-  Linkedin,
-  Video,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
-import NewsletterSection from "../../components/common/NewsletterSection";
 import PositiveImage from "../../assets/PositiveImage.jpg";
 import VideoTraning from "../../assets/VideoTraning.png";
 import CameraTips from "../../assets/CameraTips.png";
 import NatureWalk from "../../assets/NatureWalk.png";
 import VolunteerAction from "../../assets/VolunteerAction.jpg";
-import FaqQuestions from "../../components/common/FaqQuestions";
+import FaqQuestionsVolunteer from "../../components/volunteer/FaqQuestionsVolunteer";
 import Testimonial from "../../components/common/TestimonialScroll";
+import SubscribeCard from "../../components/SubscribeCard";
+import Footer from "../../components/Footer";
 
 const BecomeVolunteer = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    notes: "",
-  });
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
-
   return (
     <div className="min-h-screen bg-secondary">
       {/* Hero Section */}
-      <section className="bg-dark-green text-white px-4 py-16 flex items-center justify-center">
+      <section className="bg-dark-green h-[86vh] text-white px-4 py-16 flex items-center justify-center">
         <div className="max-w-7xl mx-auto text-center mt-20 mb-20">
           <h1 className="text-4xl md:text-5xl font-semibold text-primary mb-6 font-['Poppins']">
             Become a Volunteer with Virtual Walking
           </h1>
-          <p className="text-xl md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-3xl font-medium font-['Poppins'] max-w-4xl mx-auto leading-relaxed space-x-1">
             For many - from seniors in care to those with limited mobility -
             nature can feel far away. Virtual Walking brings Overijssel's beauty
             indoors with calming walking videos that inspire relaxation and
@@ -94,8 +66,12 @@ const BecomeVolunteer = () => {
                 className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-white p-6 rounded-xl shadow-sm"
               >
                 <div className="bg-brown text-secondary rounded-lg p-4 text-center min-w-[110px]">
-                  <div className="text-4xl font-bold">{event.date}</div>
-                  <div className="text-xl font-medium">{event.month}</div>
+                  <div className="text-4xl font-['Poppins'] font-bold">
+                    {event.date}
+                  </div>
+                  <div className="text-xl font-['Poppins'] font-medium">
+                    {event.month}
+                  </div>
                 </div>
 
                 <div className="bg-gray-300 w-full md:w-60 h-48 md:h-40 rounded-lg bg-gradient-to-br from-orange-200 to-orange-400 flex items-center justify-center flex-shrink-0">
@@ -106,14 +82,14 @@ const BecomeVolunteer = () => {
                 </div>
 
                 <div className="flex-1 space-y-4">
-                  <h3 className="text-primary text-2xl font-semibold">
+                  <h3 className="text-primary font-['Poppins'] text-2xl font-semibold">
                     {event.title}
                   </h3>
-                  <p className="text-brown text-lg leading-relaxed">
+                  <p className="text-brown font-['Poppins'] text-lg leading-relaxed">
                     {event.description}
                   </p>
                   <Link to={event.link}>
-                    <button className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
+                    <button className="bg-primary font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
                       More Information
                     </button>
                   </Link>
@@ -130,10 +106,10 @@ const BecomeVolunteer = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div>
-                <p className="text-primary text-2xl font-semibold mb-2">
+                <p className="text-primary font-['Poppins'] text-2xl font-semibold mb-2">
                   Positive Benefits
                 </p>
-                <h2 className="text-4xl md:text-5xl font-semibold mb-8">
+                <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold mb-8">
                   Why Virtual Walking?
                 </h2>
               </div>
@@ -153,21 +129,23 @@ const BecomeVolunteer = () => {
                       className="text-primary mt-1 flex-shrink-0"
                       size={24}
                     />
-                    <p className="text-lg leading-relaxed">{benefit}</p>
+                    <p className="text-lg leading-relaxed font-['Poppins']">
+                      {benefit}
+                    </p>
                   </div>
                 ))}
               </div>
 
               <div className="flex flex-wrap gap-4 pt-4">
                 <button
-                  className="bg-primary text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
-                  onClick={() => (window.location.href = "/volunteer/signup")}
+                  className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
+                  onClick={() => (window.location.href = "/volunteer-signup")}
                 >
                   Join as Volunteer
                 </button>
                 <button
-                  className="bg-primary text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
-                  onClick={() => (window.location.href = "/volunteer/login")}
+                  className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
+                  onClick={() => (window.location.href = "/login")}
                 >
                   Already a Volunteer
                 </button>
@@ -189,14 +167,17 @@ const BecomeVolunteer = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <p className="text-primary text-2xl font-semibold mb-2">
+              <p className="text-primary font-['Poppins'] text-2xl font-semibold mb-2">
                 How it works
               </p>
-              <h2 className="text-4xl md:text-5xl font-semibold text-brown">
+              <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-brown">
                 Joining is easy — just follow these steps
               </h2>
             </div>
-            <button className="bg-primary text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block">
+            <button
+              className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block"
+              onClick={() => (window.location.href = "/volunteer-signup")}
+            >
               Know More
             </button>
           </div>
@@ -233,15 +214,15 @@ const BecomeVolunteer = () => {
                 className="bg-[#f7f6f4] rounded-2xl p-8 space-y-6"
               >
                 <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center">
-                  <span className="text-brown text-3xl font-semibold">
+                  <span className="text-brown text-3xl font-['Poppins'] font-semibold">
                     {step.number}
                   </span>
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-brown text-2xl font-medium">
+                  <h3 className="text-brown text-2xl font-['Poppins'] font-medium">
                     {step.title}
                   </h3>
-                  <p className="text-brown leading-relaxed">
+                  <p className="text-brown font-['Poppins'] leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -264,10 +245,10 @@ const BecomeVolunteer = () => {
 
             <div className="space-y-8 py-8 px-4">
               <div>
-                <p className="text-primary text-2xl font-semibold mb-2">
+                <p className="text-primary text-2xl font-['Poppins'] font-semibold mb-2 mt-10">
                   Want to help?
                 </p>
-                <h2 className="text-4xl md:text-5xl font-semibold text-secondary">
+                <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-secondary">
                   Why Volunteers Are Essential
                 </h2>
               </div>
@@ -308,10 +289,10 @@ const BecomeVolunteer = () => {
                         size={24}
                       />
                       <div>
-                        <h3 className="text-2xl font-semibold mb-2">
+                        <h3 className="text-2xl font-['Poppins'] font-semibold mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-muted leading-relaxed">
+                        <p className="text-muted font-['Poppins'] leading-relaxed">
                           {item.description}
                         </p>
                       </div>
@@ -324,9 +305,10 @@ const BecomeVolunteer = () => {
           </div>
         </div>
       </section>
-      <FaqQuestions />
+      <FaqQuestionsVolunteer />
       <Testimonial />
-      <NewsletterSection />
+      <SubscribeCard />
+      <Footer />
     </div>
   );
 };

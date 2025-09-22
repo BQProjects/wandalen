@@ -51,14 +51,9 @@ const FaqQuestions = () => {
     <div className="flex flex-shrink-0 justify-center items-center pt-8 md:pt-[6.75rem] pb-8 md:pb-[6.75rem] px-4 md:px-[10.125rem] w-full bg-dark-green">
       <div className="flex flex-col items-start gap-6 md:gap-8 w-full max-w-4xl">
         <div className="frame-1 flex flex-col md:flex-row md:items-center justify-center md:justify-between self-stretch gap-4 md:gap-0">
-          <div className="w-full text-white text-center md:text-left font-poppins text-xl md:text-2xl leading-[1.875rem]">
+          <div className="w-full text-white text-center font-semibold font-poppins text-xl md:text-2xl leading-[1.875rem]">
             Frequently Asked Questions
           </div>
-          <img
-            src={SearchIcon}
-            alt="Search Icon"
-            className="w-6 h-6 md:w-auto md:h-auto self-center md:self-auto"
-          />
         </div>
         <div className="flex flex-col items-start w-full">
           {faqs.map((faq, index) => (

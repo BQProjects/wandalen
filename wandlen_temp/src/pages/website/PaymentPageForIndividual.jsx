@@ -153,7 +153,7 @@ const PaymentPageForIndividual = () => {
       });
       console.log("Sign up response:", res.data);
       alert("Sign up successful!");
-      navigate("/client/login");
+      navigate("/login");
     } catch (error) {
       console.error("Error during sign up:", error);
     }

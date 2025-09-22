@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RequestCard = () => (
-  <div className="w-full min-h-screen bg-[#515744] py-16 px-8">
-    <div className="max-w-[1280px] mx-auto">
+  <div className="w-full min-h-screen bg-[#515744] py-16 px-4 sm:px-10 md:px-20">
+    <div className="mx-auto">
       {/* Header Section */}
       <div className="mb-16">
         <div className="text-[#a6a643] font-['Poppins'] text-4xl font-semibold leading-tight tracking-tight mb-4">
@@ -152,9 +153,11 @@ const RequestCard = () => (
                 </div>
               </div>
             </div>
-            <button className="px-8 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
-              Request a Quote
-            </button>
+            <Link to="/request-quote">
+              <button className="px-8 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
+                Request a Quote
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -275,9 +278,11 @@ const RequestCard = () => (
                 </div>
               </div>
             </div>
-            <button className="px-8 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
-              Subscribe Now
-            </button>
+            <Link to="/subscribe">
+              <button className="px-8 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
+                Subscribe Now
+              </button>
+            </Link>
           </div>
         </div>
       </div>

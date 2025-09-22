@@ -1,3 +1,6 @@
+// Not used anymore
+//
+//
 import React, { useContext, useState } from "react";
 import WebsiteHeader from "../../components/WebsiteHeader";
 import { router } from "../../routing/router";

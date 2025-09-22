@@ -6,6 +6,8 @@ import { useContext } from "react";
 const VolunteerHeader = () => {
   const { user, userType, isAuthenticated, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [activeItem, setActiveItem] = useState(null);
 
   const handleLogout = () => {
     logout();
@@ -62,22 +64,49 @@ const VolunteerHeader = () => {
       <div className="hidden md:flex items-center gap-6">
         <Link
           to="/volunteer/"
-          className="flex justify-center items-center gap-2.5 body text-[#381207] font-['Poppins'] text-xl font-medium leading-[136%] hover:text-[#5b6502] transition-colors"
+          className="flex flex-col justify-center items-start"
+          onMouseEnter={() => setHoveredItem("welcome")}
+          onMouseLeave={() => setHoveredItem(null)}
+          onClick={() => setActiveItem("welcome")}
         >
-          Welcome
+          <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
+            Welcome
+          </div>
+          {(hoveredItem === "welcome" || activeItem === "welcome") && (
+            <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
+          )}
         </Link>
         <Link
           to="/volunteer/how-it-works"
-          className="flex justify-center items-center gap-2.5 body-2 text-[#381207] font-['Poppins'] text-xl font-medium leading-[136%] hover:text-[#5b6502] transition-colors cursor-pointer"
+          className="flex flex-col justify-center items-start"
+          onMouseEnter={() => setHoveredItem("how it works")}
+          onMouseLeave={() => setHoveredItem(null)}
+          onClick={() => setActiveItem("how it works")}
         >
-          How it works
+          <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
+            How it works
+          </div>
+          {(hoveredItem === "how it works" ||
+            activeItem === "how it works") && (
+            <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
+          )}
         </Link>
         <Link
           to="/volunteer/create-video"
-          className="flex justify-center items-center gap-2.5 body-3 text-[#381207] font-['Poppins'] text-xl font-medium leading-[136%] hover:text-[#5b6502] transition-colors"
+          className="flex flex-col justify-center items-start"
+          onMouseEnter={() => setHoveredItem("create video")}
+          onMouseLeave={() => setHoveredItem(null)}
+          onClick={() => setActiveItem("create video")}
         >
-          Create video
+          <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
+            Create video
+          </div>
+          {(hoveredItem === "create video" ||
+            activeItem === "create video") && (
+            <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
+          )}
         </Link>
+        {/* Language selector */}
         <div className="flex justify-center items-center gap-2">
           <svg
             width={24}
@@ -91,7 +120,7 @@ const VolunteerHeader = () => {
               fill="#4B4741"
             />
           </svg>
-          <div className="body-5 text-[#4b4741] font-['Poppins'] text-xl font-medium leading-[136%]">
+          <div className="body-5 text-[#381207] font-poppins text-xl font-medium leading-[136%]">
             English
           </div>
           <svg
