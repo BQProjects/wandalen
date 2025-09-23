@@ -4,6 +4,7 @@ const DatabaseContext = createContext();
 
 export const DatabaseProvider = ({ children }) => {
   const DATABASE_URL = "https://wandalen.vercel.app"; // Replace with your database UR
+  // const DATABASE_URL = "http://localhost:9090"; // Replace with your database URL
   const [isConnected, setIsConnected] = useState(false);
   const [videos, setVideos] = useState([]);
   const [users, setUsers] = useState([]);
