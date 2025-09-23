@@ -4,6 +4,8 @@ import axios from "axios";
 
 const ManageClients = () => {
   const [clients, setClients] = useState([]);
+  const [orgData, setOrgData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
 
@@ -13,14 +15,26 @@ const ManageClients = () => {
         `${DATABASE_URL}/org/getClients/${sessionId}`
       );
       setClients(res.data);
-      console.log(res.data);
     } catch (error) {
       console.error("Error fetching clients:", error);
     }
   };
 
+  const getOrgData = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/org/getOrg/${sessionId}`);
+      setOrgData(res.data.org); // Fix: Access the nested 'org' key
+    } catch (error) {
+      console.error("Error fetching org data:", error);
+    }
+  };
+
   useEffect(() => {
-    getAllClients();
+    const fetchData = async () => {
+      await Promise.all([getAllClients(), getOrgData()]);
+      setIsLoading(false);
+    };
+    fetchData();
   }, []);
 
   const [newClient, setNewClient] = useState({
@@ -31,6 +45,8 @@ const ManageClients = () => {
     password: "",
   });
 
+  const [editingClientId, setEditingClientId] = useState(null); // New state for editing
+
   const [activeTab, setActiveTab] = useState("clients");
 
   const handleInputChange = (e) => {
@@ -38,35 +54,99 @@ const ManageClients = () => {
   };
 
   const handleAddClient = async () => {
+    // Check if client limit is reached before attempting to add
+    if (orgData && clients.length >= orgData.clientLimit && !editingClientId) {
+      alert(
+        "Cannot add more clients. Please contact admin to increase client limit."
+      );
+      return;
+    }
     try {
-      const randomPassword = Math.random().toString(36).slice(-8);
-      const res = await axios.post(`${DATABASE_URL}/org/addClient`, {
-        firstName: newClient.firstName,
-        lastName: newClient.lastName,
-        email: newClient.email,
-        password: randomPassword,
-        orgId: sessionId,
-        phoneNo: newClient.phoneNo,
-      });
+      if (editingClientId) {
+        // Update existing client
+        const res = await axios.put(
+          `${DATABASE_URL}/org/editClient/${editingClientId}`,
+          {
+            firstName: newClient.firstName,
+            lastName: newClient.lastName,
+            email: newClient.email,
+            phoneNo: newClient.phoneNo,
+          }
+        );
+        if (res.status === 200) {
+          alert("Client updated successfully");
+          setClients(
+            clients.map((client) =>
+              client._id === editingClientId
+                ? { ...client, ...newClient }
+                : client
+            )
+          );
+          setEditingClientId(null);
+          setNewClient({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNo: "",
+            password: "",
+          });
+        }
+      } else {
+        // Add new client
+        const randomPassword = Math.random().toString(36).slice(-8);
+        const res = await axios.post(`${DATABASE_URL}/org/addClient`, {
+          firstName: newClient.firstName,
+          lastName: newClient.lastName,
+          email: newClient.email,
+          password: randomPassword,
+          orgId: sessionId,
+          phoneNo: newClient.phoneNo,
+        });
 
-      if (res.status === 201) {
-        alert("Client added successfully");
-        setNewClient({ fullName: "", email: "", phoneNo: "", password: "" });
-        setClients([...clients, res.data.newClient]);
+        if (res.status === 201) {
+          alert("Client added successfully");
+          setNewClient({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNo: "",
+            password: "",
+          });
+          setClients([...clients, res.data.newClient]);
+        }
       }
     } catch (error) {
-      console.error("Error adding client:", error);
+      console.error("Error adding/updating client:", error);
     }
   };
 
-  const handleDeleteClient = (id) => {
-    setClients(clients.filter((client) => client.id !== id));
+  const handleDeleteClient = async (id) => {
+    try {
+      await axios.delete(`${DATABASE_URL}/org/deleteClient/${id}`);
+      setClients(clients.filter((client) => client._id !== id)); // Remove from local state after successful delete
+      alert("Client deleted successfully");
+    } catch (error) {
+      console.error("Error deleting client:", error);
+      alert("Failed to delete client");
+    }
+  };
+
+  const handleEditClient = (client) => {
+    setEditingClientId(client._id);
+    setNewClient({
+      firstName: client.firstName,
+      lastName: client.lastName,
+      email: client.email,
+      phoneNo: client.phoneNo,
+      password: "",
+    });
   };
 
   const handleCheckboxChange = (id) => {
     setClients(
-      clients.map((client) =>
-        client.id === id ? { ...client, checked: !client.checked } : client
+      clients.map(
+        (client) =>
+          client._id === id ? { ...client, checked: !client.checked } : client // Fix: Use _id
       )
     );
   };
@@ -134,14 +214,14 @@ const ManageClients = () => {
               <tbody>
                 {clients.map((client, index) => (
                   <tr
-                    key={client.id}
+                    key={client._id} // Fix: Use _id for unique key
                     className={index % 2 === 0 ? "bg-white" : "bg-[#ede4dc]"}
                   >
                     <td className="px-6 py-4">
                       <input
                         type="checkbox"
                         checked={client.checked}
-                        onChange={() => handleCheckboxChange(client._id)}
+                        onChange={() => handleCheckboxChange(client._id)} // Already using _id
                         className="w-4 h-4"
                       />
                     </td>
@@ -155,9 +235,15 @@ const ManageClients = () => {
                     <td className="px-6 py-4 text-[#381207]">
                       {client.plainPassword}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 flex space-x-2">
                       <button
-                        onClick={() => handleDeleteClient(client._id)}
+                        onClick={() => handleEditClient(client)}
+                        className="text-[#381207] hover:text-blue-600 transition"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClient(client._id)} // Already using _id
                         className="text-[#381207] hover:text-red-600 transition"
                       >
                         <svg
@@ -180,92 +266,120 @@ const ManageClients = () => {
           </div>
         </div>
 
-        {/* Add New Client Section */}
+        {/* Add New Client Section - Conditionally Rendered */}
         <div className="bg-white rounded-2xl shadow-lg p-8">
-          <div className="mb-6">
-            <h3 className="text-2xl font-medium text-[#381207] mb-2">
-              Add New Client
-            </h3>
-            <p className="text-[#381207]">
-              Fill in client's details and click "Add Client" to save them to
-              the list
-            </p>
-          </div>
+          {isLoading ? (
+            <div className="text-center">
+              <p className="text-[#381207]">Loading data...</p>
+            </div>
+          ) : orgData ? (
+            clients.length >= orgData.clientLimit && !editingClientId ? (
+              <div className="text-center">
+                <h3 className="text-2xl font-medium text-[#381207] mb-2">
+                  Client Limit Reached
+                </h3>
+                <p className="text-[#381207]">
+                  Please contact admin to increase client limit.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-medium text-[#381207] mb-2">
+                    {editingClientId ? "Edit Client" : "Add New Client"}
+                  </h3>
+                  <p className="text-[#381207]">
+                    {editingClientId
+                      ? 'Update client\'s details and click "Update Client" to save changes'
+                      : 'Fill in client\'s details and click "Add Client" to save them to the list'}
+                  </p>
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div>
-              <label className="block text-[#7a756e] font-medium mb-2">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={newClient.firstName}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="First Name"
-              />
-            </div>
-            <div>
-              <label className="block text-[#7a756e] font-medium mb-2">
-                last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={newClient.lastName}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="First Name"
-              />
-            </div>
-            <div>
-              <label className="block text-[#7a756e] font-medium mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={newClient.email}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="Last Name"
-              />
-            </div>
-            <div>
-              <label className="block text-[#7a756e] font-medium mb-2">
-                Phone No
-              </label>
-              <input
-                type="text"
-                name="phoneNo"
-                value={newClient.phoneNo}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="Email"
-              />
-            </div>
-          </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div>
+                    <label className="block text-[#7a756e] font-medium mb-2">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={newClient.firstName}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                      placeholder="First Name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#7a756e] font-medium mb-2">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={newClient.lastName}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                      placeholder="Last Name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#7a756e] font-medium mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={newClient.email}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#7a756e] font-medium mb-2">
+                      Phone No
+                    </label>
+                    <input
+                      type="text"
+                      name="phoneNo"
+                      value={newClient.phoneNo}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                      placeholder="Phone No"
+                    />
+                  </div>
+                </div>
 
-          <button
-            onClick={handleAddClient}
-            className="px-6 py-3 bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
-          >
-            Add Client
-          </button>
-        </div>
-
-        {/* Status Indicator */}
-        <div className="mt-8 flex justify-center">
-          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-[#34c759] shadow-sm">
-            <svg width={16} height={17} viewBox="0 0 16 17" fill="none">
-              <path
-                d="M8.0026 1.83203C4.33594 1.83203 1.33594 4.83203 1.33594 8.4987C1.33594 12.1654 4.33594 15.1654 8.0026 15.1654C11.6693 15.1654 14.6693 12.1654 14.6693 8.4987C14.6693 4.83203 11.6693 1.83203 8.0026 1.83203ZM8.0026 13.832C5.0626 13.832 2.66927 11.4387 2.66927 8.4987C2.66927 5.5587 5.0626 3.16536 8.0026 3.16536C10.9426 3.16536 13.3359 5.5587 13.3359 8.4987C13.3359 11.4387 10.9426 13.832 8.0026 13.832ZM11.0626 5.55203L6.66927 9.94536L4.9426 8.22536L4.0026 9.16536L6.66927 11.832L12.0026 6.4987L11.0626 5.55203Z"
-                fill="#34C759"
-              />
-            </svg>
-            <span className="text-[#381207] font-medium">Done</span>
-          </div>
+                <button
+                  onClick={handleAddClient}
+                  className="px-6 py-3 bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
+                >
+                  {editingClientId ? "Update Client" : "Add Client"}
+                </button>
+                {editingClientId && (
+                  <button
+                    onClick={() => {
+                      setEditingClientId(null);
+                      setNewClient({
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        phoneNo: "",
+                        password: "",
+                      });
+                    }}
+                    className="ml-4 px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition font-medium"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </>
+            )
+          ) : (
+            <div className="text-center">
+              <p className="text-[#381207]">Error loading organization data.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
