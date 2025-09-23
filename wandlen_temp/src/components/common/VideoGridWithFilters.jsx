@@ -131,19 +131,6 @@ const VideoCard = ({
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
 
-  const handleDelete = async (videoId) => {
-    try {
-      const res = await axios.delete(
-        `${DATABASE_URL}/volunteer/deleteVideo/${videoId}`,
-        {
-          headers: { Authorization: sessionId },
-        }
-      );
-    } catch (error) {
-      console.error("Error deleting video:", error);
-    }
-  };
-
   return (
     <div
       className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105"
@@ -215,8 +202,7 @@ const VideoCard = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDelete(videoId);
-                    handleDelete(videoId);
+                    onDelete(videoId); // Only call onDelete (now handles API and refresh)
                   }}
                   className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
                   title="Delete video"
@@ -448,7 +434,7 @@ const VideoGridWithFilters = ({
         </div>
       </div>
 
-      <div className="filtersysteem flex flex-col justify-end items-start pb-24 p-6 w-full">
+      <div className="filtersysteem flex flex-col justify-end items-start pb-24 w-full">
         {/* Filters */}
         {showFilters && (
           <div className="filters flex flex-wrap items-center gap-4 mb-8">
@@ -504,8 +490,8 @@ const VideoGridWithFilters = ({
           {filteredVideos.length > 0 ? (
             filteredVideos.map((video) => (
               <VideoCard
-                key={video.id}
-                videoId={video._id}
+                key={video._id || video.id}
+                videoId={video._id || video.id}
                 title={video.title}
                 duration={video.duration}
                 location={video.location}
@@ -513,7 +499,7 @@ const VideoGridWithFilters = ({
                 tags={video.tags || []}
                 views={video.views || 320}
                 likes={video.likes || 123}
-                onSelect={() => onVideoSelect(video._id)}
+                onSelect={() => onVideoSelect(video._id || video.id)}
                 showStats={showStats}
                 isClientView={isClientView}
                 onEdit={onVideoEdit}

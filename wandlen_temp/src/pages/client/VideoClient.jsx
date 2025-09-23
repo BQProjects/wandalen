@@ -6,6 +6,7 @@ import Heart from "../../assets/Heart.svg";
 import StarFilled from "../../assets/StarFilled.svg";
 import StarEmpty from "../../assets/StarEmpty.svg";
 import Quote from "../../assets/Quote.svg";
+import Footer from "../../components/Footer";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
@@ -71,22 +72,18 @@ const VideoClient = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
-      <div className="bg-secondary">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-brown mb-8 sm:mb-12 leading-tight">
-            Ervaringen met deze video:
-          </h1>
-
+      <div className="bg-secondary px-4 sm:px-10 md:px-20">
+        <div className="mx-auto">
           {/* Video Section */}
-          <div className="py-8 sm:py-16 px-4 sm:px-8 md:px-16 lg:px-32">
-            <div className="max-w-6xl mx-auto">
+          <div className="">
+            <div className=" mx-auto">
               {/* Back Button */}
               <Link
                 to="/client"
-                className="inline-flex items-center gap-3 text-brown hover:text-accent transition-colors mb-6 sm:mb-8"
+                className="inline-flex items-center gap-3 text-brown hover:text-accent transition-colors mb-6 sm:mb-8 mt-10"
               >
                 <img src={BackArrow} alt="Back Arrow" className="w-6 h-6" />
-                <span className="text-lg sm:text-2xl font-semibold">Terug</span>
+                <span className="text-lg sm:text-2xl font-semibold">Back</span>
               </Link>
 
               {/* Video Title */}
@@ -101,6 +98,12 @@ const VideoClient = () => {
                   controls
                   className="w-full h-auto object-cover"
                   style={{ aspectRatio: "16/9" }}
+                  onError={(e) => {
+                    console.error("Video failed to load:", e);
+                    e.target.src = BgVideo;
+                  }}
+                  onLoadStart={() => console.log("Video loading started")}
+                  onCanPlay={() => console.log("Video can play")}
                 >
                   Your browser does not support the video tag.
                 </video>
@@ -108,6 +111,7 @@ const VideoClient = () => {
 
               {/* Video Controls */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                <div></div>
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => addLike()}
@@ -116,15 +120,12 @@ const VideoClient = () => {
                     <img src={Heart} alt="Heart" className="w-6 h-6" />
                   </button>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-brown font-medium text-sm sm:text-base">
-                    Winterwandeling Boetelerveld
-                  </span>
-                </div>
               </div>
             </div>
           </div>
-          {/* Testimonials Grid */}
+          <div className=" text-[#381207] font-['Poppins'] text-[2.5rem] font-semibold leading-[136%] pb-10">
+            Ervaringen met deze video:
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 pb-8 sm:pb-16">
             {/* Testimonial 1 */}
             <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">

@@ -4,6 +4,8 @@ import BgVideo from "../../assets/BgVideo.mp4";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import Background from "../../assets/background.png";
+import Footer from "../../components/Footer";
 
 const VolunteerHome = () => {
   const navigate = useNavigate();
@@ -86,10 +88,27 @@ const VolunteerHome = () => {
     });
   };
 
-  const handleVideoDelete = (id) => {
-    // Show confirmation dialog and delete video
+  const handleVideoDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this video?")) {
-      console.log("Deleting video with ID:", id);
+      try {
+        const res = await axios.delete(
+          `${DATABASE_URL}/volunteer/deleteVideo/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionId}`,
+            },
+          }
+        );
+        if (res.status === 200) {
+          alert("Video deleted successfully");
+          handleGetVideos(); // Refresh the list
+        } else {
+          alert("Failed to delete video");
+        }
+      } catch (error) {
+        console.error("Error deleting video:", error);
+        alert("An error occurred while deleting the video");
+      }
     }
   };
 
@@ -129,20 +148,32 @@ const VolunteerHome = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f5f0] to-[#ede4dc]">
-      {/* Existing header and other sections remain unchanged */}
-      <div className="flex flex-col h-full items-center gap-1.5 pt-[6.25rem] pb-[6.25rem] bg-accent">
-        <div className="bring_nature_to_those_who_can_t_walk text-[#ede4dc] font-['Poppins'] text-5xl font-medium leading-[136%]">
-          Bring nature to those who can’t walk
-        </div>
-        <div className="record_or_upload_videos_of_nature_and_share_them_with_clients__ask_questions_or_leave_a_message_anytime_ self-stretch text-[#ede4dc] text-center font-['Poppins'] text-xl font-medium leading-[136%]">
-          Record or upload videos of nature and share them with clients. Ask
-          questions or leave a message anytime!
-        </div>
-        <div className="how_to_help_as_a_volunteer text-[#dd9219] font-['Poppins'] text-2xl font-semibold leading-[136%]">
-          How to help as a Volunteer
+      <div className="relative w-full h-[86vh] flex items-center justify-center">
+        {/* Background Image */}
+        <img
+          src={Background}
+          alt="Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Overlay Filter */}
+        <div className="absolute inset-0 bg-[#2A341F] opacity-55"></div>
+
+        {/* Centered Text */}
+        <div className="relative text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#A6A643] mb-4">
+            Welcome to Virtual Walking!
+          </h1>
+          <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
+            Bring Nature to Those Who Can’t Walk
+          </p>
+          <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">
+            Capture, share, and upload calming nature videos to brighten the day
+            of seniors and people with dementia.
+          </p>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto relative px-4 sm:px-10 md:px-20 pt-20">
         {/* Updated Video Grid with Filters */}
         <VideoGridWithFilters
           videos={videos}
@@ -275,6 +306,7 @@ const VolunteerHome = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

@@ -1,32 +1,34 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RequestCard = () => (
-  <div className="w-full min-h-screen bg-[#515744] py-16 px-8">
-    <div className="max-w-[1280px] mx-auto">
+  <div className="w-full min-h-screen bg-[#515744] py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-20">
+    <div className="mx-auto">
       {/* Header Section */}
-      <div className="mb-16">
-        <div className="text-[#a6a643] font-['Poppins'] text-4xl font-semibold leading-tight tracking-tight mb-4">
+      <div className="mb-8 sm:mb-12 md:mb-16">
+        <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight tracking-tight mb-2 sm:mb-4">
           For Care Institutions and Home Users
         </div>
-        <div className="text-white font-['Poppins'] text-5xl font-semibold leading-tight tracking-tight max-w-[835px]">
+        <div className="text-white font-['Poppins'] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight max-w-[835px]">
           Unlimited access to nature walks. Try 7 days free. Cancel anytime.
         </div>
       </div>
 
-      {/* Main Content - Side by Side Layout */}
-      <div className="flex gap-8 items-start">
+      {/* Main Content - Side by Side on larger screens, stacked on mobile */}
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center lg:items-start">
         {/* Left Card - Care Institutions */}
-        <div className="flex-1 flex flex-col justify-center items-center gap-10 py-10 px-8 rounded-2xl bg-[#454c36]">
-          <div className="flex flex-col justify-center items-center gap-10 w-full max-w-[424px]">
-            <div className="flex flex-col items-center gap-5 w-full">
+        <div className="w-full lg:flex-1 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 px-4 sm:px-6 md:px-8 rounded-2xl bg-[#454c36]">
+          <div className="flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 w-full max-w-[424px]">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 md:gap-5 w-full">
               {/* Care Institutions Icon */}
               <div className="flex justify-center items-center">
                 <svg
-                  width={180}
-                  height={180}
+                  width={120}
+                  height={120}
                   viewBox="0 0 180 180"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-[180px] lg:h-[180px]"
                 >
                   <path
                     d="M113.777 155.134C113.777 168.867 102.969 180.001 89.6383 180.001C76.3073 180.001 65.5 168.867 65.5 155.134C65.5 141.4 76.3073 130.266 89.6383 130.266C102.969 130.266 113.777 141.4 113.777 155.134Z"
@@ -54,12 +56,12 @@ const RequestCard = () => (
                   />
                 </svg>
               </div>
-              <h3 className="text-white text-center font-['Poppins'] text-2xl font-medium leading-normal">
+              <h3 className="text-white text-center font-['Poppins'] text-xl sm:text-2xl font-medium leading-normal">
                 Virtueel Wandelen for Care Institutions
               </h3>
-              <div className="flex flex-col gap-4 w-full">
-                <div className="flex flex-col items-start gap-3">
-                  <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-3 sm:gap-4 w-full">
+                <div className="flex flex-col items-start gap-2 sm:gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -73,11 +75,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Easy Quotes – Quick form & personal visit
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -91,11 +93,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Well-Being – Calms and soothes
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -109,11 +111,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Connection – Sparks conversations
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -127,11 +129,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Flexible – Works on all devices
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -145,31 +147,34 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Simple Start – Minimal setup & full support
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-            <button className="px-8 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
-              Request a Quote
-            </button>
+            <Link to="/request-quote" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-lg sm:text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
+                Request a Quote
+              </button>
+            </Link>
           </div>
         </div>
 
         {/* Right Card - Subscribe Now Section */}
-        <div className="flex-1 flex flex-col justify-center items-center gap-10 py-10 px-8 rounded-2xl bg-[#454c36]">
-          <div className="flex flex-col justify-center items-center gap-10 w-full max-w-[424px]">
-            <div className="flex flex-col items-center gap-5 w-full">
+        <div className="w-full lg:flex-1 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 px-4 sm:px-6 md:px-8 rounded-2xl bg-[#454c36]">
+          <div className="flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 w-full max-w-[424px]">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 md:gap-5 w-full">
               {/* Home Users Icon */}
               <div className="flex justify-center items-center">
                 <svg
-                  width={180}
-                  height={180}
+                  width={120}
+                  height={120}
                   viewBox="0 0 141 100"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-[180px] lg:h-[180px]"
                 >
                   <path
                     d="M92.3706 1.92703C85.4343 1.92703 78.9227 3.34507 72.9772 6.03934C66.1825 2.49424 58.2553 0.367188 50.045 0.367188C22.7245 0.367188 0.5 22.6304 0.5 49.9985C0.5 77.3666 22.7245 99.6298 50.045 99.6298C58.2553 99.6298 65.8994 97.6446 72.6941 94.0995C78.7811 96.7937 85.4343 98.3536 92.3706 98.3536C118.983 98.3536 140.5 76.7994 140.5 50.1403C140.5 23.4812 118.983 1.92703 92.3706 1.92703ZM49.9034 96.6519C24.14 96.6519 3.18959 75.665 3.18959 49.8567C3.18959 24.0484 24.14 3.06146 49.9034 3.06146C56.9813 3.06146 63.6345 4.6213 69.5799 7.45737C54.4333 15.5402 44.0996 31.564 44.0996 49.9985C44.0996 68.2912 54.2917 84.1732 69.2968 92.3978C63.4929 95.0921 56.8397 96.6519 49.9034 96.6519Z"
@@ -177,12 +182,12 @@ const RequestCard = () => (
                   />
                 </svg>
               </div>
-              <h3 className="text-white text-center font-['Poppins'] text-2xl font-medium leading-normal">
+              <h3 className="text-white text-center font-['Poppins'] text-xl sm:text-2xl font-medium leading-normal">
                 Virtueel Wandelen at Home €12,99 per month
               </h3>
-              <div className="flex flex-col gap-4 w-full">
-                <div className="flex flex-col items-start gap-3">
-                  <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-3 sm:gap-4 w-full">
+                <div className="flex flex-col items-start gap-2 sm:gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -196,11 +201,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Affordable – €12.99/month unlimited access
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -214,11 +219,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       100+ Videos – New walks monthly
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -232,11 +237,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Personal – Request your favorite route
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -250,11 +255,11 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Impactful – Brings joy and relaxation
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <svg
                       width={16}
                       height={16}
@@ -268,16 +273,18 @@ const RequestCard = () => (
                         fill="#A6A643"
                       />
                     </svg>
-                    <span className="text-white font-['Poppins'] leading-normal">
+                    <span className="text-white font-['Poppins'] text-sm sm:text-base leading-normal">
                       Easy – Nature at home in one click
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-            <button className="px-8 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
-              Subscribe Now
-            </button>
+            <Link to="/subscribe" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-lg sm:text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
+                Subscribe Now
+              </button>
+            </Link>
           </div>
         </div>
       </div>
