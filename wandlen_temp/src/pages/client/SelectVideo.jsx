@@ -16,7 +16,7 @@ const SelectVideo = () => {
   const handleGetVideos = async () => {
     try {
       const res = await axios.get(
-        `${DATABASE_URL}/client/get-all-videos/1/10"`,
+        `${DATABASE_URL}/client/get-all-videos/1/10`,
         {
           headers: {
             Authorization: `Bearer ${sessionId}`,
@@ -64,7 +64,7 @@ const SelectVideo = () => {
           </p>
         </div>
       </div>
-      
+
       <div className="mx-auto relative px-4 sm:px-10 md:px-20 pt-20">
         {/* Video Grid with Filters */}
         <VideoGridWithFilters
@@ -72,8 +72,9 @@ const SelectVideo = () => {
           onVideoSelect={handleVideoSelect}
           title="Your Favorite Videos"
           subtitle="Easily find and enjoy the videos you love most, anytime."
+          customFilterOptions={null}
           showFilters={true}
-          showStats={false}
+          showStats={true}
           isClientView={true}
           emptyStateMessage="No nature videos available at the moment."
           showResultsCount={true}

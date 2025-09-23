@@ -249,7 +249,7 @@ const VolunteerCreateVideo = () => {
         url: videoUrl, // Fixed: video URL
         location: formData.location,
         description: formData.description,
-        session: formData.session,
+        season: formData.season,
         nature: formData.natureType,
         sound: formData.soundStimuli,
         animals: formData.animals,

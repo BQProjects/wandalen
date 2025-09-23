@@ -23,7 +23,7 @@ const VideoSchema = new Schema(
     description: {
       type: String,
     },
-    session: {
+    season: {
       type: String,
     },
     nature: {

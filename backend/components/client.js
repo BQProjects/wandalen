@@ -31,6 +31,7 @@ const clientLogin = async (req, res) => {
     const store = new smsStoreModel({
       email,
       otp,
+      who: client._id, // Added: Store the client ID for OTP verification
     });
 
     await store.save();
@@ -38,7 +39,7 @@ const clientLogin = async (req, res) => {
     // TODO: Send OTP via email/SMS (use org.contactPersonEmail or org.email)
     console.log(`OTP for ${email}: ${otp}, IP: ${ip}`);
 
-    res.json({ message: "OTP sent to your email", ip , otp}); // Send OTP in response for testing (remove in production)
+    res.json({ message: "OTP sent to your email", ip, otp }); // Send OTP in response for testing (remove in production)
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -236,6 +237,32 @@ const addComment = async (req, res) => {
   }
 };
 
+const updateAccountInfo = async (req, res) => {
+  const clientId = req.params.clientId;
+  const { firstName, lastName, phoneNo, address, postal, country, company } =
+    req.body; // Only allow safe fields to update
+
+  try {
+    const client = await ClientModel.findById(clientId);
+    if (!client) return res.status(404).json({ message: "Client not found" });
+
+    // Update only provided fields
+    if (firstName !== undefined) client.firstName = firstName;
+    if (lastName !== undefined) client.lastName = lastName;
+    if (phoneNo !== undefined) client.phoneNo = phoneNo;
+    if (address !== undefined) client.address = address;
+    if (postal !== undefined) client.postal = postal;
+    if (country !== undefined) client.country = country;
+    if (company !== undefined) client.company = company;
+
+    await client.save();
+    res.json({ message: "Profile updated successfully", client });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -250,4 +277,5 @@ module.exports = {
   addView,
   addLike,
   addComment,
+  updateAccountInfo,
 };

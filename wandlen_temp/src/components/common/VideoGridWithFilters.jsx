@@ -146,7 +146,7 @@ const VideoCard = ({
           onMouseLeave={(e) => e.target.pause()}
         />
         <div className="absolute top-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
-          {duration}
+          {duration || "N/A"} {/* Fallback if duration is null */}
         </div>
         {isClientView && (
           <div className="absolute top-2 left-2 bg-[#dd9219] text-white px-2 py-1 rounded text-sm font-medium">
@@ -183,7 +183,7 @@ const VideoCard = ({
               <span>{views} views</span>
               <div className="flex items-center gap-1">
                 <HeartIcon />
-                <span>{likes}</span>
+                <span>{likes} likes</span> {/* Added "likes" for clarity */}
               </div>
             </div>
             {/* Edit and Delete buttons for volunteers */}
@@ -311,20 +311,23 @@ const VideoGridWithFilters = ({
   const [activeFilters, setActiveFilters] = useState({});
   const [openDropdown, setOpenDropdown] = useState(null);
 
+  // Get the current user ID from localStorage
+  const userId = localStorage.getItem("userId");
+
+  // Updated to match database values (lowercase for consistency), and conditionally add "Uploaded By" for volunteers only
   const defaultFilterOptions = {
-    Lengte: [
-      "0 - 15 minuten",
-      "15 - 30 minuten",
-      "30 - 45 minuten",
-      "45 - 60 minuten",
-      "+ 60 minuten",
-    ],
-    Locatie: ["Hellendoorn", "Lemele", "Lemelerveld", "Luttenberg", "Raalte"],
-    Seizoen: ["Lente", "Zomer", "Herfst", "Winter"],
-    Natuurtype: ["Bos", "Heide", "Park", "Strand", "Duinen"],
-    Dieren: ["Vogels", "Koeien", "Paarden", "Schapen", "Eekhoorns"],
-    Geluidsprikkels: ["Rustgevend", "Wind", "Water", "Vogels"],
+    Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"], // Keep as display labels for UI
+    Locatie: ["forest", "beach", "mountain", "park", "garden"], // Changed to lowercase to match database
+    Seizoen: ["spring", "summer", "autumn", "winter"], // Changed to lowercase
+    Natuurtype: ["woodland", "wetland", "grassland", "aquatic"], // Changed to lowercase
+    Dieren: ["birds", "mammals", "insects", "fish"], // Changed to lowercase
+    Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Changed to lowercase
   };
+
+  // Only add "Uploaded By" filter for volunteers (when not client view)
+  if (!isClientView) {
+    defaultFilterOptions["Uploaded By"] = ["Me"];
+  }
 
   const filterOptions = customFilterOptions || defaultFilterOptions;
 
@@ -342,72 +345,58 @@ const VideoGridWithFilters = ({
     setOpenDropdown(null);
   };
 
-  // Filtering functions
+  // Add a mapping for duration filters (display label -> stored value)
+  const durationMap = {
+    "Short (0-5 min)": "short",
+    "Medium (5-15 min)": "medium",
+    "Long (15+ min)": "long",
+  };
+
+  // Updated filtering functions to use correct field names from database/API
   const matchesDuration = (video, durationFilters) => {
     if (!durationFilters || durationFilters.length === 0) return true;
-    const duration = parseInt(video.duration);
-    return durationFilters.some((filter) => {
-      switch (filter) {
-        case "0 - 15 minuten":
-          return duration <= 15;
-        case "15 - 30 minuten":
-          return duration > 15 && duration <= 30;
-        case "30 - 45 minuten":
-          return duration > 30 && duration <= 45;
-        case "45 - 60 minuten":
-          return duration > 45 && duration <= 60;
-        case "+ 60 minuten":
-          return duration > 60;
-        default:
-          return true;
-      }
-    });
+    if (!video.duration) return false;
+    return durationFilters.some(
+      (filter) => video.duration === durationMap[filter]
+    );
   };
 
   const matchesLocation = (video, locationFilters) => {
     if (!locationFilters || locationFilters.length === 0) return true;
-    return locationFilters.some((location) =>
-      video.location.toLowerCase().includes(location.toLowerCase())
-    );
+    if (!video.location) return false;
+    return locationFilters.some((location) => video.location === location); // Exact match since both are lowercase
   };
 
   const matchesSeason = (video, seasonFilters) => {
     if (!seasonFilters || seasonFilters.length === 0) return true;
-    return seasonFilters.some((season) =>
-      video.tags.some((tag) => tag.toLowerCase().includes(season.toLowerCase()))
-    );
+    if (!video.season) return false;
+    return seasonFilters.some((season) => video.season === season); // Exact match
   };
 
   const matchesNatureType = (video, natureTypeFilters) => {
     if (!natureTypeFilters || natureTypeFilters.length === 0) return true;
-    return natureTypeFilters.some(
-      (nature) =>
-        video.tags.some((tag) =>
-          tag.toLowerCase().includes(nature.toLowerCase())
-        ) || video.location.toLowerCase().includes(nature.toLowerCase())
-    );
+    if (!video.nature) return false; // Use 'nature' from database
+    return natureTypeFilters.some((nature) => video.nature === nature); // Exact match
   };
 
   const matchesAnimals = (video, animalFilters) => {
     if (!animalFilters || animalFilters.length === 0) return true;
-    return animalFilters.some((animal) =>
-      video.tags.some((tag) => tag.toLowerCase().includes(animal.toLowerCase()))
-    );
+    if (!video.animals) return false;
+    return animalFilters.some((animal) => video.animals === animal); // Exact match
   };
 
   const matchesSound = (video, soundFilters) => {
     if (!soundFilters || soundFilters.length === 0) return true;
-    return soundFilters.some((sound) =>
-      video.tags.some(
-        (tag) =>
-          tag.toLowerCase().includes(sound.toLowerCase()) ||
-          (sound === "Rustgevend" &&
-            (tag.toLowerCase().includes("rustig") ||
-              tag.toLowerCase().includes("briesje"))) ||
-          (sound === "Water" && tag.toLowerCase().includes("rivier")) ||
-          (sound === "Vogels" && tag.toLowerCase().includes("vogels"))
-      )
-    );
+    if (!video.sound) return false; // Use 'sound' from database
+    return soundFilters.some((sound) => video.sound === sound); // Exact match
+  };
+
+  // New filtering function for "Uploaded By"
+  const matchesUploadedBy = (video, uploadedByFilters) => {
+    if (!uploadedByFilters || uploadedByFilters.length === 0) return true;
+    if (!video.uploadedBy) return false;
+    // Check if "Me" is selected and video.uploadedBy matches the current userId
+    return uploadedByFilters.includes("Me") && video.uploadedBy === userId;
   };
 
   // Filter videos based on active filters
@@ -418,7 +407,8 @@ const VideoGridWithFilters = ({
       matchesSeason(video, activeFilters.Seizoen) &&
       matchesNatureType(video, activeFilters.Natuurtype) &&
       matchesAnimals(video, activeFilters.Dieren) &&
-      matchesSound(video, activeFilters.Geluidsprikkels)
+      matchesSound(video, activeFilters.Geluidsprikkels) &&
+      matchesUploadedBy(video, activeFilters["Uploaded By"]) // Add the new filter
     );
   });
 
@@ -497,8 +487,8 @@ const VideoGridWithFilters = ({
                 location={video.location}
                 thumbnail={video.imgUrl}
                 tags={video.tags || []}
-                views={video.views || 320}
-                likes={video.likes || 123}
+                views={video.views ?? 0}
+                likes={video.likes ?? 0}
                 onSelect={() => onVideoSelect(video._id || video.id)}
                 showStats={showStats}
                 isClientView={isClientView}

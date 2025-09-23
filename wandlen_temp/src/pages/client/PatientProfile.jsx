@@ -10,51 +10,83 @@ const PatientProfile = () => {
   const sessionId = localStorage.getItem("sessionId");
   const clientId = localStorage.getItem("userId");
   const [profileData, setProfileData] = useState({
-    fullName: "vbfgbhngfhn",
+    fullName: "",
     organizationName: "",
     contactEmail: "",
     phone: "",
     address: "",
     accountEmail: "",
-    password: "",
+    password: "••••••••",
     currentPlan: "",
     validUntil: "",
     profilePic: "",
   });
+  const [originalData, setOriginalData] = useState({});
 
   const handleInputChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
   };
 
-  const handleSave = () => {
-    // TODO: Integrate with backend API
-    console.log("Saving patient profile:", profileData);
-    setIsEditing(false);
+  const handleSave = async () => {
+    if (!clientId) {
+      alert("User not logged in. Please log in again.");
+      return;
+    }
+    try {
+      const updatePayload = {
+        firstName: profileData.fullName.split(" ")[0] || "",
+        lastName: profileData.fullName.split(" ").slice(1).join(" ") || "",
+        phoneNo: profileData.phone,
+        address: profileData.address,
+        company: profileData.organizationName,
+      };
+      const res = await axios.put(
+        `${DATABASE_URL}/client/update-account/${clientId}`,
+        updatePayload,
+        { headers: { Authorization: `Bearer ${sessionId}` } }
+      );
+      alert("Profile updated successfully!");
+      setOriginalData({ ...profileData });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   const handleCancel = () => {
-    // Reset to original values if needed
+    setProfileData({ ...originalData });
     setIsEditing(false);
   };
 
   const getProfileData = async () => {
+    if (!clientId) {
+      alert("User not logged in. Please log in again.");
+      return;
+    }
     try {
       const res = await axios.get(
         `${DATABASE_URL}/client/get-account/${clientId}`,
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
-      setProfileData({
-        fullName: res.data.firstName,
-        organizationName: res.data.organizationName,
-        contactEmail: res.data.email,
-        phone: res.data.phoneNo,
-        address: res.data.address,
-        accountEmail: res.data.email,
-        password: res.data.password,
-        currentPlan: res.data.subscriptionType,
-        validUntil: res.data.endDate,
-        profilePic: res.data.profilePic || UserIcon,
-      });
+      const data = {
+        fullName: `${res.data.client.firstName || ""} ${
+          res.data.client.lastName || ""
+        }`.trim(),
+        organizationName: res.data.client.company || "",
+        contactEmail: res.data.client.email,
+        phone: res.data.client.phoneNo || "",
+        address: res.data.client.address || "",
+        accountEmail: res.data.client.email,
+        password: "••••••••", // Always masked
+        currentPlan: res.data.client.subscriptionType || "",
+        validUntil: res.data.client.endDate
+          ? new Date(res.data.client.endDate).toLocaleDateString()
+          : "",
+        profilePic: res.data.client.profilePic || UserIcon,
+      };
+      setProfileData(data);
+      setOriginalData(data);
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
