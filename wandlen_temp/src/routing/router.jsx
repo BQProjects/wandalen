@@ -76,8 +76,8 @@ export const router = createBrowserRouter([
         element: <Aran />, // Landing page
       },
       {
-        path: "ourapproach",
-        element: <OurApproach />, // Our Approach page
+        path: "ourVission",
+        element: <OurApproach />, // Our Vision page
       },
       {
         path: "become-volunteer",

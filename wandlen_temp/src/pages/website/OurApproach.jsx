@@ -24,7 +24,7 @@ const OurApproach = () => {
         {/* Title */}
         <div className="inline-flex flex-col items-start gap-4 px-4 sm:px-10 md:px-20 mt-10">
           <div className="text-primary font-[Poppins] text-xl md:text-[2rem] font-semibold leading-[136%]">
-            Our Approach
+            Our Vission
           </div>
           <div className="w-full md:w-[654px] text-brown font-[Poppins] text-2xl sm:text-3xl md:text-5xl font-semibold leading-[136%] text-center md:text-left">
             Making Nature Accessible, Anywhere

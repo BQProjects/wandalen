@@ -96,17 +96,16 @@ const WebsiteHeader = () => {
           </Link>
 
           <Link
-            to="/ourapproach"
+            to="/ourVission"
             className="flex flex-col justify-center items-start"
-            onMouseEnter={() => setHoveredItem("ourapproach")}
+            onMouseEnter={() => setHoveredItem("ourVission")}
             onMouseLeave={() => setHoveredItem(null)}
-            onClick={() => setActiveItem("ourapproach")}
+            onClick={() => setActiveItem("ourVission")}
           >
             <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
               Our Vission
             </div>
-            {(hoveredItem === "ourapproach" ||
-              activeItem === "ourapproach") && (
+            {(hoveredItem === "ourVission" || activeItem === "ourVission") && (
               <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
             )}
           </Link>
@@ -244,11 +243,11 @@ const WebsiteHeader = () => {
               Welcome
             </Link>
             <Link
-              to="/ourapproach"
+              to="/ourVission"
               className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Our approach
+              Our Vision
             </Link>
 
             {/* Role-based Navigation */}
