@@ -12,7 +12,7 @@ const Login = () => {
   });
   const [selectedRole, setSelectedRole] = useState("");
   const { DATABASE_URL } = useContext(DatabaseContext);
-  const { login, setUserType, setSessionId } = useContext(AuthContext); // Added missing context
+  const { login, setUserType, setSessionId } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -88,117 +88,152 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-[#ede4dc]">
-      <div className="grid grid-cols-2 min-h-screen">
-        <div className="flex justify-center items-center py-8 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+        {/* Form Section */}
+        <div className="flex justify-center items-center py-8 px-4 sm:px-6 md:px-8 lg:px-12 order-2 lg:order-1">
           <form
             onSubmit={handleSubmit}
-            className="inline-flex flex-col justify-center items-center gap-5"
+            className="w-full max-w-md mx-auto flex flex-col justify-center gap-6 sm:gap-8"
           >
-            <div className="flex flex-col items-start gap-10">
-              <div className="flex flex-col items-start">
-                <div className="text-[#381207] font-['Poppins'] text-[2.625rem] font-semibold leading-[normal]">
+            <div className="flex flex-col gap-6 sm:gap-8">
+              <div className="text-center lg:text-left">
+                <h1 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2 sm:mb-3">
                   Welcome back!
-                </div>
-                <div className="text-[#7a756e] font-['Poppins'] text-lg leading-[normal]">
+                </h1>
+                <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base md:text-lg">
                   Please select your role and log in.
-                </div>
+                </p>
               </div>
-              <div className="flex flex-col items-start gap-5">
-                <div className="flex flex-col items-start gap-2">
-                  <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+
+              <div className="flex flex-col gap-4 sm:gap-5">
+                {/* Email Field */}
+                <div className="flex flex-col gap-1 sm:gap-2">
+                  <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
                     Email
-                  </div>
+                  </label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="flex items-center gap-2.5 pl-[0.9375rem] pr-[0.9375rem] p-2 w-[22.5rem] h-11 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#b3b1ac] font-['Poppins'] leading-[normal] focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
+                    placeholder="Enter your email"
                   />
                 </div>
-                <div className="flex flex-col items-start gap-2">
-                  <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+
+                {/* Password Field */}
+                <div className="flex flex-col gap-1 sm:gap-2">
+                  <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
                     Password
-                  </div>
+                  </label>
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="flex items-center gap-2.5 pl-[0.9375rem] pr-[0.9375rem] p-2 w-[22.5rem] h-11 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#b3b1ac] font-['Poppins'] leading-[normal] focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
+                    placeholder="Enter your password"
                   />
                 </div>
-                <div className="flex flex-row justify-between items-center w-[22.5rem]">
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="caregiver"
-                      checked={selectedRole === "caregiver"}
-                      onChange={handleRoleChange}
-                      required
-                    />
-                    <label
-                      htmlFor="caregiver"
-                      className="text-[#381207] font-['Poppins'] font-medium leading-[normal]"
-                    >
-                      Caregiver
-                    </label>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="volunteer"
-                      checked={selectedRole === "volunteer"}
-                      onChange={handleRoleChange}
-                      required
-                    />
-                    <label
-                      htmlFor="volunteer"
-                      className="text-[#381207] font-['Poppins'] font-medium leading-[normal]"
-                    >
-                      Volunteer
-                    </label>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="organization"
-                      checked={selectedRole === "organization"}
-                      onChange={handleRoleChange}
-                      required
-                    />
-                    <label
-                      htmlFor="organization"
-                      className="text-[#381207] font-['Poppins'] font-medium leading-[normal]"
-                    >
-                      Organization
-                    </label>
+
+                {/* Role Selection */}
+                <div className="flex flex-col gap-2 sm:gap-3">
+                  <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
+                    Select your role
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+                    <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg">
+                      <input
+                        type="radio"
+                        id="caregiver"
+                        name="role"
+                        value="caregiver"
+                        checked={selectedRole === "caregiver"}
+                        onChange={handleRoleChange}
+                        required
+                        className="w-4 h-4 accent-[#5b6502]"
+                      />
+                      <label
+                        htmlFor="caregiver"
+                        className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
+                      >
+                        Caregiver
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg ">
+                      <input
+                        type="radio"
+                        id="volunteer"
+                        name="role"
+                        value="volunteer"
+                        checked={selectedRole === "volunteer"}
+                        onChange={handleRoleChange}
+                        required
+                        className="w-4 h-4 accent-[#5b6502]"
+                      />
+                      <label
+                        htmlFor="volunteer"
+                        className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
+                      >
+                        Volunteer
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg">
+                      <input
+                        type="radio"
+                        id="organization"
+                        name="role"
+                        value="organization"
+                        checked={selectedRole === "organization"}
+                        onChange={handleRoleChange}
+                        required
+                        className="w-4 h-4 accent-[#5b6502]"
+                      />
+                      <label
+                        htmlFor="organization"
+                        className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
+                      >
+                        Organization
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-start gap-2.5">
-              <div className="flex flex-col items-center gap-2.5">
-                <button
-                  type="submit"
-                  className="flex justify-center items-center pt-[0.6875rem] pb-2 px-0 w-[22.5rem] h-[2.8125rem] rounded-lg bg-[#5b6502] text-white text-center font-['Poppins'] font-medium leading-[normal] hover:bg-[#4a5201] transition"
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              className="w-full py-2.5 sm:py-3 px-4 rounded-lg bg-[#5b6502] text-white text-center font-['Poppins'] text-sm sm:text-base md:text-lg font-medium hover:bg-[#4a5201] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-offset-2"
+            >
+              Log in
+            </button>
+
+            {/* Sign Up Link */}
+            <div className="text-center mt-4">
+              <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="text-[#5b6502] font-medium hover:underline"
                 >
-                  Log in
-                </button>
-              </div>
+                  Sign up
+                </Link>
+              </p>
             </div>
           </form>
         </div>
-        <div className="flex justify-center items-center">
+
+        {/* Image Section */}
+        <div className="h-[30vh] sm:h-[40vh] lg:h-screen order-1 lg:order-2">
           <img
             src={LoginImg}
-            alt="Login Image"
-            className="w-full h-[100vh] object-cover"
+            alt="Login"
+            className="w-full h-full object-cover"
           />
         </div>
       </div>

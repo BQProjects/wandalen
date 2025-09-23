@@ -201,129 +201,104 @@ const VolunteerCreateVideo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editMode) {
-      const data1 = new FormData();
-      data1.append("file", videoFile);
-      data1.append("upload_preset", "wandelen"); // from Cloudinary
-      data1.append("cloud_name", "dojwaepbj");
 
-      const res1 = await fetch(
-        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-        {
-          method: "POST",
-          body: data1,
-        }
-      );
+    let videoUrl = formData.url; // Existing or new
+    let imgUrl = formData.imgUrl; // Existing or new
 
-      const data2 = new FormData();
-      data2.append("file", coverImage);
-      data2.append("upload_preset", "wandelen"); // from Cloudinary
-      data2.append("cloud_name", "dojwaepbj");
+    try {
+      // Upload video file only if new
+      if (videoFile) {
+        const data1 = new FormData();
+        data1.append("file", videoFile);
+        data1.append("upload_preset", "wandelen");
+        data1.append("cloud_name", "dojwaepbj");
 
-      const res2 = await fetch(
-        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-        {
-          method: "POST",
-          body: data2,
-        }
-      );
-
-      const result1 = await res1.json();
-      const result2 = await res2.json();
-
-      console.log(result1, result2);
-      const userId = localStorage.getItem("userId");
-
-      const res = await axios.post(
-        `${DATABASE_URL}/volunteer/editVideoInfo/${editMode}`,
-        {
-          title: formData.title,
-          url: result2.secure_url,
-          location: formData.location,
-          description: formData.description,
-          session: formData.session,
-          nature: formData.natureType,
-          sound: formData.soundStimuli,
-          animals: formData.animals,
-          tags: formData.tags,
-          imgUrl: result1.secure_url,
-          duration: formData.duration,
-          id: userId,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionId}`, // 👈 fix here
-          },
-        }
-      );
-    } else {
-      // TODO: Integrate with backend API for creating video
-      console.log("Creating video:", { ...formData, coverImage, videoFile });
-      // Example: createVideo(formDataObj).then(() => navigate('/volunteer'));
-
-      const data1 = new FormData();
-      data1.append("file", videoFile);
-      data1.append("upload_preset", "wandelen"); // from Cloudinary
-      data1.append("cloud_name", "dojwaepbj");
-
-      const res1 = await fetch(
-        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-        {
-          method: "POST",
-          body: data1,
-        }
-      );
-
-      const data2 = new FormData();
-      data2.append("file", coverImage);
-      data2.append("upload_preset", "wandelen"); // from Cloudinary
-      data2.append("cloud_name", "dojwaepbj");
-
-      const res2 = await fetch(
-        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-        {
-          method: "POST",
-          body: data2,
-        }
-      );
-
-      const result1 = await res1.json();
-      const result2 = await res2.json();
-
-      console.log(result1, result2);
-      const userId = localStorage.getItem("userId");
-
-      const res = await axios.post(
-        `${DATABASE_URL}/volunteer/uploadVideos`,
-        {
-          title: formData.title,
-          url: result2.secure_url,
-          location: formData.location,
-          description: formData.description,
-          session: formData.session,
-          nature: formData.natureType,
-          sound: formData.soundStimuli,
-          animals: formData.animals,
-          tags: formData.tags,
-          imgUrl: result1.secure_url,
-          duration: formData.duration,
-          id: userId,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionId}`, // 👈 fix here
-          },
-        }
-      );
-      console.log(res);
-      if (res.status === 201) {
-        alert("Video uploaded successfully");
-        navigate("/volunteer");
-      } else {
-        alert("Video upload failed");
+        const res1 = await fetch(
+          "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+          {
+            method: "POST",
+            body: data1,
+          }
+        );
+        const result1 = await res1.json();
+        if (!res1.ok) throw new Error("Video upload failed");
+        videoUrl = result1.secure_url; // Correct: video URL
       }
+
+      // Upload cover image only if new
+      if (coverImage) {
+        const data2 = new FormData();
+        data2.append("file", coverImage);
+        data2.append("upload_preset", "wandelen");
+        data2.append("cloud_name", "dojwaepbj");
+
+        const res2 = await fetch(
+          "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+          {
+            method: "POST",
+            body: data2,
+          }
+        );
+        const result2 = await res2.json();
+        if (!res2.ok) throw new Error("Cover upload failed");
+        imgUrl = result2.secure_url; // Correct: cover URL
+      }
+
+      const payload = {
+        title: formData.title,
+        url: videoUrl, // Fixed: video URL
+        location: formData.location,
+        description: formData.description,
+        session: formData.session,
+        nature: formData.natureType,
+        sound: formData.soundStimuli,
+        animals: formData.animals,
+        tags: formData.tags,
+        imgUrl: imgUrl, // Fixed: cover URL
+        duration: formData.duration,
+        id: localStorage.getItem("userId"),
+      };
+
+      if (editMode) {
+        const res = await axios.put(
+          // Changed from post to put
+          `${DATABASE_URL}/volunteer/editVideoInfo/${videoId}`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${sessionId}`,
+            },
+          }
+        );
+        if (res.status === 200) {
+          alert("Video updated successfully");
+          navigate("/volunteer");
+        } else {
+          alert("Video update failed");
+        }
+      } else {
+        // Create logic (unchanged, but ensure URLs are correct)
+        const res = await axios.post(
+          `${DATABASE_URL}/volunteer/uploadVideos`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${sessionId}`,
+            },
+          }
+        );
+        if (res.status === 201) {
+          alert("Video uploaded successfully");
+          navigate("/volunteer");
+        } else {
+          alert("Video upload failed");
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 

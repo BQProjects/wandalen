@@ -131,19 +131,6 @@ const VideoCard = ({
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
 
-  const handleDelete = async (videoId) => {
-    try {
-      const res = await axios.delete(
-        `${DATABASE_URL}/volunteer/deleteVideo/${videoId}`,
-        {
-          headers: { Authorization: sessionId },
-        }
-      );
-    } catch (error) {
-      console.error("Error deleting video:", error);
-    }
-  };
-
   return (
     <div
       className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105"
@@ -215,8 +202,7 @@ const VideoCard = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDelete(videoId);
-                    handleDelete(videoId);
+                    onDelete(videoId); // Only call onDelete (now handles API and refresh)
                   }}
                   className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
                   title="Delete video"

@@ -88,10 +88,27 @@ const VolunteerHome = () => {
     });
   };
 
-  const handleVideoDelete = (id) => {
-    // Show confirmation dialog and delete video
+  const handleVideoDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this video?")) {
-      console.log("Deleting video with ID:", id);
+      try {
+        const res = await axios.delete(
+          `${DATABASE_URL}/volunteer/deleteVideo/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionId}`,
+            },
+          }
+        );
+        if (res.status === 200) {
+          alert("Video deleted successfully");
+          handleGetVideos(); // Refresh the list
+        } else {
+          alert("Failed to delete video");
+        }
+      } catch (error) {
+        console.error("Error deleting video:", error);
+        alert("An error occurred while deleting the video");
+      }
     }
   };
 

@@ -295,25 +295,11 @@ const WebsiteHeader = () => {
                 </Link>
                 <div className="flex flex-col items-center gap-2">
                   <Link
-                    to="/client/login"
+                    to="/login"
                     className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Client Login
-                  </Link>
-                  <Link
-                    to="/organization/login"
-                    className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Organization Login
-                  </Link>
-                  <Link
-                    to="/volunteer/login"
-                    className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Volunteer Login
+                    Login
                   </Link>
                 </div>
               </>
