@@ -1,61 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const ManageClients = () => {
-  const [clients, setClients] = useState([
-    {
-      id: 1,
-      fullName: "John Lee",
-      phone: "+31 6 1234 5678",
-      email: "johnlee",
-      password: "VM12ops#u5",
-      checked: false,
-    },
-    {
-      id: 2,
-      fullName: "Mark Ham",
-      phone: "+31 6 1234 5678",
-      email: "markham",
-      password: "VM34ops#u6",
-      checked: true,
-    },
-    {
-      id: 3,
-      fullName: "Sandy Rue",
-      phone: "+31 6 1234 5678",
-      email: "sandyrue",
-      password: "VM56ops#u7",
-      checked: false,
-    },
-    {
-      id: 4,
-      fullName: "Lisa Mona",
-      phone: "+31 6 1234 5678",
-      email: "lisamona",
-      password: "VM78ops#u8",
-      checked: false,
-    },
-    {
-      id: 5,
-      fullName: "Betty Walt",
-      phone: "+31 6 1234 5678",
-      email: "bettywalt",
-      password: "VM91ops#u9",
-      checked: false,
-    },
-    {
-      id: 6,
-      fullName: "Tom Harris",
-      phone: "+31 6 1234 5678",
-      email: "tomharris",
-      password: "VM11ops#u4",
-      checked: false,
-    },
-  ]);
+  const [clients, setClients] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+
+  const getAllClients = async () => {
+    try {
+      const res = await axios.get(
+        `${DATABASE_URL}/org/getClients/${sessionId}`
+      );
+      setClients(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllClients();
+  }, []);
 
   const [newClient, setNewClient] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    phoneNo: "",
+    password: "",
   });
 
   const [activeTab, setActiveTab] = useState("clients");
@@ -64,21 +37,25 @@ const ManageClients = () => {
     setNewClient({ ...newClient, [e.target.name]: e.target.value });
   };
 
-  const handleAddClient = () => {
-    if (newClient.firstName && newClient.lastName && newClient.email) {
-      const fullName = `${newClient.firstName} ${newClient.lastName}`;
-      const newClientData = {
-        id: clients.length + 1,
-        fullName,
-        phone: "+31 6 1234 5678", // Placeholder
+  const handleAddClient = async () => {
+    try {
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const res = await axios.post(`${DATABASE_URL}/org/addClient`, {
+        firstName: newClient.firstName,
+        lastName: newClient.lastName,
         email: newClient.email,
-        password: `VM${Math.floor(Math.random() * 100)}ops#u${Math.floor(
-          Math.random() * 10
-        )}`, // Generated password
-        checked: false,
-      };
-      setClients([...clients, newClientData]);
-      setNewClient({ firstName: "", lastName: "", email: "" });
+        password: randomPassword,
+        orgId: sessionId,
+        phoneNo: newClient.phoneNo,
+      });
+
+      if (res.status === 201) {
+        alert("Client added successfully");
+        setNewClient({ fullName: "", email: "", phoneNo: "", password: "" });
+        setClients([...clients, res.data.newClient]);
+      }
+    } catch (error) {
+      console.error("Error adding client:", error);
     }
   };
 
@@ -164,21 +141,23 @@ const ManageClients = () => {
                       <input
                         type="checkbox"
                         checked={client.checked}
-                        onChange={() => handleCheckboxChange(client.id)}
+                        onChange={() => handleCheckboxChange(client._id)}
                         className="w-4 h-4"
                       />
                     </td>
                     <td className="px-6 py-4 text-[#381207]">
-                      {client.fullName}
+                      {client.firstName} {client.lastName}
                     </td>
-                    <td className="px-6 py-4 text-[#381207]">{client.phone}</td>
+                    <td className="px-6 py-4 text-[#381207]">
+                      {client.phoneNo}
+                    </td>
                     <td className="px-6 py-4 text-[#381207]">{client.email}</td>
                     <td className="px-6 py-4 text-[#381207]">
-                      {client.password}
+                      {client.plainPassword}
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => handleDeleteClient(client.id)}
+                        onClick={() => handleDeleteClient(client._id)}
                         className="text-[#381207] hover:text-red-600 transition"
                       >
                         <svg
@@ -229,7 +208,7 @@ const ManageClients = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2">
-                Last Name
+                last Name
               </label>
               <input
                 type="text"
@@ -237,7 +216,7 @@ const ManageClients = () => {
                 value={newClient.lastName}
                 onChange={handleInputChange}
                 className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="Last Name"
+                placeholder="First Name"
               />
             </div>
             <div>
@@ -248,6 +227,19 @@ const ManageClients = () => {
                 type="email"
                 name="email"
                 value={newClient.email}
+                onChange={handleInputChange}
+                className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                placeholder="Last Name"
+              />
+            </div>
+            <div>
+              <label className="block text-[#7a756e] font-medium mb-2">
+                Phone No
+              </label>
+              <input
+                type="text"
+                name="phoneNo"
+                value={newClient.phoneNo}
                 onChange={handleInputChange}
                 className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
                 placeholder="Email"

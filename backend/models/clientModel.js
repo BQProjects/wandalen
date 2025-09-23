@@ -15,6 +15,9 @@ const ClientSchema = new Schema(
       required: true,
       select: false,
     },
+    plainPassword: {
+      type: String,
+    },
     paymentMethod: {
       type: String,
     },

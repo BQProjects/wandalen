@@ -3,6 +3,7 @@ const OrgModel = require("../models/orgModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const smsStoreModel = require("../models/smsStoreModel");
+const ClientModel = require("../models/clientModel");
 
 const orgLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -91,7 +92,7 @@ const orgSignUp = async (req, res) => {
 };
 
 const addClient = async (req, res) => {
-  const { firstName, lastName, email, password, endDate, orgId } = req.body;
+  const { firstName, lastName, email, password, orgId, phoneNo } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -99,11 +100,12 @@ const addClient = async (req, res) => {
       firstName,
       lastName,
       email,
+      phoneNo: phoneNo,
       password: hashedPassword,
+      plainPassword: password,
       orgId,
       subscriptionType: "org",
       startDate: new Date(),
-      endDate: new Date(endDate),
     });
     await newClient.save();
 
@@ -161,8 +163,8 @@ const deleteClient = async (req, res) => {
 const getClients = async (req, res) => {
   const { orgId } = req.params;
   try {
-    const clients = await ClientModel.find({ orgId });
-    res.json({ clients });
+    const clients = await ClientModel.find({ orgId: orgId }).populate("orgId");
+    res.json(clients);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
