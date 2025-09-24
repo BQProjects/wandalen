@@ -23,7 +23,8 @@ const AdminDashboard = () => (
           Track new requests and manage your responses seamlessly.
         </p>
       </div>
-      <button className="bg-[#a6a643] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#959837] transition-colors">
+      <button className="bg-[#a6a643] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#959837] transition-colors"
+      onClick={() => { window.location.href = "/admin/manage"; }}>
         Manage Quotes
       </button>
     </div>

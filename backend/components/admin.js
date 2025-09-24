@@ -102,12 +102,77 @@ const getallVideoRequest = async (req, res) => {
 };
 
 const getAllvideos = async (req, res) => {
+  const {
+    page = 1,
+    limit = 9,
+    search = "",
+    duration,
+    location,
+    season,
+    nature,
+    animals,
+    sound,
+  } = req.query;
   try {
-    const videos = await VideoModel.find().sort({ createdAt: -1 });
-    return res.status(200).json(videos);
+    // Build filter query object
+    const query = {};
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+    if (duration) {
+      const durationFilters = Array.isArray(duration) ? duration : [duration];
+      const durationConditions = [];
+      durationFilters.forEach((d) => {
+        if (d === "short" || d.includes("Short")) {
+          durationConditions.push({ duration: { $lte: 5 } });
+        } else if (d === "medium" || d.includes("Medium")) {
+          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
+        } else if (d === "long" || d.includes("Long")) {
+          durationConditions.push({ duration: { $gt: 15 } });
+        }
+      });
+      if (durationConditions.length > 0) {
+        query.$or = durationConditions;
+      }
+    }
+    if (location) {
+      const locations = Array.isArray(location) ? location : [location];
+      query.location = { $in: locations };
+    }
+    if (season) {
+      const seasons = Array.isArray(season) ? season : [season];
+      query.season = { $in: seasons };
+    }
+    if (nature) {
+      const natures = Array.isArray(nature) ? nature : [nature];
+      query.nature = { $in: natures };
+    }
+    if (animals) {
+      const animalList = Array.isArray(animals) ? animals : [animals];
+      query.animals = { $in: animalList };
+    }
+    if (sound) {
+      const sounds = Array.isArray(sound) ? sound : [sound];
+      query.sound = { $in: sounds };
+    }
+
+    // Fetch videos with filters and pagination
+    const videos = await VideoModel.find(query)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    // Count total with filters
+    const total = await VideoModel.countDocuments(query);
+
+    res.json({
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total,
+      videos,
+    });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 module.exports = {

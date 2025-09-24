@@ -6,6 +6,9 @@ import ClientLayout from "../pages/client/ClientLayout";
 import Layout from "../Layout";
 import OrganizationLayout from "../pages/organization/OrganizationLayout";
 import VolunteerLayout from "../pages/volunteer/VolunteerLayout";
+import AllVideosAdmin from "../pages/admin/AllVideo";
+import VideoAdmin from "../pages/admin/VideoAdmin";
+import CreateVideo from "../pages/admin/CreateVideo";
 
 // Website page imports (alphabetized)
 import Aran from "../pages/website/Aran";
@@ -291,6 +294,18 @@ export const router = createBrowserRouter([
       {
         path: "subscription-overview",
         element: <SubscriptionOverview />,
+      },
+      {
+        path: "all-videos",
+        element: <AllVideosAdmin />,
+      },
+      {
+        path: "video/:id",
+        element: <VideoAdmin />,
+      },
+      {
+        path: "create-video",
+        element: <CreateVideo />,
       },
     ],
   },

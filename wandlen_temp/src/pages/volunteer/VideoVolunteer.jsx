@@ -82,16 +82,6 @@ const VideoVolunteer = () => {
                   Your browser does not support the video tag.
                 </video>
               </div>
-
-              {/* Video Controls */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-                <div></div>
-                <div className="flex items-center gap-4">
-                  <button className="p-3 bg-secondary rounded-full hover:bg-accent transition-colors">
-                    <img src={Heart} alt="Heart" className="w-6 h-6" />
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
           <div className=" text-[#381207] font-['Poppins'] text-[2.5rem] font-semibold leading-[136%] pb-10">
