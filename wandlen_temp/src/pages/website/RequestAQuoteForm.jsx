@@ -32,12 +32,78 @@ const RequestAQuoteForm = () => {
     agreeToTerms: false,
   });
 
+  const [errors, setErrors] = useState({});
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const re = /^\+?[0-9\s\-\(\)]+$/;
+    return re.test(phone);
+  };
+
+  const validateUrl = (url) => {
+    const re = /^https?:\/\/[^\s$.?#].[^\s]*$/;
+    return re.test(url);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.organizationName.trim())
+      newErrors.organizationName = "Organization name is required";
+    if (!formData.contactEmail.trim())
+      newErrors.contactEmail = "Contact email is required";
+    else if (!validateEmail(formData.contactEmail))
+      newErrors.contactEmail = "Invalid email format";
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    else if (!validatePhone(formData.phone))
+      newErrors.phone = "Invalid phone format";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
+    if (!formData.street.trim()) newErrors.street = "Street is required";
+    if (!formData.postalCode.trim())
+      newErrors.postalCode = "Postal code is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (formData.website && !validateUrl(formData.website))
+      newErrors.website = "Invalid URL format";
+    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
+    if (!formData.jobTitle.trim()) newErrors.jobTitle = "Job title is required";
+    if (!formData.emailAddress.trim())
+      newErrors.emailAddress = "Email address is required";
+    else if (!validateEmail(formData.emailAddress))
+      newErrors.emailAddress = "Invalid email format";
+    if (!formData.phoneContact.trim())
+      newErrors.phoneContact = "Phone contact is required";
+    else if (!validatePhone(formData.phoneContact))
+      newErrors.phoneContact = "Invalid phone format";
+    if (!formData.totalClients.trim())
+      newErrors.totalClients = "Total clients is required";
+    if (!formData.numberLocations.trim())
+      newErrors.numberLocations = "Number of locations is required";
+    if (formData.targetGroups.length === 0)
+      newErrors.targetGroups = "At least one target group is required";
+    if (!formData.estimatedClients.trim())
+      newErrors.estimatedClients = "Estimated clients is required";
+    if (!formData.startDate.trim())
+      newErrors.startDate = "Start date is required";
+    if (!formData.onboardingSupport)
+      newErrors.onboardingSupport = "Onboarding support selection is required";
+    if (!formData.agreeToTerms)
+      newErrors.agreeToTerms = "You must agree to the terms";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleTargetGroupChange = (group) => {
@@ -47,10 +113,29 @@ const RequestAQuoteForm = () => {
         ? formData.targetGroups.filter((g) => g !== group)
         : [...formData.targetGroups, group],
     });
+    if (errors.targetGroups) {
+      setErrors((prev) => ({ ...prev, targetGroups: "" }));
+    }
+  };
+
+  const handleNameInput = (e) => {
+    let value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+    handleChange({ target: { name: e.target.name, value, type: "text" } });
+  };
+
+  const handlePhoneInput = (e) => {
+    let value = e.target.value.replace(/[^+\d\s\-\(\)]/g, "");
+    handleChange({ target: { name: e.target.name, value, type: "text" } });
+  };
+
+  const handleNumberInput = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    handleChange({ target: { name: e.target.name, value, type: "text" } });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     try {
       const response = await axios.post(`${DATABASE_URL}/org/signup`, formData);
       console.log("Form submitted successfully:", response.data);
@@ -97,8 +182,17 @@ const RequestAQuoteForm = () => {
                 value={formData.organizationName}
                 onChange={handleChange}
                 placeholder="E.g., Sunrise Wellness Center, City Care Home, Local Daycare"
-                className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                  errors.organizationName
+                    ? "border-red-500"
+                    : "border-[#cbcbcb]"
+                }`}
               />
+              {errors.organizationName && (
+                <span className="text-red-500 text-sm">
+                  {errors.organizationName}
+                </span>
+              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -111,8 +205,15 @@ const RequestAQuoteForm = () => {
                   value={formData.contactEmail}
                   onChange={handleChange}
                   placeholder="E.g. info@wellnesscenter.nl"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.contactEmail ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.contactEmail && (
+                  <span className="text-red-500 text-sm">
+                    {errors.contactEmail}
+                  </span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -123,9 +224,15 @@ const RequestAQuoteForm = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  onInput={handlePhoneInput}
                   placeholder="+31"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.phone ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.phone && (
+                  <span className="text-red-500 text-sm">{errors.phone}</span>
+                )}
               </div>
             </div>
             <div>
@@ -137,8 +244,13 @@ const RequestAQuoteForm = () => {
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="Street, building number"
-                className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                className={`w-full p-3 border rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                  errors.address ? "border-red-500" : "border-[#cbcbcb]"
+                }`}
               />
+              {errors.address && (
+                <span className="text-red-500 text-sm">{errors.address}</span>
+              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
@@ -151,8 +263,13 @@ const RequestAQuoteForm = () => {
                   value={formData.street}
                   onChange={handleChange}
                   placeholder="Street, building number..."
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.street ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.street && (
+                  <span className="text-red-500 text-sm">{errors.street}</span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -164,8 +281,15 @@ const RequestAQuoteForm = () => {
                   value={formData.postalCode}
                   onChange={handleChange}
                   placeholder="E.g., 1234 AB"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.postalCode ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.postalCode && (
+                  <span className="text-red-500 text-sm">
+                    {errors.postalCode}
+                  </span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -177,8 +301,13 @@ const RequestAQuoteForm = () => {
                   value={formData.city}
                   onChange={handleChange}
                   placeholder="Amsterdam"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.city ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.city && (
+                  <span className="text-red-500 text-sm">{errors.city}</span>
+                )}
               </div>
             </div>
             <div>
@@ -191,8 +320,13 @@ const RequestAQuoteForm = () => {
                 value={formData.website}
                 onChange={handleChange}
                 placeholder="e.g. https://website.link/..."
-                className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                  errors.website ? "border-red-500" : "border-[#cbcbcb]"
+                }`}
               />
+              {errors.website && (
+                <span className="text-red-500 text-sm">{errors.website}</span>
+              )}
             </div>
           </div>
 
@@ -211,9 +345,17 @@ const RequestAQuoteForm = () => {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
+                  onInput={handleNameInput}
                   placeholder="E.g., Anna Jansen"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.fullName ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.fullName && (
+                  <span className="text-red-500 text-sm">
+                    {errors.fullName}
+                  </span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -225,8 +367,15 @@ const RequestAQuoteForm = () => {
                   value={formData.jobTitle}
                   onChange={handleChange}
                   placeholder="E.g., Activities Coordinator, Care Manager"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.jobTitle ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.jobTitle && (
+                  <span className="text-red-500 text-sm">
+                    {errors.jobTitle}
+                  </span>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -240,8 +389,15 @@ const RequestAQuoteForm = () => {
                   value={formData.emailAddress}
                   onChange={handleChange}
                   placeholder="Your direct work email"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.emailAddress ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.emailAddress && (
+                  <span className="text-red-500 text-sm">
+                    {errors.emailAddress}
+                  </span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -252,9 +408,17 @@ const RequestAQuoteForm = () => {
                   name="phoneContact"
                   value={formData.phoneContact}
                   onChange={handleChange}
+                  onInput={handlePhoneInput}
                   placeholder="+31 | Direct line for quick contact"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.phoneContact ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.phoneContact && (
+                  <span className="text-red-500 text-sm">
+                    {errors.phoneContact}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -274,9 +438,17 @@ const RequestAQuoteForm = () => {
                   name="totalClients"
                   value={formData.totalClients}
                   onChange={handleChange}
+                  onInput={handleNumberInput}
                   placeholder="How many people are in your care?"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.totalClients ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.totalClients && (
+                  <span className="text-red-500 text-sm">
+                    {errors.totalClients}
+                  </span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -287,9 +459,19 @@ const RequestAQuoteForm = () => {
                   name="numberLocations"
                   value={formData.numberLocations}
                   onChange={handleChange}
+                  onInput={handleNumberInput}
                   placeholder="E.g., 1 care home, 3 daycare centers"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.numberLocations
+                      ? "border-red-500"
+                      : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.numberLocations && (
+                  <span className="text-red-500 text-sm">
+                    {errors.numberLocations}
+                  </span>
+                )}
               </div>
             </div>
             <div>
@@ -314,6 +496,11 @@ const RequestAQuoteForm = () => {
                   )
                 )}
               </div>
+              {errors.targetGroups && (
+                <span className="text-red-500 text-sm">
+                  {errors.targetGroups}
+                </span>
+              )}
             </div>
           </div>
 
@@ -332,9 +519,19 @@ const RequestAQuoteForm = () => {
                   name="estimatedClients"
                   value={formData.estimatedClients}
                   onChange={handleChange}
+                  onInput={handleNumberInput}
                   placeholder="E.g., 20 clients per week"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.estimatedClients
+                      ? "border-red-500"
+                      : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.estimatedClients && (
+                  <span className="text-red-500 text-sm">
+                    {errors.estimatedClients}
+                  </span>
+                )}
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
@@ -346,8 +543,15 @@ const RequestAQuoteForm = () => {
                   value={formData.startDate}
                   onChange={handleChange}
                   placeholder="E.g., 01 October 2025"
-                  className="w-full p-3 border border-[#cbcbcb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.startDate ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
                 />
+                {errors.startDate && (
+                  <span className="text-red-500 text-sm">
+                    {errors.startDate}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -383,6 +587,11 @@ const RequestAQuoteForm = () => {
                   <span>No</span>
                 </label>
               </div>
+              {errors.onboardingSupport && (
+                <span className="text-red-500 text-sm">
+                  {errors.onboardingSupport}
+                </span>
+              )}
               <textarea
                 name="onboardingExplanation"
                 value={formData.onboardingExplanation}
@@ -421,17 +630,24 @@ const RequestAQuoteForm = () => {
           <h3 className="text-2xl font-medium text-[#381207]">
             Quotation & set-up fee
           </h3>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="agreeToTerms"
-              checked={formData.agreeToTerms}
-              onChange={handleChange}
-              className="w-4 h-4"
-            />
-            <span className="text-[#2a341f] text-sm">
-              I agree that my details will be used to prepare a quotation.
-            </span>
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="agreeToTerms"
+                checked={formData.agreeToTerms}
+                onChange={handleChange}
+                className="w-4 h-4"
+              />
+              <span className="text-[#2a341f] text-sm">
+                I agree that my details will be used to prepare a quotation.
+              </span>
+            </div>
+            {errors.agreeToTerms && (
+              <span className="text-red-500 text-sm">
+                {errors.agreeToTerms}
+              </span>
+            )}
           </div>
 
           <button

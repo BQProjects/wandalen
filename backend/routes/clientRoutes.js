@@ -23,7 +23,7 @@ clientRouter.post("/login", clientLogin);
 clientRouter.post("/request-video", requestVideo);
 clientRouter.post("/add-review", addReview);
 clientRouter.get("/get-reviews/:videoId", getAllReviews);
-clientRouter.get("/get-all-videos/:page/:limit/:search?", getAllvideos);
+clientRouter.get("/get-all-videos", getAllvideos);
 clientRouter.get("/get-account/:clientId", getAccountInfo);
 clientRouter.delete("/delete-account", deleteAccount);
 clientRouter.get("/get-video/:videoId", getVideo);

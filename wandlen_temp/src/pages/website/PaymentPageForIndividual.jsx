@@ -21,6 +21,8 @@ const FormInput = ({
   required = true,
   value,
   onChange,
+  error,
+  onInput,
 }) => {
   return (
     <div className="flex flex-col items-start gap-2">
@@ -33,9 +35,13 @@ const FormInput = ({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full h-11 px-4 rounded-lg border border-[#e5e3df] bg-white text-[#381207] placeholder-[#7a756e] focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:border-transparent"
+        onInput={onInput}
+        className={`w-full h-11 px-4 rounded-lg border bg-white text-[#381207] placeholder-[#7a756e] focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:border-transparent ${
+          error ? "border-red-500" : "border-[#e5e3df]"
+        }`}
         required={required}
       />
+      {error && <span className="text-red-500 text-sm">{error}</span>}
     </div>
   );
 };
@@ -60,17 +66,17 @@ const StepIndicator = ({ number, title, description }) => (
 // Order Summary Component
 const OrderSummary = ({ plan }) => (
   <div className="inline-flex flex-col items-center gap-3 p-8 rounded-2xl border-2 border-[#e5e3df] bg-[#f7f6f4]">
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex flex-col items-start gap-1 w-full">
       <h3 className="text-[#381207] text-xl font-medium">Summary</h3>
 
-      <div className="flex items-start gap-6 mt-4">
-        <div className="flex flex-col items-start gap-2.5 py-3">
+      <div className="flex items-start gap-6 mt-4 w-full">
+        <div className="flex flex-col items-start gap-2.5 w-full ">
           <div className="text-[#381207] font-medium">{plan.title}</div>
           <div className="text-[#4b4741]">Duration</div>
           <div className="text-[#4b4741]">Free trial</div>
           <div className="text-[#4b4741]">Sessions</div>
         </div>
-        <div className="flex flex-col items-start gap-2.5 py-3">
+        <div className="flex flex-col items-end gap-2.5">
           <div className="text-[#381207] font-medium text-right">
             € {plan.price}
           </div>
@@ -142,35 +148,166 @@ const PaymentPageForIndividual = () => {
     cvc: "",
   });
 
-  const handleSignUp = () => {
+  const [errors, setErrors] = useState({});
+  const [isAgreed, setIsAgreed] = useState(false);
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const re = /^\+?[0-9\s\-\(\)]+$/;
+    return re.test(phone);
+  };
+
+  const validateCardNumber = (number) => {
+    const cleaned = number.replace(/\s/g, "");
+    return /^\d{16}$/.test(cleaned);
+  };
+
+  const validateExpiryDate = (date) => {
+    const re = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    if (!re.test(date)) return false;
+    const [month, year] = date.split("/");
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+    const expYear = parseInt(year);
+    const expMonth = parseInt(month);
+    return (
+      expYear > currentYear ||
+      (expYear === currentYear && expMonth >= currentMonth)
+    );
+  };
+
+  const validateCVC = (cvc) => {
+    return /^\d{3}$/.test(cvc);
+  };
+
+  const validateStep1 = () => {
+    const newErrors = {};
+    if (!formData.companyName.trim())
+      newErrors.companyName = "Company name is required";
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
+    if (!formData.surname.trim()) newErrors.surname = "Surname is required";
+    if (!formData.function.trim()) newErrors.function = "Function is required";
+    if (!formData.email2.trim()) newErrors.email2 = "Email is required";
+    else if (!validateEmail(formData.email2))
+      newErrors.email2 = "Invalid email format";
+    if (!formData.telephone.trim())
+      newErrors.telephone = "Telephone is required";
+    else if (!validatePhone(formData.telephone))
+      newErrors.telephone = "Invalid phone format";
+    if (!formData.password.trim()) newErrors.password = "Password is required";
+    else if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (!formData.country.trim()) newErrors.country = "Country is required";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!formData.postalCode.trim())
+      newErrors.postalCode = "Postal code is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const newErrors = {};
+    if (!formData.cardholderName.trim())
+      newErrors.cardholderName = "Cardholder name is required";
+    if (!formData.cardNumber.trim())
+      newErrors.cardNumber = "Card number is required";
+    else if (!validateCardNumber(formData.cardNumber))
+      newErrors.cardNumber = "Invalid card number (16 digits)";
+    if (!formData.expiryDate.trim())
+      newErrors.expiryDate = "Expiry date is required";
+    else if (!validateExpiryDate(formData.expiryDate))
+      newErrors.expiryDate = "Invalid expiry date (MM/YY)";
+    if (!formData.cvc.trim()) newErrors.cvc = "CVC is required";
+    else if (!validateCVC(formData.cvc))
+      newErrors.cvc = "Invalid CVC (3 digits)";
+    if (!isAgreed)
+      newErrors.agreement =
+        "You must agree to the Terms & Conditions and Privacy Policy";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignUp = async () => {
     try {
-      const res = axios.post(`${DATABASE_URL}/client/signup`, {
+      const signupData = {
         firstName: formData.firstName,
         lastName: formData.surname,
         email: formData.email2,
         password: formData.password,
-        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-      });
+        companyName: formData.companyName,
+        function: formData.function,
+        telephone: formData.telephone,
+        country: formData.country,
+        address: formData.address,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        plan: selectedPlan,
+        payment: {
+          cardholderName: formData.cardholderName,
+          cardNumber: formData.cardNumber,
+          expiryDate: formData.expiryDate,
+          cvc: formData.cvc,
+        },
+        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // Example: 1 year from now
+      };
+
+      const res = await axios.post(`${DATABASE_URL}/client/signup`, signupData);
       console.log("Sign up response:", res.data);
       alert("Sign up successful!");
       navigate("/login");
     } catch (error) {
       console.error("Error during sign up:", error);
+      alert("Sign up failed. Please try again.");
     }
   };
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const handleCardNumberInput = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+    handleInputChange("cardNumber", value);
+  };
+
+  const handleExpiryDateInput = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + "/" + value.slice(2, 4);
+    }
+    handleInputChange("expiryDate", value);
+  };
+
+  const handleCVCInput = (e) => {
+    let value = e.target.value.replace(/\D/g, "").slice(0, 3);
+    handleInputChange("cvc", value);
+  };
+
+  const handlePhoneInput = (e) => {
+    let value = e.target.value.replace(/[^+\d\s\-\(\)]/g, "");
+    handleInputChange("telephone", value);
   };
 
   const handleContinue = () => {
-    if (currentStep < 2) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      // Handle final submission
-      console.log("Processing payment...", formData);
-      handleSignUp();
-      // Navigate to success page or handle payment
+    if (currentStep === 1) {
+      if (validateStep1()) {
+        setCurrentStep(2);
+      }
+    } else if (currentStep === 2) {
+      if (validateStep2()) {
+        console.log("Processing payment...", formData);
+        handleSignUp();
+      }
     }
   };
 
@@ -224,7 +361,7 @@ const PaymentPageForIndividual = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Form */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Step 2: Additional Info */}
+            {/* Step 1: Additional Info */}
             {currentStep === 1 && (
               <div className="bg-white p-6 rounded-2xl border border-gray-200">
                 <StepIndicator number="01" title="Additional Info" />
@@ -237,6 +374,7 @@ const PaymentPageForIndividual = () => {
                     onChange={(value) =>
                       handleInputChange("companyName", value)
                     }
+                    error={errors.companyName}
                   />
 
                   <FormInput
@@ -244,6 +382,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="Your first name"
                     value={formData.firstName}
                     onChange={(value) => handleInputChange("firstName", value)}
+                    error={errors.firstName}
                   />
 
                   <FormInput
@@ -251,6 +390,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="Your surname"
                     value={formData.surname}
                     onChange={(value) => handleInputChange("surname", value)}
+                    error={errors.surname}
                   />
 
                   <FormInput
@@ -258,6 +398,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="Your role"
                     value={formData.function}
                     onChange={(value) => handleInputChange("function", value)}
+                    error={errors.function}
                   />
 
                   <FormInput
@@ -266,6 +407,7 @@ const PaymentPageForIndividual = () => {
                     type="email"
                     value={formData.email2}
                     onChange={(value) => handleInputChange("email2", value)}
+                    error={errors.email2}
                   />
 
                   <FormInput
@@ -274,13 +416,17 @@ const PaymentPageForIndividual = () => {
                     type="tel"
                     value={formData.telephone}
                     onChange={(value) => handleInputChange("telephone", value)}
+                    onInput={handlePhoneInput}
+                    error={errors.telephone}
                   />
+
                   <FormInput
                     label="Password"
-                    placeholder="+31 6 12345678"
-                    type="tel"
+                    placeholder="Enter your password"
+                    type="password"
                     value={formData.password}
                     onChange={(value) => handleInputChange("password", value)}
+                    error={errors.password}
                   />
 
                   <FormInput
@@ -288,6 +434,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="Netherlands"
                     value={formData.country}
                     onChange={(value) => handleInputChange("country", value)}
+                    error={errors.country}
                   />
 
                   <FormInput
@@ -295,6 +442,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="Your address"
                     value={formData.address}
                     onChange={(value) => handleInputChange("address", value)}
+                    error={errors.address}
                   />
 
                   <FormInput
@@ -302,6 +450,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="Amsterdam"
                     value={formData.city}
                     onChange={(value) => handleInputChange("city", value)}
+                    error={errors.city}
                   />
 
                   <FormInput
@@ -309,6 +458,7 @@ const PaymentPageForIndividual = () => {
                     placeholder="1234 AB"
                     value={formData.postalCode}
                     onChange={(value) => handleInputChange("postalCode", value)}
+                    error={errors.postalCode}
                   />
                 </div>
 
@@ -321,7 +471,7 @@ const PaymentPageForIndividual = () => {
               </div>
             )}
 
-            {/* Step 3: Payment Method */}
+            {/* Step 2: Payment Method */}
             {currentStep === 2 && (
               <div className="bg-white p-6 rounded-2xl border border-gray-200">
                 <StepIndicator
@@ -338,6 +488,7 @@ const PaymentPageForIndividual = () => {
                     onChange={(value) =>
                       handleInputChange("cardholderName", value)
                     }
+                    error={errors.cardholderName}
                   />
 
                   <FormInput
@@ -345,6 +496,8 @@ const PaymentPageForIndividual = () => {
                     placeholder="1234 5678 9012 3456"
                     value={formData.cardNumber}
                     onChange={(value) => handleInputChange("cardNumber", value)}
+                    onInput={handleCardNumberInput}
+                    error={errors.cardNumber}
                   />
 
                   <div className="grid grid-cols-2 gap-4">
@@ -355,6 +508,8 @@ const PaymentPageForIndividual = () => {
                       onChange={(value) =>
                         handleInputChange("expiryDate", value)
                       }
+                      onInput={handleExpiryDateInput}
+                      error={errors.expiryDate}
                     />
 
                     <FormInput
@@ -362,6 +517,8 @@ const PaymentPageForIndividual = () => {
                       placeholder="123"
                       value={formData.cvc}
                       onChange={(value) => handleInputChange("cvc", value)}
+                      onInput={handleCVCInput}
+                      error={errors.cvc}
                     />
                   </div>
                 </div>
@@ -380,24 +537,35 @@ const PaymentPageForIndividual = () => {
                 </div>
 
                 {/* Terms Agreement */}
-                <div className="flex items-center gap-2 mt-4">
-                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M19 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3ZM19 5V19H5V5H19ZM10 17L6 13L7.41 11.58L10 14.17L16.59 7.58L18 9"
-                      fill="#5B6502"
+                <div className="flex flex-col items-start gap-2 mt-4">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="agreement"
+                      checked={isAgreed}
+                      onChange={(e) => setIsAgreed(e.target.checked)}
+                      className="w-4 h-4 text-[#5b6502] bg-gray-100 border-gray-300 rounded focus:ring-[#5b6502] focus:ring-2"
                     />
-                  </svg>
-                  <span className="text-[#4b4741] text-sm">
-                    I agree to the{" "}
-                    <a href="#" className="underline hover:text-[#5b6502]">
-                      Terms & Conditions
-                    </a>{" "}
-                    and{" "}
-                    <a href="#" className="underline hover:text-[#5b6502]">
-                      Privacy Policy
-                    </a>
-                    .
-                  </span>
+                    <label
+                      htmlFor="agreement"
+                      className="text-[#4b4741] text-sm"
+                    >
+                      I agree to the{" "}
+                      <a href="#" className="underline hover:text-[#5b6502]">
+                        Terms & Conditions
+                      </a>{" "}
+                      and{" "}
+                      <a href="#" className="underline hover:text-[#5b6502]">
+                        Privacy Policy
+                      </a>
+                      .
+                    </label>
+                  </div>
+                  {errors.agreement && (
+                    <span className="text-red-500 text-sm">
+                      {errors.agreement}
+                    </span>
+                  )}
                 </div>
 
                 <button

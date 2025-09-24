@@ -47,7 +47,21 @@ const clientLogin = async (req, res) => {
 };
 
 const clientSignUp = async (req, res) => {
-  const { firstName, lastName, email, password, endDate } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    companyName,
+    func,
+    telephone,
+    country,
+    address,
+    city,
+    postalCode,
+    plan,
+    endDate,
+  } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -56,6 +70,14 @@ const clientSignUp = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
+      company: companyName,
+      function: func,
+      phoneNo: telephone,
+      country,
+      address,
+      city,
+      postal: postalCode,
+      plan,
       subscriptionType: "self",
       startDate: new Date(),
       endDate: new Date(endDate),
@@ -69,17 +91,67 @@ const clientSignUp = async (req, res) => {
 };
 
 const getAllvideos = async (req, res) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
+  const {
+    page = 1,
+    limit = 9,
+    search = "",
+    duration,
+    location,
+    season,
+    nature,
+    animals,
+    sound,
+  } = req.query;
   try {
-    const videos = await VideoModel.find({
-      title: { $regex: search, $options: "i" },
-    })
+    // Build filter query object
+    const query = {};
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+    if (duration) {
+      const durationFilters = Array.isArray(duration) ? duration : [duration];
+      const durationConditions = [];
+      durationFilters.forEach((d) => {
+        if (d.includes("Short")) {
+          durationConditions.push({ duration: { $lte: 5 } });
+        } else if (d.includes("Medium")) {
+          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
+        } else if (d.includes("Long")) {
+          durationConditions.push({ duration: { $gt: 15 } });
+        }
+      });
+      if (durationConditions.length > 0) {
+        query.$or = durationConditions; // Use $or for multiple duration ranges
+      }
+    }
+    if (location) {
+      const locations = Array.isArray(location) ? location : [location];
+      query.location = { $in: locations };
+    }
+    if (season) {
+      const seasons = Array.isArray(season) ? season : [season];
+      query.season = { $in: seasons };
+    }
+    if (nature) {
+      const natures = Array.isArray(nature) ? nature : [nature];
+      query.nature = { $in: natures };
+    }
+    if (animals) {
+      const animalList = Array.isArray(animals) ? animals : [animals];
+      query.animals = { $in: animalList };
+    }
+    if (sound) {
+      const sounds = Array.isArray(sound) ? sound : [sound];
+      query.sound = { $in: sounds };
+    }
+
+    // Fetch videos with filters and pagination
+    const videos = await VideoModel.find(query)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 
-    const total = await VideoModel.countDocuments({
-      title: { $regex: search, $options: "i" },
-    });
+    // Count total with filters
+    const total = await VideoModel.countDocuments(query);
 
     res.json({
       page: parseInt(page),

@@ -307,9 +307,14 @@ const VideoGridWithFilters = ({
   showResultsCount = true,
   onVideoEdit,
   onVideoDelete,
+  currentPage,
+  onPageChange,
+  activeFilters,
+  onFilterChange,
+  totalPages,
+  total, // New prop: Total matching videos
 }) => {
-  const [activeFilters, setActiveFilters] = useState({});
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(null); // Keep only this internal state
 
   // Get the current user ID from localStorage
   const userId = localStorage.getItem("userId");
@@ -336,81 +341,35 @@ const VideoGridWithFilters = ({
   };
 
   const handleOptionSelect = (filter, option) => {
-    setActiveFilters((prev) => ({
-      ...prev,
-      [filter]: prev[filter]?.includes(option)
-        ? prev[filter].filter((item) => item !== option)
-        : [...(prev[filter] || []), option],
-    }));
+    const updatedFilters = {
+      ...activeFilters,
+      [filter]: activeFilters[filter]?.includes(option)
+        ? activeFilters[filter].filter((item) => item !== option)
+        : [...(activeFilters[filter] || []), option],
+    };
+    onFilterChange(updatedFilters); // Call prop callback
     setOpenDropdown(null);
   };
 
-  // Add a mapping for duration filters (display label -> stored value)
-  const durationMap = {
-    "Short (0-5 min)": "short",
-    "Medium (5-15 min)": "medium",
-    "Long (15+ min)": "long",
+  // Remove client-side filtering and slicing
+  const filteredVideos = videos; // Videos are already filtered and paginated from server
+
+  // Instead, use the full videos array (already paginated)
+  const paginatedVideos = filteredVideos;
+
+  const handlePageChange = (page) => {
+    onPageChange(page); // Call prop callback
   };
 
-  // Updated filtering functions to use correct field names from database/API
-  const matchesDuration = (video, durationFilters) => {
-    if (!durationFilters || durationFilters.length === 0) return true;
-    if (!video.duration) return false;
-    return durationFilters.some(
-      (filter) => video.duration === durationMap[filter]
-    );
+  const handlePrevPage = () => {
+    if (currentPage > 1) onPageChange(currentPage - 1);
   };
 
-  const matchesLocation = (video, locationFilters) => {
-    if (!locationFilters || locationFilters.length === 0) return true;
-    if (!video.location) return false;
-    return locationFilters.some((location) => video.location === location); // Exact match since both are lowercase
+  const handleNextPage = () => {
+    if (currentPage < totalPages) onPageChange(currentPage + 1);
   };
 
-  const matchesSeason = (video, seasonFilters) => {
-    if (!seasonFilters || seasonFilters.length === 0) return true;
-    if (!video.season) return false;
-    return seasonFilters.some((season) => video.season === season); // Exact match
-  };
-
-  const matchesNatureType = (video, natureTypeFilters) => {
-    if (!natureTypeFilters || natureTypeFilters.length === 0) return true;
-    if (!video.nature) return false; // Use 'nature' from database
-    return natureTypeFilters.some((nature) => video.nature === nature); // Exact match
-  };
-
-  const matchesAnimals = (video, animalFilters) => {
-    if (!animalFilters || animalFilters.length === 0) return true;
-    if (!video.animals) return false;
-    return animalFilters.some((animal) => video.animals === animal); // Exact match
-  };
-
-  const matchesSound = (video, soundFilters) => {
-    if (!soundFilters || soundFilters.length === 0) return true;
-    if (!video.sound) return false; // Use 'sound' from database
-    return soundFilters.some((sound) => video.sound === sound); // Exact match
-  };
-
-  // New filtering function for "Uploaded By"
-  const matchesUploadedBy = (video, uploadedByFilters) => {
-    if (!uploadedByFilters || uploadedByFilters.length === 0) return true;
-    if (!video.uploadedBy) return false;
-    // Check if "Me" is selected and video.uploadedBy matches the current userId
-    return uploadedByFilters.includes("Me") && video.uploadedBy === userId;
-  };
-
-  // Filter videos based on active filters
-  const filteredVideos = videos.filter((video) => {
-    return (
-      matchesDuration(video, activeFilters.Lengte) &&
-      matchesLocation(video, activeFilters.Locatie) &&
-      matchesSeason(video, activeFilters.Seizoen) &&
-      matchesNatureType(video, activeFilters.Natuurtype) &&
-      matchesAnimals(video, activeFilters.Dieren) &&
-      matchesSound(video, activeFilters.Geluidsprikkels) &&
-      matchesUploadedBy(video, activeFilters["Uploaded By"]) // Add the new filter
-    );
-  });
+  // Remove useEffect for resetting page on filters (handled by parent)
 
   return (
     <div className="w-full">
@@ -469,16 +428,15 @@ const VideoGridWithFilters = ({
         {showResultsCount && (
           <div className="mb-4">
             <span className="text-[#381207] font-['Poppins'] text-sm">
-              {filteredVideos.length} video
-              {filteredVideos.length !== 1 ? "s" : ""} found
+              {total} video{total !== 1 ? "s" : ""} found
             </span>
           </div>
         )}
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {filteredVideos.length > 0 ? (
-            filteredVideos.map((video) => (
+          {paginatedVideos.length > 0 ? (
+            paginatedVideos.map((video) => (
               <VideoCard
                 key={video._id || video.id}
                 videoId={video._id || video.id}
@@ -502,7 +460,7 @@ const VideoGridWithFilters = ({
                 {emptyStateMessage}
               </p>
               <button
-                onClick={() => setActiveFilters({})}
+                onClick={() => onFilterChange({})} // Clear filters via prop
                 className="mt-4 px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] rounded hover:bg-[#c47a15] transition-colors"
               >
                 Clear all filters
@@ -510,6 +468,39 @@ const VideoGridWithFilters = ({
             </div>
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-2 rounded ${
+                  currentPage === page
+                    ? "bg-[#381207] text-[#ede4dc]"
+                    : "bg-[#f8f5f0] text-[#381207] hover:bg-[#e6d9cd]"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

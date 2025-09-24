@@ -23,20 +23,68 @@ const VolunteerSignupForm = () => {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState({});
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const re = /^\+?[0-9\s\-\(\)]+$/;
+    return re.test(phone);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!validateEmail(formData.email))
+      newErrors.email = "Invalid email format";
+    if (formData.phone && !validatePhone(formData.phone))
+      newErrors.phone = "Invalid phone format";
+    if (!formData.password.trim()) newErrors.password = "Password is required";
+    else if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (!formData.confirmPassword.trim())
+      newErrors.confirmPassword = "Confirm password is required";
+    else if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleNameInput = (e) => {
+    let value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+    handleInputChange({ target: { name: e.target.name, value, type: "text" } });
+  };
+
+  const handlePhoneInput = (e) => {
+    let value = e.target.value.replace(/[^+\d\s\-\(\)]/g, "");
+    handleInputChange({ target: { name: e.target.name, value, type: "text" } });
+  };
+
+  const handleNumberInput = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    handleInputChange({ target: { name: e.target.name, value, type: "text" } });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
+    if (!validateForm()) return;
     try {
       const res = await axios.post(`${DATABASE_URL}/volunteer/signup`, {
         firstName: formData.firstName,
@@ -112,10 +160,18 @@ const VolunteerSignupForm = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
+                    onInput={handleNameInput}
                     placeholder="e.g., Emma"
-                    className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
+                    className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
+                      errors.firstName ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
                     required
                   />
+                  {errors.firstName && (
+                    <span className="text-red-500 text-sm">
+                      {errors.firstName}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
@@ -126,10 +182,18 @@ const VolunteerSignupForm = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
+                    onInput={handleNameInput}
                     placeholder="e.g., Johnson"
-                    className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
+                    className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
+                      errors.lastName ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
                     required
                   />
+                  {errors.lastName && (
+                    <span className="text-red-500 text-sm">
+                      {errors.lastName}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -144,22 +208,33 @@ const VolunteerSignupForm = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="e.g., emma.johnson@email.com"
-                    className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
+                    className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
+                      errors.email ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
                     required
                   />
+                  {errors.email && (
+                    <span className="text-red-500 text-sm">{errors.email}</span>
+                  )}
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
                     Phone Number
                   </label>
                   <input
-                    type="tel"
+                    type="number"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
+                    onInput={handlePhoneInput}
                     placeholder="+31"
-                    className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
+                    className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
+                      errors.phone ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
                   />
+                  {errors.phone && (
+                    <span className="text-red-500 text-sm">{errors.phone}</span>
+                  )}
                 </div>
               </div>
 
@@ -186,6 +261,7 @@ const VolunteerSignupForm = () => {
                     name="postalCode"
                     value={formData.postalCode}
                     onChange={handleInputChange}
+                    onInput={handleNumberInput}
                     placeholder="Postal Code"
                     className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
                   />
@@ -215,9 +291,16 @@ const VolunteerSignupForm = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
+                    className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
+                      errors.password ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
                     required
                   />
+                  {errors.password && (
+                    <span className="text-red-500 text-sm">
+                      {errors.password}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
@@ -228,9 +311,18 @@ const VolunteerSignupForm = () => {
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
+                    className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
                     required
                   />
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-sm">
+                      {errors.confirmPassword}
+                    </span>
+                  )}
                 </div>
               </div>
 
