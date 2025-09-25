@@ -22,6 +22,11 @@ const ReviewSchema = new Schema(
       ref: "Video",
       index: true,
     },
+    clientId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Client",
+      index: true,
+    },
   },
   { timestamps: true }
 );

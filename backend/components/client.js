@@ -215,12 +215,26 @@ const addReview = async (req, res) => {
 
     if (!client) return res.status(404).json({ message: "Client not found" });
     if (!video) return res.status(404).json({ message: "Video not found" });
+
+    const existingReview = await ReviewModel.findOne({
+      video: vidoId,
+      clientId: clientId,
+    });
+
+    if (existingReview) {
+      return res.status(400).json({
+        message: "You have already reviewed this video",
+      });
+    }
+
     const newReview = new ReviewModel({
       username: client.firstName,
       rating,
       review,
       video: vidoId,
+      clientId: clientId,
     });
+
     await newReview.save();
     video.reviews.push(newReview._id);
 
@@ -234,12 +248,34 @@ const addReview = async (req, res) => {
 
 const getAllReviews = async (req, res) => {
   const { videoId } = req.params;
+  const { userId } = req.query;
+
   try {
+    if (!mongoose.Types.ObjectId.isValid(videoId)) {
+      return res.status(400).json({ message: "Invalid video ID format" });
+    }
+
     const video = await VideoModel.findById(videoId).populate("reviews");
+
     if (!video) return res.status(404).json({ message: "Video not found" });
-    res.json({ reviews: video.reviews });
+
+    let hasReviewed = false;
+
+    if (userId && mongoose.Types.ObjectId.isValid(userId)) {
+      const userReview = await ReviewModel.findOne({
+        video: videoId,
+        clientId: userId,
+      });
+
+      hasReviewed = !!userReview;
+    }
+
+    res.json({
+      reviews: video.reviews || [],
+      hasReviewed: hasReviewed,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Error in getAllReviews:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

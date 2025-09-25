@@ -20,6 +20,34 @@ const VideoClient = () => {
     likes: 0,
   });
   const [isLiked, setIsLiked] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [showReviewForm, setShowReviewForm] = useState(true);
+  const [reviewForm, setReviewForm] = useState({
+    review: "",
+    rating: 5,
+  });
+  const [userReviewed, setUserReviewed] = useState(false);
+  const [justSubmitted, setJustSubmitted] = useState(false);
+
+  // Add this new state for pagination
+  const [currentPage, setCurrentPage] = useState(0);
+  const reviewsPerPage = 3;
+
+  // Calculate total pages
+  const totalPages = Math.ceil((reviews?.length || 0) / reviewsPerPage);
+
+  // Navigation functions
+  const goToPreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   const getVideo = async () => {
     try {
@@ -80,11 +108,68 @@ const VideoClient = () => {
     }
   };
 
+  const fetchReviews = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const url = userId
+        ? `${DATABASE_URL}/client/get-reviews/${id}?userId=${userId}`
+        : `${DATABASE_URL}/client/get-reviews/${id}`;
+
+      const res = await axios.get(url);
+      setReviews(res.data.reviews || []);
+
+      if (userId && res.data.hasReviewed) {
+        setUserReviewed(true);
+        setShowReviewForm(false);
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Please login to submit a review");
+      return;
+    }
+
+    try {
+      await axios.post(`${DATABASE_URL}/client/add-review`, {
+        clientId: userId,
+        review: reviewForm.review,
+        rating: reviewForm.rating,
+        vidoId: id,
+      });
+
+      // Update state
+      setJustSubmitted(true);
+      setShowReviewForm(false);
+      setUserReviewed(true);
+
+      // Reset form
+      setReviewForm({
+        review: "",
+        rating: 5,
+      });
+
+      // Fetch reviews again
+      fetchReviews();
+      alert("Review submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      alert("Failed to submit review. Please try again.");
+    }
+  };
+
   useEffect(() => {
+    // Always fetch these
     getVideo();
     addView();
     checkLikeStatus();
-  }, []);
+    fetchReviews();
+  }, [id]);
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
@@ -153,107 +238,189 @@ const VideoClient = () => {
           <div className=" text-[#381207] font-['Poppins'] text-[2.5rem] font-semibold leading-[136%] pb-10">
             Ervaringen met deze video:
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 pb-8 sm:pb-16">
-            {/* Testimonial 1 */}
-            <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-              <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                Naam
-              </div>
-              <div className="text-brown font-medium mb-4">-</div>
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(4)].map((_, i) => (
-                  <img
-                    key={i}
-                    src={StarFilled}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                ))}
-                <img
-                  src={StarEmpty}
-                  alt="Star"
-                  className="w-4 h-4 sm:w-5 sm:h-5"
-                />
-              </div>
-              <div className="flex justify-center">
-                <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                  <img
-                    src={Quote}
-                    alt="Quote"
-                    className="w-6 h-6 sm:w-8 sm:h-8"
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Testimonial 2 */}
-            <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-              <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                Sanne
+          {/* Dynamic Reviews Section with Navigation Arrows */}
+          {reviews.length > 0 && (
+            <div className="mt-10">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-semibold text-brown">
+                  All Reviews
+                </h3>
               </div>
-              <div className="text-brown font-medium mb-4 text-sm sm:text-base">
-                Tijdens de boswandeling met herfstbladeren begon mevrouw De
-                Vries spontaan te glimlachen. Ze wees naar het scherm.
-              </div>
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(4)].map((_, i) => (
-                  <img
-                    key={i}
-                    src={StarFilled}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                ))}
-                <img
-                  src={StarEmpty}
-                  alt="Star"
-                  className="w-4 h-4 sm:w-5 sm:h-5"
-                />
-              </div>
-              <div className="flex justify-center">
-                <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                  <img
-                    src={Quote}
-                    alt="Quote"
-                    className="w-6 h-6 sm:w-8 sm:h-8"
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Testimonial 3 */}
-            <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-              <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                Martijn
-              </div>
-              <div className="text-brown font-medium mb-4 text-sm sm:text-base">
-                Mijn vader herkende meteen de dijk in de video. Hij begon te
-                vertellen over fietstochten met zijn broer. Ik had hem in tijden
-                niet zo enthousiast gehoord.
-              </div>
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <img
-                    key={i}
-                    src={StarFilled}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                ))}
-              </div>
-              <div className="flex justify-center">
-                <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                  <img
-                    src={Quote}
-                    alt="Quote"
-                    className="w-6 h-6 sm:w-8 sm:h-8"
-                  />
+              <div className="relative">
+                {/* Left Arrow */}
+                {currentPage > 0 && (
+                  <button
+                    onClick={goToPreviousPage}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center shadow-md focus:outline-none"
+                    aria-label="Previous reviews"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15 18L9 12L15 6"
+                        stroke="#381207"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* Right Arrow */}
+                {currentPage < totalPages - 1 && (
+                  <button
+                    onClick={goToNextPage}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center shadow-md focus:outline-none"
+                    aria-label="Next reviews"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 6L15 12L9 18"
+                        stroke="#381207"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* Reviews Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {reviews
+                    .slice(
+                      currentPage * reviewsPerPage,
+                      currentPage * reviewsPerPage + reviewsPerPage
+                    )
+                    .map((review, index) => (
+                      <div
+                        key={index}
+                        className="bg-border p-4 sm:p-6 rounded-lg shadow-lg"
+                      >
+                        <div className="flex justify-center">
+                          <div className="bg-secondary p-2 sm:p-3 rounded-full">
+                            <img
+                              src={Quote}
+                              alt="Quote"
+                              className="w-6 h-6 sm:w-8 sm:h-8"
+                            />
+                          </div>
+                        </div>
+                        <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                          {review.username || "Anonymous"}
+                        </div>
+                        <div className="text-brown font-medium mb-4 text-sm sm:text-base">
+                          {review.review}
+                        </div>
+                        <div className="flex items-center gap-1 mb-4">
+                          {[...Array(5)].map((_, i) => (
+                            <img
+                              key={i}
+                              src={i < review.rating ? StarFilled : StarEmpty}
+                              alt="Star"
+                              className="w-4 h-4 sm:w-5 sm:h-5"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Review Form Section */}
+          <div className="mt-8 pb-10">
+            <h3 className="text-2xl font-semibold text-brown mb-6">
+              {userReviewed || justSubmitted
+                ? "Thanks for your review!"
+                : "Share your experience"}
+            </h3>
+
+            {/* Only show form if user hasn't reviewed AND hasn't just submitted */}
+            {!userReviewed && !justSubmitted && showReviewForm && (
+              <form
+                onSubmit={handleReviewSubmit}
+                className="bg-[#381207] p-6 rounded-lg shadow-lg"
+              >
+                <div className="mb-6">
+                  <label
+                    htmlFor="review"
+                    className="block text-[#EDE4DC] font-medium mb-2"
+                  >
+                    Your Review
+                  </label>
+                  <textarea
+                    id="review"
+                    rows="4"
+                    value={reviewForm.review}
+                    onChange={(e) =>
+                      setReviewForm({ ...reviewForm, review: e.target.value })
+                    }
+                    className="w-full p-3 border placeholder:text-[#EDE4DC]  text-[#EDE4DC]  border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
+                    placeholder="Share your thoughts about this video..."
+                    required
+                  ></textarea>
+                </div>
+
+                {/* Repositioned stars and submit button */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="mb-4 sm:mb-0">
+                    <label
+                      htmlFor="rating"
+                      className="block text-[#EDE4DC] font-medium mb-2"
+                    >
+                      Rating
+                    </label>
+                    <div className="flex items-center gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() =>
+                            setReviewForm({ ...reviewForm, rating: star })
+                          }
+                          className="focus:outline-none"
+                        >
+                          <img
+                            src={
+                              star <= reviewForm.rating ? StarFilled : StarEmpty
+                            }
+                            alt="Star"
+                            className="w-6 h-6"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="bg-[#A6A643] hover:bg-accent text-[#EDE4DC] font-medium py-2 px-6 rounded-lg transition-colors self-end"
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
