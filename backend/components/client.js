@@ -6,6 +6,8 @@ const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
 const bcrypt = require("bcrypt");
 const CommentModel = require("../models/commentModel");
+const LikeModel = require("../models/likeModel");
+const mongoose = require("mongoose");
 
 const clientLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -272,14 +274,72 @@ const addView = async (req, res) => {
 
 const addLike = async (req, res) => {
   const { videoId } = req.params;
+  const userId = req.query.userId;
+
   try {
-    const video = await VideoModel.findById(videoId);
-    if (!video.likes) {
-      video.likes = 0;
+    // Convert to ObjectId
+    const userObjectId = mongoose.Types.ObjectId.isValid(userId)
+      ? new mongoose.Types.ObjectId(userId)
+      : userId;
+
+    // Check if like already exists
+    const likeExists = await LikeModel.findOne({
+      videoId,
+      userId: userObjectId,
+    });
+
+    if (likeExists) {
+      // Unlike - remove the like
+      await LikeModel.deleteOne({ _id: likeExists._id });
+
+      // Decrement video like count
+      await VideoModel.findByIdAndUpdate(videoId, {
+        $inc: { likes: -1 },
+      });
+
+      return res.json({
+        message: "Like removed successfully",
+        liked: false,
+      });
+    } else {
+      // Like - add new like
+      const newLike = new LikeModel({
+        videoId,
+        userId: userObjectId,
+      });
+      await newLike.save();
+
+      // Increment video like count
+      await VideoModel.findByIdAndUpdate(videoId, {
+        $inc: { likes: 1 },
+      });
+
+      return res.json({
+        message: "Like added successfully",
+        liked: true,
+      });
     }
-    video.likes += 1;
-    await video.save();
-    res.json({ message: "Like added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const checkLikeStatus = async (req, res) => {
+  const { videoId } = req.params;
+  const userId = req.query.userId;
+
+  try {
+    // Convert to ObjectId
+    const userObjectId = mongoose.Types.ObjectId.isValid(userId)
+      ? new mongoose.Types.ObjectId(userId)
+      : userId;
+
+    const likeExists = await LikeModel.exists({
+      videoId,
+      userId: userObjectId,
+    });
+    res.json({ isLiked: !!likeExists });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -350,4 +410,5 @@ module.exports = {
   addLike,
   addComment,
   updateAccountInfo,
+  checkLikeStatus,
 };

@@ -12,7 +12,6 @@ const validateActiveSession = async (req, res, next) => {
     ? authHeader.split(" ")[1]
     : authHeader;
 
-
   if (sessionId === "dummy-session-id-for-admin") {
     req.user = { _id: "admin", role: "admin" };
     return next();

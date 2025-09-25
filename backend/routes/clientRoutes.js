@@ -13,6 +13,7 @@ const {
   addView,
   addLike,
   updateAccountInfo,
+  checkLikeStatus,
 } = require("../components/client");
 
 const clientRouter = express.Router();
@@ -29,6 +30,7 @@ clientRouter.delete("/delete-account", deleteAccount);
 clientRouter.get("/get-video/:videoId", getVideo);
 clientRouter.put("/add-view/:videoId", addView);
 clientRouter.put("/add-like/:videoId", addLike);
+clientRouter.get("/check-like/:videoId", checkLikeStatus);
 clientRouter.put("/update-account/:clientId", updateAccountInfo);
 
 module.exports = clientRouter;

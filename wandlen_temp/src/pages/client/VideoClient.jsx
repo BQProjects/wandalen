@@ -13,29 +13,23 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 const VideoClient = () => {
   const { id } = useParams();
   const { DATABASE_URL } = useContext(DatabaseContext);
-  const sessionId = localStorage.getItem("sessionId");
   const [formData, setFormData] = useState({
     name: "",
     url: "",
     views: 0,
     likes: 0,
   });
-  const [isLiked, setIsLiked] = useState(false); // Add state for like status
+  const [isLiked, setIsLiked] = useState(false);
 
   const getVideo = async () => {
     try {
-      const res = await axios.get(`${DATABASE_URL}/client/get-video/${id}`, {
-        headers: { Authorization: `Bearer ${sessionId}` },
-      });
-      console.log(res.data);
+      const res = await axios.get(`${DATABASE_URL}/client/get-video/${id}`);
       setFormData({
         name: res.data.title,
         url: res.data.imgUrl,
         views: res.data.views,
         likes: res.data.likes,
       });
-      // Assuming backend doesn't track per-user likes, set isLiked to false initially
-      // If backend supports fetching like status, update here
     } catch (error) {
       console.error("Error fetching video:", error);
     }
@@ -43,35 +37,53 @@ const VideoClient = () => {
 
   const addView = async () => {
     try {
-      const res = await axios.put(
-        `${DATABASE_URL}/client/add-view/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${sessionId}` } }
-      );
-      console.log(res.data);
+      const res = await axios.put(`${DATABASE_URL}/client/add-view/${id}`);
       setFormData((prev) => ({ ...prev, views: prev.views + 1 }));
     } catch (error) {
       console.error("Error adding view:", error);
     }
   };
 
-  const addLike = async () => {
+  const checkLikeStatus = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
     try {
-      const res = await axios.put(
-        `${DATABASE_URL}/client/add-like/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${sessionId}` } }
+      const res = await axios.get(
+        `${DATABASE_URL}/client/check-like/${id}?userId=${userId}`
       );
-      console.log(res.data);
-      setFormData((prev) => ({ ...prev, likes: prev.likes + 1 }));
-      setIsLiked(!isLiked); // Toggle like status for UI
+      setIsLiked(res.data.isLiked);
     } catch (error) {
-      console.error("Error adding like:", error);
+      console.error("Error checking like status:", error);
     }
   };
+
+  const addLike = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Please login to like videos");
+      return;
+    }
+
+    try {
+      const res = await axios.put(
+        `${DATABASE_URL}/client/add-like/${id}?userId=${userId}`,
+        {}
+      );
+      setIsLiked(res.data.liked);
+      setFormData((prev) => ({
+        ...prev,
+        likes: res.data.liked ? prev.likes + 1 : prev.likes - 1,
+      }));
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
+
   useEffect(() => {
     getVideo();
     addView();
+    checkLikeStatus();
   }, []);
   return (
     <div className="min-h-screen bg-white">
