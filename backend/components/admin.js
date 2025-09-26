@@ -93,7 +93,11 @@ const getAllVolunteerData = async (req, res) => {
 
 const getallVideoRequest = async (req, res) => {
   try {
-    const requests = await videoRequestModel.find().sort({ createdAt: -1 });
+    const requests = await videoRequestModel
+      .find()
+      .populate("completedBy", "firstName lastName email")
+      .populate("createdBy", "firstName lastName email")
+      .sort({ createdAt: -1 });
     return res.status(200).json(requests);
   } catch (error) {
     console.error(error);
@@ -158,6 +162,7 @@ const getAllvideos = async (req, res) => {
 
     // Fetch videos with filters and pagination
     const videos = await VideoModel.find(query)
+      .populate("uploadedBy", "firstName lastName email") // Populate volunteer info
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 

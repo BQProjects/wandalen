@@ -177,11 +177,12 @@ const AllVideos = () => {
         <VideoGridWithFilters
           videos={videos}
           onVideoSelect={handleVideoSelect}
-          title="Recently Created by You"
-          subtitle="View, edit, and track the impact of your videos."
+          title="All Videos"
+          subtitle="Manage all videos in the system."
           showFilters={true}
           showStats={true}
           isClientView={false}
+          isAdminView={true}
           onVideoEdit={handleVideoEdit}
           onVideoDelete={handleVideoDelete}
           showResultsCount={true}
@@ -190,7 +191,7 @@ const AllVideos = () => {
           activeFilters={activeFilters}
           onFilterChange={setActiveFilters}
           totalPages={Math.ceil(total / itemsPerPage)}
-          total={total} // Pass total matching videos
+          total={total}
         />
       </div>
     </div>

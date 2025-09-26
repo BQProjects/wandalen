@@ -127,9 +127,16 @@ const VideoCard = ({
   onEdit,
   onDelete,
   videoId,
+  uploadedBy, // Add uploadedBy prop
+  isAdminView = false, // Add isAdminView prop
 }) => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
+  const currentUserId = localStorage.getItem("userId"); // Get current user ID
+
+  // Check if current user is the uploader or if this is admin view
+  const isUploader = uploadedBy === currentUserId;
+  const canEdit = isAdminView || isUploader;
 
   return (
     <div
@@ -186,8 +193,8 @@ const VideoCard = ({
                 <span>{likes} likes</span> {/* Added "likes" for clarity */}
               </div>
             </div>
-            {/* Edit and Delete buttons for volunteers */}
-            {!isClientView && onEdit && onDelete && (
+            {/* Edit and Delete buttons for volunteers and admins */}
+            {!isClientView && onEdit && onDelete && canEdit && (
               <div className="flex items-center gap-2">
                 <button
                   onClick={(e) => {
@@ -202,7 +209,7 @@ const VideoCard = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDelete(videoId); // Only call onDelete (now handles API and refresh)
+                    onDelete(videoId);
                   }}
                   className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
                   title="Delete video"
@@ -313,6 +320,7 @@ const VideoGridWithFilters = ({
   onFilterChange,
   totalPages,
   total, // New prop: Total matching videos
+  isAdminView = false, // Add isAdminView prop
 }) => {
   const [openDropdown, setOpenDropdown] = useState(null); // Keep only this internal state
 
@@ -329,8 +337,8 @@ const VideoGridWithFilters = ({
     Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Changed to lowercase
   };
 
-  // Only add "Uploaded By" filter for volunteers (when not client view)
-  if (!isClientView) {
+  // Only add "Uploaded By" filter for volunteers (when not client view and not admin view)
+  if (!isClientView && !isAdminView) {
     defaultFilterOptions["Uploaded By"] = ["Me"];
   }
 
@@ -452,6 +460,8 @@ const VideoGridWithFilters = ({
                 isClientView={isClientView}
                 onEdit={onVideoEdit}
                 onDelete={onVideoDelete}
+                uploadedBy={video.uploadedBy}
+                isAdminView={isAdminView} // Add isAdminView prop
               />
             ))
           ) : (

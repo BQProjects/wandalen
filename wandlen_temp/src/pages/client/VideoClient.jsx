@@ -9,10 +9,12 @@ import Quote from "../../assets/Quote.svg";
 import Footer from "../../components/Footer";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import { useTranslation } from "react-i18next";
 
 const VideoClient = () => {
   const { id } = useParams();
   const { DATABASE_URL } = useContext(DatabaseContext);
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: "",
     url: "",
@@ -89,7 +91,7 @@ const VideoClient = () => {
   const addLike = async () => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      alert("Please login to like videos");
+      alert(t("videoClient.loginToLike"));
       return;
     }
 
@@ -131,7 +133,7 @@ const VideoClient = () => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      alert("Please login to submit a review");
+      alert(t("videoClient.loginToReview"));
       return;
     }
 
@@ -156,10 +158,10 @@ const VideoClient = () => {
 
       // Fetch reviews again
       fetchReviews();
-      alert("Review submitted successfully!");
+      alert(t("videoClient.reviewSuccess"));
     } catch (error) {
       console.error("Error submitting review:", error);
-      alert("Failed to submit review. Please try again.");
+      alert(t("videoClient.reviewError"));
     }
   };
 
@@ -184,12 +186,14 @@ const VideoClient = () => {
                 className="inline-flex items-center gap-3 text-brown hover:text-accent transition-colors mb-6 sm:mb-8 mt-10"
               >
                 <img src={BackArrow} alt="Back Arrow" className="w-6 h-6" />
-                <span className="text-lg sm:text-2xl font-semibold">Back</span>
+                <span className="text-lg sm:text-2xl font-semibold">
+                  {t("videoClient.back")}
+                </span>
               </Link>
 
               {/* Video Title */}
               <h2 className="text-2xl sm:text-3xl font-semibold text-brown mb-6 sm:mb-8">
-                {formData.name || "Winterwandeling Boetelerveld"}
+                {formData.name || t("videoClient.defaultTitle")}
               </h2>
 
               {/* Video Player */}
@@ -236,7 +240,7 @@ const VideoClient = () => {
             </div>
           </div>
           <div className=" text-[#381207] font-['Poppins'] text-[2.5rem] font-semibold leading-[136%] pb-10">
-            Ervaringen met deze video:
+            {t("videoClient.experiencesTitle")}
           </div>
 
           {/* Dynamic Reviews Section with Navigation Arrows */}
@@ -244,7 +248,7 @@ const VideoClient = () => {
             <div className="mt-10">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-semibold text-brown">
-                  All Reviews
+                  {t("videoClient.allReviews")}
                 </h3>
               </div>
 
@@ -347,8 +351,8 @@ const VideoClient = () => {
           <div className="mt-8 pb-10">
             <h3 className="text-2xl font-semibold text-brown mb-6">
               {userReviewed || justSubmitted
-                ? "Thanks for your review!"
-                : "Share your experience"}
+                ? t("videoClient.thanksForReview")
+                : t("videoClient.shareExperience")}
             </h3>
 
             {/* Only show form if user hasn't reviewed AND hasn't just submitted */}
@@ -362,7 +366,7 @@ const VideoClient = () => {
                     htmlFor="review"
                     className="block text-[#EDE4DC] font-medium mb-2"
                   >
-                    Your Review
+                    {t("videoClient.yourReview")}
                   </label>
                   <textarea
                     id="review"
@@ -372,7 +376,7 @@ const VideoClient = () => {
                       setReviewForm({ ...reviewForm, review: e.target.value })
                     }
                     className="w-full p-3 border placeholder:text-[#EDE4DC]  text-[#EDE4DC]  border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
-                    placeholder="Share your thoughts about this video..."
+                    placeholder={t("videoClient.reviewPlaceholder")}
                     required
                   ></textarea>
                 </div>
@@ -384,7 +388,7 @@ const VideoClient = () => {
                       htmlFor="rating"
                       className="block text-[#EDE4DC] font-medium mb-2"
                     >
-                      Rating
+                      {t("videoClient.rating")}
                     </label>
                     <div className="flex items-center gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
@@ -412,7 +416,7 @@ const VideoClient = () => {
                     type="submit"
                     className="bg-[#A6A643] hover:bg-accent text-[#EDE4DC] font-medium py-2 px-6 rounded-lg transition-colors self-end"
                   >
-                    Submit Review
+                    {t("videoClient.submitReview")}
                   </button>
                 </div>
               </form>

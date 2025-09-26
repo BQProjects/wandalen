@@ -2,12 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import Footer from "../../components/Footer";
+import { useTranslation } from "react-i18next";
+import RoutesNearYou from "../../components/common/RoutesNearYou";
 
 const ManageClients = () => {
   const [clients, setClients] = useState([]);
   const [orgData, setOrgData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { DATABASE_URL } = useContext(DatabaseContext);
+  const { t } = useTranslation();
   const sessionId = localStorage.getItem("sessionId");
 
   const getAllClients = async () => {
@@ -57,9 +60,7 @@ const ManageClients = () => {
   const handleAddClient = async () => {
     // Check if client limit is reached before attempting to add
     if (orgData && clients.length >= orgData.clientLimit && !editingClientId) {
-      alert(
-        "Cannot add more clients. Please contact admin to increase client limit."
-      );
+      alert(t("manageClients.cannotAddMoreClients"));
       return;
     }
     try {
@@ -75,7 +76,7 @@ const ManageClients = () => {
           }
         );
         if (res.status === 200) {
-          alert("Client updated successfully");
+          alert(t("manageClients.clientUpdatedSuccess"));
           setClients(
             clients.map((client) =>
               client._id === editingClientId
@@ -105,7 +106,7 @@ const ManageClients = () => {
         });
 
         if (res.status === 201) {
-          alert("Client added successfully");
+          alert(t("manageClients.clientAddedSuccess"));
           setNewClient({
             firstName: "",
             lastName: "",
@@ -125,10 +126,10 @@ const ManageClients = () => {
     try {
       await axios.delete(`${DATABASE_URL}/org/deleteClient/${id}`);
       setClients(clients.filter((client) => client._id !== id)); // Remove from local state after successful delete
-      alert("Client deleted successfully");
+      alert(t("manageClients.clientDeletedSuccess"));
     } catch (error) {
       console.error("Error deleting client:", error);
-      alert("Failed to delete client");
+      alert(t("manageClients.clientDeleteError"));
     }
   };
 
@@ -157,10 +158,10 @@ const ManageClients = () => {
       <div className="max-w-7xl mx-auto mb-10">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-[#dd9219] mb-2">
-            Organization
+            {t("manageClients.organization")}
           </h1>
           <h2 className="text-5xl font-medium text-[#381207]">
-            Manage Client, subscription & your community
+            {t("manageClients.manageTitle")}
           </h2>
         </div>
 
@@ -174,7 +175,7 @@ const ManageClients = () => {
                 : "text-[#381207] hover:bg-gray-200"
             }`}
           >
-            Overview
+            {t("manageClients.overview")}
           </button>
           <button
             onClick={() => setActiveTab("clients")}
@@ -184,7 +185,7 @@ const ManageClients = () => {
                 : "text-[#381207] hover:bg-gray-200"
             }`}
           >
-            Clients
+            {t("manageClients.clients")}
           </button>
         </div>
 
@@ -208,14 +209,14 @@ const ManageClients = () => {
               <div className="flex flex-col items-start gap-4">
                 <div className="flex flex-col items-start gap-2">
                   <div className="w-[18.5625rem] text-[#381207] font-['Poppins'] text-2xl font-medium leading-[normal]">
-                    Total Clients Added
+                    {t("manageClients.totalClientsAdded")}
                   </div>
                   <div className="flex flex-col justify-center self-stretch h-10 text-[#381207] font-['Poppins'] text-[2rem] font-medium leading-[normal]">
                     {clients.length}
                   </div>
                 </div>
                 <div className="text-[#381207] font-['Poppins'] text-lg leading-[normal]">
-                  People you care for
+                  {t("manageClients.peopleYouCareFor")}
                 </div>
               </div>
             </div>
@@ -237,14 +238,14 @@ const ManageClients = () => {
               <div className="flex flex-col items-start gap-4">
                 <div className="flex flex-col items-start gap-2">
                   <div className="w-[18.5625rem] text-[#381207] font-['Poppins'] text-2xl font-medium leading-[normal]">
-                    Total No. Users Allowed
+                    {t("manageClients.totalUsersAllowed")}
                   </div>
                   <div className="flex flex-col justify-center self-stretch h-10 text-[#381207] font-['Poppins'] text-[2rem] font-medium leading-[normal]">
                     {orgData?.clientLimit}
                   </div>
                 </div>
                 <div className="text-[#381207] font-['Poppins'] text-lg leading-[normal]">
-                  Total active users under all plans
+                  {t("manageClients.totalActiveUsers")}
                 </div>
               </div>
             </div>
@@ -266,14 +267,14 @@ const ManageClients = () => {
               <div className="flex flex-col items-start gap-4">
                 <div className="flex flex-col items-start gap-2">
                   <div className="w-[18.5625rem] text-[#381207] font-['Poppins'] text-2xl font-medium leading-[normal]">
-                    Total Amount Paid
+                    {t("manageClients.totalAmountPaid")}
                   </div>
                   <div className="flex flex-col justify-center self-stretch h-10 text-[#381207] font-['Poppins'] text-[2rem] font-medium leading-[normal]">
                     {orgData?.totalPaid || "€1,250"}
                   </div>
                 </div>
                 <div className="text-[#381207] font-['Poppins'] text-lg leading-[normal]">
-                  Revenue to date
+                  {t("manageClients.revenueToDate")}
                 </div>
               </div>
             </div>
@@ -295,7 +296,7 @@ const ManageClients = () => {
               <div className="flex flex-col items-start gap-4">
                 <div className="flex flex-col items-start gap-2">
                   <div className="w-[18.5625rem] text-[#381207] font-['Poppins'] text-2xl font-medium leading-[normal]">
-                    Name of organisation
+                    {t("manageClients.nameOfOrganisation")}
                   </div>
                   <div className="flex flex-col justify-center self-stretch h-10 text-[#381207] font-['Poppins'] text-[2rem] font-medium leading-[normal]">
                     {orgData?.orgName || "Health.Up"}
@@ -319,16 +320,16 @@ const ManageClients = () => {
                         <input type="checkbox" className="w-4 h-4" />
                       </th>
                       <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        Full Name
+                        {t("manageClients.fullName")}
                       </th>
                       <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        Phone Number
+                        {t("manageClients.phoneNumber")}
                       </th>
                       <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        Email Id
+                        {t("manageClients.emailId")}
                       </th>
                       <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        Generated Password
+                        {t("manageClients.generatedPassword")}
                       </th>
                       <th className="px-6 py-4 text-left"></th>
                     </tr>
@@ -366,7 +367,7 @@ const ManageClients = () => {
                             onClick={() => handleEditClient(client)}
                             className="text-[#381207] hover:text-blue-600 transition"
                           >
-                            Edit
+                            {t("manageClients.edit")}
                           </button>
                           <button
                             onClick={() => handleDeleteClient(client._id)} // Already using _id
@@ -396,35 +397,39 @@ const ManageClients = () => {
             <div className="bg-white rounded-2xl shadow-lg p-8">
               {isLoading ? (
                 <div className="text-center">
-                  <p className="text-[#381207]">Loading data...</p>
+                  <p className="text-[#381207]">
+                    {t("manageClients.loadingData")}
+                  </p>
                 </div>
               ) : orgData ? (
                 clients.length >= orgData.clientLimit && !editingClientId ? (
                   <div className="text-center">
                     <h3 className="text-2xl font-medium text-[#381207] mb-2">
-                      Client Limit Reached
+                      {t("manageClients.clientLimitReached")}
                     </h3>
                     <p className="text-[#381207]">
-                      Please contact admin to increase client limit.
+                      {t("manageClients.contactAdmin")}
                     </p>
                   </div>
                 ) : (
                   <>
                     <div className="mb-6">
                       <h3 className="text-2xl font-medium text-[#381207] mb-2">
-                        {editingClientId ? "Edit Client" : "Add New Client"}
+                        {editingClientId
+                          ? t("manageClients.editClient")
+                          : t("manageClients.addNewClient")}
                       </h3>
                       <p className="text-[#381207]">
                         {editingClientId
-                          ? 'Update client\'s details and click "Update Client" to save changes'
-                          : 'Fill in client\'s details and click "Add Client" to save them to the list'}
+                          ? t("manageClients.editClientDescription")
+                          : t("manageClients.addClientDescription")}
                       </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                       <div>
                         <label className="block text-[#7a756e] font-medium mb-2">
-                          First Name
+                          {t("manageClients.firstName")}
                         </label>
                         <input
                           type="text"
@@ -432,12 +437,12 @@ const ManageClients = () => {
                           value={newClient.firstName}
                           onChange={handleInputChange}
                           className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                          placeholder="First Name"
+                          placeholder={t("manageClients.firstName")}
                         />
                       </div>
                       <div>
                         <label className="block text-[#7a756e] font-medium mb-2">
-                          Last Name
+                          {t("manageClients.lastName")}
                         </label>
                         <input
                           type="text"
@@ -445,12 +450,12 @@ const ManageClients = () => {
                           value={newClient.lastName}
                           onChange={handleInputChange}
                           className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                          placeholder="Last Name"
+                          placeholder={t("manageClients.lastName")}
                         />
                       </div>
                       <div>
                         <label className="block text-[#7a756e] font-medium mb-2">
-                          Email
+                          {t("manageClients.email")}
                         </label>
                         <input
                           type="email"
@@ -458,12 +463,12 @@ const ManageClients = () => {
                           value={newClient.email}
                           onChange={handleInputChange}
                           className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                          placeholder="Email"
+                          placeholder={t("manageClients.email")}
                         />
                       </div>
                       <div>
                         <label className="block text-[#7a756e] font-medium mb-2">
-                          Phone No
+                          {t("manageClients.phoneNo")}
                         </label>
                         <input
                           type="text"
@@ -471,7 +476,7 @@ const ManageClients = () => {
                           value={newClient.phoneNo}
                           onChange={handleInputChange}
                           className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                          placeholder="Phone No"
+                          placeholder={t("manageClients.phoneNo")}
                         />
                       </div>
                     </div>
@@ -480,7 +485,9 @@ const ManageClients = () => {
                       onClick={handleAddClient}
                       className="px-6 py-3 bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
                     >
-                      {editingClientId ? "Update Client" : "Add Client"}
+                      {editingClientId
+                        ? t("manageClients.updateClient")
+                        : t("manageClients.addClient")}
                     </button>
                     {editingClientId && (
                       <button
@@ -496,7 +503,7 @@ const ManageClients = () => {
                         }}
                         className="ml-4 px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition font-medium"
                       >
-                        Cancel
+                        {t("manageClients.cancel")}
                       </button>
                     )}
                   </>
@@ -504,7 +511,7 @@ const ManageClients = () => {
               ) : (
                 <div className="text-center">
                   <p className="text-[#381207]">
-                    Error loading organization data.
+                    {t("manageClients.errorLoadingData")}
                   </p>
                 </div>
               )}
@@ -512,6 +519,7 @@ const ManageClients = () => {
           </>
         )}
       </div>
+      <RoutesNearYou />
       <Footer />
     </div>
   );

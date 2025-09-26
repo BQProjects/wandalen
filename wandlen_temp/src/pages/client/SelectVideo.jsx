@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import HandHold from "../../assets/HandHold.png";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import Footer from "../../components/Footer";
+import RoutesNearYou from "../../components/common/RoutesNearYou";
 
 const SelectVideo = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [videos, setVideos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilters, setActiveFilters] = useState({});
@@ -79,14 +82,13 @@ const SelectVideo = () => {
         {/* Centered Text */}
         <div className="relative text-center max-w-4xl mx-auto px-4">
           <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#DD9219] mb-4">
-            All Videos
+            {t("selectVideo.hero.title")}
           </h1>
           <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
-            Choose a video that suits you
+            {t("selectVideo.hero.subtitle")}
           </p>
           <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">
-            Let yourself be carried away by nature walk videos that stimulate
-            your senses and evoke memories.
+            {t("selectVideo.hero.description")}
           </p>
         </div>
       </div>
@@ -96,13 +98,13 @@ const SelectVideo = () => {
         <VideoGridWithFilters
           videos={videos}
           onVideoSelect={handleVideoSelect}
-          title="Your Favorite Videos"
-          subtitle="Easily find and enjoy the videos you love most, anytime."
+          title={t("selectVideo.grid.title")}
+          subtitle={t("selectVideo.grid.subtitle")}
           customFilterOptions={null}
           showFilters={true}
           showStats={true}
           isClientView={true}
-          emptyStateMessage="No nature videos available at the moment."
+          emptyStateMessage={t("selectVideo.grid.emptyState")}
           showResultsCount={true}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
@@ -129,6 +131,7 @@ const SelectVideo = () => {
           </div>
         </div> */}
       </div>
+      <RoutesNearYou />
       <Footer />
     </div>
   );

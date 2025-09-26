@@ -3,8 +3,10 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import UserIcon from "../../assets/UserIcon.svg";
 import HandHold from "../../assets/HandHold.png";
+import { useTranslation } from "react-i18next";
 
 const OrganizationProfile = () => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     fullName: "",
@@ -68,12 +70,12 @@ const OrganizationProfile = () => {
         `${DATABASE_URL}/org/updateOrg/${sessionId}`,
         updatedData
       );
-      alert("Profile updated successfully");
+      alert(t("organizationProfile.profileUpdatedSuccess"));
       setIsEditing(false);
       setOriginalData(profileData);
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile");
+      alert(t("organizationProfile.profileUpdateFailed"));
     }
   };
 
@@ -132,7 +134,7 @@ const OrganizationProfile = () => {
             </div>
             <button className="px-4 py-2 text-white rounded-lg transition mb-4">
               <div className="flex justify-center items-center gap-1 py-2 px-4 rounded-lg border-[0.5px] border-[#e5e3df] text-white font-['Poppins'] text-sm leading-[normal]">
-                Remove Image
+                {t("organizationProfile.removeImage")}
               </div>
             </button>
             <p className="text-5xl text-[#EDE4DC] font-semibold font-[Poppins]">
@@ -146,13 +148,13 @@ const OrganizationProfile = () => {
         {/* Account Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Account Info
+            {t("organizationProfile.accountInfo")}
           </h2>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Full Name
+                  {t("organizationProfile.fullName")}
                 </label>
                 {isEditing ? (
                   <input
@@ -170,7 +172,7 @@ const OrganizationProfile = () => {
               </div>
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Organization Name
+                  {t("organizationProfile.organizationName")}
                 </label>
                 {isEditing ? (
                   <input
@@ -190,7 +192,7 @@ const OrganizationProfile = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Contact Email
+                  {t("organizationProfile.contactEmail")}
                 </label>
                 {isEditing ? (
                   <input
@@ -208,7 +210,7 @@ const OrganizationProfile = () => {
               </div>
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Phone Number
+                  {t("organizationProfile.phoneNumber")}
                 </label>
                 {isEditing ? (
                   <input
@@ -227,7 +229,7 @@ const OrganizationProfile = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Address
+                {t("organizationProfile.address")}
               </label>
               {isEditing ? (
                 <textarea
@@ -248,12 +250,12 @@ const OrganizationProfile = () => {
         {/* Login Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Login Info
+            {t("organizationProfile.loginInfo")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Account Email
+                {t("organizationProfile.accountEmail")}
               </label>
               {isEditing ? (
                 <input
@@ -271,7 +273,7 @@ const OrganizationProfile = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Password
+                {t("organizationProfile.password")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg text-[#381207] font-[Poppins]">
                 {profileData.password}
@@ -283,12 +285,12 @@ const OrganizationProfile = () => {
         {/* Subscription Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Subscription Info
+            {t("organizationProfile.subscriptionInfo")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Current Plan
+                {t("organizationProfile.currentPlan")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg text-[#381207] font-[Poppins]">
                 {profileData.currentPlan}
@@ -296,7 +298,7 @@ const OrganizationProfile = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Valid Until
+                {t("organizationProfile.validUntil")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg text-[#381207] font-[Poppins]">
                 {profileData.validUntil}
@@ -305,10 +307,10 @@ const OrganizationProfile = () => {
           </div>
           <div className="flex justify-end gap-4">
             <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]">
-              Upgrade Plan
+              {t("organizationProfile.upgradePlan")}
             </button>
             <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]">
-              Cancel Subscription
+              {t("organizationProfile.cancelSubscription")}
             </button>
           </div>
         </div>
@@ -316,16 +318,14 @@ const OrganizationProfile = () => {
         {/* Close Account Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Close Your Account
+            {t("organizationProfile.closeAccount")}
           </h2>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <p className="text-[#7a756e] flex-1 font-[Poppins]">
-              To close your account, first move any remaining sites to Trash. If
-              your site has any Premium Plans or domains connected, you'll need
-              to cancel or transfer them first.
+              {t("organizationProfile.closeAccountDescription")}
             </p>
             <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition whitespace-nowrap font-[Poppins]">
-              Close Your Account
+              {t("organizationProfile.closeAccountButton")}
             </button>
           </div>
         </div>
@@ -338,13 +338,13 @@ const OrganizationProfile = () => {
                 onClick={handleSave}
                 className="px-6 py-3 bg-[#2a341f] text-white rounded-lg hover:bg-[#1e241a] transition font-medium font-[Poppins]"
               >
-                Save Changes
+                {t("organizationProfile.saveChanges")}
               </button>
               <button
                 onClick={handleCancel}
                 className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium font-[Poppins]"
               >
-                Cancel
+                {t("organizationProfile.cancel")}
               </button>
             </>
           ) : (
@@ -352,7 +352,7 @@ const OrganizationProfile = () => {
               onClick={() => setIsEditing(true)}
               className="px-6 py-3 bg-[#2a341f] text-white rounded-lg hover:bg-[#1e241a] transition font-medium font-[Poppins]"
             >
-              Edit Profile
+              {t("organizationProfile.editProfile")}
             </button>
           )}
         </div>

@@ -3,10 +3,12 @@ import UserIcon from "../../assets/UserIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import HandHold from "../../assets/HandHold.png";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const PatientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { DATABASE_URL } = useContext(DatabaseContext);
+  const { t } = useTranslation();
   const sessionId = localStorage.getItem("sessionId");
   const clientId = localStorage.getItem("userId");
   const [profileData, setProfileData] = useState({
@@ -29,7 +31,7 @@ const PatientProfile = () => {
 
   const handleSave = async () => {
     if (!clientId) {
-      alert("User not logged in. Please log in again.");
+      alert(t("patientProfile.loginRequired"));
       return;
     }
     try {
@@ -45,12 +47,12 @@ const PatientProfile = () => {
         updatePayload,
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
-      alert("Profile updated successfully!");
+      alert(t("patientProfile.profileUpdateSuccess"));
       setOriginalData({ ...profileData });
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile. Please try again.");
+      alert(t("patientProfile.profileUpdateError"));
     }
   };
 
@@ -61,7 +63,7 @@ const PatientProfile = () => {
 
   const getProfileData = async () => {
     if (!clientId) {
-      alert("User not logged in. Please log in again.");
+      alert(t("patientProfile.loginRequired"));
       return;
     }
     try {
@@ -153,7 +155,7 @@ const PatientProfile = () => {
             </div>
             <button className="px-4 py-2 text-white rounded-lg transition mb-4">
               <div className="flex justify-center items-center gap-1 py-2 px-4 rounded-lg border-[0.5px] border-[#e5e3df] text-white font-['Poppins'] text-sm leading-[normal]">
-                Remove Image
+                {t("patientProfile.removeImage")}
               </div>
             </button>
             <p className="text-5xl text-[#EDE4DC] font-semibold font-[Poppins]">
@@ -167,13 +169,13 @@ const PatientProfile = () => {
         {/* Account Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Account Info
+            {t("patientProfile.accountInfo")}
           </h2>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Full Name
+                  {t("patientProfile.fullName")}
                 </label>
                 {isEditing ? (
                   <input
@@ -191,7 +193,7 @@ const PatientProfile = () => {
               </div>
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Organization Name/Family Name
+                  {t("patientProfile.organizationName")}
                 </label>
                 {isEditing ? (
                   <input
@@ -211,7 +213,7 @@ const PatientProfile = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Contact Email
+                  {t("patientProfile.contactEmail")}
                 </label>
                 {isEditing ? (
                   <input
@@ -229,7 +231,7 @@ const PatientProfile = () => {
               </div>
               <div>
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                  Phone Number
+                  {t("patientProfile.phoneNumber")}
                 </label>
                 {isEditing ? (
                   <input
@@ -248,7 +250,7 @@ const PatientProfile = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Address
+                {t("patientProfile.address")}
               </label>
               {isEditing ? (
                 <textarea
@@ -269,12 +271,12 @@ const PatientProfile = () => {
         {/* Login Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Login Info
+            {t("patientProfile.loginInfo")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Account Email
+                {t("patientProfile.accountEmail")}
               </label>
               {isEditing ? (
                 <input
@@ -292,7 +294,7 @@ const PatientProfile = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Password
+                {t("patientProfile.password")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
                 {profileData.password}
@@ -304,12 +306,12 @@ const PatientProfile = () => {
         {/* Subscription Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Subscription Info
+            {t("patientProfile.subscriptionInfo")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Current Plan
+                {t("patientProfile.currentPlan")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
                 {profileData.currentPlan}
@@ -317,7 +319,7 @@ const PatientProfile = () => {
             </div>
             <div>
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
-                Valid Until
+                {t("patientProfile.validUntil")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
                 {profileData.validUntil}
@@ -326,10 +328,10 @@ const PatientProfile = () => {
           </div>
           <div className="flex justify-end gap-4">
             <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]">
-              Upgrade Plan
+              {t("patientProfile.upgradePlan")}
             </button>
             <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]">
-              Cancel Subscription
+              {t("patientProfile.cancelSubscription")}
             </button>
           </div>
         </div>
@@ -337,16 +339,14 @@ const PatientProfile = () => {
         {/* Close Account Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            Close Your Account
+            {t("patientProfile.closeAccount")}
           </h2>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <p className="text-[#7a756e] flex-1 font-[Poppins]">
-              To close your account, first move any remaining sites to Trash. If
-              your site has any Premium Plans or domains connected, you'll need
-              to cancel or transfer them first.
+              {t("patientProfile.closeAccountDescription")}
             </p>
             <button className="px-4 py-2 border font-[Poppins] border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition whitespace-nowrap">
-              Close Your Account
+              {t("patientProfile.closeAccountButton")}
             </button>
           </div>
         </div>
@@ -359,13 +359,13 @@ const PatientProfile = () => {
                 onClick={handleSave}
                 className="px-6 py-3 font-[Poppins] bg-[#2a341f] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
               >
-                Save Changes
+                {t("patientProfile.saveChanges")}
               </button>
               <button
                 onClick={handleCancel}
                 className="px-6 py-3 border font-[Poppins] border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
               >
-                Cancel
+                {t("patientProfile.cancel")}
               </button>
             </>
           ) : (
@@ -373,7 +373,7 @@ const PatientProfile = () => {
               onClick={() => setIsEditing(true)}
               className="px-6 py-3 bg-[#2a341f] font-[Poppins] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
             >
-              Edit Profile
+              {t("patientProfile.editProfile")}
             </button>
           )}
         </div>

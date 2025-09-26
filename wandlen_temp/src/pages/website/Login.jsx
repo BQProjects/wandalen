@@ -212,19 +212,6 @@ const Login = () => {
             >
               Log in
             </button>
-
-            {/* Sign Up Link */}
-            <div className="text-center mt-4">
-              <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base">
-                Don't have an account?{" "}
-                <Link
-                  to="/signup"
-                  className="text-[#5b6502] font-medium hover:underline"
-                >
-                  Sign up
-                </Link>
-              </p>
-            </div>
           </form>
         </div>
 

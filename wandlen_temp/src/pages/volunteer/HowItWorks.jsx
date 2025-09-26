@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import HowItWorkCam from "../../assets/HowItWorkCamera.svg";
 import SecondCam from "../../assets/SecondCam.svg";
 import CameraIcon from "../../assets/CameraIcon.svg";
@@ -12,9 +13,10 @@ import PathIcon from "../../assets/PathIcon.svg";
 import Testimonial from "../../components/common/TestimonialScroll";
 import HandHold from "../../assets/HandHold.png";
 import Footer from "../../components/Footer";
-import { Link } from "react-router-dom";
 
 function HowItWorks() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen font-base">
       <main className="bg-border">
@@ -32,14 +34,13 @@ function HowItWorks() {
           {/* Centered Text */}
           <div className="relative text-center max-w-4xl mx-auto px-4">
             <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#DD9219] mb-4">
-              How to help as a Volunteer
+              {t("volunteerHowItWorks.heroTitle")}
             </h1>
             <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
-              Bring nature to those who can’t walk
+              {t("volunteerHowItWorks.heroSubtitle")}
             </p>
             <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">
-              Record or upload videos of nature and share them with clients. Ask
-              questions or leave a message anytime!
+              {t("volunteerHowItWorks.heroDescription")}
             </p>
           </div>
         </div>
@@ -56,7 +57,7 @@ function HowItWorks() {
               <div className="flex flex-col items-start gap-5 w-full">
                 <div className="flex flex-col items-start gap-1.5 self-stretch">
                   <div className="self-stretch text-brown font-[Poppins] font-base text-[2rem] font-semibold leading-[136%] tracking-tight-4">
-                    How does the camera work again?
+                    {t("volunteerHowItWorks.cameraGuideTitle")}
                   </div>
                   <div className="self-stretch font-[Poppins] text-brown font-base text-xl font-medium leading-[136%] tracking-tight-2">
                     Want to create nature videos for Virtual Walking? We offer
@@ -70,7 +71,7 @@ function HowItWorks() {
                 </div>
                 <a href="#extrainstructions">
                   <div className="flex items-center font-[Poppins] gap-2.5 py-2 px-0 rounded-lg text-olive font-base text-xl font-medium leading-[136%] underline tracking-tight-2 link">
-                    View the extra instructions
+                    {t("volunteerHowItWorks.viewExtraInstructions")}
                   </div>
                 </a>
               </div>
@@ -86,15 +87,14 @@ function HowItWorks() {
             {/* Top Text - Left-Aligned */}
             <div className="self-start mb-4">
               <div className="font-[Poppins] self-stretch text-white font-base text-[2rem] font-semibold leading-[136%]">
-                Hoe gebruik je de camera?
+                {t("volunteerHowItWorks.cameraUsageTitle")}
               </div>
             </div>
 
             {/* Below Text */}
             <div className="self-start mb-8">
               <div className="self-stretch font-[Poppins] text-white font-base text-xl font-medium leading-[136%]">
-                Door op de informatie icoontjes te drukken krijg je weer even
-                opfrisser over het gebruik van de camera.
+                {t("volunteerHowItWorks.cameraUsageDescription")}
               </div>
             </div>
 
@@ -114,11 +114,10 @@ function HowItWorks() {
             {/* Title and Description */}
             <div className="flex flex-col items-start gap-1.5 w-full mb-8">
               <div className="self-stretch font-[Poppins] text-brand font-base text-[2rem] font-semibold leading-[136%]">
-                Meer tips voor jou als vrijwilliger
+                {t("volunteerHowItWorks.tipsTitle")}
               </div>
               <div className="self-stretch font-[Poppins] text-brown font-base text-xl font-medium leading-[136%]">
-                Met deze extra tips zorg je voor een fijne ervaring voor de
-                kijker én jezelf.
+                {t("volunteerHowItWorks.tipsDescription")}
               </div>
             </div>
 
@@ -128,8 +127,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={CameraIcon} alt="Camera Icon" />
                 <div className="text-brown font-[Poppins] font-base text-2xl font-semibold leading-[136%]">
-                  Neem je spullen mee: selfiestick, beschermhoesje camera,
-                  beschermlens.
+                  {t("volunteerHowItWorks.tip1")}
                 </div>
               </div>
 
@@ -137,7 +135,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={SoundIcon} alt="Sound Icon" />
                 <div className="text-brown font-[Poppins] font-base text-2xl font-semibold leading-[136%]">
-                  Ademhaling: niet hijgen in de camera, geen geluiden maken.
+                  {t("volunteerHowItWorks.tip2")}
                 </div>
               </div>
 
@@ -145,7 +143,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={FocusIcon} alt="Focus Icon" />
                 <div className="font-[Poppins] text-brown font-base text-2xl font-semibold leading-[136%]">
-                  Als je wil focussen, dan moet je er heel dicht op.
+                  {t("volunteerHowItWorks.tip3")}
                 </div>
               </div>
 
@@ -153,8 +151,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={SunIcon} alt="Sun Icon" />
                 <div className="text-brown font-[Poppins] font-base text-2xl font-semibold leading-[136%]">
-                  Tijdens zonsopkomst is er mooi licht buiten, dit is de ideale
-                  tijd om op pad te gaan.
+                  {t("volunteerHowItWorks.tip4")}
                 </div>
               </div>
 
@@ -162,7 +159,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={ClothingIcon} alt="Clothing Icon" />
                 <div className="text-brown font-[Poppins] font-base text-2xl font-semibold leading-[136%]">
-                  Kleding: let op schuren van je jas, rits die geluid maakt.
+                  {t("volunteerHowItWorks.tip5")}
                 </div>
               </div>
 
@@ -170,8 +167,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={SunShadowIcon} alt="Sun Shadow Icon" />
                 <div className="text-brown font-[Poppins] font-base text-2xl font-semibold leading-[136%]">
-                  Zon: je eigen schaduw met de stick voorkomen, iets meer opzij
-                  filmen.
+                  {t("volunteerHowItWorks.tip6")}
                 </div>
               </div>
 
@@ -179,8 +175,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-border">
                 <img src={RotationIcon} alt="Sun Shadow Icon" />
                 <div className="text-brown font-[Poppins] font-base text-2xl font-semibold leading-[136%]">
-                  Heel rustig draaien als je een richting wilt laten zien, tegen
-                  je gevoel in; te langzaam.
+                  {t("volunteerHowItWorks.tip7")}
                 </div>
               </div>
 
@@ -188,8 +183,7 @@ function HowItWorks() {
               <div className="flex justify-center items-center gap-5 pt-[1.875rem] pr-[1.875rem] pb-[1.875rem] pl-[1.875rem] rounded-lg bg-[#d9bbaa]">
                 <img src={PathIcon} alt="Sun Shadow Icon" />
                 <div className="text-[#381207] font-['Poppins'] text-2xl font-semibold leading-[136%]">
-                  Blijf in principe op de paden (een beetje struinen is
-                  geoorloofd).
+                  {t("volunteerHowItWorks.tip8")}
                 </div>
               </div>
             </div>

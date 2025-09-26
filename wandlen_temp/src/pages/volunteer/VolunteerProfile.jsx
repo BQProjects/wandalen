@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import UserIcon from "../../assets/UserIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import HandHold from "../../assets/HandHold.png";
 
 const VolunteerProfile = () => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
@@ -141,7 +143,7 @@ const VolunteerProfile = () => {
             </div>
             <button className="px-4 py-2 text-white rounded-lg transition mb-4">
               <div className="flex justify-center items-center gap-1 py-2 px-4 rounded-lg border-[0.5px] border-[#e5e3df] text-white font-['Poppins'] text-sm leading-[normal]">
-                Remove Image
+                {t("volunteerProfile.removeImage")}
               </div>
             </button>
             <p className="text-5xl text-[#EDE4DC] font-semibold font-[Poppins]">
@@ -155,12 +157,12 @@ const VolunteerProfile = () => {
         {/* Account Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-[Poppins] font-medium text-[#381207] mb-6">
-            Account Info
+            {t("volunteerProfile.accountInfo")}
           </h2>
           <div className="space-y-6">
             <div>
               <label className="block font-[Poppins] text-[#7a756e] font-medium mb-2">
-                Full Name
+                {t("volunteerProfile.fullName")}
               </label>
               {isEditing ? (
                 <input
@@ -179,7 +181,7 @@ const VolunteerProfile = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#7a756e] font-medium mb-2">
-                  Contact Email
+                  {t("volunteerProfile.contactEmail")}
                 </label>
                 {isEditing ? (
                   <input
@@ -197,7 +199,7 @@ const VolunteerProfile = () => {
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#7a756e] font-medium mb-2">
-                  Phone Number
+                  {t("volunteerProfile.phoneNumber")}
                 </label>
                 {isEditing ? (
                   <input
@@ -216,7 +218,7 @@ const VolunteerProfile = () => {
             </div>
             <div>
               <label className="block font-[Poppins] text-[#7a756e] font-medium mb-2">
-                Address
+                {t("volunteerProfile.address")}
               </label>
               {isEditing ? (
                 <textarea
@@ -237,12 +239,12 @@ const VolunteerProfile = () => {
         {/* Login Info Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-[Poppins] font-medium text-[#381207] mb-6">
-            Login Info
+            {t("volunteerProfile.loginInfo")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block font-[Poppins] text-[#7a756e] font-medium mb-2">
-                Account Email
+                {t("volunteerProfile.accountEmail")}
               </label>
               {isEditing ? (
                 <input
@@ -260,7 +262,7 @@ const VolunteerProfile = () => {
             </div>
             <div>
               <label className="block font-[Poppins] text-[#7a756e] font-medium mb-2">
-                Password
+                {t("volunteerProfile.password")}
               </label>
               <div className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-[#f7f6f4] rounded-lg text-[#381207]">
                 {profileData.password}
@@ -272,16 +274,14 @@ const VolunteerProfile = () => {
         {/* Close Account Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-[Poppins] font-medium text-[#381207] mb-6">
-            Close Your Account
+            {t("volunteerProfile.closeAccount")}
           </h2>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <p className="text-[#7a756e] flex-1 font-[Poppins]">
-              To close your account, first move any remaining sites to Trash. If
-              your site has any Premium Plans or domains connected, you'll need
-              to cancel or transfer them first.
+              {t("volunteerProfile.closeAccountDescription")}
             </p>
             <button className="px-4 py-2 border font-[Poppins] border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition whitespace-nowrap">
-              Close Your Account
+              {t("volunteerProfile.closeAccountButton")}
             </button>
           </div>
         </div>
@@ -294,13 +294,13 @@ const VolunteerProfile = () => {
                 onClick={editProfile}
                 className="px-6 py-3 bg-[#2a341f] font-[Poppins] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
               >
-                Save Changes
+                {t("volunteerProfile.saveChanges")}
               </button>
               <button
                 onClick={handleCancel}
                 className="px-6 py-3 border font-[Poppins] border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
               >
-                Cancel
+                {t("volunteerProfile.cancel")}
               </button>
             </>
           ) : (
@@ -308,7 +308,7 @@ const VolunteerProfile = () => {
               onClick={() => setIsEditing(true)}
               className="px-6 py-3 bg-[#2a341f] font-[Poppins] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
             >
-              Edit Profile
+              {t("volunteerProfile.editProfile")}
             </button>
           )}
         </div>
