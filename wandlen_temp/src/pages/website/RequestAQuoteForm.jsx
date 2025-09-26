@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const RequestAQuoteForm = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     organizationName: "",
@@ -52,45 +54,65 @@ const RequestAQuoteForm = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.organizationName.trim())
-      newErrors.organizationName = "Organization name is required";
+      newErrors.organizationName = t(
+        "requestQuoteForm.validation.organizationName"
+      );
     if (!formData.contactEmail.trim())
-      newErrors.contactEmail = "Contact email is required";
+      newErrors.contactEmail = t("requestQuoteForm.validation.contactEmail");
     else if (!validateEmail(formData.contactEmail))
-      newErrors.contactEmail = "Invalid email format";
-    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+      newErrors.contactEmail = t(
+        "requestQuoteForm.validation.contactEmailInvalid"
+      );
+    if (!formData.phone.trim())
+      newErrors.phone = t("requestQuoteForm.validation.phone");
     else if (!validatePhone(formData.phone))
-      newErrors.phone = "Invalid phone format";
-    if (!formData.address.trim()) newErrors.address = "Address is required";
-    if (!formData.street.trim()) newErrors.street = "Street is required";
+      newErrors.phone = t("requestQuoteForm.validation.phoneInvalid");
+    if (!formData.address.trim())
+      newErrors.address = t("requestQuoteForm.validation.address");
+    if (!formData.street.trim())
+      newErrors.street = t("requestQuoteForm.validation.street");
     if (!formData.postalCode.trim())
-      newErrors.postalCode = "Postal code is required";
-    if (!formData.city.trim()) newErrors.city = "City is required";
+      newErrors.postalCode = t("requestQuoteForm.validation.postalCode");
+    if (!formData.city.trim())
+      newErrors.city = t("requestQuoteForm.validation.city");
     if (formData.website && !validateUrl(formData.website))
-      newErrors.website = "Invalid URL format";
-    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
-    if (!formData.jobTitle.trim()) newErrors.jobTitle = "Job title is required";
+      newErrors.website = t("requestQuoteForm.validation.websiteInvalid");
+    if (!formData.fullName.trim())
+      newErrors.fullName = t("requestQuoteForm.validation.fullName");
+    if (!formData.jobTitle.trim())
+      newErrors.jobTitle = t("requestQuoteForm.validation.jobTitle");
     if (!formData.emailAddress.trim())
-      newErrors.emailAddress = "Email address is required";
+      newErrors.emailAddress = t("requestQuoteForm.validation.emailAddress");
     else if (!validateEmail(formData.emailAddress))
-      newErrors.emailAddress = "Invalid email format";
+      newErrors.emailAddress = t(
+        "requestQuoteForm.validation.emailAddressInvalid"
+      );
     if (!formData.phoneContact.trim())
-      newErrors.phoneContact = "Phone contact is required";
+      newErrors.phoneContact = t("requestQuoteForm.validation.phoneContact");
     else if (!validatePhone(formData.phoneContact))
-      newErrors.phoneContact = "Invalid phone format";
+      newErrors.phoneContact = t(
+        "requestQuoteForm.validation.phoneContactInvalid"
+      );
     if (!formData.totalClients.trim())
-      newErrors.totalClients = "Total clients is required";
+      newErrors.totalClients = t("requestQuoteForm.validation.totalClients");
     if (!formData.numberLocations.trim())
-      newErrors.numberLocations = "Number of locations is required";
+      newErrors.numberLocations = t(
+        "requestQuoteForm.validation.numberLocations"
+      );
     if (formData.targetGroups.length === 0)
-      newErrors.targetGroups = "At least one target group is required";
+      newErrors.targetGroups = t("requestQuoteForm.validation.targetGroups");
     if (!formData.estimatedClients.trim())
-      newErrors.estimatedClients = "Estimated clients is required";
+      newErrors.estimatedClients = t(
+        "requestQuoteForm.validation.estimatedClients"
+      );
     if (!formData.startDate.trim())
-      newErrors.startDate = "Start date is required";
+      newErrors.startDate = t("requestQuoteForm.validation.startDate");
     if (!formData.onboardingSupport)
-      newErrors.onboardingSupport = "Onboarding support selection is required";
+      newErrors.onboardingSupport = t(
+        "requestQuoteForm.validation.onboardingSupport"
+      );
     if (!formData.agreeToTerms)
-      newErrors.agreeToTerms = "You must agree to the terms";
+      newErrors.agreeToTerms = t("requestQuoteForm.validation.agreeToTerms");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -139,11 +161,11 @@ const RequestAQuoteForm = () => {
     try {
       const response = await axios.post(`${DATABASE_URL}/org/signup`, formData);
       console.log("Form submitted successfully:", response.data);
-      alert("Form submitted successfully!");
+      alert(t("requestQuoteForm.form.messages.success"));
       navigate("/generate-pass/" + response.data._id);
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Failed to submit form. Please check your details and try again.");
+      alert(t("requestQuoteForm.form.messages.error"));
     }
   };
 
@@ -153,12 +175,11 @@ const RequestAQuoteForm = () => {
       <div className="relative bg-black bg-opacity-10 h-[438px] flex items-center justify-center">
         <div className="absolute inset-0 bg-black bg-opacity-10"></div>
         <div className="relative z-10 text-center text-[#ede4dc] px-6">
-          <h1 className="text-5xl font-medium mb-4">Get a Custom Quote</h1>
+          <h1 className="text-5xl font-medium mb-4">
+            {t("requestQuoteForm.header.title")}
+          </h1>
           <p className="text-xl max-w-[754px] mx-auto">
-            Tell us a bit about your organization or family. We’ll help you take
-            the next step toward meaningful, nature-connected experiences. Just
-            fill in the details, and we’ll get back to you shortly with a
-            tailored quote.
+            {t("requestQuoteForm.header.subtitle")}
           </p>
         </div>
       </div>
@@ -167,21 +188,23 @@ const RequestAQuoteForm = () => {
       <div className="flex flex-col items-center py-10 px-4">
         <div className="w-full max-w-[1000px] space-y-8">
           <h2 className="text-2xl font-medium text-[#381207]">
-            Please fill in the details below
+            {t("requestQuoteForm.form.title")}
           </h2>
 
           {/* Organization Details */}
           <div className="space-y-6">
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Organization Name
+                {t("requestQuoteForm.form.labels.organizationName")}
               </label>
               <input
                 type="text"
                 name="organizationName"
                 value={formData.organizationName}
                 onChange={handleChange}
-                placeholder="E.g., Sunrise Wellness Center, City Care Home, Local Daycare"
+                placeholder={t(
+                  "requestQuoteForm.form.placeholders.organizationName"
+                )}
                 className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                   errors.organizationName
                     ? "border-red-500"
@@ -197,14 +220,16 @@ const RequestAQuoteForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Contact Email
+                  {t("requestQuoteForm.form.labels.contactEmail")}
                 </label>
                 <input
                   type="email"
                   name="contactEmail"
                   value={formData.contactEmail}
                   onChange={handleChange}
-                  placeholder="E.g. info@wellnesscenter.nl"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.contactEmail"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.contactEmail ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -217,7 +242,7 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Phone Number
+                  {t("requestQuoteForm.form.labels.phoneNumber")}
                 </label>
                 <input
                   type="tel"
@@ -225,7 +250,7 @@ const RequestAQuoteForm = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   onInput={handlePhoneInput}
-                  placeholder="+31"
+                  placeholder={t("requestQuoteForm.form.placeholders.phone")}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.phone ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -237,13 +262,13 @@ const RequestAQuoteForm = () => {
             </div>
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Address
+                {t("requestQuoteForm.form.labels.address")}
               </label>
               <textarea
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
-                placeholder="Street, building number"
+                placeholder={t("requestQuoteForm.form.placeholders.address")}
                 className={`w-full p-3 border rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                   errors.address ? "border-red-500" : "border-[#cbcbcb]"
                 }`}
@@ -255,14 +280,14 @@ const RequestAQuoteForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Street
+                  {t("requestQuoteForm.form.labels.street")}
                 </label>
                 <input
                   type="text"
                   name="street"
                   value={formData.street}
                   onChange={handleChange}
-                  placeholder="Street, building number..."
+                  placeholder={t("requestQuoteForm.form.placeholders.street")}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.street ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -273,14 +298,16 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Postal Code
+                  {t("requestQuoteForm.form.labels.postalCode")}
                 </label>
                 <input
                   type="text"
                   name="postalCode"
                   value={formData.postalCode}
                   onChange={handleChange}
-                  placeholder="E.g., 1234 AB"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.postalCode"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.postalCode ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -293,14 +320,14 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  City
+                  {t("requestQuoteForm.form.labels.city")}
                 </label>
                 <input
                   type="text"
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  placeholder="Amsterdam"
+                  placeholder={t("requestQuoteForm.form.placeholders.city")}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.city ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -312,14 +339,14 @@ const RequestAQuoteForm = () => {
             </div>
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Website Link
+                {t("requestQuoteForm.form.labels.websiteLink")}
               </label>
               <input
                 type="url"
                 name="website"
                 value={formData.website}
                 onChange={handleChange}
-                placeholder="e.g. https://website.link/..."
+                placeholder={t("requestQuoteForm.form.placeholders.website")}
                 className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                   errors.website ? "border-red-500" : "border-[#cbcbcb]"
                 }`}
@@ -332,13 +359,13 @@ const RequestAQuoteForm = () => {
 
           {/* Organization Details Section */}
           <h3 className="text-2xl font-medium text-[#381207]">
-            Organization details
+            {t("requestQuoteForm.form.sections.organizationDetails")}
           </h3>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Full Name
+                  {t("requestQuoteForm.form.labels.fullName")}
                 </label>
                 <input
                   type="text"
@@ -346,7 +373,7 @@ const RequestAQuoteForm = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   onInput={handleNameInput}
-                  placeholder="E.g., Anna Jansen"
+                  placeholder={t("requestQuoteForm.form.placeholders.fullName")}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.fullName ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -359,14 +386,14 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Job Title / Position
+                  {t("requestQuoteForm.form.labels.jobTitle")}
                 </label>
                 <input
                   type="text"
                   name="jobTitle"
                   value={formData.jobTitle}
                   onChange={handleChange}
-                  placeholder="E.g., Activities Coordinator, Care Manager"
+                  placeholder={t("requestQuoteForm.form.placeholders.jobTitle")}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.jobTitle ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -381,14 +408,16 @@ const RequestAQuoteForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Email Address
+                  {t("requestQuoteForm.form.labels.emailAddress")}
                 </label>
                 <input
                   type="email"
                   name="emailAddress"
                   value={formData.emailAddress}
                   onChange={handleChange}
-                  placeholder="Your direct work email"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.emailAddress"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.emailAddress ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -401,7 +430,7 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Phone Number
+                  {t("requestQuoteForm.form.labels.phoneNumber")}
                 </label>
                 <input
                   type="tel"
@@ -409,7 +438,9 @@ const RequestAQuoteForm = () => {
                   value={formData.phoneContact}
                   onChange={handleChange}
                   onInput={handlePhoneInput}
-                  placeholder="+31 | Direct line for quick contact"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.phoneContact"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.phoneContact ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -425,13 +456,13 @@ const RequestAQuoteForm = () => {
 
           {/* Contact Person Section */}
           <h3 className="text-2xl font-medium text-[#381207]">
-            Contact person
+            {t("requestQuoteForm.form.sections.contactPerson")}
           </h3>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Total Number of Clients
+                  {t("requestQuoteForm.form.labels.totalClients")}
                 </label>
                 <input
                   type="text"
@@ -439,7 +470,9 @@ const RequestAQuoteForm = () => {
                   value={formData.totalClients}
                   onChange={handleChange}
                   onInput={handleNumberInput}
-                  placeholder="How many people are in your care?"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.totalClients"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.totalClients ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -452,7 +485,7 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Number of Locations
+                  {t("requestQuoteForm.form.labels.numberLocations")}
                 </label>
                 <input
                   type="text"
@@ -460,7 +493,9 @@ const RequestAQuoteForm = () => {
                   value={formData.numberLocations}
                   onChange={handleChange}
                   onInput={handleNumberInput}
-                  placeholder="E.g., 1 care home, 3 daycare centers"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.numberLocations"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.numberLocations
                       ? "border-red-500"
@@ -476,25 +511,25 @@ const RequestAQuoteForm = () => {
             </div>
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Target group(s) for which the platform will be used
+                {t("requestQuoteForm.form.labels.targetGroups")}
               </label>
               <div className="flex flex-wrap gap-4 mt-2">
-                {["Dementia", "Day care", "Rehabilitation", "Other"].map(
-                  (group) => (
-                    <label
-                      key={group}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.targetGroups.includes(group)}
-                        onChange={() => handleTargetGroupChange(group)}
-                        className="w-4 h-4"
-                      />
-                      <span className="text-[#2a341f] text-sm">{group}</span>
-                    </label>
-                  )
-                )}
+                {t("requestQuoteForm.form.options.targetGroups", {
+                  returnObjects: true,
+                }).map((group) => (
+                  <label
+                    key={group}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.targetGroups.includes(group)}
+                      onChange={() => handleTargetGroupChange(group)}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-[#2a341f] text-sm">{group}</span>
+                  </label>
+                ))}
               </div>
               {errors.targetGroups && (
                 <span className="text-red-500 text-sm">
@@ -506,13 +541,13 @@ const RequestAQuoteForm = () => {
 
           {/* Organization & Target Group */}
           <h3 className="text-2xl font-medium text-[#381207]">
-            Organization & Target Group
+            {t("requestQuoteForm.form.sections.organizationTargetGroup")}
           </h3>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Estimated number of clients who will use the platform
+                  {t("requestQuoteForm.form.labels.estimatedClients")}
                 </label>
                 <input
                   type="text"
@@ -520,7 +555,9 @@ const RequestAQuoteForm = () => {
                   value={formData.estimatedClients}
                   onChange={handleChange}
                   onInput={handleNumberInput}
-                  placeholder="E.g., 20 clients per week"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.estimatedClients"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.estimatedClients
                       ? "border-red-500"
@@ -535,14 +572,16 @@ const RequestAQuoteForm = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Desired start date of use
+                  {t("requestQuoteForm.form.labels.startDate")}
                 </label>
                 <input
                   type="text"
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
-                  placeholder="E.g., 01 October 2025"
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.startDate"
+                  )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                     errors.startDate ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
@@ -558,34 +597,31 @@ const RequestAQuoteForm = () => {
 
           {/* Use of Virtual Walking */}
           <h3 className="text-2xl font-medium text-[#381207]">
-            Use of Virtual Walking
+            {t("requestQuoteForm.form.sections.virtualWalkingUse")}
           </h3>
           <div className="space-y-6">
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Do you need onboarding and integration support?
+                {t("requestQuoteForm.form.labels.onboardingSupport")}
               </label>
               <div className="flex gap-6 mt-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="onboardingSupport"
-                    value="Yes"
-                    checked={formData.onboardingSupport === "Yes"}
-                    onChange={handleChange}
-                  />
-                  <span>Yes</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="onboardingSupport"
-                    value="No"
-                    checked={formData.onboardingSupport === "No"}
-                    onChange={handleChange}
-                  />
-                  <span>No</span>
-                </label>
+                {t("requestQuoteForm.form.options.onboardingSupport", {
+                  returnObjects: true,
+                }).map((option) => (
+                  <label
+                    key={option}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="onboardingSupport"
+                      value={option}
+                      checked={formData.onboardingSupport === option}
+                      onChange={handleChange}
+                    />
+                    <span>{option}</span>
+                  </label>
+                ))}
               </div>
               {errors.onboardingSupport && (
                 <span className="text-red-500 text-sm">
@@ -596,31 +632,35 @@ const RequestAQuoteForm = () => {
                 name="onboardingExplanation"
                 value={formData.onboardingExplanation}
                 onChange={handleChange}
-                placeholder="Please explain"
+                placeholder={t(
+                  "requestQuoteForm.form.placeholders.onboardingExplanation"
+                )}
                 className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 mt-4 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
               />
             </div>
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Additional services or custom solutions you are interested in?
+                {t("requestQuoteForm.form.labels.additionalServices")}
               </label>
               <textarea
                 name="additionalServices"
                 value={formData.additionalServices}
                 onChange={handleChange}
-                placeholder="Tell us what you’d like to explore. Example: “Virtual Walking Experience Box with scent, sound, and touch elements (€93 each)."
+                placeholder={t(
+                  "requestQuoteForm.form.placeholders.additionalServices"
+                )}
                 className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
               />
             </div>
             <div>
               <label className="block text-[#381207] font-medium mb-2">
-                Notes
+                {t("requestQuoteForm.form.labels.notes")}
               </label>
               <textarea
                 name="notes"
                 value={formData.notes}
                 onChange={handleChange}
-                placeholder="E.g., special billing instructions or accessibility needs"
+                placeholder={t("requestQuoteForm.form.placeholders.notes")}
                 className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
               />
             </div>
@@ -628,7 +668,7 @@ const RequestAQuoteForm = () => {
 
           {/* Quotation & set-up fee */}
           <h3 className="text-2xl font-medium text-[#381207]">
-            Quotation & set-up fee
+            {t("requestQuoteForm.form.sections.quotationSetup")}
           </h3>
           <div className="flex flex-col items-start gap-2">
             <div className="flex items-center gap-2">
@@ -640,7 +680,7 @@ const RequestAQuoteForm = () => {
                 className="w-4 h-4"
               />
               <span className="text-[#2a341f] text-sm">
-                I agree that my details will be used to prepare a quotation.
+                {t("requestQuoteForm.form.labels.agreeToTerms")}
               </span>
             </div>
             {errors.agreeToTerms && (
@@ -655,7 +695,7 @@ const RequestAQuoteForm = () => {
             onClick={handleSubmit}
             className="w-full py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5201] transition font-medium"
           >
-            Submit
+            {t("requestQuoteForm.form.buttons.submit")}
           </button>
         </div>
       </div>

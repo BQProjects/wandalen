@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 // Back Arrow Component
@@ -47,7 +48,7 @@ const FormInput = ({
 };
 
 // Step Indicator Component
-const StepIndicator = ({ number, title, description }) => (
+const StepIndicator = ({ number, title, description, t }) => (
   <div className="flex items-start gap-2 w-full h-12">
     <div className="flex justify-center items-center w-6 h-6 p-2 rounded-full bg-[#d9bbaa] text-[#381207] text-sm font-medium">
       {number}
@@ -64,27 +65,33 @@ const StepIndicator = ({ number, title, description }) => (
 );
 
 // Order Summary Component
-const OrderSummary = ({ plan }) => (
+const OrderSummary = ({ plan, t }) => (
   <div className="inline-flex flex-col items-center gap-3 p-8 rounded-2xl border-2 border-[#e5e3df] bg-[#f7f6f4]">
     <div className="flex flex-col items-start gap-1 w-full">
-      <h3 className="text-[#381207] text-xl font-medium">Summary</h3>
+      <h3 className="text-[#381207] text-xl font-medium">
+        {t("payment.summary.title")}
+      </h3>
 
       <div className="flex items-start gap-6 mt-4 w-full">
         <div className="flex flex-col items-start gap-2.5 w-full ">
           <div className="text-[#381207] font-medium">{plan.title}</div>
-          <div className="text-[#4b4741]">Duration</div>
-          <div className="text-[#4b4741]">Free trial</div>
-          <div className="text-[#4b4741]">Sessions</div>
+          <div className="text-[#4b4741]">{t("payment.summary.duration")}</div>
+          <div className="text-[#4b4741]">{t("payment.summary.freeTrial")}</div>
+          <div className="text-[#4b4741]">{t("payment.summary.sessions")}</div>
         </div>
         <div className="flex flex-col items-end gap-2.5">
           <div className="text-[#381207] font-medium text-right">
             € {plan.price}
           </div>
           <div className="text-[#4b4741] text-right w-32">
-            Until cancellation
+            {t("payment.summary.untilCancellation")}
           </div>
-          <div className="text-[#4b4741] text-right w-32">7 days</div>
-          <div className="text-[#4b4741] text-right w-32">Unlimited</div>
+          <div className="text-[#4b4741] text-right w-32">
+            {t("payment.summary.sevenDays")}
+          </div>
+          <div className="text-[#4b4741] text-right w-32">
+            {t("payment.summary.unlimited")}
+          </div>
         </div>
       </div>
     </div>
@@ -93,8 +100,12 @@ const OrderSummary = ({ plan }) => (
 
     <div className="flex justify-between items-start w-full">
       <div className="flex flex-col items-start gap-2.5 py-3">
-        <div className="text-[#381207] font-medium">Subtotal</div>
-        <div className="text-[#381207] font-medium">VAT (21%)</div>
+        <div className="text-[#381207] font-medium">
+          {t("payment.summary.subtotal")}
+        </div>
+        <div className="text-[#381207] font-medium">
+          {t("payment.summary.vat")}
+        </div>
       </div>
       <div className="flex flex-col items-start gap-2.5 py-3">
         <div className="text-[#381207] font-medium text-right">
@@ -109,13 +120,20 @@ const OrderSummary = ({ plan }) => (
     <div className="w-full h-px bg-[#e5e3df]" />
 
     <div className="flex justify-between items-start w-full">
-      <div className="text-[#381207] font-medium">Total today</div>
+      <div className="text-[#381207] font-medium">
+        {t("payment.summary.totalToday")}
+      </div>
       <div className="text-[#381207] font-medium">€ 0.00</div>
     </div>
 
     <p className="text-[#381207] text-sm text-center w-full">
-      After the free trial period, you will be charged € {plan.price}{" "}
-      {plan.period === "month" ? "monthly" : "yearly"} until cancellation.
+      {t("payment.summary.trialNotice", {
+        price: plan.price,
+        period:
+          plan.period === "month"
+            ? t("subscribe.plan.periods.month")
+            : t("subscribe.plan.periods.year"),
+      })}
     </p>
   </div>
 );
@@ -123,10 +141,9 @@ const OrderSummary = ({ plan }) => (
 const PaymentPageForIndividual = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedPlan = location.state?.plan;
   const { DATABASE_URL } = useContext(DatabaseContext);
-
-  const [currentStep, setCurrentStep] = useState(1);
+  const { t } = useTranslation();
+  const selectedPlan = location.state?.plan;
 
   const [formData, setFormData] = useState({
     email: "",
@@ -150,6 +167,7 @@ const PaymentPageForIndividual = () => {
 
   const [errors, setErrors] = useState({});
   const [isAgreed, setIsAgreed] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -187,26 +205,33 @@ const PaymentPageForIndividual = () => {
   const validateStep1 = () => {
     const newErrors = {};
     if (!formData.companyName.trim())
-      newErrors.companyName = "Company name is required";
+      newErrors.companyName = t("payment.errors.companyNameRequired");
     if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required";
-    if (!formData.surname.trim()) newErrors.surname = "Surname is required";
-    if (!formData.function.trim()) newErrors.function = "Function is required";
-    if (!formData.email2.trim()) newErrors.email2 = "Email is required";
+      newErrors.firstName = t("payment.errors.firstNameRequired");
+    if (!formData.surname.trim())
+      newErrors.surname = t("payment.errors.surnameRequired");
+    if (!formData.function.trim())
+      newErrors.function = t("payment.errors.functionRequired");
+    if (!formData.email2.trim())
+      newErrors.email2 = t("payment.errors.emailRequired");
     else if (!validateEmail(formData.email2))
-      newErrors.email2 = "Invalid email format";
+      newErrors.email2 = t("payment.errors.emailInvalid");
     if (!formData.telephone.trim())
-      newErrors.telephone = "Telephone is required";
+      newErrors.telephone = t("payment.errors.telephoneRequired");
     else if (!validatePhone(formData.telephone))
-      newErrors.telephone = "Invalid phone format";
-    if (!formData.password.trim()) newErrors.password = "Password is required";
+      newErrors.telephone = t("payment.errors.telephoneInvalid");
+    if (!formData.password.trim())
+      newErrors.password = t("payment.errors.passwordRequired");
     else if (formData.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
-    if (!formData.country.trim()) newErrors.country = "Country is required";
-    if (!formData.address.trim()) newErrors.address = "Address is required";
-    if (!formData.city.trim()) newErrors.city = "City is required";
+      newErrors.password = t("payment.errors.passwordTooShort");
+    if (!formData.country.trim())
+      newErrors.country = t("payment.errors.countryRequired");
+    if (!formData.address.trim())
+      newErrors.address = t("payment.errors.addressRequired");
+    if (!formData.city.trim())
+      newErrors.city = t("payment.errors.cityRequired");
     if (!formData.postalCode.trim())
-      newErrors.postalCode = "Postal code is required";
+      newErrors.postalCode = t("payment.errors.postalCodeRequired");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -214,21 +239,19 @@ const PaymentPageForIndividual = () => {
   const validateStep2 = () => {
     const newErrors = {};
     if (!formData.cardholderName.trim())
-      newErrors.cardholderName = "Cardholder name is required";
+      newErrors.cardholderName = t("payment.errors.cardholderNameRequired");
     if (!formData.cardNumber.trim())
-      newErrors.cardNumber = "Card number is required";
+      newErrors.cardNumber = t("payment.errors.cardNumberRequired");
     else if (!validateCardNumber(formData.cardNumber))
-      newErrors.cardNumber = "Invalid card number (16 digits)";
+      newErrors.cardNumber = t("payment.errors.cardNumberInvalid");
     if (!formData.expiryDate.trim())
-      newErrors.expiryDate = "Expiry date is required";
+      newErrors.expiryDate = t("payment.errors.expiryDateRequired");
     else if (!validateExpiryDate(formData.expiryDate))
-      newErrors.expiryDate = "Invalid expiry date (MM/YY)";
-    if (!formData.cvc.trim()) newErrors.cvc = "CVC is required";
+      newErrors.expiryDate = t("payment.errors.expiryDateInvalid");
+    if (!formData.cvc.trim()) newErrors.cvc = t("payment.errors.cvcRequired");
     else if (!validateCVC(formData.cvc))
-      newErrors.cvc = "Invalid CVC (3 digits)";
-    if (!isAgreed)
-      newErrors.agreement =
-        "You must agree to the Terms & Conditions and Privacy Policy";
+      newErrors.cvc = t("payment.errors.cvcInvalid");
+    if (!isAgreed) newErrors.agreement = t("payment.errors.agreementRequired");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -259,11 +282,11 @@ const PaymentPageForIndividual = () => {
 
       const res = await axios.post(`${DATABASE_URL}/client/signup`, signupData);
       console.log("Sign up response:", res.data);
-      alert("Sign up successful!");
+      alert(t("payment.messages.signupSuccess"));
       navigate("/login");
     } catch (error) {
       console.error("Error during sign up:", error);
-      alert("Sign up failed. Please try again.");
+      alert(t("payment.messages.signupFailed"));
     }
   };
 
@@ -324,13 +347,13 @@ const PaymentPageForIndividual = () => {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-[#381207] mb-4">
-            No Plan Selected
+            {t("payment.messages.noPlanSelected")}
           </h2>
           <button
             onClick={() => navigate("/client/subscribe")}
             className="px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors"
           >
-            Choose a Plan
+            {t("payment.buttons.choosePlan")}
           </button>
         </div>
       </div>
@@ -350,10 +373,10 @@ const PaymentPageForIndividual = () => {
           </button>
           <div>
             <h1 className="text-4xl font-medium text-[#381207]">
-              Complete Your Subscription
+              {t("payment.header.title")}
             </h1>
             <p className="text-xl text-[#7a756e] mt-2">
-              Your nature journey starts here.
+              {t("payment.header.subtitle")}
             </p>
           </div>
         </div>
@@ -364,12 +387,16 @@ const PaymentPageForIndividual = () => {
             {/* Step 1: Additional Info */}
             {currentStep === 1 && (
               <div className="bg-white p-6 rounded-2xl border border-gray-200">
-                <StepIndicator number="01" title="Additional Info" />
+                <StepIndicator
+                  number="01"
+                  title={t("payment.steps.additionalInfo")}
+                  t={t}
+                />
 
                 <div className="space-y-5 mt-6">
                   <FormInput
-                    label="Company name"
-                    placeholder="Your company"
+                    label={t("payment.form.labels.companyName")}
+                    placeholder={t("payment.form.placeholders.companyName")}
                     value={formData.companyName}
                     onChange={(value) =>
                       handleInputChange("companyName", value)
@@ -378,32 +405,32 @@ const PaymentPageForIndividual = () => {
                   />
 
                   <FormInput
-                    label="First name"
-                    placeholder="Your first name"
+                    label={t("payment.form.labels.firstName")}
+                    placeholder={t("payment.form.placeholders.firstName")}
                     value={formData.firstName}
                     onChange={(value) => handleInputChange("firstName", value)}
                     error={errors.firstName}
                   />
 
                   <FormInput
-                    label="Surname"
-                    placeholder="Your surname"
+                    label={t("payment.form.labels.surname")}
+                    placeholder={t("payment.form.placeholders.surname")}
                     value={formData.surname}
                     onChange={(value) => handleInputChange("surname", value)}
                     error={errors.surname}
                   />
 
                   <FormInput
-                    label="Function"
-                    placeholder="Your role"
+                    label={t("payment.form.labels.function")}
+                    placeholder={t("payment.form.placeholders.function")}
                     value={formData.function}
                     onChange={(value) => handleInputChange("function", value)}
                     error={errors.function}
                   />
 
                   <FormInput
-                    label="E-mail"
-                    placeholder="your@email.com"
+                    label={t("payment.form.labels.email")}
+                    placeholder={t("payment.form.placeholders.email")}
                     type="email"
                     value={formData.email2}
                     onChange={(value) => handleInputChange("email2", value)}
@@ -411,8 +438,8 @@ const PaymentPageForIndividual = () => {
                   />
 
                   <FormInput
-                    label="Telephone"
-                    placeholder="+31 6 12345678"
+                    label={t("payment.form.labels.telephone")}
+                    placeholder={t("payment.form.placeholders.telephone")}
                     type="tel"
                     value={formData.telephone}
                     onChange={(value) => handleInputChange("telephone", value)}
@@ -421,8 +448,8 @@ const PaymentPageForIndividual = () => {
                   />
 
                   <FormInput
-                    label="Password"
-                    placeholder="Enter your password"
+                    label={t("payment.form.labels.password")}
+                    placeholder={t("payment.form.placeholders.password")}
                     type="password"
                     value={formData.password}
                     onChange={(value) => handleInputChange("password", value)}
@@ -430,32 +457,32 @@ const PaymentPageForIndividual = () => {
                   />
 
                   <FormInput
-                    label="Country/region"
-                    placeholder="Netherlands"
+                    label={t("payment.form.labels.country")}
+                    placeholder={t("payment.form.placeholders.country")}
                     value={formData.country}
                     onChange={(value) => handleInputChange("country", value)}
                     error={errors.country}
                   />
 
                   <FormInput
-                    label="Address"
-                    placeholder="Your address"
+                    label={t("payment.form.labels.address")}
+                    placeholder={t("payment.form.placeholders.address")}
                     value={formData.address}
                     onChange={(value) => handleInputChange("address", value)}
                     error={errors.address}
                   />
 
                   <FormInput
-                    label="Place of residence"
-                    placeholder="Amsterdam"
+                    label={t("payment.form.labels.city")}
+                    placeholder={t("payment.form.placeholders.city")}
                     value={formData.city}
                     onChange={(value) => handleInputChange("city", value)}
                     error={errors.city}
                   />
 
                   <FormInput
-                    label="Postal code"
-                    placeholder="1234 AB"
+                    label={t("payment.form.labels.postalCode")}
+                    placeholder={t("payment.form.placeholders.postalCode")}
                     value={formData.postalCode}
                     onChange={(value) => handleInputChange("postalCode", value)}
                     error={errors.postalCode}
@@ -466,7 +493,7 @@ const PaymentPageForIndividual = () => {
                   onClick={handleContinue}
                   className="w-full mt-6 py-3 bg-[#5b6502] text-white font-medium rounded-lg hover:bg-[#4a5502] transition-colors"
                 >
-                  Continue
+                  {t("payment.buttons.continue")}
                 </button>
               </div>
             )}
@@ -476,14 +503,15 @@ const PaymentPageForIndividual = () => {
               <div className="bg-white p-6 rounded-2xl border border-gray-200">
                 <StepIndicator
                   number="02"
-                  title="Payment Method"
-                  description="Choose your preferred payment method and complete your subscription."
+                  title={t("payment.steps.paymentMethod")}
+                  description={t("payment.steps.paymentDescription")}
+                  t={t}
                 />
 
                 <div className="space-y-5 mt-6">
                   <FormInput
-                    label="Cardholder Name"
-                    placeholder="John Doe"
+                    label={t("payment.form.labels.cardholderName")}
+                    placeholder={t("payment.form.placeholders.cardholderName")}
                     value={formData.cardholderName}
                     onChange={(value) =>
                       handleInputChange("cardholderName", value)
@@ -492,8 +520,8 @@ const PaymentPageForIndividual = () => {
                   />
 
                   <FormInput
-                    label="Card Number"
-                    placeholder="1234 5678 9012 3456"
+                    label={t("payment.form.labels.cardNumber")}
+                    placeholder={t("payment.form.placeholders.cardNumber")}
                     value={formData.cardNumber}
                     onChange={(value) => handleInputChange("cardNumber", value)}
                     onInput={handleCardNumberInput}
@@ -502,8 +530,8 @@ const PaymentPageForIndividual = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <FormInput
-                      label="Expiry Date (MM/YY)"
-                      placeholder="12/25"
+                      label={t("payment.form.labels.expiryDate")}
+                      placeholder={t("payment.form.placeholders.expiryDate")}
                       value={formData.expiryDate}
                       onChange={(value) =>
                         handleInputChange("expiryDate", value)
@@ -513,8 +541,8 @@ const PaymentPageForIndividual = () => {
                     />
 
                     <FormInput
-                      label="CVC"
-                      placeholder="123"
+                      label={t("payment.form.labels.cvc")}
+                      placeholder={t("payment.form.placeholders.cvc")}
                       value={formData.cvc}
                       onChange={(value) => handleInputChange("cvc", value)}
                       onInput={handleCVCInput}
@@ -532,7 +560,7 @@ const PaymentPageForIndividual = () => {
                     />
                   </svg>
                   <span className="text-[#4b4741] text-sm font-medium">
-                    Secure & encrypted transaction. Your data is safe.
+                    {t("payment.security.notice")}
                   </span>
                 </div>
 
@@ -550,13 +578,13 @@ const PaymentPageForIndividual = () => {
                       htmlFor="agreement"
                       className="text-[#4b4741] text-sm"
                     >
-                      I agree to the{" "}
+                      {t("payment.terms.agreement")}{" "}
                       <a href="#" className="underline hover:text-[#5b6502]">
-                        Terms & Conditions
+                        {t("payment.terms.termsLink")}
                       </a>{" "}
-                      and{" "}
+                      {t("common.and")}{" "}
                       <a href="#" className="underline hover:text-[#5b6502]">
-                        Privacy Policy
+                        {t("payment.terms.privacyLink")}
                       </a>
                       .
                     </label>
@@ -572,11 +600,11 @@ const PaymentPageForIndividual = () => {
                   onClick={handleContinue}
                   className="w-full mt-6 py-3 bg-[#5b6502] text-white font-medium rounded-lg hover:bg-[#4a5502] transition-colors"
                 >
-                  Complete Subscription
+                  {t("payment.buttons.completeSubscription")}
                 </button>
 
                 <p className="text-center text-[#4b4741] text-sm mt-4">
-                  You will not be charged today. Your trial ends in 7 days.
+                  {t("payment.messages.trialEnds")}
                 </p>
               </div>
             )}
@@ -585,7 +613,7 @@ const PaymentPageForIndividual = () => {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <OrderSummary plan={selectedPlan} />
+              <OrderSummary plan={selectedPlan} t={t} />
             </div>
           </div>
         </div>

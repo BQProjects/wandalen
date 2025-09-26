@@ -9,8 +9,10 @@ import FaqQuestions from "../../components/common/FaqQuestions";
 import { Link } from "react-router-dom";
 import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
+import { useTranslation } from "react-i18next";
 
 const OurApproach = () => {
+  const { t } = useTranslation();
   const handleScrollDown = () => {
     window.scrollTo({
       top: document.body.scrollHeight,
@@ -24,10 +26,10 @@ const OurApproach = () => {
         {/* Title */}
         <div className="inline-flex flex-col items-start gap-4 px-4 sm:px-10 md:px-20 mt-10">
           <div className="text-primary font-[Poppins] text-xl md:text-[2rem] font-semibold leading-[136%]">
-            Our Vission
+            {t("ourApproach.vision")}
           </div>
           <div className="w-full md:w-[654px] text-brown font-[Poppins] text-2xl sm:text-3xl md:text-5xl font-semibold leading-[136%] text-center md:text-left">
-            Making Nature Accessible, Anywhere
+            {t("ourApproach.title")}
           </div>
         </div>
 
@@ -41,16 +43,10 @@ const OurApproach = () => {
             <div className="flex flex-col items-start gap-4 px-4 sm:px-10 md:px-24">
               <div className="flex flex-col items-start gap-5">
                 <div className="w-full md:w-[550px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
-                  Virtual Walking opens the door to nature for everyone —
-                  regardless of physical limitations. Through authentic,
-                  real-life walking videos, we bring the beauty, peace, and
-                  familiarity of local landscapes to people who may no longer be
-                  able to experience them in person.
+                  {t("ourApproach.description1")}
                 </div>
                 <div className="w-full md:w-[550px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
-                  From seniors with dementia to those with limited mobility, our
-                  videos bring calm, spark recognition, and support well-being —
-                  strengthening connections with the world and with oneself.
+                  {t("ourApproach.description2")}
                 </div>
               </div>
             </div>
@@ -61,7 +57,7 @@ const OurApproach = () => {
                 to="/choose-experience"
                 className="flex items-center w-fit gap-2.5 py-2 px-5 rounded-lg bg-primary text-white font-[Poppins]  text-base sm:text-lg md:text-xl font-medium leading-[136%] hover:bg-opacity-90 transition-colors"
               >
-                Start Your Journey
+                {t("ourApproach.ctaButton")}
               </Link>
             </div>
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import PositiveImage from "../../assets/PositiveImage.jpg";
 import VideoTraning from "../../assets/VideoTraning.png";
 import CameraTips from "../../assets/CameraTips.png";
@@ -12,19 +13,17 @@ import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
 
 const BecomeVolunteer = () => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-secondary">
       {/* Hero Section */}
       <section className="bg-dark-green h-[86vh] text-white px-4 py-16 flex items-center justify-center">
         <div className="max-w-7xl mx-auto text-center mt-20 mb-20">
           <h1 className="text-4xl md:text-5xl font-semibold text-primary mb-6 font-['Poppins']">
-            Become a Volunteer with Virtual Walking
+            {t("becomeVolunteer.hero.title")}
           </h1>
           <p className="text-xl md:text-3xl font-medium font-['Poppins'] max-w-4xl mx-auto leading-relaxed space-x-1">
-            For many - from seniors in care to those with limited mobility -
-            nature can feel far away. Virtual Walking brings Overijssel's beauty
-            indoors with calming walking videos that inspire relaxation and
-            connection. And we can't do it without you.
+            {t("becomeVolunteer.hero.description")}
           </p>
         </div>
       </section>
@@ -37,27 +36,26 @@ const BecomeVolunteer = () => {
                 date: "19",
                 month: "Sep",
                 image: VideoTraning,
-                title: "Video Training",
-                description:
-                  "Learn how to get started as a volunteer. We'll introduce you to Virtual Walking, explain the basics, and guide you through the first steps.",
+                title: t("becomeVolunteer.events.videoTraining.title"),
+                description: t(
+                  "becomeVolunteer.events.videoTraining.description"
+                ),
                 link: "/video-training",
               },
               {
                 date: "24",
                 month: "Sep",
                 image: CameraTips,
-                title: "Camera Tips & Introduction",
-                description:
-                  "Join a short hands-on session where you'll discover how to film calming nature walks and use the provided equipment with ease.",
+                title: t("becomeVolunteer.events.cameraTips.title"),
+                description: t("becomeVolunteer.events.cameraTips.description"),
                 link: "/camera-tips",
               },
               {
                 date: "03",
                 month: "Oct",
                 image: NatureWalk,
-                title: "Nature Walk Filming Practice",
-                description:
-                  "Head outdoors with your camera and practice capturing beautiful nature walks. Enthusiasm counts more than experience!",
+                title: t("becomeVolunteer.events.natureWalk.title"),
+                description: t("becomeVolunteer.events.natureWalk.description"),
                 link: "/nature-walking",
               },
             ].map((event, index) => (
@@ -90,7 +88,7 @@ const BecomeVolunteer = () => {
                   </p>
                   <Link to={event.link}>
                     <button className="bg-primary font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
-                      More Information
+                      {t("becomeVolunteer.events.moreInfo")}
                     </button>
                   </Link>
                 </div>
@@ -107,20 +105,17 @@ const BecomeVolunteer = () => {
             <div className="space-y-8">
               <div>
                 <p className="text-primary font-['Poppins'] text-2xl font-semibold mb-2">
-                  Positive Benefits
+                  {t("becomeVolunteer.benefits.title")}
                 </p>
                 <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold mb-8">
-                  Why Virtual Walking?
+                  {t("becomeVolunteer.benefits.subtitle")}
                 </h2>
               </div>
 
               <div className="space-y-6">
-                {[
-                  "Brings nature safely indoors - gives people the chance to enjoy nature without risks, especially for those unable to walk outside.",
-                  "Stimulates memories - familiar sounds and views can trigger recognition and joyful moments.",
-                  "Encourages social connection - creates shared experiences with family, caregivers, or fellow residents — and can also be enjoyed alone.",
-                  "Reduces anxiety and stress - soothing natural sights and sounds help ease restlessness and bring calm.",
-                ].map((benefit, index) => (
+                {t("becomeVolunteer.benefits.benefits", {
+                  returnObjects: true,
+                }).map((benefit, index) => (
                   <div
                     key={index}
                     className="flex items-start gap-3 py-3 border-b border-border/20"
@@ -141,13 +136,13 @@ const BecomeVolunteer = () => {
                   className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
                   onClick={() => (window.location.href = "/volunteer-signup")}
                 >
-                  Join as Volunteer
+                  {t("becomeVolunteer.benefits.joinVolunteer")}
                 </button>
                 <button
                   className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
                   onClick={() => (window.location.href = "/login")}
                 >
-                  Already a Volunteer
+                  {t("becomeVolunteer.benefits.alreadyVolunteer")}
                 </button>
               </div>
             </div>
@@ -168,66 +163,43 @@ const BecomeVolunteer = () => {
           <div className="flex justify-between items-end mb-12">
             <div>
               <p className="text-primary font-['Poppins'] text-2xl font-semibold mb-2">
-                How it works
+                {t("becomeVolunteer.howItWorks.title")}
               </p>
               <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-brown">
-                Joining is easy — just follow these steps
+                {t("becomeVolunteer.howItWorks.subtitle")}
               </h2>
             </div>
             <button
               className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block"
               onClick={() => (window.location.href = "/volunteer-signup")}
             >
-              Know More
+              {t("becomeVolunteer.howItWorks.knowMore")}
             </button>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                number: "1",
-                title: "Sign up as a volunteer",
-                description:
-                  "Show your interest through our simple form or reach out directly. We'll be happy to connect and welcome you.",
-              },
-              {
-                number: "2",
-                title: "Introduction and short training",
-                description:
-                  "We'll schedule a short session to explain how to film walks and guide you in using the equipment with confidence.",
-              },
-              {
-                number: "3",
-                title: "Explore with your camera",
-                description:
-                  "Head outdoors to capture beautiful nature walks on your own. No professional skills are needed, just your enthusiasm.",
-              },
-              {
-                number: "4",
-                title: "Share on the platform",
-                description:
-                  "Upload your videos easily through our platform. We'll edit them and make sure they reach people who will enjoy them.",
-              },
-            ].map((step) => (
-              <div
-                key={step.number}
-                className="bg-[#f7f6f4] rounded-2xl p-8 space-y-6"
-              >
-                <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center">
-                  <span className="text-brown text-3xl font-['Poppins'] font-semibold">
-                    {step.number}
-                  </span>
+            {t("becomeVolunteer.howItWorks.steps", { returnObjects: true }).map(
+              (step, index) => (
+                <div
+                  key={index}
+                  className="bg-[#f7f6f4] rounded-2xl p-8 space-y-6"
+                >
+                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center">
+                    <span className="text-brown text-3xl font-['Poppins'] font-semibold">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-brown text-2xl font-['Poppins'] font-medium">
+                      {step.title}
+                    </h3>
+                    <p className="text-brown font-['Poppins'] leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-brown text-2xl font-['Poppins'] font-medium">
-                    {step.title}
-                  </h3>
-                  <p className="text-brown font-['Poppins'] leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
       </section>
@@ -246,41 +218,17 @@ const BecomeVolunteer = () => {
             <div className="space-y-8 py-8 px-4">
               <div>
                 <p className="text-primary text-2xl font-['Poppins'] font-semibold mb-2 mt-10">
-                  Want to help?
+                  {t("becomeVolunteer.whyVolunteers.title")}
                 </p>
                 <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-secondary">
-                  Why Volunteers Are Essential
+                  {t("becomeVolunteer.whyVolunteers.subtitle")}
                 </h2>
               </div>
 
               <div className="space-y-8">
-                {[
-                  {
-                    title: "Nature & Filming Passion",
-                    description:
-                      "Love being in nature and enjoy filming? Combine both to create relaxing virtual walk videos.",
-                  },
-                  {
-                    title: "Guidance & Tips",
-                    description:
-                      "Get a short hands-on session with practical tips & tricks for making calming nature videos.",
-                  },
-                  {
-                    title: "Tools Provided",
-                    description:
-                      "Enjoy free use of our camera to capture your walk in high quality.",
-                  },
-                  {
-                    title: "Constructive Feedback",
-                    description:
-                      "Receive helpful feedback to make your videos even more engaging and soothing.",
-                  },
-                  {
-                    title: "Share Your Work",
-                    description:
-                      "Your video will be shared on our platform with a large, appreciative audience.",
-                  },
-                ].map((item, index) => (
+                {t("becomeVolunteer.whyVolunteers.volunteerItems", {
+                  returnObjects: true,
+                }).map((item, index) => (
                   <div key={index}>
                     <div className="w-full h-px bg-border mb-6"></div>
                     <div className="flex items-start gap-3">

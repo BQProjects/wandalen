@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Testimonial from "../../components/common/TestimonialScroll";
 import FaqQuestions from "../../components/common/FaqQuestions";
 import SubscribeCard from "../../components/SubscribeCard";
@@ -17,6 +18,7 @@ const SubscriptionCard = ({
   trialText = "Experience 7 days free trial",
   onClick,
   icon,
+  t,
 }) => (
   <div className="relative flex-shrink-0 w-[385px]">
     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -78,7 +80,7 @@ const SubscriptionCard = ({
 );
 
 // Discount Badge Component
-const DiscountBadge = ({ discount }) => (
+const DiscountBadge = ({ discount, t }) => (
   <div className="inline-flex flex-shrink-0 justify-center items-center gap-2 p-2 h-[2.6875rem] rounded-lg bg-[#e5e3df] mt-4">
     <div className="text-[#4b4741] font-['Poppins'] font-medium leading-[136%]">
       {discount}
@@ -99,13 +101,13 @@ const DiscountBadge = ({ discount }) => (
 );
 
 // Hero Section Component
-const HeroSection = () => (
+const HeroSection = ({ t }) => (
   <div className="flex flex-col items-start gap-2 w-[1136px]">
     <div className="subscription_plans text-[#a6a643] font-['Poppins'] text-[2rem] font-semibold leading-[136%]">
-      Subscription Plans
+      {t("subscribe.hero.title")}
     </div>
     <div className="unlimited_walks__new_routes_every_month_ w-[835px] text-[#381207] font-['Poppins'] text-5xl font-semibold leading-[136%]">
-      Unlimited walks, new routes every month.
+      {t("subscribe.hero.subtitle")}
     </div>
   </div>
 );
@@ -113,6 +115,7 @@ const HeroSection = () => (
 const Subscribe = () => {
   const [billingPeriod, setBillingPeriod] = useState("monthly");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleCardClick = (plan) => {
     const { icon, ...planWithoutIcon } = plan;
@@ -139,35 +142,37 @@ const Subscribe = () => {
         />
       </svg>
     ),
-    title: "Home subscription",
-    description:
-      "Bring recognizable nature closer and let your loved one enjoy it at home.",
-    features: ["Unlimited virtual walks", "New routes every month"],
+    title: t("subscribe.plan.title"),
+    description: t("subscribe.plan.description"),
+    features: t("subscribe.plan.features", { returnObjects: true }),
+    buttonText: t("subscribe.plan.buttonText"),
+    trialText: t("subscribe.plan.trialText"),
     isPopular: false,
   };
 
   const monthlyPlan = {
     ...basePlan,
     price: "12.99",
-    period: "month",
+    period: t("subscribe.plan.periods.month"),
   };
 
   const yearlyPlan = {
     ...basePlan,
     price: "116.91",
-    period: "year",
+    period: t("subscribe.plan.periods.year"),
   };
 
   return (
     <div className="flex-shrink-0 bg-[#ede4dc]">
       <div className="px-4 sm:px-10 md:px-20">
-        <HeroSection />
+        <HeroSection t={t} />
         <div className="flex justify-center gap-8 mt-20 mb-10">
           {/* Monthly Card Wrapper */}
           <div className="flex flex-col items-center">
             <SubscriptionCard
               {...monthlyPlan}
               onClick={() => handleCardClick(monthlyPlan)}
+              t={t}
             />
           </div>
 
@@ -176,8 +181,9 @@ const Subscribe = () => {
             <SubscriptionCard
               {...yearlyPlan}
               onClick={() => handleCardClick(yearlyPlan)}
+              t={t}
             />
-            <DiscountBadge discount="25% discount" />
+            <DiscountBadge discount={t("subscribe.discountBadge")} t={t} />
           </div>
         </div>
       </div>

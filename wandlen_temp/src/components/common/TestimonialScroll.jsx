@@ -1,55 +1,29 @@
 import React, { useState } from "react";
 import LeftArrow from "../../assets/LeftArrow.svg";
 import RightArrow from "../../assets/RightArrow.svg";
+import { useTranslation } from "react-i18next";
 
 const Testimonial = () => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [expanded, setExpanded] = useState(false);
 
-  const testimonials = [
-    {
-      text: "Virtueel Wandelen brengt de natuur tot leven met rustgevende natuurwandelvideo’s voor ouderen en mensen met dementie.",
-    },
-    { text: "Offering a beautiful walking experience does me good" },
-    {
-      text: "I would like everyone to experience what walking can bring you, peace, space, inspiration, connection. Virtual Walking... is such a great way to do that. I therefore join it with enthusiasm",
-    },
-    {
-      text: "What I hope to get out of my volunteer work at Virtual Walking is mainly connection and meaning. I would like to... do something that really matters to others, in this case to people who can no longer walk themselves, but can still feel, experience and enjoy. In addition, it gives me satisfaction to combine my love for hiking and nature with my desire to contribute to the well-being of others. The idea that someone else can view a walk at a later time is really a great find!",
-    },
-    {
-      text: "I am a nurse and come into contact with people with dementia at work. I also walk a lot in my spare time.",
-    },
-    {
-      text: "Nice combination of walking, doing useful work that makes people happy.",
-    },
-    {
-      text: "My hobbies are photography/video and walking. In addition, I think it is important to do volunteer work that... really makes sense.",
-    },
-    {
-      text: "Making beautiful images makes me very happy. Furthermore, walking is fun and good for your health...",
-    },
-    { text: "A smile on someone else's face is enough." },
-    {
-      text: "I love walking and photography/filming and I like to share that with others",
-    },
-    {
-      text: "I already like to walk and this is a nice combination between being physically active and doing something useful",
-    },
-    {
-      text: "Perfect voor mensen die niet meer kunnen wandelen, maar wel willen genieten van de natuur.",
-    },
-  ];
+  const testimonials = t("testimonials.items", { returnObjects: true }) || [];
 
   const nextTestimonial = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    if (testimonials.length > 0) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    }
     setExpanded(false);
   };
 
   const prevTestimonial = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
-    );
+    if (testimonials.length > 0) {
+      setCurrentIndex(
+        (prevIndex) =>
+          (prevIndex - 1 + testimonials.length) % testimonials.length
+      );
+    }
     setExpanded(false);
   };
 
@@ -68,10 +42,10 @@ const Testimonial = () => {
         {/* Heading */}
         <div className="flex flex-col items-center gap-2 text-center">
           <h3 className="text-primary font-['Poppins'] text-lg md:text-2xl font-semibold tracking-wide uppercase">
-            Testimonials
+            {t("testimonials.title")}
           </h3>
           <h2 className="text-secondary font-['Poppins'] text-3xl md:text-5xl font-bold leading-snug">
-            Our Success Stories
+            {t("testimonials.subtitle")}
           </h2>
         </div>
 
@@ -80,37 +54,41 @@ const Testimonial = () => {
           key={currentIndex}
           className="rounded-2xl p-6 md:p-10 text-justify text-secondary font-['Poppins'] text-base md:text-xl leading-relaxed max-w-3xl transition-opacity duration-500 ease-in-out"
         >
-          {(() => {
-            const text = testimonials[currentIndex].text;
-            const maxLength = 120;
-            if (text.length > maxLength && !expanded) {
-              return (
-                <>
-                  {text.slice(0, maxLength)}...
-                  <button
-                    onClick={() => setExpanded(true)}
-                    className="text-primary ml-2 font-semibold underline hover:text-primary/80"
-                  >
-                    Read More
-                  </button>
-                </>
-              );
-            } else if (expanded) {
-              return (
-                <>
-                  {text}
-                  <button
-                    onClick={() => setExpanded(false)}
-                    className="text-primary ml-2 font-semibold underline hover:text-primary/80"
-                  >
-                    Read Less
-                  </button>
-                </>
-              );
-            } else {
-              return text;
-            }
-          })()}
+          {testimonials.length > 0 ? (
+            (() => {
+              const text = testimonials[currentIndex] || "";
+              const maxLength = 120;
+              if (text.length > maxLength && !expanded) {
+                return (
+                  <>
+                    {text.slice(0, maxLength)}...
+                    <button
+                      onClick={() => setExpanded(true)}
+                      className="text-primary ml-2 font-semibold underline hover:text-primary/80"
+                    >
+                      {t("testimonials.readMore")}
+                    </button>
+                  </>
+                );
+              } else if (expanded) {
+                return (
+                  <>
+                    {text}
+                    <button
+                      onClick={() => setExpanded(false)}
+                      className="text-primary ml-2 font-semibold underline hover:text-primary/80"
+                    >
+                      {t("testimonials.readLess")}
+                    </button>
+                  </>
+                );
+              } else {
+                return text;
+              }
+            })()
+          ) : (
+            <div>Loading testimonials...</div>
+          )}
         </div>
       </div>
 

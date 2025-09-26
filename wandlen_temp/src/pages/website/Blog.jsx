@@ -8,8 +8,10 @@ import blog2 from "../../assets/blog2.png";
 import blog3 from "../../assets/blog3.png";
 import blog4 from "../../assets/blog4.png";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Blog = () => {
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex-shrink-0 w-full min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-16 px-4 sm:px-10 md:px-20">
@@ -20,14 +22,13 @@ const Blog = () => {
               className="text-[#5B6502] font-['Poppins'] text-[32px] font-semibold leading-[136%] mb-4"
               style={{ letterSpacing: "-0.32px" }}
             >
-              Nature Stories
+              {t("blog.header.title")}
             </div>
             <div
               className="text-[#381207] font-['Poppins'] text-5xl lg:text-4xl font-semibold leading-[136%]"
               style={{ letterSpacing: "-0.48px" }}
             >
-              Stories and insights that bring nature <br></br> closer to
-              everyone
+              {t("blog.header.subtitle")}
             </div>
           </div>
 
@@ -44,7 +45,7 @@ const Blog = () => {
                   />
                 </div>
                 <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  Why Nature matters
+                  {t("blog.posts.natureMatters")}
                 </div>
               </Link>
             </div>
@@ -60,7 +61,7 @@ const Blog = () => {
                   />
                 </div>
                 <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  The Power of Walking in Nature
+                  {t("blog.posts.powerOfWalking")}
                 </div>
               </Link>
             </div>
@@ -76,7 +77,7 @@ const Blog = () => {
                   />
                 </div>
                 <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  Health and Happiness from Nature
+                  {t("blog.posts.healthAndHappiness")}
                 </div>
               </Link>
             </div>
@@ -92,7 +93,7 @@ const Blog = () => {
                   />
                 </div>
                 <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  Nature’s Benefits for Body and Mind
+                  {t("blog.posts.natureBenefits")}
                 </div>
               </Link>
             </div>

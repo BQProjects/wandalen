@@ -17,6 +17,7 @@ import PreviewExperience from "../../components/PreviewExperience";
 import Mute from "../../assets/Mute.svg";
 import UnMute from "../../assets/UnMute.svg";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const MessageUs = () => {
   const [isOpen, setIsOpen] = useState(false); // For modal or tooltip
@@ -47,7 +48,7 @@ const MessageUs = () => {
           <div className="bg-white rounded-lg shadow-lg w-72 sm:w-80 h-80 sm:h-96 flex flex-col animate-slide-up">
             <div className="flex justify-between items-center p-3 sm:p-4 border-b bg-[#5b6502] text-white rounded-t-lg">
               <h3 className="text-base sm:text-lg font-semibold">
-                Chat with Virtueel Wandelen
+                {t("aran.chat.title")}
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
@@ -62,8 +63,7 @@ const MessageUs = () => {
                 <div className="flex items-start">
                   <div className="bg-[#5b6502] text-white p-2 sm:p-3 rounded-lg max-w-xs">
                     <p className="text-xs sm:text-sm">
-                      Hello! Welcome to BrainQuest. How can we assist you with
-                      virtual walking experiences today?
+                      {t("aran.chat.greeting")}
                     </p>
                   </div>
                 </div>
@@ -71,7 +71,7 @@ const MessageUs = () => {
               <div className="mb-3 sm:mb-4 text-right">
                 <div className="bg-gray-200 text-gray-800 p-2 sm:p-3 rounded-lg max-w-xs inline-block">
                   <p className="text-xs sm:text-sm">
-                    I'm interested in learning more about your services.
+                    {t("aran.chat.userMessage")}
                   </p>
                 </div>
               </div>
@@ -79,9 +79,7 @@ const MessageUs = () => {
                 <div className="flex items-start">
                   <div className="bg-[#5b6502] text-white p-2 sm:p-3 rounded-lg max-w-xs">
                     <p className="text-xs sm:text-sm">
-                      Great! We offer immersive virtual walks through beautiful
-                      landscapes. Would you like to schedule a demo or get a
-                      quote?
+                      {t("aran.chat.response")}
                     </p>
                   </div>
                 </div>
@@ -91,11 +89,11 @@ const MessageUs = () => {
               <div className="flex">
                 <input
                   type="text"
-                  placeholder="Type your message..."
+                  placeholder={t("aran.chat.placeholder")}
                   className="flex-1 p-2 text-sm border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
                 />
                 <button className="bg-[#5b6502] text-white px-3 py-2 text-sm rounded-r-lg hover:bg-[#4a5501] transition-colors">
-                  Send
+                  {t("aran.chat.send")}
                 </button>
               </div>
             </div>
@@ -112,6 +110,11 @@ const Aran = () => {
   const scrollRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef(null);
+  const { t, ready } = useTranslation("translation");
+
+  if (!ready) {
+    return <div>Loading translations...</div>;
+  }
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
@@ -162,28 +165,25 @@ const Aran = () => {
           {/* Left Content - Text */}
           <div className="flex-1 max-w-2xl px-4 sm:px-10 md:px-20">
             <h1 className="text-xl sm:text-2xl md:text-[32px] font-semibold text-[#A6A643] mb-2 sm:mb-4 font-poppins tracking-wide">
-              Virtueel Wandelen
+              {t("aran.hero.title")}
             </h1>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold text-white mb-3 sm:mb-6 leading-tight font-poppins">
-              Change your life
-              <br />
-              memories
+              {t("aran.hero.subtitle")}
             </h2>
             <p className="text-base sm:text-lg md:text-xl font-medium text-white mb-4 sm:mb-8 leading-relaxed font-poppins max-w-xl">
-              Virtueel Walken brings the natural life to life and rustiness
-              natural change videos for the outside world with denial.
+              {t("aran.hero.description")}
             </p>
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
               <Link to="/request-quote">
                 <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] hover:bg-[#5B6502] text-white font-[Poppins] text-base sm:text-lg md:text-xl font-medium leading-[136%] w-full sm:w-auto">
-                  Request for quote
+                  {t("aran.hero.requestQuote")}
                 </button>
               </Link>
               <Link to="/subscribe">
                 <button className="cursor-pointer text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-[Poppins] text-base sm:text-lg md:text-xl font-medium leading-[136%] w-full sm:w-auto mt-2 sm:mt-0">
-                  View subscription plans
+                  {t("aran.hero.viewPlans")}
                 </button>
               </Link>
             </div>
@@ -284,15 +284,12 @@ const Aran = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-3">
           {/* Subtitle */}
           <h2 className="text-lg sm:text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#A6A643] mb-4 sm:mb-8 font-[Poppins]">
-            Digital transformations in the Overijsselse nature
+            {t("aran.secondHero.subtitle")}
           </h2>
 
           {/* Main Description */}
           <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#381207] leading-relaxed mb-8 sm:mb-16 max-w-full mx-auto font-[Poppins] font-medium">
-            Imagine: a forest walk, the rustling of leaves and singing birds.
-            For people with dementia such a nature experience can mean a lot.
-            Virtual Walking brings this experience close, right from home or a
-            care facility. It offers peace, relaxation and recognition.
+            {t("aran.secondHero.description")}
           </p>
 
           {/* Features Container */}
@@ -307,9 +304,7 @@ const Aran = () => {
                 />
               </div>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
-                Explore Overijssel's
-                <br className="hidden sm:block" />
-                Nature Videos
+                {t("aran.secondHero.features.exploreNature")}
               </h3>
             </div>
 
@@ -323,9 +318,7 @@ const Aran = () => {
                 />
               </div>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
-                Enjoy Unique & Simple
-                <br className="hidden sm:block" />
-                Viewing
+                {t("aran.secondHero.features.simpleViewing")}
               </h3>
             </div>
 
@@ -339,9 +332,7 @@ const Aran = () => {
                 />
               </div>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
-                Watch Instantly with
-                <br className="hidden sm:block" />
-                One Click
+                {t("aran.secondHero.features.instantWatch")}
               </h3>
             </div>
           </div>
@@ -359,13 +350,13 @@ const Aran = () => {
               className="text-[#5b6502] font-['Poppins'] text-xl sm:text-2xl md:text-[32px] font-semibold leading-[136%] mb-2 sm:mb-4"
               style={{ letterSpacing: "-0.32px" }}
             >
-              Discover Nature Videos
+              {t("discoverVideos.title")}
             </div>
             <div
               className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl font-semibold leading-[136%]"
               style={{ letterSpacing: "-0.48px" }}
             >
-              Choose a route or season.
+              {t("discoverVideos.subtitle")}
             </div>
           </div>
 
@@ -568,17 +559,16 @@ const Aran = () => {
           {/* Header Section */}
           <div className="text-left mb-8 sm:mb-12 md:mb-16">
             <div className="text-[#A6A643] font-['Poppins'] text-lg sm:text-xl lg:text-[32px] font-semibold mb-2 sm:mb-4">
-              Positive Experiences
+              {t("positiveExperiences.title")}
             </div>
             <h2 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight mb-4 sm:mb-8 text-left mx-auto">
-              Virtueel Wandelen creates warm, <br className="hidden md:block" />{" "}
-              positive moments for all.
+              {t("positiveExperiences.subtitle")}
             </h2>
             <button
               className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
               onClick={() => (window.location.href = "/subscribe")}
             >
-              Watch Now
+              {t("positiveExperiences.watchNow")}
             </button>
           </div>
 
@@ -603,10 +593,10 @@ const Aran = () => {
               </div>
               <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
                 <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
-                  Family Connection
+                  {t("dawnForest.threeCards.familyConnection.title")}
                 </h3>
                 <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
-                  Loved ones feel happier and more alert when watching together.
+                  {t("dawnForest.threeCards.familyConnection.description")}
                 </p>
               </div>
             </div>
@@ -630,10 +620,10 @@ const Aran = () => {
               </div>
               <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
                 <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
-                  Calm & Comfort
+                  {t("dawnForest.threeCards.calmComfort.title")}
                 </h3>
                 <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
-                  Caregivers notice a soothing effect for restless residents.
+                  {t("dawnForest.threeCards.calmComfort.description")}
                 </p>
               </div>
             </div>
@@ -657,10 +647,10 @@ const Aran = () => {
               </div>
               <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
                 <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
-                  Sharing Memories
+                  {t("dawnForest.threeCards.sharingMemories.title")}
                 </h3>
                 <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
-                  Residents enjoy spotting familiar scenes and telling stories.
+                  {t("dawnForest.threeCards.sharingMemories.description")}
                 </p>
               </div>
             </div>
@@ -688,10 +678,10 @@ const Aran = () => {
                   className="absolute inset-0 w-[140%] h-[140%] -top-[10%] object-cover opacity-90 items-center rounded-3xl"
                 />
                 <div className="relative items-center text-[#a6a643] font-[Poppins] text-[32px] font-semibold mb-4 tracking-tight pl-12">
-                  Discover Routes Near You
+                  {t("dawnForest.discoverRoutes.title")}
                 </div>
                 <div className="relative items-center text-white font-[Poppins] text-4xl lg:text-5xl font-semibold leading-tight max-w-[800px] pl-12">
-                  Explore beautiful journeys from participating municipalities.
+                  {t("dawnForest.discoverRoutes.subtitle")}
                 </div>
               </div>
             </div>
@@ -796,18 +786,15 @@ const Aran = () => {
             {/* Bottom Section */}
             <div className="space-y-8">
               <div className="text-white font-['Poppins'] text-2xl font-medium">
-                Your Turn to Inspire – New Every Month!
+                {t("dawnForest.discoverRoutes.inspireTitle")}
               </div>
 
               <div className="space-y-4 max-w-[600px]">
                 <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
-                  Have a scenic or special route we haven't covered yet? <br />{" "}
-                  Log in and submit your favorite – we might feature it in our
-                  next video!
+                  {t("dawnForest.discoverRoutes.inspireDescription1")}
                 </div>
                 <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
-                  We publish new videos and community-suggested routes every
-                  month, <br /> so keep exploring and stay inspired.
+                  {t("dawnForest.discoverRoutes.inspireDescription2")}
                 </div>
               </div>
 
@@ -815,7 +802,7 @@ const Aran = () => {
                 className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
                 onClick={() => (window.location.href = "/become-volunteer")}
               >
-                Explore this feature
+                {t("dawnForest.discoverRoutes.exploreFeature")}
               </button>
             </div>
           </div>
@@ -846,7 +833,7 @@ const Aran = () => {
                   : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
             >
-              Organizations
+              {t("dawnForest.organizationsTabs.organizations")}
             </button>
             <button
               onClick={() => setActiveTab("families")}
@@ -856,7 +843,7 @@ const Aran = () => {
                   : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
             >
-              Families
+              {t("dawnForest.organizationsTabs.families") || "Families"}
             </button>
             <button
               onClick={() => setActiveTab("volunteer")}
@@ -866,7 +853,7 @@ const Aran = () => {
                   : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
             >
-              Volunteer
+              {t("dawnForest.organizationsTabs.volunteer") || "Volunteer"}
             </button>
           </div>
         </div>
@@ -879,10 +866,14 @@ const Aran = () => {
               <div className="flex flex-col items-start gap-2 sm:gap-4 w-full">
                 <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-tight">
                   {activeTab === "organizations" &&
-                    "Virtual Walking for Organizations"}
-                  {activeTab === "families" && "Virtual Walking at Home"}
+                    (t("dawnForest.organizationsTabs.organizationsTitle") ||
+                      "Virtual Walking for Organizations")}
+                  {activeTab === "families" &&
+                    (t("dawnForest.organizationsTabs.familiesTitle") ||
+                      "Virtual Walking at Home")}
                   {activeTab === "volunteer" &&
-                    "Virtual Walking as a Volunteer"}
+                    (t("dawnForest.organizationsTabs.volunteerTitle") ||
+                      "Virtual Walking as a Volunteer")}
                 </div>
                 <div
                   className={`w-full text-white font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight ${
@@ -890,10 +881,14 @@ const Aran = () => {
                   }`}
                 >
                   {activeTab === "organizations" &&
-                    "Calm moments, shared together."}
-                  {activeTab === "volunteer" && "Share walks, spread joy."}
+                    (t("dawnForest.organizationsTabs.organizationsSubtitle") ||
+                      "Calm moments, shared together.")}
+                  {activeTab === "volunteer" &&
+                    (t("dawnForest.organizationsTabs.volunteerSubtitle") ||
+                      "Share walks, spread joy.")}
                   {activeTab === "families" &&
-                    "Nature's beauty, just a click away."}
+                    (t("dawnForest.organizationsTabs.familiesSubtitle") ||
+                      "Nature's beauty, just a click away.")}
                 </div>
               </div>
 
@@ -901,33 +896,45 @@ const Aran = () => {
               <div className="flex flex-col items-start gap-4 self-stretch w-full">
                 {activeTab === "organizations" && (
                   <>
-                    {[
-                      {
-                        title: "Request a Quote Easily",
-                        description:
-                          "Quick form for pricing, customization, and our personal visit.",
-                      },
-                      {
-                        title: "Promotes Well-Being",
-                        description:
-                          "Calming effect for restlessness, encouraging peaceful moments.",
-                      },
-                      {
-                        title: "Encourages Connection",
-                        description:
-                          "Inspires conversation between residents and caregivers.",
-                      },
-                      {
-                        title: "Flexible Access",
-                        description:
-                          "Works seamlessly on tablets, laptops, and large shared screens.",
-                      },
-                      {
-                        title: "Simple Onboarding",
-                        description:
-                          "Minimal admin setup and full guidance during start-up.",
-                      },
-                    ].map((item, index) => (
+                    {(Array.isArray(
+                      t("dawnForest.organizationsTabs.organizationsBenefits", {
+                        returnObjects: true,
+                      })
+                    )
+                      ? t(
+                          "dawnForest.organizationsTabs.organizationsBenefits",
+                          {
+                            returnObjects: true,
+                          }
+                        )
+                      : [
+                          {
+                            title: "Request a Quote Easily",
+                            description:
+                              "Quick form for pricing, customization, and our personal visit.",
+                          },
+                          {
+                            title: "Promotes Well-Being",
+                            description:
+                              "Calming effect for restlessness, encouraging peaceful moments.",
+                          },
+                          {
+                            title: "Encourages Connection",
+                            description:
+                              "Inspires conversation between residents and caregivers.",
+                          },
+                          {
+                            title: "Flexible Access",
+                            description:
+                              "Works seamlessly on tablets, laptops, and large shared screens.",
+                          },
+                          {
+                            title: "Simple Onboarding",
+                            description:
+                              "Minimal admin setup and full guidance during start-up.",
+                          },
+                        ]
+                    ).map((item, index) => (
                       <div
                         key={index}
                         className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df] w-full pb-2 sm:pb-4"
@@ -960,33 +967,42 @@ const Aran = () => {
 
                 {activeTab === "families" && (
                   <>
-                    {[
-                      {
-                        title: "Affordable Subscription",
-                        description:
-                          "Enjoy unlimited access for only €12.99/month.",
-                      },
-                      {
-                        title: "100+ Scenic Videos",
-                        description:
-                          "Explore Overijssel, with fresh walks every month.",
-                      },
-                      {
-                        title: "Personal Touch",
-                        description:
-                          "Request us to capture your favorite walking route.",
-                      },
-                      {
-                        title: "Real Impact",
-                        description:
-                          "Caregivers share stories of joy and relaxation.",
-                      },
-                      {
-                        title: "Simple & Instant",
-                        description:
-                          "Nature at home with just a single button press.",
-                      },
-                    ].map((item, index) => (
+                    {(Array.isArray(
+                      t("dawnForest.organizationsTabs.familiesBenefits", {
+                        returnObjects: true,
+                      })
+                    )
+                      ? t("dawnForest.organizationsTabs.familiesBenefits", {
+                          returnObjects: true,
+                        })
+                      : [
+                          {
+                            title: "Affordable Subscription",
+                            description:
+                              "Enjoy unlimited access for only €12.99/month.",
+                          },
+                          {
+                            title: "100+ Scenic Videos",
+                            description:
+                              "Explore Overijssel, with fresh walks every month.",
+                          },
+                          {
+                            title: "Personal Touch",
+                            description:
+                              "Request us to capture your favorite walking route.",
+                          },
+                          {
+                            title: "Real Impact",
+                            description:
+                              "Caregivers share stories of joy and relaxation.",
+                          },
+                          {
+                            title: "Simple & Instant",
+                            description:
+                              "Nature at home with just a single button press.",
+                          },
+                        ]
+                    ).map((item, index) => (
                       <div
                         key={index}
                         className="flex items-start gap-2 border-b-[0.5px] border-b-[#7A756E] w-full pb-2 sm:pb-4"
@@ -1019,33 +1035,42 @@ const Aran = () => {
 
                 {activeTab === "volunteer" && (
                   <>
-                    {[
-                      {
-                        title: "Grow the Collection",
-                        description:
-                          "Your walks help our library expand each week.",
-                      },
-                      {
-                        title: "Film with Support",
-                        description:
-                          "We set up the camera and guide your filming.",
-                      },
-                      {
-                        title: "Walk Together",
-                        description:
-                          "Alone on the path, but part of a bigger community.",
-                      },
-                      {
-                        title: "Find Recognition",
-                        description:
-                          "More videos mean more smiles and shared moments.",
-                      },
-                      {
-                        title: "Make a Difference",
-                        description:
-                          "Your contributions bring joy to many people.",
-                      },
-                    ].map((item, index) => (
+                    {(Array.isArray(
+                      t("dawnForest.organizationsTabs.volunteerBenefits", {
+                        returnObjects: true,
+                      })
+                    )
+                      ? t("dawnForest.organizationsTabs.volunteerBenefits", {
+                          returnObjects: true,
+                        })
+                      : [
+                          {
+                            title: "Grow the Collection",
+                            description:
+                              "Your walks help our library expand each week.",
+                          },
+                          {
+                            title: "Film with Support",
+                            description:
+                              "We set up the camera and guide your filming.",
+                          },
+                          {
+                            title: "Walk Together",
+                            description:
+                              "Alone on the path, but part of a bigger community.",
+                          },
+                          {
+                            title: "Find Recognition",
+                            description:
+                              "More videos mean more smiles and shared moments.",
+                          },
+                          {
+                            title: "Make a Difference",
+                            description:
+                              "Your contributions bring joy to many people.",
+                          },
+                        ]
+                    ).map((item, index) => (
                       <div
                         key={index}
                         className="flex items-start gap-2 border-b-[0.5px] border-b-[#e5e3df] w-full pb-2 sm:pb-4"
@@ -1090,9 +1115,14 @@ const Aran = () => {
               className="w-full sm:w-auto"
             >
               <div className="cursor-pointer hover:bg-[#5B6502] flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg lg:text-xl font-medium leading-tight transition-all w-full sm:w-auto">
-                {activeTab === "organizations" && "Get a Quote"}
-                {activeTab === "families" && "Subscribe Now"}
-                {activeTab === "volunteer" && "Join as Volunteer"}
+                {activeTab === "organizations" &&
+                  (t("dawnForest.organizationsTabs.getQuote") || "Get a Quote")}
+                {activeTab === "families" &&
+                  (t("dawnForest.organizationsTabs.subscribeNow") ||
+                    "Subscribe Now")}
+                {activeTab === "volunteer" &&
+                  (t("dawnForest.organizationsTabs.joinVolunteer") ||
+                    "Join as Volunteer")}
               </div>
             </Link>
           </div>
@@ -1133,17 +1163,15 @@ const Aran = () => {
               <div className="space-y-6 sm:space-y-8">
                 <div className="space-y-3 sm:space-y-4">
                   <h3 className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-2xl font-semibold leading-tight">
-                    Tina - Founder of Virtual Walking.
+                    {t("dawnForest.tinaSection.title")}
                   </h3>
                   <blockquote className="text-[#381207] font-['Poppins'] text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left sm:text-justify">
-                    "Together – with informal caregivers, care organizations and
-                    volunteers – we bring nature to life for everyone who can no
-                    longer visit it themselves."
+                    {t("dawnForest.tinaSection.quote")}
                   </blockquote>
                 </div>
                 <div className="flex justify-start">
                   <button className="cursor-pointer px-3 sm:px-4 py-2 bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg transition-all hover:bg-[#8a8f39] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50 w-full sm:w-auto">
-                    Read more about Tina
+                    {t("dawnForest.tinaSection.readMore")}
                   </button>
                 </div>
               </div>

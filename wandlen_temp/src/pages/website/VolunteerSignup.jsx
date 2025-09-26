@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import WebsiteHeader from "../../components/WebsiteHeader";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +9,7 @@ import ForestDark from "../../assets/ForestDark.png";
 const VolunteerSignupForm = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -38,20 +40,35 @@ const VolunteerSignupForm = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
+      newErrors.firstName = t(
+        "volunteerSignup.form.validation.firstNameRequired"
+      );
+    if (!formData.lastName.trim())
+      newErrors.lastName = t(
+        "volunteerSignup.form.validation.lastNameRequired"
+      );
+    if (!formData.email.trim())
+      newErrors.email = t("volunteerSignup.form.validation.emailRequired");
     else if (!validateEmail(formData.email))
-      newErrors.email = "Invalid email format";
+      newErrors.email = t("volunteerSignup.form.validation.emailInvalid");
     if (formData.phone && !validatePhone(formData.phone))
-      newErrors.phone = "Invalid phone format";
-    if (!formData.password.trim()) newErrors.password = "Password is required";
+      newErrors.phone = t("volunteerSignup.form.validation.phoneInvalid");
+    if (!formData.password.trim())
+      newErrors.password = t(
+        "volunteerSignup.form.validation.passwordRequired"
+      );
     else if (formData.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = t(
+        "volunteerSignup.form.validation.passwordMinLength"
+      );
     if (!formData.confirmPassword.trim())
-      newErrors.confirmPassword = "Confirm password is required";
+      newErrors.confirmPassword = t(
+        "volunteerSignup.form.validation.confirmPasswordRequired"
+      );
     else if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t(
+        "volunteerSignup.form.validation.passwordMismatch"
+      );
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -96,7 +113,7 @@ const VolunteerSignupForm = () => {
         address: `${formData.street}, ${formData.city}`,
       });
       if (res.status === 201) {
-        alert("Signup successful! Please log in.");
+        alert(t("volunteerSignup.form.messages.signupSuccess"));
         console.log(res.data);
         setFormData({
           firstName: "",
@@ -114,11 +131,11 @@ const VolunteerSignupForm = () => {
         });
         navigate("/login");
       } else {
-        alert("Signup failed. Please try again.");
+        alert(t("volunteerSignup.form.messages.signupFailed"));
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An error occurred during signup. Please try again.");
+      alert(t("volunteerSignup.form.messages.errorOccurred"));
     }
   };
 
@@ -137,12 +154,10 @@ const VolunteerSignupForm = () => {
           <div className="relative text-left mx-auto">
             <div className="mb-8">
               <h1 className="text-[#ede4dc] font-[Poppins] text-5xl font-semibold leading-tight mb-4">
-                Become a Volunteer
+                {t("volunteerSignup.header.title")}
               </h1>
               <p className="text-[#ede4dc] font-[Poppins] text-2xl font-medium leading-relaxed max-w-2xl">
-                Join us in bringing meaningful, nature-connected experiences to
-                others. Fill in your details below and we’ll reach out to
-                welcome you on board.
+                {t("volunteerSignup.header.subtitle")}
               </p>
             </div>
           </div>
@@ -153,7 +168,7 @@ const VolunteerSignupForm = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    First Name
+                    {t("volunteerSignup.form.labels.firstName")}
                   </label>
                   <input
                     type="text"
@@ -161,7 +176,9 @@ const VolunteerSignupForm = () => {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     onInput={handleNameInput}
-                    placeholder="e.g., Emma"
+                    placeholder={t(
+                      "volunteerSignup.form.placeholders.firstName"
+                    )}
                     className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
                       errors.firstName ? "border-red-500" : "border-[#cbcbcb]"
                     }`}
@@ -175,7 +192,7 @@ const VolunteerSignupForm = () => {
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Last Name
+                    {t("volunteerSignup.form.labels.lastName")}
                   </label>
                   <input
                     type="text"
@@ -183,7 +200,9 @@ const VolunteerSignupForm = () => {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     onInput={handleNameInput}
-                    placeholder="e.g., Johnson"
+                    placeholder={t(
+                      "volunteerSignup.form.placeholders.lastName"
+                    )}
                     className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
                       errors.lastName ? "border-red-500" : "border-[#cbcbcb]"
                     }`}
@@ -200,14 +219,16 @@ const VolunteerSignupForm = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Contact Email
+                    {t("volunteerSignup.form.labels.contactEmail")}
                   </label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="e.g., emma.johnson@email.com"
+                    placeholder={t(
+                      "volunteerSignup.form.placeholders.contactEmail"
+                    )}
                     className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
                       errors.email ? "border-red-500" : "border-[#cbcbcb]"
                     }`}
@@ -219,15 +240,17 @@ const VolunteerSignupForm = () => {
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Phone Number
+                    {t("volunteerSignup.form.labels.phoneNumber")}
                   </label>
                   <input
-                    type="number"
+                    type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
                     onInput={handlePhoneInput}
-                    placeholder="+31"
+                    placeholder={t(
+                      "volunteerSignup.form.placeholders.phoneNumber"
+                    )}
                     className={`w-full p-3 rounded-lg border text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] ${
                       errors.phone ? "border-red-500" : "border-[#cbcbcb]"
                     }`}
@@ -268,14 +291,14 @@ const VolunteerSignupForm = () => {
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    City
+                    {t("volunteerSignup.form.labels.city")}
                   </label>
                   <input
                     type="text"
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    placeholder="City"
+                    placeholder={t("volunteerSignup.form.placeholders.city")}
                     className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
                   />
                 </div>
@@ -284,7 +307,7 @@ const VolunteerSignupForm = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Password
+                    {t("volunteerSignup.form.labels.password")}
                   </label>
                   <input
                     type="password"
@@ -304,7 +327,7 @@ const VolunteerSignupForm = () => {
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Confirm Password
+                    {t("volunteerSignup.form.labels.confirmPassword")}
                   </label>
                   <input
                     type="password"
@@ -328,13 +351,13 @@ const VolunteerSignupForm = () => {
 
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  Notes
+                  {t("volunteerSignup.form.labels.notes")}
                 </label>
                 <textarea
                   name="notes"
                   value={formData.notes}
                   onChange={handleInputChange}
-                  placeholder="Share any skills, availability, or special interests"
+                  placeholder={t("volunteerSignup.form.placeholders.notes")}
                   rows="4"
                   className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643] resize-none"
                 />
@@ -342,7 +365,7 @@ const VolunteerSignupForm = () => {
 
               <div>
                 <label className="block text-[#381207] font-medium mb-4">
-                  Volunteer Status
+                  {t("volunteerSignup.form.labels.volunteerStatus")}
                 </label>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
@@ -358,7 +381,7 @@ const VolunteerSignupForm = () => {
                       htmlFor="first-time"
                       className="text-[#2a341f] text-sm"
                     >
-                      I'm a first-time volunteer
+                      {t("volunteerSignup.form.checkboxes.firstTime")}
                     </label>
                   </div>
                   <div className="flex items-center gap-2">
@@ -374,7 +397,7 @@ const VolunteerSignupForm = () => {
                       htmlFor="update-info"
                       className="text-[#2a341f] text-sm"
                     >
-                      I'm already volunteering and want to update my info
+                      {t("volunteerSignup.form.checkboxes.updateInfo")}
                     </label>
                   </div>
                 </div>
@@ -385,18 +408,18 @@ const VolunteerSignupForm = () => {
                   type="submit"
                   className="bg-[#5b6502] text-white py-3 px-8 rounded-lg font-medium hover:bg-[#4a5302] transition-colors"
                 >
-                  Submit
+                  {t("volunteerSignup.form.buttons.submit")}
                 </button>
               </div>
             </form>
             <div className="mt-6 text-center">
               <p className="text-[#7a756e]">
-                Already have an account?{" "}
+                {t("volunteerSignup.form.messages.alreadyHaveAccount")}{" "}
                 <Link
                   to="/login"
                   className="text-[#2a341f] font-medium hover:underline"
                 >
-                  Login here
+                  {t("volunteerSignup.form.messages.loginHere")}
                 </Link>
               </p>
             </div>
