@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Testimonial from "../../components/common/TestimonialScroll";
 import FaqQuestions from "../../components/common/FaqQuestions";
 import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const Blog = () => {
   const { t } = useTranslation();
   const [blogs, setBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 4;
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   useEffect(() => {
     fetchBlogs();
@@ -18,9 +21,8 @@ const Blog = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch("/api/admin/blogs");
-      if (!response.ok) throw new Error("Failed to fetch blogs");
-      const data = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/blogs`);
+      const data = response.data;
       setBlogs(data);
     } catch (error) {
       console.error("Error fetching blogs:", error);

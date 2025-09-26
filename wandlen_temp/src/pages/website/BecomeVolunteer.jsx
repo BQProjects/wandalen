@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 import PositiveImage from "../../assets/PositiveImage.jpg";
 import VideoTraning from "../../assets/VideoTraning.png";
 import CameraTips from "../../assets/CameraTips.png";
@@ -15,6 +17,7 @@ import Footer from "../../components/Footer";
 const BecomeVolunteer = () => {
   const { t } = useTranslation();
   const [trainings, setTrainings] = useState([]);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   useEffect(() => {
     fetchTrainings();
@@ -22,9 +25,8 @@ const BecomeVolunteer = () => {
 
   const fetchTrainings = async () => {
     try {
-      const response = await fetch("/api/admin/trainings");
-      if (!response.ok) throw new Error("Failed to fetch trainings");
-      const data = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/trainings`);
+      const data = response.data;
       setTrainings(data);
     } catch (error) {
       console.error("Error fetching trainings:", error);

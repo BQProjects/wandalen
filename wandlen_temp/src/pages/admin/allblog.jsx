@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const BlogLibrary = () => {
   const [blogs, setBlogs] = useState([]);
@@ -7,6 +9,7 @@ const BlogLibrary = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 9;
   const navigate = useNavigate();
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   useEffect(() => {
     fetchBlogs();
@@ -14,11 +17,8 @@ const BlogLibrary = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch("/api/admin/blogs");
-      if (!response.ok) {
-        throw new Error("Failed to fetch blogs");
-      }
-      const data = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/blogs`);
+      const data = response.data;
       // Mock data if empty
       if (data.length === 0) {
         setBlogs([
@@ -81,7 +81,7 @@ const BlogLibrary = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
-        await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
+        await axios.delete(`${DATABASE_URL}/admin/blogs/${id}`);
         fetchBlogs(); // Refetch after delete
       } catch (error) {
         console.error("Error deleting blog:", error);

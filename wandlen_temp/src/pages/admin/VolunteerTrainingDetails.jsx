@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const VolunteerTrainingDetails = () => {
   const [trainings, setTrainings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   useEffect(() => {
     fetchTrainings();
@@ -10,9 +13,8 @@ const VolunteerTrainingDetails = () => {
 
   const fetchTrainings = async () => {
     try {
-      const response = await fetch("/api/admin/trainings");
-      if (!response.ok) throw new Error("Failed to fetch trainings");
-      const data = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/trainings`);
+      const data = response.data;
       setTrainings(data);
     } catch (error) {
       console.error("Error fetching trainings:", error);
@@ -25,17 +27,12 @@ const VolunteerTrainingDetails = () => {
     if (training._id) {
       // update
       try {
-        const response = await fetch(`/api/admin/trainings/${training._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedData),
-        });
-        if (response.ok) {
-          fetchTrainings();
-          alert("Training updated successfully");
-        } else {
-          alert("Failed to update training");
-        }
+        await axios.put(
+          `${DATABASE_URL}/admin/trainings/${training._id}`,
+          updatedData
+        );
+        fetchTrainings();
+        alert("Training updated successfully");
       } catch (error) {
         console.error("Error updating training:", error);
         alert("Error updating training");
@@ -43,17 +40,9 @@ const VolunteerTrainingDetails = () => {
     } else {
       // create
       try {
-        const response = await fetch("/api/admin/trainings", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedData),
-        });
-        if (response.ok) {
-          fetchTrainings();
-          alert("Training created successfully");
-        } else {
-          alert("Failed to create training");
-        }
+        await axios.post(`${DATABASE_URL}/admin/trainings`, updatedData);
+        fetchTrainings();
+        alert("Training created successfully");
       } catch (error) {
         console.error("Error creating training:", error);
         alert("Error creating training");

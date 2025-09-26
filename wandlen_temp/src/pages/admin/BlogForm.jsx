@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const BlogForm = () => {
   const { id } = useParams(); // id will be undefined for create
@@ -11,6 +13,7 @@ const BlogForm = () => {
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(isEdit);
   const navigate = useNavigate();
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   useEffect(() => {
     if (isEdit) {
@@ -20,9 +23,8 @@ const BlogForm = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await fetch(`/api/admin/blogs/${id}`);
-      if (!response.ok) throw new Error("Failed to fetch blog");
-      const blog = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/blogs/${id}`);
+      const blog = response.data;
       setTitle(blog.title);
       setImgUrl(blog.imgUrl);
       setCoverPreview(blog.imgUrl);
@@ -97,16 +99,11 @@ const BlogForm = () => {
         data.append("upload_preset", "wandelen");
         data.append("cloud_name", "dojwaepbj");
 
-        const res = await fetch(
+        const res = await axios.post(
           "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-          {
-            method: "POST",
-            body: data,
-          }
+          data
         );
-        const result = await res.json();
-        if (!res.ok) throw new Error("Cover image upload failed");
-        finalImgUrl = result.secure_url;
+        finalImgUrl = res.data.secure_url;
       }
 
       const finalContent = await Promise.all(
@@ -117,17 +114,11 @@ const BlogForm = () => {
             data.append("upload_preset", "wandelen");
             data.append("cloud_name", "dojwaepbj");
 
-            const res = await fetch(
+            const res = await axios.post(
               "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-              {
-                method: "POST",
-                body: data,
-              }
+              data
             );
-            const result = await res.json();
-            if (!res.ok)
-              throw new Error(`Content image ${index + 1} upload failed`);
-            return { type: "image", value: result.secure_url };
+            return { type: "image", value: res.data.secure_url };
           } else {
             return {
               type: item.type,
@@ -144,20 +135,14 @@ const BlogForm = () => {
         author: "Admin", // You can make this dynamic if needed
       };
 
-      const url = isEdit ? `/api/admin/blogs/${id}` : "/api/admin/blogs";
-      const method = isEdit ? "PUT" : "POST";
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      if (response.ok) {
-        navigate("/admin/all-blog");
+      if (isEdit) {
+        await axios.put(`${DATABASE_URL}/admin/blogs/${id}`, body);
+        alert("Blog updated successfully");
       } else {
-        alert(`Failed to ${isEdit ? "update" : "create"} blog`);
+        await axios.post(`${DATABASE_URL}/admin/blogs`, body);
+        alert("Blog created successfully");
       }
+      navigate("/admin/all-blog");
     } catch (error) {
       console.error(`Error ${isEdit ? "updating" : "creating"} blog:`, error);
       alert(`Error ${isEdit ? "updating" : "creating"} blog`);
