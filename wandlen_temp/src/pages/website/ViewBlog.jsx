@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 import Testimonial from "../../components/common/TestimonialScroll";
 import FaqQuestions from "../../components/common/FaqQuestions";
 import SubscribeCard from "../../components/SubscribeCard";
@@ -9,6 +11,7 @@ const ViewBlog = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   useEffect(() => {
     fetchBlog();
@@ -16,9 +19,8 @@ const ViewBlog = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await fetch(`/api/admin/blogs/${id}`);
-      if (!response.ok) throw new Error("Failed to fetch blog");
-      const data = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/blogs/${id}`);
+      const data = response.data;
       setBlog(data);
     } catch (error) {
       console.error("Error fetching blog:", error);

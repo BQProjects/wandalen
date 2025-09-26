@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { MapPin, Clock, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 import Testimonial from "../../components/common/TestimonialScroll";
 import Footer from "../../components/Footer";
 import SubscribeCard from "../../components/SubscribeCard";
@@ -10,6 +12,7 @@ import FaqQuestionsVolunteer from "../../components/volunteer/FaqQuestionsVolunt
 const Training = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const { DATABASE_URL } = useContext(DatabaseContext);
   const [training, setTraining] = useState(null);
 
   useEffect(() => {
@@ -18,9 +21,8 @@ const Training = () => {
 
   const fetchTraining = async () => {
     try {
-      const response = await fetch("/api/admin/trainings");
-      if (!response.ok) throw new Error("Failed to fetch trainings");
-      const data = await response.json();
+      const response = await axios.get(`${DATABASE_URL}/admin/trainings`);
+      const data = response.data;
       let filter = "";
       if (location.pathname === "/video-training") {
         filter = "video training";
