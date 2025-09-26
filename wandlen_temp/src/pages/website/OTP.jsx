@@ -39,6 +39,14 @@ const Otp = () => {
         type: userType,
       });
       if (res.status === 200) {
+        // Check if userId is valid (not undefined or null)
+        if (!res.data.userId || res.data.userId === "undefined") {
+          alert(
+            "OTP verification failed: Invalid user ID. Please try logging in again."
+          );
+          return;
+        }
+
         alert("OTP verification successful!");
 
         // Set authentication context

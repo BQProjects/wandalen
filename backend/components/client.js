@@ -6,6 +6,8 @@ const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
 const bcrypt = require("bcrypt");
 const CommentModel = require("../models/commentModel");
+const LikeModel = require("../models/likeModel");
+const mongoose = require("mongoose");
 
 const clientLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -31,6 +33,7 @@ const clientLogin = async (req, res) => {
     const store = new smsStoreModel({
       email,
       otp,
+      who: client._id, // Added: Store the client ID for OTP verification
     });
 
     await store.save();
@@ -38,7 +41,7 @@ const clientLogin = async (req, res) => {
     // TODO: Send OTP via email/SMS (use org.contactPersonEmail or org.email)
     console.log(`OTP for ${email}: ${otp}, IP: ${ip}`);
 
-    res.json({ message: "OTP sent to your email", ip , otp}); // Send OTP in response for testing (remove in production)
+    res.json({ message: "OTP sent to your email", ip, otp }); // Send OTP in response for testing (remove in production)
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -46,7 +49,21 @@ const clientLogin = async (req, res) => {
 };
 
 const clientSignUp = async (req, res) => {
-  const { firstName, lastName, email, password, endDate } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    companyName,
+    func,
+    telephone,
+    country,
+    address,
+    city,
+    postalCode,
+    plan,
+    endDate,
+  } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -55,6 +72,14 @@ const clientSignUp = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
+      company: companyName,
+      function: func,
+      phoneNo: telephone,
+      country,
+      address,
+      city,
+      postal: postalCode,
+      plan,
       subscriptionType: "self",
       startDate: new Date(),
       endDate: new Date(endDate),
@@ -68,17 +93,67 @@ const clientSignUp = async (req, res) => {
 };
 
 const getAllvideos = async (req, res) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
+  const {
+    page = 1,
+    limit = 9,
+    search = "",
+    duration,
+    location,
+    season,
+    nature,
+    animals,
+    sound,
+  } = req.query;
   try {
-    const videos = await VideoModel.find({
-      title: { $regex: search, $options: "i" },
-    })
+    // Build filter query object
+    const query = {};
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+    if (duration) {
+      const durationFilters = Array.isArray(duration) ? duration : [duration];
+      const durationConditions = [];
+      durationFilters.forEach((d) => {
+        if (d.includes("Short")) {
+          durationConditions.push({ duration: { $lte: 5 } });
+        } else if (d.includes("Medium")) {
+          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
+        } else if (d.includes("Long")) {
+          durationConditions.push({ duration: { $gt: 15 } });
+        }
+      });
+      if (durationConditions.length > 0) {
+        query.$or = durationConditions; // Use $or for multiple duration ranges
+      }
+    }
+    if (location) {
+      const locations = Array.isArray(location) ? location : [location];
+      query.location = { $in: locations };
+    }
+    if (season) {
+      const seasons = Array.isArray(season) ? season : [season];
+      query.season = { $in: seasons };
+    }
+    if (nature) {
+      const natures = Array.isArray(nature) ? nature : [nature];
+      query.nature = { $in: natures };
+    }
+    if (animals) {
+      const animalList = Array.isArray(animals) ? animals : [animals];
+      query.animals = { $in: animalList };
+    }
+    if (sound) {
+      const sounds = Array.isArray(sound) ? sound : [sound];
+      query.sound = { $in: sounds };
+    }
+
+    // Fetch videos with filters and pagination
+    const videos = await VideoModel.find(query)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 
-    const total = await VideoModel.countDocuments({
-      title: { $regex: search, $options: "i" },
-    });
+    // Count total with filters
+    const total = await VideoModel.countDocuments(query);
 
     res.json({
       page: parseInt(page),
@@ -140,12 +215,26 @@ const addReview = async (req, res) => {
 
     if (!client) return res.status(404).json({ message: "Client not found" });
     if (!video) return res.status(404).json({ message: "Video not found" });
+
+    const existingReview = await ReviewModel.findOne({
+      video: vidoId,
+      clientId: clientId,
+    });
+
+    if (existingReview) {
+      return res.status(400).json({
+        message: "You have already reviewed this video",
+      });
+    }
+
     const newReview = new ReviewModel({
       username: client.firstName,
       rating,
       review,
       video: vidoId,
+      clientId: clientId,
     });
+
     await newReview.save();
     video.reviews.push(newReview._id);
 
@@ -159,12 +248,34 @@ const addReview = async (req, res) => {
 
 const getAllReviews = async (req, res) => {
   const { videoId } = req.params;
+  const { userId } = req.query;
+
   try {
+    if (!mongoose.Types.ObjectId.isValid(videoId)) {
+      return res.status(400).json({ message: "Invalid video ID format" });
+    }
+
     const video = await VideoModel.findById(videoId).populate("reviews");
+
     if (!video) return res.status(404).json({ message: "Video not found" });
-    res.json({ reviews: video.reviews });
+
+    let hasReviewed = false;
+
+    if (userId && mongoose.Types.ObjectId.isValid(userId)) {
+      const userReview = await ReviewModel.findOne({
+        video: videoId,
+        clientId: userId,
+      });
+
+      hasReviewed = !!userReview;
+    }
+
+    res.json({
+      reviews: video.reviews || [],
+      hasReviewed: hasReviewed,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Error in getAllReviews:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -199,14 +310,72 @@ const addView = async (req, res) => {
 
 const addLike = async (req, res) => {
   const { videoId } = req.params;
+  const userId = req.query.userId;
+
   try {
-    const video = await VideoModel.findById(videoId);
-    if (!video.likes) {
-      video.likes = 0;
+    // Convert to ObjectId
+    const userObjectId = mongoose.Types.ObjectId.isValid(userId)
+      ? new mongoose.Types.ObjectId(userId)
+      : userId;
+
+    // Check if like already exists
+    const likeExists = await LikeModel.findOne({
+      videoId,
+      userId: userObjectId,
+    });
+
+    if (likeExists) {
+      // Unlike - remove the like
+      await LikeModel.deleteOne({ _id: likeExists._id });
+
+      // Decrement video like count
+      await VideoModel.findByIdAndUpdate(videoId, {
+        $inc: { likes: -1 },
+      });
+
+      return res.json({
+        message: "Like removed successfully",
+        liked: false,
+      });
+    } else {
+      // Like - add new like
+      const newLike = new LikeModel({
+        videoId,
+        userId: userObjectId,
+      });
+      await newLike.save();
+
+      // Increment video like count
+      await VideoModel.findByIdAndUpdate(videoId, {
+        $inc: { likes: 1 },
+      });
+
+      return res.json({
+        message: "Like added successfully",
+        liked: true,
+      });
     }
-    video.likes += 1;
-    await video.save();
-    res.json({ message: "Like added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const checkLikeStatus = async (req, res) => {
+  const { videoId } = req.params;
+  const userId = req.query.userId;
+
+  try {
+    // Convert to ObjectId
+    const userObjectId = mongoose.Types.ObjectId.isValid(userId)
+      ? new mongoose.Types.ObjectId(userId)
+      : userId;
+
+    const likeExists = await LikeModel.exists({
+      videoId,
+      userId: userObjectId,
+    });
+    res.json({ isLiked: !!likeExists });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -236,6 +405,32 @@ const addComment = async (req, res) => {
   }
 };
 
+const updateAccountInfo = async (req, res) => {
+  const clientId = req.params.clientId;
+  const { firstName, lastName, phoneNo, address, postal, country, company } =
+    req.body; // Only allow safe fields to update
+
+  try {
+    const client = await ClientModel.findById(clientId);
+    if (!client) return res.status(404).json({ message: "Client not found" });
+
+    // Update only provided fields
+    if (firstName !== undefined) client.firstName = firstName;
+    if (lastName !== undefined) client.lastName = lastName;
+    if (phoneNo !== undefined) client.phoneNo = phoneNo;
+    if (address !== undefined) client.address = address;
+    if (postal !== undefined) client.postal = postal;
+    if (country !== undefined) client.country = country;
+    if (company !== undefined) client.company = company;
+
+    await client.save();
+    res.json({ message: "Profile updated successfully", client });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -250,4 +445,6 @@ module.exports = {
   addView,
   addLike,
   addComment,
+  updateAccountInfo,
+  checkLikeStatus,
 };

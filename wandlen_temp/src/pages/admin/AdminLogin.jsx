@@ -10,19 +10,15 @@ const AdminLogin = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Add your authentication logic here (e.g., API call to verify credentials)
-    // On success, set user role to "admin" in your auth context/state
-    // Then navigate to /admin
     console.log("Logging in with:", email, password);
-    // Example: if login succeeds, navigate('/admin');
     if (email === "admin@test.com" && password === "admin123") {
       localStorage.setItem("userType", "admin");
       localStorage.setItem("user", JSON.stringify({ email: email }));
       localStorage.setItem("sessionId", "dummy-session-id-for-admin");
       localStorage.setItem("userId", "admin-user-id");
       setUserType("admin");
-
-      navigate("/admin");
+      console.log("Login successful, navigating to /admin");
+     window.location.href = "/admin";
     } else {
       alert("Invalid credentials");
     }

@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BgVideo from "../../assets/BgVideo.mp4";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
@@ -10,8 +10,12 @@ import Footer from "../../components/Footer";
 const VolunteerHome = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeFilters, setActiveFilters] = useState({});
+  const [total, setTotal] = useState(0);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
+  const itemsPerPage = 9;
   const [req, setReq] = useState([]);
 
   // const videos = [
@@ -101,7 +105,7 @@ const VolunteerHome = () => {
         );
         if (res.status === 200) {
           alert("Video deleted successfully");
-          handleGetVideos(); // Refresh the list
+          fetchVideos(currentPage, activeFilters); // Refresh the list with current page/filters
         } else {
           alert("Failed to delete video");
         }
@@ -112,25 +116,48 @@ const VolunteerHome = () => {
     }
   };
 
-  const handleGetVideos = async () => {
+  const fetchVideos = async (page, filters) => {
     try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      // Map filters to backend fields (matching the backend query)
+      const fieldMap = {
+        Lengte: "duration",
+        Locatie: "location",
+        Seizoen: "season",
+        Natuurtype: "nature",
+        Dieren: "animals",
+        Geluidsprikkels: "sound",
+      };
+      Object.entries(filters).forEach(([key, values]) => {
+        const field = fieldMap[key];
+        if (field && values.length > 0) {
+          values.forEach((value) => params.append(field, value));
+        }
+      });
       const res = await axios.get(
-        `${DATABASE_URL}/client/get-all-videos/1/10"`,
+        `${DATABASE_URL}/client/get-all-videos?${params}`, // Use query params instead of hardcoded /1/10
         {
-          headers: {
-            Authorization: `Bearer ${sessionId}`,
-          },
+          headers: { Authorization: `Bearer ${sessionId}` },
         }
       );
       setVideos(res.data.videos);
-      console.log(res.data.videos);
+      setTotal(res.data.total);
     } catch (error) {
       console.error("Error fetching videos:", error);
     }
   };
+
   useEffect(() => {
-    handleGetVideos();
-  }, []);
+    fetchVideos(currentPage, activeFilters);
+  }, [currentPage, activeFilters]);
+
+  // Add this new useEffect to reset page on filter change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeFilters]);
 
   const getAllRequests = async () => {
     try {
@@ -185,6 +212,13 @@ const VolunteerHome = () => {
           isClientView={false}
           onVideoEdit={handleVideoEdit}
           onVideoDelete={handleVideoDelete}
+          showResultsCount={true}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          activeFilters={activeFilters}
+          onFilterChange={setActiveFilters}
+          totalPages={Math.ceil(total / itemsPerPage)}
+          total={total} // Pass total matching videos
         />
       </div>
       {/* Existing section remains unchanged */}

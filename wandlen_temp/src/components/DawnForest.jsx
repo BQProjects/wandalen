@@ -3,8 +3,10 @@ import OrangeWood from "../assets/orangeWood.jpg";
 import MemoryIcon from "../assets/MemoryIcon.svg";
 import BrainIcon from "../assets/BrainIcon.svg";
 import UserGroupIcon from "../assets/UserGroupIcon.svg";
+import { useTranslation } from "react-i18next";
 
 const DawnForest = () => {
+  const { t } = useTranslation();
   const [currentSection, setCurrentSection] = useState(0);
   const [sectionProgress, setSectionProgress] = useState(0);
   const containerRef = useRef(null);
@@ -44,60 +46,48 @@ const DawnForest = () => {
   }, []);
 
   // First set of benefits
-  const firstBenefits = [
-    {
-      icon: (
+  const firstBenefitsData = t("dawnForest.benefits.first", {
+    returnObjects: true,
+  });
+  const firstBenefits = firstBenefitsData.map((benefit, index) => ({
+    ...benefit,
+    icon:
+      index === 0 ? (
         <img
           src={MemoryIcon}
           alt="Memory Icon"
           className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
         />
-      ),
-      title: "Memory Stimulation",
-      description:
-        "Familiar sights and sounds bring back memories, sparking joy and recognition.",
-    },
-    {
-      icon: (
+      ) : (
         <img
           src={BrainIcon}
           alt="Brain Icon"
           className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
         />
       ),
-      title: "Mood & Social Boost",
-      description:
-        "Virtual walks spark conversation — enjoy alone or share with family and caregivers.",
-    },
-  ];
+  }));
 
   // Second set of benefits
-  const secondBenefits = [
-    {
-      icon: (
+  const secondBenefitsData = t("dawnForest.benefits.second", {
+    returnObjects: true,
+  });
+  const secondBenefits = secondBenefitsData.map((benefit, index) => ({
+    ...benefit,
+    icon:
+      index === 0 ? (
         <img
           src={UserGroupIcon}
           alt="User Group Icon"
           className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
         />
-      ),
-      title: "Safe & Accessible",
-      description:
-        "Bring nature indoors for those who can't walk outside, with no risk of falling or getting lost.",
-    },
-    {
-      icon: (
+      ) : (
         <img
           src={MemoryIcon}
           alt="Memory Icon"
           className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
         />
       ),
-      title: "Stress & Anxiety Relief",
-      description:
-        "Natural images and sounds help calm the mind and ease tension.",
-    },
-  ];
+  }));
 
   const BenefitItem = ({
     benefit,
@@ -147,7 +137,7 @@ const DawnForest = () => {
           <img
             src={OrangeWood}
             className="w-full h-full object-cover"
-            alt="Virtual Walking"
+            alt={t("dawnForest.imageAlt")}
           />
         </div>
 
@@ -165,11 +155,10 @@ const DawnForest = () => {
             className="transition-all duration-500 ease-out"
           >
             <div className="text-primary font-poppins text-lg sm:text-xl md:text-2xl lg:text-[2rem] font-semibold mb-2 sm:mb-3 md:mb-4 pl-4 sm:pl-8 md:pl-14">
-              Why Virtual Walking?
+              {t("dawnForest.header")}
             </div>
             <div className="text-secondary font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-8 md:pl-14 leading-tight">
-              Experience nature, <br className="hidden sm:block" /> wherever you
-              are.
+              {t("dawnForest.subtitle")}
             </div>
           </div>
 

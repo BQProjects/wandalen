@@ -8,30 +8,56 @@ import Footer from "../../components/Footer";
 
 const SelectVideo = () => {
   const navigate = useNavigate();
-
   const [videos, setVideos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeFilters, setActiveFilters] = useState({});
+  const [total, setTotal] = useState(0);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
+  const itemsPerPage = 9;
 
-  const handleGetVideos = async () => {
+  const fetchVideos = async (page, filters) => {
     try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      // Map filters to backend fields (matching the backend query)
+      const fieldMap = {
+        Lengte: "duration",
+        Locatie: "location",
+        Seizoen: "season",
+        Natuurtype: "nature",
+        Dieren: "animals",
+        Geluidsprikkels: "sound",
+      };
+      Object.entries(filters).forEach(([key, values]) => {
+        const field = fieldMap[key];
+        if (field && values.length > 0) {
+          values.forEach((value) => params.append(field, value));
+        }
+      });
       const res = await axios.get(
-        `${DATABASE_URL}/client/get-all-videos/1/10"`,
+        `${DATABASE_URL}/client/get-all-videos?${params}`,
         {
-          headers: {
-            Authorization: `Bearer ${sessionId}`,
-          },
+          headers: { Authorization: `Bearer ${sessionId}` },
         }
       );
       setVideos(res.data.videos);
-      console.log(res.data.videos);
+      setTotal(res.data.total);
     } catch (error) {
       console.error("Error fetching videos:", error);
     }
   };
+
   useEffect(() => {
-    handleGetVideos();
-  }, []);
+    fetchVideos(currentPage, activeFilters);
+  }, [currentPage, activeFilters]);
+
+  // Add this new useEffect to reset page on filter change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeFilters]);
 
   const handleVideoSelect = (id) => {
     navigate(`video/${id}`);
@@ -64,7 +90,7 @@ const SelectVideo = () => {
           </p>
         </div>
       </div>
-      
+
       <div className="mx-auto relative px-4 sm:px-10 md:px-20 pt-20">
         {/* Video Grid with Filters */}
         <VideoGridWithFilters
@@ -72,11 +98,18 @@ const SelectVideo = () => {
           onVideoSelect={handleVideoSelect}
           title="Your Favorite Videos"
           subtitle="Easily find and enjoy the videos you love most, anytime."
+          customFilterOptions={null}
           showFilters={true}
-          showStats={false}
+          showStats={true}
           isClientView={true}
           emptyStateMessage="No nature videos available at the moment."
           showResultsCount={true}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          activeFilters={activeFilters}
+          onFilterChange={setActiveFilters}
+          totalPages={Math.ceil(total / itemsPerPage)}
+          total={total} // Pass total matching videos
         />
 
         {/* TODO: need to change the favorites section to pagination section */}

@@ -21,6 +21,11 @@ const ClientSchema = new Schema(
     paymentMethod: {
       type: String,
     },
+    plan: {
+      title: String,
+      price: String,
+      period: String,
+    },
     ipAddress: {
       type: [String],
       default: [],
@@ -42,10 +47,16 @@ const ClientSchema = new Schema(
     phoneNo: {
       type: String,
     },
+    function: {
+      type: String,
+    },
     country: {
       type: String,
     },
     address: {
+      type: String,
+    },
+    city: {
       type: String,
     },
     postal: {

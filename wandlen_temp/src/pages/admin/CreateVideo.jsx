@@ -74,7 +74,7 @@ const getTagIcon = (tag) => {
   return "🏷️";
 };
 
-const VolunteerCreateVideo = () => {
+const CreateVideo = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -253,10 +253,10 @@ const VolunteerCreateVideo = () => {
         nature: formData.natureType,
         sound: formData.soundStimuli,
         animals: formData.animals,
-        tags: formData.tags,
+        tags: formData.tags.join(", "), // Changed to string to match backend expectation
         imgUrl: imgUrl, // Fixed: cover URL
         duration: formData.duration,
-        id: localStorage.getItem("userId"),
+        // Removed id: localStorage.getItem("userId"), as it may not be set for admin
       };
 
       if (editMode) {
@@ -273,14 +273,14 @@ const VolunteerCreateVideo = () => {
         );
         if (res.status === 200) {
           alert("Video updated successfully");
-          navigate("/volunteer");
+          navigate("/admin/all-videos");
         } else {
           alert("Video update failed");
         }
       } else {
         // Create logic (unchanged, but ensure URLs are correct)
         const res = await axios.post(
-          `${DATABASE_URL}/volunteer/uploadVideos`,
+          `${DATABASE_URL}/admin`,
           payload,
           {
             headers: {
@@ -291,7 +291,7 @@ const VolunteerCreateVideo = () => {
         );
         if (res.status === 201) {
           alert("Video uploaded successfully");
-          navigate("/volunteer");
+          navigate("/admin/all-videos"); // Changed for admin
         } else {
           alert("Video upload failed");
         }
@@ -305,7 +305,7 @@ const VolunteerCreateVideo = () => {
   const handleCancel = () => {
     if (editMode) {
       // If in edit mode, navigate back without clearing form
-      navigate("/volunteer");
+      navigate("/admin/manage-videos");
     } else {
       //clear form data
       setFormData({
@@ -322,14 +322,14 @@ const VolunteerCreateVideo = () => {
       setCoverImage(null);
       setVideoFile(null);
       setShowUploadOptions(false);
-      navigate("/volunteer");
+      navigate("/admin/manage-videos");
     }
   };
 
   const getVideoDetails = async () => {
     try {
       const res = await axios.get(
-        `${DATABASE_URL}/volunteer/getVideo/${videoId}`,
+        `${DATABASE_URL}/client/get-video/${videoId}`, // Changed to match VideoAdmin and VideoClient
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
       setFormData({
@@ -717,4 +717,4 @@ const VolunteerCreateVideo = () => {
   );
 };
 
-export default VolunteerCreateVideo;
+export default CreateVideo;

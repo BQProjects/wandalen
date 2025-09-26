@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Laptop_trail from "../assets/laptop_trail.png";
 import Tablet_trail from "../assets/Tablet_iPad_mini_trail.png";
 import Phone_trail from "../assets/Phone_trail.png";
+import { useTranslation } from "react-i18next";
 
 const PreviewExperience = () => {
+  const { t } = useTranslation();
   const [activeDevice, setActiveDevice] = useState(0);
 
   const devices = [
@@ -92,10 +94,10 @@ const PreviewExperience = () => {
         {/* Header */}
         <div className="flex flex-col items-start gap-2 max-w-[1136px] mb-8">
           <div className="text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#5b6502] font-[Poppins]">
-            Preview Your Experience
+            {t("previewExperience.title")}
           </div>
           <div className="max-w-[835px] opacity-[0.8] text-[#381207] font-[Poppins] text-2xl lg:text-4xl xl:text-[48px] font-semibold">
-            See how it looks on laptop, tablet, and mobile
+            {t("previewExperience.subtitle")}
           </div>
         </div>
 
@@ -110,7 +112,9 @@ const PreviewExperience = () => {
               >
                 <img
                   src={currentDevice.image}
-                  alt={`Forest Trail - ${currentDevice.name} view`}
+                  alt={`${t("previewExperience.alt")} - ${
+                    currentDevice.name
+                  } view`}
                   className="w-full h-full object-cover rounded-2xl shadow-2xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
@@ -135,10 +139,9 @@ const PreviewExperience = () => {
             ))}
           </div>
 
-          {/* Device Name Indicator */}
           <div className="text-center">
             <span className="text-[#5b6502] font-['Poppins'] text-sm font-medium capitalize transition-all duration-300">
-              {currentDevice.name} View
+              {t(`previewExperience.devices.${currentDevice.name}`)}
             </span>
           </div>
         </div>

@@ -10,7 +10,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
-const VideoVolunteer = () => {
+const VideoAdmin = () => {
   const { id } = useParams();
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
@@ -22,7 +22,7 @@ const VideoVolunteer = () => {
       try {
         console.log("Fetching video with ID:", id);
         const res = await axios.get(
-          `${DATABASE_URL}/volunteer/getVideo/${id}`,
+          `${DATABASE_URL}/client/get-video/${id}`,
           {
             headers: {
               Authorization: `Bearer ${sessionId}`,
@@ -46,14 +46,14 @@ const VideoVolunteer = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
-      <div className="bg-secondary px-4 sm:px-10 md:px-20">
+      <div className=" px-4 sm:px-10 md:px-20">
         <div className="mx-auto">
           {/* Video Section */}
           <div className="">
             <div className=" mx-auto">
               {/* Back Button */}
               <Link
-                to="/volunteer"
+                to="/admin/all-videos"
                 className="inline-flex items-center gap-3 text-brown hover:text-accent transition-colors mb-6 sm:mb-8 mt-10"
               >
                 <img src={BackArrow} alt="Back Arrow" className="w-6 h-6" />
@@ -189,9 +189,8 @@ const VideoVolunteer = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
 
-export default VideoVolunteer;
+export default VideoAdmin;

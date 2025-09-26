@@ -1,69 +1,47 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
 
 const ManageSubscription = () => {
   const navigate = useNavigate();
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+  const [subscriptions, setSubscriptions] = useState([]);
 
-  const users = [
-    {
-      firstName: "John",
-      lastName: "Lee",
-      phone: "+31 6 1234 5678",
-      email: "johnlee@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Mark",
-      lastName: "Ham",
-      phone: "+31 6 1234 5678",
-      email: "markham@gmail.com",
-      isVolunteer: true,
-    },
-    {
-      firstName: "Sandy",
-      lastName: "Rue",
-      phone: "+31 6 1234 5678",
-      email: "sandyrue@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Lisa",
-      lastName: "Mona",
-      phone: "+31 6 1234 5678",
-      email: "lisamona@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Betty",
-      lastName: "Walt",
-      phone: "+31 6 1234 5678",
-      email: "bettywalt@gmail.com",
-      isVolunteer: false,
-    },
-    {
-      firstName: "Tom",
-      lastName: "Harris",
-      phone: "+31 6 1234 5678",
-      email: "tomharris@gmail.com",
-      isVolunteer: false,
-    },
-  ];
+  const fetchSubscriptions = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/admin/all-clients`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
+      // Assuming res.data is an array of client objects
+      const mappedSubscriptions = res.data.map((client) => {
+        const now = new Date();
+        const endDate = new Date(client.endDate);
+        const status = endDate > now ? "Active" : "Inactive";
+        return {
+          firstName: client.firstName || "N/A",
+          lastName: client.lastName || "N/A",
+          planType: client.plan?.title || client.subscriptionType || "N/A",
+          status,
+          startDate: client.startDate
+            ? new Date(client.startDate).toLocaleDateString()
+            : "N/A",
+          endDate: client.endDate
+            ? new Date(client.endDate).toLocaleDateString()
+            : "N/A",
+          paymentStatus: "Paid", // Assuming paid if in DB; adjust if backend provides
+        };
+      });
+      setSubscriptions(mappedSubscriptions);
+    } catch (error) {
+      console.error("Error fetching subscriptions:", error);
+    }
+  };
 
-  // Create subscriptions data based on users
-  const subscriptions = users.map((user, index) => ({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    planType: index % 2 === 0 ? "Annual" : "Monthly", // Placeholder
-    status: user.isVolunteer
-      ? "Active"
-      : index % 3 === 0
-      ? "Trial"
-      : "Inactive", // Placeholder
-    startDate: `Jun ${5 + index}, 2025`,
-    endDate:
-      index % 2 === 0 ? `Jun ${5 + index + 1}, 2026` : `Jul ${5 + index}, 2025`,
-    paymentStatus: "Paid", // Placeholder
-  }));
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
 
   const handleRowClick = (sub) => {
     // Navigate to SubscriptionOverview with optional state

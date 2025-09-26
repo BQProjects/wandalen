@@ -1,0 +1,913 @@
+{
+    "header": {
+        "welcome": "Welcome",
+        "ourVision": "Our Vision",
+        "dashboard": "Dashboard",
+        "logout": "Logout",
+        "becomeVolunteer": "Become a volunteer",
+        "subscribe": "Subscribe",
+        "blog": "Blog",
+        "english": "English",
+        "login": "Log in",
+        "subscriptions": "Subscriptions"
+    },
+    "footer": {
+        "companyName": "Virtueel Wandelen",
+        "copyright": "© 2025 Virtueel Wandelen",
+        "termsAndConditions": "Terms and Conditions",
+        "privacyPolicy": "Privacy Policy",
+        "menu": "Menu",
+        "home": "Home",
+        "ourVision": "Our Vision",
+        "subscriptions": "Subscriptions",
+        "volunteer": "Volunteer",
+        "contact": "Contact",
+        "address": "Dominee C. Keersstraat 79\n8151 AB Lemelerveld",
+        "phone": "Tel: 06-43754290",
+        "email": "Email: info@virtueelwandelen.nl",
+        "followUs": "Follow Us",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "linkedin": "LinkedIn"
+    },
+    "discoverVideos": {
+        "title": "Discover Nature Videos",
+        "subtitle": "Choose a route or season."
+    },
+    "positiveExperiences": {
+        "title": "Positive Experiences",
+        "subtitle": "Virtueel Wandelen creates warm, positive moments for all.",
+        "watchNow": "Watch Now"
+    },
+    "aran": {
+        "hero": {
+            "title": "Virtueel Wandelen",
+            "subtitle": "Change your life memories",
+            "description": "Virtueel Walken brings the natural life to life and rustiness natural change videos for the outside world with denial.",
+            "requestQuote": "Request for quote",
+            "viewPlans": "View subscription plans"
+        },
+        "secondHero": {
+            "subtitle": "Digital transformations in the Overijsselse nature",
+            "description": "Imagine: a forest walk, the rustling of leaves and singing birds. For people with dementia such a nature experience can mean a lot. Virtual Walking brings this experience close, right from home or a care facility. It offers peace, relaxation and recognition.",
+            "features": {
+                "exploreNature": "Explore Overijssel's Nature Videos",
+                "simpleViewing": "Enjoy Unique & Simple Viewing",
+                "instantWatch": "Watch Instantly with One Click"
+            }
+        },
+        "chat": {
+            "title": "Chat with Virtueel Wandelen",
+            "greeting": "Hello! Welcome to BrainQuest. How can we assist you with virtual walking experiences today?",
+            "userMessage": "I'm interested in learning more about your services.",
+            "response": "Great! We offer immersive virtual walks through beautiful landscapes. Would you like to schedule a demo or get a quote?",
+            "placeholder": "Type your message...",
+            "send": "Send"
+        }
+    },
+    "subscribeCard": {
+        "title": "Stay Inspired",
+        "emailLabel": "Email address",
+        "emailPlaceholder": "Email address",
+        "firstNameLabel": "First name",
+        "firstNamePlaceholder": "First name",
+        "lastNameLabel": "Last name",
+        "lastNamePlaceholder": "Last name",
+        "notesLabel": "Notes",
+        "notesPlaceholder": "E.g. Add special billing instructions",
+        "subscribeButton": "Subscribe",
+        "imageAlt": "Holding hands in nature"
+    },
+    "requestCard": {
+        "header": {
+            "subtitle": "For Care Institutions and Home Users",
+            "title": "Unlimited access to nature walks. Try 7 days free. Cancel anytime."
+        },
+        "careInstitutions": {
+            "title": "Virtueel Wandelen for Care Institutions",
+            "features": {
+                "easyQuotes": "Easy Quotes – Quick form & personal visit",
+                "wellBeing": "Well-Being – Calms and soothes",
+                "connection": "Connection – Sparks conversations",
+                "flexible": "Flexible – Works on all devices",
+                "simpleStart": "Simple Start – Minimal setup & full support"
+            },
+            "button": "Request a Quote"
+        },
+        "homeUsers": {
+            "title": "Virtueel Wandelen at Home €12,99 per month",
+            "features": {
+                "affordable": "Affordable – €12.99/month unlimited access",
+                "videos": "100+ Videos – New walks monthly",
+                "personal": "Personal – Request your favorite route",
+                "impactful": "Impactful – Brings joy and relaxation",
+                "easy": "Easy – Nature at home in one click"
+            },
+            "button": "Subscribe Now"
+        }
+    },
+    "testimonials": {
+        "title": "Testimonials",
+        "subtitle": "Our Success Stories",
+        "readMore": "Read More",
+        "readLess": "Read Less",
+        "items": [
+            "Virtueel Wandelen brings the nature to life with soothing nature walk videos for the elderly and people with dementia.",
+            "Offering a beautiful walking experience does me good",
+            "I would like everyone to experience what walking can bring you, peace, space, inspiration, connection. Virtual Walking... is such a great way to do that. I therefore join it with enthusiasm",
+            "What I hope to get out of my volunteer work at Virtual Walking is mainly connection and meaning. I would like to... do something that really matters to others, in this case to people who can no longer walk themselves, but can still feel, experience and enjoy. In addition, it gives me satisfaction to combine my love for hiking and nature with my desire to contribute to the well-being of others. The idea that someone else can view a walk at a later time is really a great find!",
+            "I am a nurse and come into contact with people with dementia at work. I also walk a lot in my spare time.",
+            "Nice combination of walking, doing useful work that makes people happy.",
+            "My hobbies are photography/video and walking. In addition, I think it is important to do volunteer work that... really makes sense.",
+            "Making beautiful images makes me very happy. Furthermore, walking is fun and good for your health...",
+            "A smile on someone else's face is enough.",
+            "I love walking and photography/filming and I like to share that with others",
+            "I already like to walk and this is a nice combination between being physically active and doing something useful",
+            "Perfect for people who can no longer walk, but still want to enjoy nature."
+        ]
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "questions": [
+            {
+                "question": "What is Virtual Walking?",
+                "answer": "Virtual Walking is an innovative platform that provides immersive virtual reality experiences of walking through various scenic locations, designed to promote relaxation and mental well-being."
+            },
+            {
+                "question": "Who is Virtual Walking for?",
+                "answer": "Virtual Walking is suitable for anyone looking to relax, reduce stress, or experience the benefits of walking without physical exertion. It's particularly beneficial for individuals with mobility challenges, the elderly, or those seeking mindfulness practices."
+            },
+            {
+                "question": "Are the videos and sounds calming?",
+                "answer": "Yes, all Virtual Walking videos feature soothing visuals and calming soundscapes, including gentle nature sounds, soft music, and ambient audio to enhance the relaxation experience."
+            },
+            {
+                "question": "Is it suitable for people in an advanced stage of dementia?",
+                "answer": "Virtual Walking can be beneficial for individuals with dementia, as it provides familiar and comforting environments. However, it's recommended to consult with healthcare professionals for personalized suitability."
+            },
+            {
+                "question": "Can I choose walks by theme or location?",
+                "answer": "Absolutely! Virtual Walking offers a wide variety of walks categorized by themes (e.g., forest, beach, mountain) and specific locations from around the world, allowing you to choose based on your preferences."
+            },
+            {
+                "question": "Can Virtual Walking be used independently?",
+                "answer": "Yes, Virtual Walking is designed for independent use. The interface is user-friendly, and you can navigate through walks at your own pace without assistance."
+            },
+            {
+                "question": "Do I need to be able to walk to use Virtual Walking?",
+                "answer": "No physical walking ability is required. Virtual Walking is entirely virtual, so you can enjoy the experience from a seated position or even while lying down."
+            }
+        ]
+    },
+    "previewExperience": {
+        "title": "Preview Your Experience",
+        "subtitle": "See how it looks on laptop, tablet, and mobile",
+        "devices": {
+            "desktop": "Desktop View",
+            "tablet": "Tablet View",
+            "mobile": "Mobile View"
+        },
+        "alt": "Forest Trail"
+    },
+    "dawnForest": {
+        "header": "Why Virtual Walking?",
+        "subtitle": "Experience nature, wherever you are.",
+        "benefits": {
+            "first": [
+                {
+                    "title": "Memory Stimulation",
+                    "description": "Familiar sights and sounds bring back memories, sparking joy and recognition."
+                },
+                {
+                    "title": "Mood & Social Boost",
+                    "description": "Virtual walks spark conversation — enjoy alone or share with family and caregivers."
+                }
+            ],
+            "second": [
+                {
+                    "title": "Safe & Accessible",
+                    "description": "Bring nature indoors for those who can't walk outside, with no risk of falling or getting lost."
+                },
+                {
+                    "title": "Stress & Anxiety Relief",
+                    "description": "Natural images and sounds help calm the mind and ease tension."
+                }
+            ]
+        },
+        "imageAlt": "Virtual Walking",
+        "threeCards": {
+            "familyConnection": {
+                "title": "Family Connection",
+                "description": "Loved ones feel happier and more alert when watching together."
+            },
+            "calmComfort": {
+                "title": "Calm & Comfort",
+                "description": "Caregivers notice a soothing effect for restless residents."
+            },
+            "sharingMemories": {
+                "title": "Sharing Memories",
+                "description": "Residents enjoy spotting familiar scenes and telling stories."
+            }
+        },
+        "discoverRoutes": {
+            "title": "Discover Routes Near You",
+            "subtitle": "Explore beautiful journeys from participating municipalities.",
+            "inspireTitle": "Your Turn to Inspire – New Every Month!",
+            "inspireDescription1": "Have a scenic or special route we haven't covered yet? Log in and submit your favorite – we might feature it in our next video!",
+            "inspireDescription2": "We publish new videos and community-suggested routes every month, so keep exploring and stay inspired.",
+            "exploreFeature": "Explore this feature"
+        },
+        "organizationsTabs": {
+            "organizations": "Organizations",
+            "families": "Families",
+            "volunteer": "Volunteer",
+            "organizationsTitle": "Virtual Walking for Organizations",
+            "organizationsSubtitle": "Calm moments, shared together.",
+            "familiesTitle": "Virtual Walking at Home",
+            "familiesSubtitle": "Nature's beauty, just a click away.",
+            "volunteerTitle": "Virtual Walking as a Volunteer",
+            "volunteerSubtitle": "Share walks, spread joy.",
+            "organizationsBenefits": [
+                {
+                    "title": "Request a Quote Easily",
+                    "description": "Quick form for pricing, customization, and our personal visit."
+                },
+                {
+                    "title": "Promotes Well-Being",
+                    "description": "Calming effect for restlessness, encouraging peaceful moments."
+                },
+                {
+                    "title": "Encourages Connection",
+                    "description": "Inspires conversation between residents and caregivers."
+                },
+                {
+                    "title": "Flexible Access",
+                    "description": "Works seamlessly on tablets, laptops, and large shared screens."
+                },
+                {
+                    "title": "Simple Onboarding",
+                    "description": "Minimal admin setup and full guidance during start-up."
+                }
+            ],
+            "familiesBenefits": [
+                {
+                    "title": "Affordable Subscription",
+                    "description": "Enjoy unlimited access for only €12.99/month."
+                },
+                {
+                    "title": "100+ Scenic Videos",
+                    "description": "Explore Overijssel, with fresh walks every month."
+                },
+                {
+                    "title": "Personal Touch",
+                    "description": "Request us to capture your favorite walking route."
+                },
+                {
+                    "title": "Real Impact",
+                    "description": "Caregivers share stories of joy and relaxation."
+                },
+                {
+                    "title": "Simple & Instant",
+                    "description": "Nature at home with just a single button press."
+                }
+            ],
+            "volunteerBenefits": [
+                {
+                    "title": "Grow the Collection",
+                    "description": "Your walks help our library expand each week."
+                },
+                {
+                    "title": "Film with Support",
+                    "description": "We set up the camera and guide your filming."
+                },
+                {
+                    "title": "Walk Together",
+                    "description": "Alone on the path, but part of a bigger community."
+                },
+                {
+                    "title": "Find Recognition",
+                    "description": "More videos mean more smiles and shared moments."
+                },
+                {
+                    "title": "Make a Difference",
+                    "description": "Your contributions bring joy to many people."
+                }
+            ],
+            "getQuote": "Get a Quote",
+            "subscribeNow": "Subscribe Now",
+            "joinVolunteer": "Join as Volunteer"
+        },
+        "tinaSection": {
+            "title": "Tina - Founder of Virtual Walking.",
+            "quote": "\"Together – with informal caregivers, care organizations and volunteers – we bring nature to life for everyone who can no longer visit it themselves.\"",
+            "readMore": "Read more about Tina"
+        }
+    },
+    "ourApproach": {
+        "vision": "Our Vision",
+        "title": "Making Nature Accessible, Anywhere",
+        "description1": "Virtual Walking opens the door to nature for everyone — regardless of physical limitations. Through authentic, real-life walking videos, we bring the beauty, peace, and familiarity of local landscapes to people who may no longer be able to experience them in person.",
+        "description2": "From seniors with dementia to those with limited mobility, our videos bring calm, spark recognition, and support well-being — strengthening connections with the world and with oneself.",
+        "ctaButton": "Start Your Journey"
+    },
+    "partnersSection": {
+        "title": "Our Collaborating Partners",
+        "subtitle": "Working together to bring nature closer to everyone.",
+        "partner1Text": "We work together with 10 Natuurlijk to encourage physical outdoor experiences and greening in healthcare.",
+        "partner2Title": "The Society Document Foundation",
+        "partner2Text": "This foundation is dedicated to creating documentaries, films, and documents with social utility and/or impact, as well as preserving intangible heritage for future generations. Volunteers who enjoy making videos for this platform are given access to a camera through the foundation."
+    },
+    "becomeVolunteer": {
+        "hero": {
+            "title": "Become a Volunteer with Virtual Walking",
+            "description": "For many - from seniors in care to those with limited mobility - nature can feel far away. Virtual Walking brings Overijssel's beauty indoors with calming walking videos that inspire relaxation and connection. And we can't do it without you."
+        },
+        "events": {
+            "videoTraining": {
+                "title": "Video Training",
+                "description": "Learn how to get started as a volunteer. We'll introduce you to Virtual Walking, explain the basics, and guide you through the first steps."
+            },
+            "cameraTips": {
+                "title": "Camera Tips & Introduction",
+                "description": "Join a short hands-on session where you'll discover how to film calming nature walks and use the provided equipment with ease."
+            },
+            "natureWalk": {
+                "title": "Nature Walk Filming Practice",
+                "description": "Head outdoors with your camera and practice capturing beautiful nature walks. Enthusiasm counts more than experience!"
+            },
+            "moreInfo": "More Information"
+        },
+        "benefits": {
+            "title": "Positive Benefits",
+            "subtitle": "Why Virtual Walking?",
+            "benefits": [
+                "Brings nature safely indoors - gives people the chance to enjoy nature without risks, especially for those unable to walk outside.",
+                "Stimulates memories - familiar sounds and views can trigger recognition and joyful moments.",
+                "Encourages social connection - creates shared experiences with family, caregivers, or fellow residents — and can also be enjoyed alone.",
+                "Reduces anxiety and stress - soothing natural sights and sounds help ease restlessness and bring calm."
+            ],
+            "joinVolunteer": "Join as Volunteer",
+            "alreadyVolunteer": "Already a Volunteer"
+        },
+        "howItWorks": {
+            "title": "How it works",
+            "subtitle": "Joining is easy — just follow these steps",
+            "knowMore": "Know More",
+            "steps": [
+                {
+                    "title": "Sign up as a volunteer",
+                    "description": "Show your interest through our simple form or reach out directly. We'll be happy to connect and welcome you."
+                },
+                {
+                    "title": "Introduction and short training",
+                    "description": "We'll schedule a short session to explain how to film walks and guide you in using the equipment with confidence."
+                },
+                {
+                    "title": "Explore with your camera",
+                    "description": "Head outdoors to capture beautiful nature walks on your own. No professional skills are needed, just your enthusiasm."
+                },
+                {
+                    "title": "Share on the platform",
+                    "description": "Upload your videos easily through our platform. We'll edit them and make sure they reach people who will enjoy them."
+                }
+            ]
+        },
+        "whyVolunteers": {
+            "title": "Want to help?",
+            "subtitle": "Why Volunteers Are Essential",
+            "volunteerItems": [
+                {
+                    "title": "Nature & Filming Passion",
+                    "description": "Love being in nature and enjoy filming? Combine both to create relaxing virtual walk videos."
+                },
+                {
+                    "title": "Guidance & Tips",
+                    "description": "Get a short hands-on session with practical tips & tricks for making calming nature videos."
+                },
+                {
+                    "title": "Tools Provided",
+                    "description": "Enjoy free use of our camera to capture your walk in high quality."
+                },
+                {
+                    "title": "Constructive Feedback",
+                    "description": "Receive helpful feedback to make your videos even more engaging and soothing."
+                },
+                {
+                    "title": "Share Your Work",
+                    "description": "Your video will be shared on our platform with a large, appreciative audience."
+                }
+            ]
+        }
+    },
+    "faqVolunteer": {
+        "title": "Frequently Asked Questions",
+        "faqs": [
+            {
+                "question": "What kind of music is used with the videos?",
+                "answer": "The basis of the videos are the sounds that occur at the moment you film: the wind through the trees, rippling water, geese flying overhead, your footsteps on the ground... What we want to add is the option to choose music when playing the video so that people have the option to turn on music that they like. So that will be an extra option that can be chosen personally."
+            },
+            {
+                "question": "How are the recordings edited?",
+                "answer": "We work with an editor who edits the videos. This removes annoying noises or unpleasant images (for example, a too fast turn). The videos are played at the pace that is being walked, so no slower or faster. The pieces of video flow smoothly into each other (one clip fades while the other comes into view) so that there are quiet transitions and it is experienced as pleasant."
+            },
+            {
+                "question": "Do I have to film everything in 1 go?",
+                "answer": "No, as soon as you have started filming and you want to stop for whatever reason (rest on a bench yourself, or blow your nose for example) you can stop the recording. If you want to continue, turn the camera back on and continue your walk. The editor puts the videos together. So you can also take a break in between if necessary."
+            },
+            {
+                "question": "I would like to learn more about dementia, to delve into the target group, is that possible?",
+                "answer": "Yes, there are websites that give you more information about the number 1 national disease: Dementia. For more information, visit <a href='https://www.alzheimer-nederland.nl' target='_blank' rel='noopener noreferrer' class='text-primary underline'>www.alzheimer-nederland.nl</a> or <a href='https://www.samendementievriendelijk.nl' target='_blank' rel='noopener noreferrer' class='text-primary underline'>www.samendementievriendelijk.nl</a>"
+            }
+        ]
+    },
+    "videoTraining": {
+        "hero": {
+            "title": "Become a Volunteer with Virtual Walking",
+            "description": "For many - from seniors in care to those with limited mobility - nature can feel far away. Virtual Walking brings Overijssel's beauty indoors with calming walking videos that inspire relaxation and connection. And we can't do it without you."
+        },
+        "title": "Video Training",
+        "date": "Sep 19, 2025 | Lemelerveld",
+        "whatToExpect": {
+            "title": "What to Expect?",
+            "items": [
+                "Practical camera workshop: learn how to make stable, calm, and atmospheric recordings",
+                "Tips on sound, lighting, and movement",
+                "Practice together with the camera",
+                "Ask questions to the video coach",
+                "Lunch and a walk with other volunteers"
+            ]
+        },
+        "whyJoin": {
+            "title": "Why Join?",
+            "description": "Whether you're just starting out or already have filming experience, this day will help you create beautiful walking videos for older adults (with dementia). It's also a great way to meet other volunteers and share experiences."
+        },
+        "signupButton": "Sign up now for the meeting",
+        "practicalInfo": {
+            "title": "Practical Information",
+            "location": {
+                "title": "Location",
+                "address": "Dominee C. Keersstraat 79\n8151 AB Lemelerveld"
+            },
+            "time": {
+                "title": "Time",
+                "schedule": "10:00 AM to 2:30 PM"
+            },
+            "audience": {
+                "title": "For whom?",
+                "description": "Volunteers who create videos for Virtual Walking (or want to get started)"
+            }
+        }
+    },
+    "cameraTips": {
+        "hero": {
+            "title": "Become a Volunteer with Virtual Walking",
+            "description": "For many - from seniors in care to those with limited mobility - nature can feel far away. Virtual Walking brings Overijssel's beauty indoors with calming walking videos that inspire relaxation and connection. And we can't do it without you."
+        },
+        "title": "Camera Tips & Introduction",
+        "date": "Sep 19, 2025 | Lemelerveld",
+        "whatToExpect": {
+            "title": "What to Expect?",
+            "items": [
+                "Practical camera workshop: learn how to make stable, calm, and atmospheric recordings",
+                "Tips on sound, lighting, and movement",
+                "Practice together with the camera",
+                "Ask questions to the video coach",
+                "Lunch and a walk with other volunteers"
+            ]
+        },
+        "whyJoin": {
+            "title": "Why Join?",
+            "description": "Whether you're just starting out or already have filming experience, this day will help you create beautiful walking videos for older adults (with dementia). It's also a great way to meet other volunteers and share experiences."
+        },
+        "signupButton": "Sign up now for the meeting",
+        "practicalInfo": {
+            "title": "Practical Information",
+            "location": {
+                "title": "Location",
+                "address": "Dominee C. Keersstraat 79\n8151 AB Lemelerveld"
+            },
+            "time": {
+                "title": "Time",
+                "schedule": "10:00 AM to 2:30 PM"
+            },
+            "audience": {
+                "title": "For whom?",
+                "description": "Volunteers who create videos for Virtual Walking (or want to get started)"
+            }
+        }
+    },
+    "natureWalking": {
+        "hero": {
+            "title": "Become a Volunteer with Virtual Walking",
+            "description": "For many - from seniors in care to those with limited mobility - nature can feel far away. Virtual Walking brings Overijssel's beauty indoors with calming walking videos that inspire relaxation and connection. And we can't do it without you."
+        },
+        "title": "Nature Walk Filming Practice",
+        "date": "Sep 19, 2025 | Lemelerveld",
+        "whatToExpect": {
+            "title": "What to Expect?",
+            "items": [
+                "Practical camera workshop: learn how to make stable, calm, and atmospheric recordings",
+                "Tips on sound, lighting, and movement",
+                "Practice together with the camera",
+                "Ask questions to the video coach",
+                "Lunch and a walk with other volunteers"
+            ]
+        },
+        "whyJoin": {
+            "title": "Why Join?",
+            "description": "Whether you're just starting out or already have filming experience, this day will help you create beautiful walking videos for older adults (with dementia). It's also a great way to meet other volunteers and share experiences."
+        },
+        "signupButton": "Sign up now for the meeting",
+        "practicalInfo": {
+            "title": "Practical Information",
+            "location": {
+                "title": "Location",
+                "address": "Dominee C. Keersstraat 79\n8151 AB Lemelerveld"
+            },
+            "time": {
+                "title": "Time",
+                "schedule": "10:00 AM to 2:30 PM"
+            },
+            "audience": {
+                "title": "For whom?",
+                "description": "Volunteers who create videos for Virtual Walking (or want to get started)"
+            }
+        }
+    },
+    "subscribe": {
+        "hero": {
+            "title": "Subscription Plans",
+            "subtitle": "Unlimited walks, new routes every month."
+        },
+        "plan": {
+            "title": "Home subscription",
+            "description": "Bring recognizable nature closer and let your loved one enjoy it at home.",
+            "features": [
+                "Unlimited virtual walks",
+                "New routes every month"
+            ],
+            "buttonText": "Start subscription",
+            "trialText": "Experience 7 days free trial",
+            "periods": {
+                "month": "month",
+                "year": "year"
+            }
+        },
+        "discountBadge": "25% discount"
+    },
+    "payment": {
+        "header": {
+            "title": "Complete Your Subscription",
+            "subtitle": "Your nature journey starts here."
+        },
+        "steps": {
+            "additionalInfo": "Additional Info",
+            "paymentMethod": "Payment Method",
+            "paymentDescription": "Choose your preferred payment method and complete your subscription."
+        },
+        "form": {
+            "labels": {
+                "companyName": "Company name",
+                "firstName": "First name",
+                "surname": "Surname",
+                "function": "Function",
+                "email": "E-mail",
+                "telephone": "Telephone",
+                "password": "Password",
+                "country": "Country/region",
+                "address": "Address",
+                "city": "Place of residence",
+                "postalCode": "Postal code",
+                "cardholderName": "Cardholder Name",
+                "cardNumber": "Card Number",
+                "expiryDate": "Expiry Date (MM/YY)",
+                "cvc": "CVC"
+            },
+            "placeholders": {
+                "companyName": "Your company",
+                "firstName": "Your first name",
+                "surname": "Your surname",
+                "function": "Your role",
+                "email": "your@email.com",
+                "telephone": "+31 6 12345678",
+                "password": "Enter your password",
+                "country": "Netherlands",
+                "address": "Your address",
+                "city": "Amsterdam",
+                "postalCode": "1234 AB",
+                "cardholderName": "John Doe",
+                "cardNumber": "1234 5678 9012 3456",
+                "expiryDate": "12/25",
+                "cvc": "123"
+            }
+        },
+        "errors": {
+            "companyNameRequired": "Company name is required",
+            "firstNameRequired": "First name is required",
+            "surnameRequired": "Surname is required",
+            "functionRequired": "Function is required",
+            "emailRequired": "Email is required",
+            "emailInvalid": "Invalid email format",
+            "telephoneRequired": "Telephone is required",
+            "telephoneInvalid": "Invalid phone format",
+            "passwordRequired": "Password is required",
+            "passwordTooShort": "Password must be at least 6 characters",
+            "countryRequired": "Country is required",
+            "addressRequired": "Address is required",
+            "cityRequired": "City is required",
+            "postalCodeRequired": "Postal code is required",
+            "cardholderNameRequired": "Cardholder name is required",
+            "cardNumberRequired": "Card number is required",
+            "cardNumberInvalid": "Invalid card number (16 digits)",
+            "expiryDateRequired": "Expiry date is required",
+            "expiryDateInvalid": "Invalid expiry date (MM/YY)",
+            "cvcRequired": "CVC is required",
+            "cvcInvalid": "Invalid CVC (3 digits)",
+            "agreementRequired": "You must agree to the Terms & Conditions and Privacy Policy"
+        },
+        "summary": {
+            "title": "Summary",
+            "duration": "Duration",
+            "freeTrial": "Free trial",
+            "sessions": "Sessions",
+            "untilCancellation": "Until cancellation",
+            "sevenDays": "7 days",
+            "unlimited": "Unlimited",
+            "subtotal": "Subtotal",
+            "vat": "VAT (21%)",
+            "totalToday": "Total today",
+            "trialNotice": "After the free trial period, you will be charged € {{price}} {{period}} until cancellation."
+        },
+        "security": {
+            "notice": "Secure & encrypted transaction. Your data is safe."
+        },
+        "terms": {
+            "agreement": "I agree to the Terms & Conditions and Privacy Policy.",
+            "termsLink": "Terms & Conditions",
+            "privacyLink": "Privacy Policy"
+        },
+        "buttons": {
+            "continue": "Continue",
+            "completeSubscription": "Complete Subscription",
+            "choosePlan": "Choose a Plan"
+        },
+        "messages": {
+            "noPlanSelected": "No Plan Selected",
+            "trialEnds": "You will not be charged today. Your trial ends in 7 days.",
+            "signupSuccess": "Sign up successful!",
+            "signupFailed": "Sign up failed. Please try again."
+        }
+    },
+    "blog": {
+        "header": {
+            "title": "Nature Stories",
+            "subtitle": "Stories and insights that bring nature closer to everyone"
+        },
+        "posts": {
+            "natureMatters": "Why Nature matters",
+            "powerOfWalking": "The Power of Walking in Nature",
+            "healthAndHappiness": "Health and Happiness from Nature",
+            "natureBenefits": "Nature's Benefits for Body and Mind"
+        }
+    },
+    "whyNatureMatters": {
+        "breadcrumb": "Nature Stories",
+        "title": "Why Nature Matters",
+        "content": {
+            "main": "Nature has always been more than just a backdrop to our lives. It is the air we breathe, the water we drink, and the ground we walk on. Yet, in our fast-paced world, it's easy to forget the powerful role that nature plays in our physical, emotional, and social well-being. Spending time outdoors—even for a short walk—has been proven to reduce stress, lower blood pressure, and improve concentration. For children, nature inspires curiosity, imagination, and play. For older adults, it awakens memories and creates moments of calm and recognition. But nature's importance goes beyond individual health. It connects us. Shared experiences in a park, forest, or garden bring families, friends, and even communities closer. In this sense, nature is both a healer and a unifier.",
+            "subtitle": "Why it matters now:",
+            "benefits": [
+                "🌱 Mental health boost – Green spaces reduce anxiety and increase happiness.",
+                "🌞 Physical health – Regular exposure to fresh air and sunlight strengthens immunity and improves sleep.",
+                "🌍 A deeper bond – Connecting with nature nurtures a sense of belonging and care for the planet.",
+                "When we choose to slow down and embrace nature—even in small ways, like listening to birdsong or feeling the grass under our feet—we remind ourselves that we are part of something larger.",
+                "✨ Nature isn't just \"out there.\" It's part of who we are."
+            ]
+        }
+    },
+    "powerOfWalking": {
+        "breadcrumb": "Nature Stories",
+        "title": "The Power of Walking in Nature",
+        "content": {
+            "main": "Walking in nature is more than just exercise—it's a transformative experience that nourishes both body and soul. Each step on natural paths connects us to the rhythms of the earth, offering a respite from the digital noise of modern life. Scientific research consistently shows that walking in natural environments reduces stress hormones, boosts mood-enhancing neurotransmitters, and improves cognitive function. The gentle movement, fresh air, and scenic beauty combine to create a powerful healing effect that no gym workout can replicate.",
+            "subtitle": "The transformative benefits of nature walks:",
+            "benefits": [
+                "🧠 Enhanced brain function – Nature walks improve focus, creativity, and problem-solving abilities.",
+                "💚 Cardiovascular health – Regular walking strengthens the heart and improves circulation.",
+                "🌿 Stress reduction – Natural environments lower cortisol levels and promote relaxation.",
+                "👥 Social connection – Walking with others builds stronger relationships and community bonds.",
+                "🌄 Mindfulness practice – Each step becomes a meditation, bringing us into the present moment.",
+                "🏃‍♂️ Sustainable fitness – Nature walking is gentle on joints while providing comprehensive health benefits."
+            ]
+        }
+    },
+    "healthAndHappiness": {
+        "breadcrumb": "Nature Stories",
+        "title": "Health and Happiness from Nature",
+        "content": {
+            "main": "The connection between nature and human well-being is profound and well-documented. Modern research confirms what ancient wisdom has always known: spending time in nature is essential for our physical and mental health. From reducing inflammation and boosting immune function to improving sleep quality and emotional resilience, nature offers a holistic approach to wellness that complements modern medicine. The natural world's rhythms—seasons changing, tides rising and falling, birds migrating—remind us of our place in the larger ecosystem and provide a sense of peace and perspective that urban environments often lack.",
+            "subtitle": "Nature's gifts for body and mind:",
+            "benefits": [
+                "💊 Natural healing – Green environments accelerate recovery and reduce chronic disease risk.",
+                "😊 Emotional balance – Nature exposure regulates mood and reduces symptoms of depression and anxiety.",
+                "🛌 Better sleep – Natural light patterns and evening walks improve sleep quality and duration.",
+                "🧘 Mental clarity – Time in nature enhances focus, memory, and cognitive performance.",
+                "❤️ Heart health – Outdoor activities strengthen cardiovascular function and reduce blood pressure.",
+                "🌱 Immune support – Fresh air and natural compounds boost immune system effectiveness."
+            ]
+        }
+    },
+    "natureBenefits": {
+        "breadcrumb": "Nature Stories",
+        "title": "Nature's Benefits for Body and Mind",
+        "content": {
+            "main": "Our bodies and minds are intricately designed to thrive in natural environments. The human nervous system evolved in harmony with nature's patterns—rhythmic sounds of water, gentle breezes, dappled sunlight through leaves. When we disconnect from these natural stimuli, our stress response systems remain chronically activated, leading to a cascade of health issues. Reconnecting with nature recalibrates our biology, reducing cortisol levels, improving heart rate variability, and enhancing immune function. Every cell in our body responds to the healing frequencies of nature, from the electromagnetic fields of the earth to the negative ions in fresh air.",
+            "subtitle": "The science-backed benefits of nature connection:",
+            "benefits": [
+                "🧬 Cellular repair – Nature exposure activates DNA repair mechanisms and reduces oxidative stress.",
+                "🦋 Nervous system reset – Natural environments restore autonomic nervous system balance.",
+                "🌊 Hormonal harmony – Time outdoors regulates cortisol, melatonin, and serotonin production.",
+                "🫀 Cardiovascular optimization – Nature walks improve endothelial function and blood flow.",
+                "🧠 Neuroplasticity boost – Natural settings enhance brain connectivity and cognitive reserve.",
+                "🛡️ Immune modulation – Forest bathing and nature exposure strengthen immune regulation."
+            ]
+        }
+    },
+    "chooseYourExperience": {
+        "title": "Choose Your Experience",
+        "subtitle": "Select the option that best fits you.",
+        "organization": {
+            "title": "For Care Organizations",
+            "description": "Bring nature into group settings with easy access, support, and tools for residents.",
+            "button": "Continue as an organization"
+        },
+        "family": {
+            "title": "For Families at Home",
+            "description": "Enjoy calming nature walks together from the comfort of your home.",
+            "button": "Continue as a family"
+        }
+    },
+    "requestQuoteForm": {
+        "header": {
+            "title": "Get a Custom Quote",
+            "subtitle": "Tell us a bit about your organization or family. We'll help you take the next step toward meaningful, nature-connected experiences. Just fill in the details, and we'll get back to you shortly with a tailored quote."
+        },
+        "form": {
+            "title": "Please fill in the details below",
+            "sections": {
+                "organizationDetails": "Organization details",
+                "contactPerson": "Contact person",
+                "organizationTargetGroup": "Organization & Target Group",
+                "virtualWalkingUse": "Use of Virtual Walking",
+                "quotationSetup": "Quotation & set-up fee"
+            },
+            "labels": {
+                "organizationName": "Organization Name",
+                "contactEmail": "Contact Email",
+                "phoneNumber": "Phone Number",
+                "address": "Address",
+                "street": "Street",
+                "postalCode": "Postal Code",
+                "city": "City",
+                "websiteLink": "Website Link",
+                "fullName": "Full Name",
+                "jobTitle": "Job Title / Position",
+                "emailAddress": "Email Address",
+                "totalClients": "Total Number of Clients",
+                "numberLocations": "Number of Locations",
+                "targetGroups": "Target group(s) for which the platform will be used",
+                "estimatedClients": "Estimated number of clients who will use the platform",
+                "startDate": "Desired start date of use",
+                "onboardingSupport": "Do you need onboarding and integration support?",
+                "additionalServices": "Additional services or custom solutions you are interested in?",
+                "notes": "Notes",
+                "agreeToTerms": "I agree that my details will be used to prepare a quotation."
+            },
+            "placeholders": {
+                "organizationName": "E.g., Sunrise Wellness Center, City Care Home, Local Daycare",
+                "contactEmail": "E.g. info@wellnesscenter.nl",
+                "phone": "+31",
+                "address": "Street, building number",
+                "street": "Street, building number...",
+                "postalCode": "E.g., 1234 AB",
+                "city": "Amsterdam",
+                "website": "e.g. https://website.link/...",
+                "fullName": "E.g., Anna Jansen",
+                "jobTitle": "E.g., Activities Coordinator, Care Manager",
+                "emailAddress": "Your direct work email",
+                "phoneContact": "+31 | Direct line for quick contact",
+                "totalClients": "How many people are in your care?",
+                "numberLocations": "E.g., 1 care home, 3 daycare centers",
+                "estimatedClients": "E.g., 20 clients per week",
+                "startDate": "E.g., 01 October 2025",
+                "onboardingExplanation": "Please explain",
+                "additionalServices": "Tell us what you'd like to explore. Example: \"Virtual Walking Experience Box with scent, sound, and touch elements (€93 each).",
+                "notes": "E.g., special billing instructions or accessibility needs"
+            },
+            "options": {
+                "targetGroups": [
+                    "Dementia",
+                    "Day care",
+                    "Rehabilitation",
+                    "Other"
+                ],
+                "onboardingSupport": [
+                    "Yes",
+                    "No"
+                ]
+            },
+            "buttons": {
+                "submit": "Submit"
+            },
+            "messages": {
+                "success": "Form submitted successfully!",
+                "error": "Failed to submit form. Please check your details and try again."
+            }
+        },
+        "validation": {
+            "organizationName": "Organization name is required",
+            "contactEmail": "Contact email is required",
+            "contactEmailInvalid": "Invalid email format",
+            "phone": "Phone number is required",
+            "phoneInvalid": "Invalid phone format",
+            "address": "Address is required",
+            "street": "Street is required",
+            "postalCode": "Postal code is required",
+            "city": "City is required",
+            "websiteInvalid": "Invalid URL format",
+            "fullName": "Full name is required",
+            "jobTitle": "Job title is required",
+            "emailAddress": "Email address is required",
+            "emailAddressInvalid": "Invalid email format",
+            "phoneContact": "Phone contact is required",
+            "phoneContactInvalid": "Invalid phone format",
+            "totalClients": "Total clients is required",
+            "numberLocations": "Number of locations is required",
+            "targetGroups": "At least one target group is required",
+            "estimatedClients": "Estimated clients is required",
+            "startDate": "Start date is required",
+            "onboardingSupport": "Onboarding support selection is required",
+            "agreeToTerms": "You must agree to the terms"
+        }
+    },
+    "volunteerSignup": {
+        "header": {
+            "title": "Become a Volunteer",
+            "subtitle": "Join us in bringing meaningful, nature-connected experiences to others. Fill in your details below and we'll reach out to welcome you on board."
+        },
+        "form": {
+            "labels": {
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "contactEmail": "Contact Email",
+                "phoneNumber": "Phone Number",
+                "street": "Street",
+                "postalCode": "Postal Code",
+                "city": "City",
+                "password": "Password",
+                "confirmPassword": "Confirm Password",
+                "notes": "Notes",
+                "volunteerStatus": "Volunteer Status"
+            },
+            "placeholders": {
+                "firstName": "e.g., Emma",
+                "lastName": "e.g., Johnson",
+                "contactEmail": "e.g., emma.johnson@email.com",
+                "phoneNumber": "+31",
+                "street": "Street",
+                "postalCode": "Postal Code",
+                "city": "City",
+                "notes": "Share any skills, availability, or special interests"
+            },
+            "checkboxes": {
+                "firstTime": "I'm a first-time volunteer",
+                "updateInfo": "I'm already volunteering and want to update my info"
+            },
+            "buttons": {
+                "submit": "Submit"
+            },
+            "validation": {
+                "firstNameRequired": "First name is required",
+                "lastNameRequired": "Last name is required",
+                "emailRequired": "Email is required",
+                "emailInvalid": "Invalid email format",
+                "phoneInvalid": "Invalid phone format",
+                "passwordRequired": "Password is required",
+                "passwordMinLength": "Password must be at least 6 characters",
+                "confirmPasswordRequired": "Confirm password is required",
+                "passwordMismatch": "Passwords do not match"
+            },
+            "messages": {
+                "signupSuccess": "Signup successful! Please log in.",
+                "signupFailed": "Signup failed. Please try again.",
+                "errorOccurred": "An error occurred during signup. Please try again.",
+                "alreadyHaveAccount": "Already have an account?",
+                "loginHere": "Login here"
+            }
+        }
+    },
+    "common": {
+        "language": "Language",
+        "and": "and"
+    }
+}

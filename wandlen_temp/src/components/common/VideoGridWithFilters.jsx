@@ -146,7 +146,7 @@ const VideoCard = ({
           onMouseLeave={(e) => e.target.pause()}
         />
         <div className="absolute top-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
-          {duration}
+          {duration || "N/A"} {/* Fallback if duration is null */}
         </div>
         {isClientView && (
           <div className="absolute top-2 left-2 bg-[#dd9219] text-white px-2 py-1 rounded text-sm font-medium">
@@ -183,7 +183,7 @@ const VideoCard = ({
               <span>{views} views</span>
               <div className="flex items-center gap-1">
                 <HeartIcon />
-                <span>{likes}</span>
+                <span>{likes} likes</span> {/* Added "likes" for clarity */}
               </div>
             </div>
             {/* Edit and Delete buttons for volunteers */}
@@ -307,24 +307,32 @@ const VideoGridWithFilters = ({
   showResultsCount = true,
   onVideoEdit,
   onVideoDelete,
+  currentPage,
+  onPageChange,
+  activeFilters,
+  onFilterChange,
+  totalPages,
+  total, // New prop: Total matching videos
 }) => {
-  const [activeFilters, setActiveFilters] = useState({});
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(null); // Keep only this internal state
 
+  // Get the current user ID from localStorage
+  const userId = localStorage.getItem("userId");
+
+  // Updated to match database values (lowercase for consistency), and conditionally add "Uploaded By" for volunteers only
   const defaultFilterOptions = {
-    Lengte: [
-      "0 - 15 minuten",
-      "15 - 30 minuten",
-      "30 - 45 minuten",
-      "45 - 60 minuten",
-      "+ 60 minuten",
-    ],
-    Locatie: ["Hellendoorn", "Lemele", "Lemelerveld", "Luttenberg", "Raalte"],
-    Seizoen: ["Lente", "Zomer", "Herfst", "Winter"],
-    Natuurtype: ["Bos", "Heide", "Park", "Strand", "Duinen"],
-    Dieren: ["Vogels", "Koeien", "Paarden", "Schapen", "Eekhoorns"],
-    Geluidsprikkels: ["Rustgevend", "Wind", "Water", "Vogels"],
+    Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"], // Keep as display labels for UI
+    Locatie: ["forest", "beach", "mountain", "park", "garden"], // Changed to lowercase to match database
+    Seizoen: ["spring", "summer", "autumn", "winter"], // Changed to lowercase
+    Natuurtype: ["woodland", "wetland", "grassland", "aquatic"], // Changed to lowercase
+    Dieren: ["birds", "mammals", "insects", "fish"], // Changed to lowercase
+    Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Changed to lowercase
   };
+
+  // Only add "Uploaded By" filter for volunteers (when not client view)
+  if (!isClientView) {
+    defaultFilterOptions["Uploaded By"] = ["Me"];
+  }
 
   const filterOptions = customFilterOptions || defaultFilterOptions;
 
@@ -333,94 +341,35 @@ const VideoGridWithFilters = ({
   };
 
   const handleOptionSelect = (filter, option) => {
-    setActiveFilters((prev) => ({
-      ...prev,
-      [filter]: prev[filter]?.includes(option)
-        ? prev[filter].filter((item) => item !== option)
-        : [...(prev[filter] || []), option],
-    }));
+    const updatedFilters = {
+      ...activeFilters,
+      [filter]: activeFilters[filter]?.includes(option)
+        ? activeFilters[filter].filter((item) => item !== option)
+        : [...(activeFilters[filter] || []), option],
+    };
+    onFilterChange(updatedFilters); // Call prop callback
     setOpenDropdown(null);
   };
 
-  // Filtering functions
-  const matchesDuration = (video, durationFilters) => {
-    if (!durationFilters || durationFilters.length === 0) return true;
-    const duration = parseInt(video.duration);
-    return durationFilters.some((filter) => {
-      switch (filter) {
-        case "0 - 15 minuten":
-          return duration <= 15;
-        case "15 - 30 minuten":
-          return duration > 15 && duration <= 30;
-        case "30 - 45 minuten":
-          return duration > 30 && duration <= 45;
-        case "45 - 60 minuten":
-          return duration > 45 && duration <= 60;
-        case "+ 60 minuten":
-          return duration > 60;
-        default:
-          return true;
-      }
-    });
+  // Remove client-side filtering and slicing
+  const filteredVideos = videos; // Videos are already filtered and paginated from server
+
+  // Instead, use the full videos array (already paginated)
+  const paginatedVideos = filteredVideos;
+
+  const handlePageChange = (page) => {
+    onPageChange(page); // Call prop callback
   };
 
-  const matchesLocation = (video, locationFilters) => {
-    if (!locationFilters || locationFilters.length === 0) return true;
-    return locationFilters.some((location) =>
-      video.location.toLowerCase().includes(location.toLowerCase())
-    );
+  const handlePrevPage = () => {
+    if (currentPage > 1) onPageChange(currentPage - 1);
   };
 
-  const matchesSeason = (video, seasonFilters) => {
-    if (!seasonFilters || seasonFilters.length === 0) return true;
-    return seasonFilters.some((season) =>
-      video.tags.some((tag) => tag.toLowerCase().includes(season.toLowerCase()))
-    );
+  const handleNextPage = () => {
+    if (currentPage < totalPages) onPageChange(currentPage + 1);
   };
 
-  const matchesNatureType = (video, natureTypeFilters) => {
-    if (!natureTypeFilters || natureTypeFilters.length === 0) return true;
-    return natureTypeFilters.some(
-      (nature) =>
-        video.tags.some((tag) =>
-          tag.toLowerCase().includes(nature.toLowerCase())
-        ) || video.location.toLowerCase().includes(nature.toLowerCase())
-    );
-  };
-
-  const matchesAnimals = (video, animalFilters) => {
-    if (!animalFilters || animalFilters.length === 0) return true;
-    return animalFilters.some((animal) =>
-      video.tags.some((tag) => tag.toLowerCase().includes(animal.toLowerCase()))
-    );
-  };
-
-  const matchesSound = (video, soundFilters) => {
-    if (!soundFilters || soundFilters.length === 0) return true;
-    return soundFilters.some((sound) =>
-      video.tags.some(
-        (tag) =>
-          tag.toLowerCase().includes(sound.toLowerCase()) ||
-          (sound === "Rustgevend" &&
-            (tag.toLowerCase().includes("rustig") ||
-              tag.toLowerCase().includes("briesje"))) ||
-          (sound === "Water" && tag.toLowerCase().includes("rivier")) ||
-          (sound === "Vogels" && tag.toLowerCase().includes("vogels"))
-      )
-    );
-  };
-
-  // Filter videos based on active filters
-  const filteredVideos = videos.filter((video) => {
-    return (
-      matchesDuration(video, activeFilters.Lengte) &&
-      matchesLocation(video, activeFilters.Locatie) &&
-      matchesSeason(video, activeFilters.Seizoen) &&
-      matchesNatureType(video, activeFilters.Natuurtype) &&
-      matchesAnimals(video, activeFilters.Dieren) &&
-      matchesSound(video, activeFilters.Geluidsprikkels)
-    );
-  });
+  // Remove useEffect for resetting page on filters (handled by parent)
 
   return (
     <div className="w-full">
@@ -479,16 +428,15 @@ const VideoGridWithFilters = ({
         {showResultsCount && (
           <div className="mb-4">
             <span className="text-[#381207] font-['Poppins'] text-sm">
-              {filteredVideos.length} video
-              {filteredVideos.length !== 1 ? "s" : ""} found
+              {total} video{total !== 1 ? "s" : ""} found
             </span>
           </div>
         )}
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {filteredVideos.length > 0 ? (
-            filteredVideos.map((video) => (
+          {paginatedVideos.length > 0 ? (
+            paginatedVideos.map((video) => (
               <VideoCard
                 key={video._id || video.id}
                 videoId={video._id || video.id}
@@ -497,8 +445,8 @@ const VideoGridWithFilters = ({
                 location={video.location}
                 thumbnail={video.imgUrl}
                 tags={video.tags || []}
-                views={video.views || 320}
-                likes={video.likes || 123}
+                views={video.views ?? 0}
+                likes={video.likes ?? 0}
                 onSelect={() => onVideoSelect(video._id || video.id)}
                 showStats={showStats}
                 isClientView={isClientView}
@@ -512,7 +460,7 @@ const VideoGridWithFilters = ({
                 {emptyStateMessage}
               </p>
               <button
-                onClick={() => setActiveFilters({})}
+                onClick={() => onFilterChange({})} // Clear filters via prop
                 className="mt-4 px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] rounded hover:bg-[#c47a15] transition-colors"
               >
                 Clear all filters
@@ -520,6 +468,39 @@ const VideoGridWithFilters = ({
             </div>
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-2 rounded ${
+                  currentPage === page
+                    ? "bg-[#381207] text-[#ede4dc]"
+                    : "bg-[#f8f5f0] text-[#381207] hover:bg-[#e6d9cd]"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

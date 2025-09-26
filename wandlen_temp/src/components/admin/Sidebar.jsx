@@ -1,9 +1,17 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useContext } from "react";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, userType, isAuthenticated, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const menuItems = [
     {
@@ -121,11 +129,6 @@ const AdminSidebar = () => {
     // Add more items as needed
   ];
 
-  const handleLogout = () => {
-    // Add logout logic here, e.g., clear tokens, etc.
-    navigate("/"); // Adjust path as needed
-  };
-
   return (
     <div className="inline-flex flex-col flex-shrink-0 items-start gap-2 py-0 px-4 min-h-screen bg-white shadow-[0_0_4px_0_rgba(0,0,0,0.25)] font-base">
       <div className="flex items-center gap-2 py-4 px-2 w-full">
@@ -154,8 +157,9 @@ const AdminSidebar = () => {
       {menuItems.map((item) => (
         <div
           key={item.path}
-          className={`flex items-center gap-2 p-2 w-full rounded cursor-pointer ${location.pathname === item.path ? "bg-border" : ""
-            }`}
+          className={`flex items-center gap-2 p-2 w-full rounded cursor-pointer ${
+            location.pathname === item.path ? "bg-border" : ""
+          }`}
           onClick={() => navigate(item.path)}
         >
           {item.icon}
@@ -165,30 +169,14 @@ const AdminSidebar = () => {
         </div>
       ))}
       {/* Logout Button */}
-      <div
-        className="mt-auto flex items-center gap-2 p-2 w-full rounded cursor-pointer hover:bg-[#d9bbaa]"
-        onClick={handleLogout}
+      <button
+        onClick={() => {
+          handleLogout();
+        }}
+        className="py-2 px-4 w-full mt-auto mb-10 rounded-lg bg-[#381207] text-white font-['Poppins'] text-lg font-medium hover:bg-[#4a3a2a] transition-colors"
       >
-        <svg
-          width={18}
-          height={19}
-          viewBox="0 0 18 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 2.75C7.61553 2.75 6.26216 3.15848 5.11101 3.92417C3.95987 4.68987 3.06266 5.77498 2.53285 7.03769C2.00303 8.3004 1.86441 9.67593 2.13451 10.9999C2.4046 12.3239 3.07129 13.5368 4.05026 14.5158C5.02922 15.4947 6.24211 16.1614 7.56608 16.4315C8.89005 16.7016 10.2656 16.563 11.5283 16.0332C12.791 15.5034 13.8761 14.6062 14.6418 13.455C15.4075 12.3039 15.816 10.9505 15.816 9.566C15.816 7.64348 15.0518 5.78307 13.6837 4.41496C12.3156 3.04685 10.4552 2.28264 8.53264 2.28264L9 2.75ZM9 15.5C7.81332 15.5 6.65328 15.0481 5.66658 14.2888C4.67989 13.5295 3.91085 12.5026 3.45673 11.2636C3.0026 10.0247 2.88378 8.62593 3.11529 7.27946C3.3468 5.93299 3.91825 4.70388 4.75736 3.86496C5.59648 3.02605 6.82559 2.4546 8.17206 2.22307C9.51853 1.99154 10.9173 2.11036 12.1563 2.56448C13.3953 3.01861 14.4222 3.78765 15.1815 4.77435C15.9408 5.76105 16.3926 6.92109 16.3926 8.10764C16.3926 9.74093 15.7437 11.3076 14.585 12.4663C13.4263 13.625 11.8597 14.2739 10.2264 14.2739L9 15.5Z"
-            fill="#381207"
-          />
-          <path
-            d="M11.25 9.5H6.75L8.25 7.75L7.5 7L5.25 9.5L7.5 12L8.25 11.25L6.75 9.5H11.25V9.5Z"
-            fill="#381207"
-          />
-        </svg>
-        <div className="flex-shrink-0 w-full text-brown font-base text-lg leading-[normal]">
-          Logout
-        </div>
-      </div>
+        Logout
+      </button>
     </div>
   );
 };

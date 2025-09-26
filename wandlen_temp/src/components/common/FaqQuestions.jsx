@@ -1,47 +1,13 @@
 import React, { useState } from "react";
 import SearchIcon from "../../assets/SearchIcon.svg";
 import DownArrow from "../../assets/DownArrow.svg";
+import { useTranslation } from "react-i18next";
 
 const FaqQuestions = () => {
+  const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState(null);
 
-  const faqs = [
-    {
-      question: "What is Virtual Walking?",
-      answer:
-        "Virtual Walking is an innovative platform that provides immersive virtual reality experiences of walking through various scenic locations, designed to promote relaxation and mental well-being.",
-    },
-    {
-      question: "Who is Virtual Walking for?",
-      answer:
-        "Virtual Walking is suitable for anyone looking to relax, reduce stress, or experience the benefits of walking without physical exertion. It's particularly beneficial for individuals with mobility challenges, the elderly, or those seeking mindfulness practices.",
-    },
-    {
-      question: "Are the videos and sounds calming?",
-      answer:
-        "Yes, all Virtual Walking videos feature soothing visuals and calming soundscapes, including gentle nature sounds, soft music, and ambient audio to enhance the relaxation experience.",
-    },
-    {
-      question: "Is it suitable for people in an advanced stage of dementia?",
-      answer:
-        "Virtual Walking can be beneficial for individuals with dementia, as it provides familiar and comforting environments. However, it's recommended to consult with healthcare professionals for personalized suitability.",
-    },
-    {
-      question: "Can I choose walks by theme or location?",
-      answer:
-        "Absolutely! Virtual Walking offers a wide variety of walks categorized by themes (e.g., forest, beach, mountain) and specific locations from around the world, allowing you to choose based on your preferences.",
-    },
-    {
-      question: "Can Virtual Walking be used independently?",
-      answer:
-        "Yes, Virtual Walking is designed for independent use. The interface is user-friendly, and you can navigate through walks at your own pace without assistance.",
-    },
-    {
-      question: "Do I need to be able to walk to use Virtual Walking?",
-      answer:
-        "No physical walking ability is required. Virtual Walking is entirely virtual, so you can enjoy the experience from a seated position or even while lying down.",
-    },
-  ];
+  const faqs = t("faq.questions", { returnObjects: true });
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -52,7 +18,7 @@ const FaqQuestions = () => {
       <div className="flex flex-col items-start gap-6 md:gap-8 w-full max-w-4xl">
         <div className="frame-1 flex flex-col md:flex-row md:items-center justify-center md:justify-between self-stretch gap-4 md:gap-0">
           <div className="w-full text-white text-center font-semibold font-poppins text-xl md:text-2xl leading-[1.875rem]">
-            Frequently Asked Questions
+            {t("faq.title")}
           </div>
         </div>
         <div className="flex flex-col items-start w-full">

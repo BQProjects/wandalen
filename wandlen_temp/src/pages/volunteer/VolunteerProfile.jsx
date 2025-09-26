@@ -40,12 +40,15 @@ const VolunteerProfile = () => {
         `${DATABASE_URL}/volunteer/getProfile/${volunteerId}`,
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
+      // Combine firstName and lastName for display, and set contactEmail to email (assuming it's the same as accountEmail)
       setProfileData({
-        fullName: res.data.firstName,
+        fullName: `${res.data.firstName || ""} ${
+          res.data.lastName || ""
+        }`.trim(),
+        contactEmail: res.data.email, // Set to email, as DB only has one email field
         phone: res.data.phoneNumber,
         address: res.data.address,
         accountEmail: res.data.email,
-
         password: "********",
       });
     } catch (error) {
@@ -59,13 +62,18 @@ const VolunteerProfile = () => {
 
   const editProfile = async () => {
     try {
+      // Split fullName back into firstName and lastName for the API
+      const nameParts = profileData.fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
       const res = await axios.put(
         `${DATABASE_URL}/volunteer/editProfile/${volunteerId}`,
         {
-          firstName: profileData.fullName,
+          firstName: firstName,
+          lastName: lastName, // Add lastName to the payload
           phoneNumber: profileData.phone,
           address: profileData.address,
-          email: profileData.accountEmail,
+          email: profileData.accountEmail, // Assuming contactEmail is not sent separately, as DB has one email
         },
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );

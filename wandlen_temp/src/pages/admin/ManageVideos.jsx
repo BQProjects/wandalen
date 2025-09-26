@@ -11,7 +11,7 @@ const ManageVideos = () => {
   const getVideos = async () => {
     try {
       const res = await axios.get(`${DATABASE_URL}/admin/all-videos`);
-      setUsers(res.data);
+      setUsers(res.data.videos); // Changed to res.data.videos to get the array
       console.log(res.data);
     } catch (error) {
       console.error("Error fetching videos:", error);
@@ -29,10 +29,22 @@ const ManageVideos = () => {
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
           Volunteer Video Submissions
         </h1>
-        <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
+        <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl mb-4">
           View, download, and keep track of all videos submitted by your
           volunteers.
         </p>
+        <button
+          onClick={() => navigate("/admin/all-videos")} // Adjust the path if different
+          className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors"
+        >
+          Go to All Videos
+        </button>
+        <button
+          className="mb-4 px-6 py-2 ml-6 font-[Poppins] bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
+          onClick={() => navigate("/admin/create-video")}
+        >
+          Create Video
+        </button>
       </div>
 
       {/* New Layout Section */}
