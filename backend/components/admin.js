@@ -4,6 +4,8 @@ const ClientModel = require("../models/clientModel");
 const VolunteerModel = require("../models/volunteerModel");
 const VideoModel = require("../models/videoModel");
 const videoRequestModel = require("../models/videoRequestModel");
+const BlogModel = require("../models/blogModel");
+const TrainingModel = require("../models/trainingModel");
 
 const adminLogin = (req, res) => {
   const { username, password } = req.body;
@@ -180,6 +182,123 @@ const getAllvideos = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+const getAllBlogs = async (req, res) => {
+  try {
+    const blogs = await BlogModel.find();
+    res.status(200).json(blogs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await BlogModel.findById(id);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    res.status(200).json(blog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const createBlog = async (req, res) => {
+  try {
+    const { title, content, imgUrl, author } = req.body;
+    const newBlog = new BlogModel({ title, content, imgUrl, author });
+    await newBlog.save();
+    res.status(201).json(newBlog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, imgUrl, author } = req.body;
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+      id,
+      { title, content, imgUrl, author },
+      { new: true }
+    );
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    res.status(200).json(updatedBlog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBlog = await BlogModel.findByIdAndDelete(id);
+    if (!deletedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    res.status(200).json({ message: "Blog deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getTrainings = async (req, res) => {
+  try {
+    const trainings = await TrainingModel.find();
+    res.status(200).json(trainings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const createTraining = async (req, res) => {
+  try {
+    const { title, date, location, timing, audience } = req.body;
+    const newTraining = new TrainingModel({
+      title,
+      date,
+      location,
+      timing,
+      audience,
+    });
+    await newTraining.save();
+    res.status(201).json(newTraining);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateTraining = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, date, location, timing, audience } = req.body;
+    const updatedTraining = await TrainingModel.findByIdAndUpdate(
+      id,
+      { title, date, location, timing, audience },
+      { new: true }
+    );
+    if (!updatedTraining) {
+      return res.status(404).json({ message: "Training not found" });
+    }
+    res.status(200).json(updatedTraining);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -190,4 +309,12 @@ module.exports = {
   getAllVolunteerData,
   getallVideoRequest,
   getAllvideos,
+  getAllBlogs,
+  getBlog,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+  getTrainings,
+  createTraining,
+  updateTraining,
 };

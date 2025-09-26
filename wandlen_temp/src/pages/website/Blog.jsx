@@ -1,17 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Testimonial from "../../components/common/TestimonialScroll";
 import FaqQuestions from "../../components/common/FaqQuestions";
 import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
-import blog1 from "../../assets/blog1.png";
-import blog2 from "../../assets/blog2.png";
-import blog3 from "../../assets/blog3.png";
-import blog4 from "../../assets/blog4.png";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const Blog = () => {
   const { t } = useTranslation();
+  const [blogs, setBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 4;
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const response = await fetch("/api/admin/blogs");
+      if (!response.ok) throw new Error("Failed to fetch blogs");
+      const data = await response.json();
+      setBlogs(data);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  };
+
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  const startIndex = (currentPage - 1) * blogsPerPage;
+  const currentBlogs = blogs.slice(startIndex, startIndex + blogsPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
   return (
     <>
       <div className="flex-shrink-0 w-full min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-16 px-4 sm:px-10 md:px-20">
@@ -32,72 +59,59 @@ const Blog = () => {
             </div>
           </div>
 
-          {/* Video Grid - 2x2 Layout */}
+          {/* Blog Grid - 2x2 Layout */}
           <div className="grid grid-cols-2 gap-8 lg:gap-12 mx-auto">
-            {/* Video 1 - Mountain/Forest Scene */}
-            <div className="cursor-pointer flex flex-col gap-2">
-              <Link to="/nature-matters">
-                <div className="relative w-full h-full lg:h-[320px] rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat flex justify-center items-center group">
-                  <img
-                    src={blog1}
-                    alt="Blog1"
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
+            {currentBlogs.length > 0 ? (
+              currentBlogs.map((blog) => (
+                <div
+                  key={blog._id}
+                  className="cursor-pointer flex flex-col gap-2"
+                >
+                  <Link to={`/blog/${blog._id}`}>
+                    <div className="relative w-full h-full lg:h-[320px] rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat flex justify-center items-center group">
+                      <img
+                        src={blog.imgUrl || "/path/to/default/image.jpg"}
+                        alt={blog.title}
+                        className="w-full h-full object-cover rounded-2xl"
+                      />
+                    </div>
+                    <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
+                      {blog.title}
+                    </div>
+                  </Link>
                 </div>
-                <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  {t("blog.posts.natureMatters")}
-                </div>
-              </Link>
-            </div>
-
-            {/* Video 2 - Purple Lavender Scene */}
-            <div className="cursor-pointer flex flex-col gap-2">
-              <Link to="/power-of-walking">
-                <div className="relative w-full h-full lg:h-[320px] rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat flex justify-center items-center group">
-                  <img
-                    src={blog2}
-                    alt="Blog2"
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
-                </div>
-                <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  {t("blog.posts.powerOfWalking")}
-                </div>
-              </Link>
-            </div>
-
-            {/* Video 3 - Ocean Sunset Scene */}
-            <div className="cursor-pointer flex flex-col gap-2">
-              <Link to="/health-and-happiness">
-                <div className="relative w-full h-full lg:h-[320px] rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat flex justify-center items-center group">
-                  <img
-                    src={blog3}
-                    alt="Blog3"
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
-                </div>
-                <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  {t("blog.posts.healthAndHappiness")}
-                </div>
-              </Link>
-            </div>
-
-            {/* Video 4 - Winter Forest Scene */}
-            <div className="cursor-pointer flex flex-col gap-2">
-              <Link to="/nature-benefits">
-                <div className="relative w-full h-full lg:h-[320px] rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat flex justify-center items-center group">
-                  <img
-                    src={blog4}
-                    alt="Blog4"
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
-                </div>
-                <div className="text-[#4B4741] font-['Poppins'] text-lg font-semibold text-left mt-8 ml-1">
-                  {t("blog.posts.natureBenefits")}
-                </div>
-              </Link>
-            </div>
+              ))
+            ) : (
+              <div className="col-span-2 text-center py-8">
+                <p className="text-[#381207] font-['Poppins'] text-lg">
+                  No blogs available.
+                </p>
+              </div>
+            )}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-8">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-[#5B6502] text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Previous
+              </button>
+              <span className="text-[#381207] font-['Poppins']">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-[#5B6502] text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <Testimonial />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,37 @@ import Footer from "../../components/Footer";
 
 const BecomeVolunteer = () => {
   const { t } = useTranslation();
+  const [trainings, setTrainings] = useState([]);
+
+  useEffect(() => {
+    fetchTrainings();
+  }, []);
+
+  const fetchTrainings = async () => {
+    try {
+      const response = await fetch("/api/admin/trainings");
+      if (!response.ok) throw new Error("Failed to fetch trainings");
+      const data = await response.json();
+      setTrainings(data);
+    } catch (error) {
+      console.error("Error fetching trainings:", error);
+    }
+  };
+
+  const getImageForTitle = (title) => {
+    if (title.toLowerCase().includes("video training")) return VideoTraning;
+    if (title.toLowerCase().includes("camera")) return CameraTips;
+    if (title.toLowerCase().includes("nature")) return NatureWalk;
+    return VideoTraning; // default
+  };
+
+  const getLinkForTitle = (title) => {
+    if (title.toLowerCase().includes("video training"))
+      return "/video-training";
+    if (title.toLowerCase().includes("camera")) return "/camera-tips";
+    if (title.toLowerCase().includes("nature")) return "/nature-walking";
+    return "/video-training"; // default
+  };
   return (
     <div className="min-h-screen bg-secondary">
       {/* Hero Section */}
@@ -31,62 +62,37 @@ const BecomeVolunteer = () => {
       <section className="bg-secondary px-4 py-16">
         <div className="max-w-7xl mx-auto">
           <div className="space-y-12">
-            {[
-              {
-                date: "19",
-                month: "Sep",
-                image: VideoTraning,
-                title: t("becomeVolunteer.events.videoTraining.title"),
-                description: t(
-                  "becomeVolunteer.events.videoTraining.description"
-                ),
-                link: "/video-training",
-              },
-              {
-                date: "24",
-                month: "Sep",
-                image: CameraTips,
-                title: t("becomeVolunteer.events.cameraTips.title"),
-                description: t("becomeVolunteer.events.cameraTips.description"),
-                link: "/camera-tips",
-              },
-              {
-                date: "03",
-                month: "Oct",
-                image: NatureWalk,
-                title: t("becomeVolunteer.events.natureWalk.title"),
-                description: t("becomeVolunteer.events.natureWalk.description"),
-                link: "/nature-walking",
-              },
-            ].map((event, index) => (
+            {trainings.map((training, index) => (
               <div
-                key={index}
+                key={training._id}
                 className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-white p-6 rounded-xl shadow-sm"
               >
                 <div className="bg-brown text-secondary rounded-lg p-4 text-center min-w-[110px]">
                   <div className="text-4xl font-['Poppins'] font-bold">
-                    {event.date}
+                    {new Date(training.date).getDate()}
                   </div>
                   <div className="text-xl font-['Poppins'] font-medium">
-                    {event.month}
+                    {new Date(training.date).toLocaleString("default", {
+                      month: "short",
+                    })}
                   </div>
                 </div>
 
                 <div className="bg-gray-300 w-full md:w-60 h-48 md:h-40 rounded-lg bg-gradient-to-br from-orange-200 to-orange-400 flex items-center justify-center flex-shrink-0">
                   <img
-                    src={event.image}
+                    src={getImageForTitle(training.title)}
                     className="w-full h-full object-cover rounded-lg"
                   />
                 </div>
 
                 <div className="flex-1 space-y-4">
                   <h3 className="text-primary font-['Poppins'] text-2xl font-semibold">
-                    {event.title}
+                    {training.title}
                   </h3>
                   <p className="text-brown font-['Poppins'] text-lg leading-relaxed">
-                    {event.description}
+                    {training.audience}
                   </p>
-                  <Link to={event.link}>
+                  <Link to={getLinkForTitle(training.title)}>
                     <button className="bg-primary font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
                       {t("becomeVolunteer.events.moreInfo")}
                     </button>
