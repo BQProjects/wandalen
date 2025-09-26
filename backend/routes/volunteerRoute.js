@@ -7,6 +7,7 @@ const {
   selfUploaded,
   editVideoInfo,
   getAllRequests,
+  updateRequestStatus,
   getVideo,
   deleteVideo,
   getProfile,
@@ -28,6 +29,11 @@ volunteerRouter.put(
   editVideoInfo
 );
 volunteerRouter.get("/getAllRequests", validateActiveSession, getAllRequests);
+volunteerRouter.put(
+  "/updateRequestStatus/:requestId",
+  validateActiveSession,
+  updateRequestStatus
+);
 volunteerRouter.get("/getVideo/:videoId", validateActiveSession, getVideo);
 volunteerRouter.delete(
   "/deleteVideo/:videoId",

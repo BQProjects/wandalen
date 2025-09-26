@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import BgVideo from "../../assets/BgVideo.mp4";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
 import axios from "axios";
@@ -9,6 +10,7 @@ import Footer from "../../components/Footer";
 
 const VolunteerHome = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [videos, setVideos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilters, setActiveFilters] = useState({});
@@ -93,7 +95,7 @@ const VolunteerHome = () => {
   };
 
   const handleVideoDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this video?")) {
+    if (window.confirm(t("volunteerHome.deleteConfirm"))) {
       try {
         const res = await axios.delete(
           `${DATABASE_URL}/volunteer/deleteVideo/${id}`,
@@ -104,14 +106,14 @@ const VolunteerHome = () => {
           }
         );
         if (res.status === 200) {
-          alert("Video deleted successfully");
+          alert(t("volunteerHome.deleteSuccess"));
           fetchVideos(currentPage, activeFilters); // Refresh the list with current page/filters
         } else {
-          alert("Failed to delete video");
+          alert(t("volunteerHome.deleteFailed"));
         }
       } catch (error) {
         console.error("Error deleting video:", error);
-        alert("An error occurred while deleting the video");
+        alert(t("volunteerHome.deleteError"));
       }
     }
   };
@@ -164,7 +166,11 @@ const VolunteerHome = () => {
       const res = await axios.get(`${DATABASE_URL}/volunteer/getAllRequests`, {
         headers: { Authorization: `Bearer ${sessionId}` },
       });
-      setReq(res.data);
+      // Filter out completed requests
+      const pendingRequests = res.data.filter(
+        (req) => req.currentStatus !== "Completed"
+      );
+      setReq(pendingRequests);
     } catch (error) {
       console.error("Error fetching requests:", error);
     }
@@ -189,14 +195,13 @@ const VolunteerHome = () => {
         {/* Centered Text */}
         <div className="relative text-center max-w-4xl mx-auto px-4">
           <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#A6A643] mb-4">
-            Welcome to Virtual Walking!
+            {t("volunteerHome.welcome")}
           </h1>
           <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
-            Bring Nature to Those Who Can’t Walk
+            {t("volunteerHome.heroTitle")}
           </p>
           <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">
-            Capture, share, and upload calming nature videos to brighten the day
-            of seniors and people with dementia.
+            {t("volunteerHome.heroDescription")}
           </p>
         </div>
       </div>
@@ -205,8 +210,8 @@ const VolunteerHome = () => {
         <VideoGridWithFilters
           videos={videos}
           onVideoSelect={handleVideoSelect}
-          title="Recently Created by You"
-          subtitle="View, edit, and track the impact of your videos."
+          title={t("volunteerHome.recentlyCreated")}
+          subtitle={t("volunteerHome.recentlyCreatedSubtitle")}
           showFilters={true}
           showStats={true}
           isClientView={false}
@@ -227,13 +232,13 @@ const VolunteerHome = () => {
           {/* Title */}
           <div className="text-center mb-8">
             <h2 className="location_request_form text-[#381207] font-['Poppins'] text-3xl md:text-4xl font-medium leading-normal mb-4">
-              Location Request Form
+              {t("volunteerHome.locationRequestForm")}
             </h2>
             <p className="select_and_add_members_from_this_quote_request_ text-[#381207] font-['Poppins'] text-lg leading-normal">
-              Select and add members from this quote request.
+              {t("volunteerHome.locationRequestSubtitle")}
             </p>
             <p className="all_patient text-[#381207] font-['Poppins'] text-lg leading-normal">
-              All Patient
+              {t("volunteerHome.allPatients")}
             </p>
           </div>
 
@@ -243,7 +248,7 @@ const VolunteerHome = () => {
               <thead>
                 <tr className="bg-[#a6a643]/[.2] border-b border-[#d9bbaa]">
                   <th className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg font-medium">
-                    Email
+                    {t("volunteerHome.email")}
                     <svg
                       width={11}
                       height={12}
@@ -262,7 +267,7 @@ const VolunteerHome = () => {
                     </svg>
                   </th>
                   <th className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg font-medium">
-                    Location Details
+                    {t("volunteerHome.locationDetails")}
                     <svg
                       width={12}
                       height={12}
@@ -281,7 +286,7 @@ const VolunteerHome = () => {
                     </svg>
                   </th>
                   <th className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg font-medium hidden md:table-cell">
-                    Google Maps Link
+                    {t("volunteerHome.googleMapsLink")}
                     <svg
                       width={11}
                       height={12}
@@ -300,13 +305,13 @@ const VolunteerHome = () => {
                     </svg>
                   </th>
                   <th className="px-6 py-4 text-center text-[#2a341f] font-['Poppins'] text-lg font-medium">
-                    Action
+                    {t("volunteerHome.action")}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {req.map((item, index) => (
-                  <tr className="border-b border-[#d9bbaa] bg-[#ede4dc]">
+                  <tr className="border-b border-[#d9bbaa] bg-white">
                     <td className="px-6 py-4 text-[#381207] font-['Poppins'] text-base">
                       {item.email}
                     </td>
@@ -325,16 +330,17 @@ const VolunteerHome = () => {
                     <td className="px-6 py-4 text-center">
                       <button
                         onClick={() => {
-                          navigate("create-video");
+                          navigate("create-video", {
+                            state: { requestData: item },
+                          });
                         }}
                         className="px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] text-base rounded hover:bg-[#c47a15] transition-colors"
                       >
-                        Create Video
+                        {t("volunteerHome.createVideo")}
                       </button>
                     </td>
                   </tr>
                 ))}
-                {/* Row 1 */}
               </tbody>
             </table>
           </div>

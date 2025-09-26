@@ -126,7 +126,42 @@ const AdminSidebar = () => {
         </svg>
       ),
     },
-    // Add more items as needed
+    {
+      label: "Blog",
+      path: "/admin/all-blog",
+      icon: (
+        <svg
+          width={18}
+          height={19}
+          viewBox="0 0 18 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M2.25 5.003H1.5V3.5H3.003V5.003H2.25ZM2.25 10.253H1.5V8.75H3.003V10.253H2.25ZM1.5 15.503H3.003V14H1.5V15.503ZM6 3.5H5.25V5H16.5V3.5H6ZM5.25 8.75H16.5V10.25H5.25V8.75ZM6 14H5.25V15.5H16.5V14H6Z"
+            fill="#7A756E"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: "Training Details",
+      path: "/admin/training-details",
+      icon: (
+        <svg
+          width={18}
+          height={19}
+          viewBox="0 0 18 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M2.25 5.003H1.5V3.5H3.003V5.003H2.25ZM2.25 10.253H1.5V8.75H3.003V10.253H2.25ZM1.5 15.503H3.003V14H1.5V15.503ZM6 3.5H5.25V5H16.5V3.5H6ZM5.25 8.75H16.5V10.25H5.25V8.75ZM6 14H5.25V15.5H16.5V14H6Z"
+            fill="#7A756E"
+          />
+        </svg>
+      ),
+    },
   ];
 
   return (

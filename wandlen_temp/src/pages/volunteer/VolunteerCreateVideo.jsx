@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import UploadIcon from "../../assets/UploadIcon.svg";
 import LinkIcon from "../../assets/LinkIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
@@ -78,9 +79,14 @@ const VolunteerCreateVideo = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { editMode = false, videoId = null } = location.state || {};
+  const {
+    editMode = false,
+    videoId = null,
+    requestData = null,
+  } = location.state || {};
   const sessionId =
     localStorage.getItem("sessionId") || useContext(AuthContext)?.sessionId;
+  const { t } = useTranslation();
 
   // Predefined tags with their display names
   const predefinedTags = [
@@ -180,6 +186,16 @@ const VolunteerCreateVideo = () => {
     }
   }, [editMode, videoId]);
 
+  // Pre-fill form with request data if available
+  useEffect(() => {
+    if (requestData) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        location: requestData.location || prevFormData.location,
+      }));
+    }
+  }, [requestData]);
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -272,10 +288,10 @@ const VolunteerCreateVideo = () => {
           }
         );
         if (res.status === 200) {
-          alert("Video updated successfully");
+          alert(t("volunteerCreateVideo.videoUpdatedSuccess"));
           navigate("/volunteer");
         } else {
-          alert("Video update failed");
+          alert(t("volunteerCreateVideo.videoUpdateFailed"));
         }
       } else {
         // Create logic (unchanged, but ensure URLs are correct)
@@ -290,15 +306,40 @@ const VolunteerCreateVideo = () => {
           }
         );
         if (res.status === 201) {
-          alert("Video uploaded successfully");
+          alert(t("volunteerCreateVideo.videoUploadedSuccess"));
+
+          // Update request status to completed if this was created from a request
+          if (requestData && requestData._id) {
+            try {
+              await axios.put(
+                `${DATABASE_URL}/volunteer/updateRequestStatus/${requestData._id}`,
+                {
+                  status: "Completed",
+                  volunteerId: localStorage.getItem("userId"),
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${sessionId}`,
+                  },
+                }
+              );
+            } catch (statusUpdateError) {
+              console.error(
+                "Failed to update request status:",
+                statusUpdateError
+              );
+            }
+          }
+
           navigate("/volunteer");
         } else {
-          alert("Video upload failed");
+          alert(t("volunteerCreateVideo.videoUploadFailed"));
         }
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred. Please try again.");
+      alert(t("volunteerCreateVideo.errorOccurred"));
     }
   };
 
@@ -367,14 +408,16 @@ const VolunteerCreateVideo = () => {
     <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-medium text-[#381207] font-[Poppins] text-center mb-8">
-          {editMode ? "Edit Video" : "Create Video"}
+          {editMode
+            ? t("volunteerCreateVideo.editPageTitle")
+            : t("volunteerCreateVideo.pageTitle")}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Cover Page Upload */}
           <div className="bg-[#f7f6f4] rounded-2xl p-6">
             <h2 className="text-lg font-medium font-[Poppins] text-[#381207] mb-4">
-              Cover page
+              {t("volunteerCreateVideo.coverPage")}
             </h2>
             <div className="border-2 border-dashed border-[#e5e3df] rounded-lg p-8 h-64 flex flex-col items-center justify-center bg-[#f7f6f4]">
               {coverImage ? (
@@ -395,7 +438,7 @@ const VolunteerCreateVideo = () => {
                     onClick={() => setCoverImage(null)}
                     className="mt-2 text-red-500 font-[Poppins] text-sm hover:underline"
                   >
-                    Remove
+                    {t("volunteerCreateVideo.remove")}
                   </button>
                 </div>
               ) : (
@@ -411,7 +454,7 @@ const VolunteerCreateVideo = () => {
                     htmlFor="cover-upload"
                     className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium"
                   >
-                    Upload Image
+                    {t("volunteerCreateVideo.uploadImage")}
                   </label>
                 </>
               )}
@@ -422,7 +465,7 @@ const VolunteerCreateVideo = () => {
           <div className="bg-[#f7f6f4] rounded-2xl p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-medium font-[Poppins] text-[#381207]">
-                Video
+                {t("volunteerCreateVideo.video")}
               </h2>
             </div>
             <div className="border-2 border-dashed border-[#e5e3df] rounded-lg p-8 h-64 flex flex-col items-center justify-center bg-[#f7f6f4]">
@@ -453,7 +496,7 @@ const VolunteerCreateVideo = () => {
                     }}
                     className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
                   >
-                    Remove
+                    {t("volunteerCreateVideo.remove")}
                   </button>
                 </div>
               ) : (
@@ -470,7 +513,7 @@ const VolunteerCreateVideo = () => {
                       onClick={() => setShowUploadOptions(true)}
                       className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium mb-4"
                     >
-                      Upload Video
+                      {t("volunteerCreateVideo.uploadVideo")}
                     </button>
                   ) : (
                     <>
@@ -478,7 +521,7 @@ const VolunteerCreateVideo = () => {
                         htmlFor="video-upload"
                         className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium mb-4 block"
                       >
-                        Choose File
+                        {t("volunteerCreateVideo.chooseFile")}
                       </label>
 
                       {/* Upload Options */}
@@ -491,7 +534,7 @@ const VolunteerCreateVideo = () => {
                         >
                           <img src={UploadIcon} alt="Upload Icon" />
                           <span className="text-[#4b4741] font-[Poppins] text-sm">
-                            Upload from computer
+                            {t("volunteerCreateVideo.uploadFromComputer")}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
@@ -512,14 +555,14 @@ const VolunteerCreateVideo = () => {
         {/* Video Info Form */}
         <div className="bg-[#f7f6f4] rounded-2xl p-8">
           <h2 className="text-lg font-medium font-[Poppins] text-[#381207] mb-6">
-            Video Info
+            {t("volunteerCreateVideo.videoInfo")}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
               <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                Title *
+                {t("volunteerCreateVideo.titleRequired")}
               </label>
               <input
                 type="text"
@@ -528,21 +571,21 @@ const VolunteerCreateVideo = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="Enter a clear and concise title"
+                placeholder={t("volunteerCreateVideo.titlePlaceholder")}
               />
             </div>
 
             {/* Description */}
             <div>
               <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                Description
+                {t("volunteerCreateVideo.description")}
               </label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg h-24 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="What's this video about? Share key highlights or purpose..."
+                placeholder={t("volunteerCreateVideo.descriptionPlaceholder")}
               />
             </div>
 
@@ -550,7 +593,7 @@ const VolunteerCreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                  Video duration
+                  {t("volunteerCreateVideo.videoDuration")}
                 </label>
                 <select
                   name="duration"
@@ -558,15 +601,23 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="short">Short (0-5 min)</option>
-                  <option value="medium">Medium (5-15 min)</option>
-                  <option value="long">Long (15+ min)</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.selectOption")}
+                  </option>
+                  <option value="short">
+                    {t("volunteerCreateVideo.durationShort")}
+                  </option>
+                  <option value="medium">
+                    {t("volunteerCreateVideo.durationMedium")}
+                  </option>
+                  <option value="long">
+                    {t("volunteerCreateVideo.durationLong")}
+                  </option>
                 </select>
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Location
+                  {t("volunteerCreateVideo.location")}
                 </label>
                 <select
                   name="location"
@@ -574,12 +625,24 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="forest">Forest</option>
-                  <option value="beach">Beach</option>
-                  <option value="mountain">Mountain</option>
-                  <option value="park">Park</option>
-                  <option value="garden">Garden</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.selectOption")}
+                  </option>
+                  <option value="forest">
+                    {t("volunteerCreateVideo.locationForest")}
+                  </option>
+                  <option value="beach">
+                    {t("volunteerCreateVideo.locationBeach")}
+                  </option>
+                  <option value="mountain">
+                    {t("volunteerCreateVideo.locationMountain")}
+                  </option>
+                  <option value="park">
+                    {t("volunteerCreateVideo.locationPark")}
+                  </option>
+                  <option value="garden">
+                    {t("volunteerCreateVideo.locationGarden")}
+                  </option>
                 </select>
               </div>
             </div>
@@ -588,7 +651,7 @@ const VolunteerCreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Season
+                  {t("volunteerCreateVideo.season")}
                 </label>
                 <select
                   name="season"
@@ -596,16 +659,26 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="spring">Spring</option>
-                  <option value="summer">Summer</option>
-                  <option value="autumn">Autumn</option>
-                  <option value="winter">Winter</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.selectOption")}
+                  </option>
+                  <option value="spring">
+                    {t("volunteerCreateVideo.seasonSpring")}
+                  </option>
+                  <option value="summer">
+                    {t("volunteerCreateVideo.seasonSummer")}
+                  </option>
+                  <option value="autumn">
+                    {t("volunteerCreateVideo.seasonAutumn")}
+                  </option>
+                  <option value="winter">
+                    {t("volunteerCreateVideo.seasonWinter")}
+                  </option>
                 </select>
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Nature Type
+                  {t("volunteerCreateVideo.natureType")}
                 </label>
                 <select
                   name="natureType"
@@ -613,11 +686,21 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="woodland">Woodland</option>
-                  <option value="wetland">Wetland</option>
-                  <option value="grassland">Grassland</option>
-                  <option value="aquatic">Aquatic</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.selectOption")}
+                  </option>
+                  <option value="woodland">
+                    {t("volunteerCreateVideo.natureWoodland")}
+                  </option>
+                  <option value="wetland">
+                    {t("volunteerCreateVideo.natureWetland")}
+                  </option>
+                  <option value="grassland">
+                    {t("volunteerCreateVideo.natureGrassland")}
+                  </option>
+                  <option value="aquatic">
+                    {t("volunteerCreateVideo.natureAquatic")}
+                  </option>
                 </select>
               </div>
             </div>
@@ -626,7 +709,7 @@ const VolunteerCreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Sound Stimuli
+                  {t("volunteerCreateVideo.soundStimuli")}
                 </label>
                 <select
                   name="soundStimuli"
@@ -634,16 +717,26 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="birds">Birds</option>
-                  <option value="water">Water</option>
-                  <option value="wind">Wind</option>
-                  <option value="forest">Forest Sounds</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.selectOption")}
+                  </option>
+                  <option value="birds">
+                    {t("volunteerCreateVideo.soundBirds")}
+                  </option>
+                  <option value="water">
+                    {t("volunteerCreateVideo.soundWater")}
+                  </option>
+                  <option value="wind">
+                    {t("volunteerCreateVideo.soundWind")}
+                  </option>
+                  <option value="forest">
+                    {t("volunteerCreateVideo.soundForest")}
+                  </option>
                 </select>
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Animals
+                  {t("volunteerCreateVideo.animals")}
                 </label>
                 <select
                   name="animals"
@@ -651,11 +744,21 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="birds">Birds</option>
-                  <option value="mammals">Mammals</option>
-                  <option value="insects">Insects</option>
-                  <option value="fish">Fish</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.selectOption")}
+                  </option>
+                  <option value="birds">
+                    {t("volunteerCreateVideo.animalsBirds")}
+                  </option>
+                  <option value="mammals">
+                    {t("volunteerCreateVideo.animalsMammals")}
+                  </option>
+                  <option value="insects">
+                    {t("volunteerCreateVideo.animalsInsects")}
+                  </option>
+                  <option value="fish">
+                    {t("volunteerCreateVideo.animalsFish")}
+                  </option>
                 </select>
               </div>
             </div>
@@ -663,7 +766,7 @@ const VolunteerCreateVideo = () => {
             {/* Tags */}
             <div>
               <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                Tags
+                {t("volunteerCreateVideo.tags")}
               </label>
               <select
                 multiple
@@ -678,7 +781,7 @@ const VolunteerCreateVideo = () => {
                 ))}
               </select>
               <p className="text-sm text-[#7a756e] mt-1 font-[Poppins]">
-                Hold Ctrl (Cmd on Mac) to select multiple tags
+                {t("volunteerCreateVideo.tagsHelp")}
               </p>
               {formData.tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -701,13 +804,15 @@ const VolunteerCreateVideo = () => {
                 onClick={handleCancel}
                 className="px-6 py-2 bg-[#e5e3df] font-[Poppins] text-[#4b4741] rounded-lg hover:bg-gray-300 transition font-medium"
               >
-                Cancel
+                {t("volunteerCreateVideo.cancel")}
               </button>
               <button
                 type="submit"
                 className="px-6 py-2 font-[Poppins] bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
               >
-                {editMode ? "Update Video" : "Submit"}
+                {editMode
+                  ? t("volunteerCreateVideo.updateVideo")
+                  : t("volunteerCreateVideo.submit")}
               </button>
             </div>
           </form>

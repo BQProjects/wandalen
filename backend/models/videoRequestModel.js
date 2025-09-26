@@ -17,8 +17,16 @@ const VideoRequestSchema = new Schema(
     },
     currentStatus: {
       type: String,
-      enum: ["Pending", "Uploading", "Uploaded"],
+      enum: ["Pending", "Uploading", "Uploaded", "Completed"],
       default: "Pending",
+    },
+    completedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Volunteer",
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
     },
   },
   { timestamps: true }

@@ -156,6 +156,37 @@ const getAllRequests = async (req, res) => {
   }
 };
 
+const updateRequestStatus = async (req, res) => {
+  const { requestId } = req.params;
+  const { status, volunteerId } = req.body;
+
+  try {
+    const updateData = { currentStatus: status };
+
+    // If completing the request, store which volunteer completed it
+    if (status === "Completed" && volunteerId) {
+      updateData.completedBy = volunteerId;
+    }
+
+    const request = await VideoRequestModel.findByIdAndUpdate(
+      requestId,
+      updateData,
+      { new: true }
+    ).populate("completedBy", "firstName lastName email");
+
+    if (!request) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Request status updated successfully", request });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const getVideo = async (req, res) => {
   const { videoId } = req.params;
   try {
@@ -226,6 +257,7 @@ module.exports = {
   selfUploaded,
   editVideoInfo,
   getAllRequests,
+  updateRequestStatus,
   getVideo,
   deleteVideo,
   getProfile,

@@ -13,16 +13,15 @@ import CreateVideo from "../pages/admin/CreateVideo";
 // Website page imports (alphabetized)
 import Aran from "../pages/website/Aran";
 import BecomeVolunteer from "../pages/website/BecomeVolunteer";
-import CameraTips from "../pages/website/CameraTips";
 import ChooseYourExperience from "../pages/website/ChoseYourExperience";
 import HowItWorks from "../pages/volunteer/HowItWorks";
-import NatureWalking from "../pages/website/NatureWalking";
 import OurApproach from "../pages/website/OurApproach";
 import PaymentPageForIndividual from "../pages/website/PaymentPageForIndividual";
 import RequestAQuoteForm from "../pages/website/RequestAQuoteForm";
 import Subscribe from "../pages/website/Subscribe";
-import VideoTraining from "../pages/website/VideoTraning";
+import Training from "../pages/website/Traning";
 import VolunteerSignupForm from "../pages/website/VolunteerSignup";
+import ViewBlog from "../pages/website/ViewBlog";
 import Blog from "../pages/website/Blog";
 import GeneratePassword from "../pages/website/GeneratePassword"; //To generate password for organization
 
@@ -35,8 +34,6 @@ import VideoClient from "../pages/client/VideoClient";
 // Organization page imports (alphabetized)
 import AllVideos from "../pages/organization/AllVideos";
 import ManageClients from "../pages/organization/ManageClients";
-import OrgLogin from "../pages/organization/Login";
-import OrgSignup from "../pages/organization/Signup";
 import OrganizationProfile from "../pages/organization/OrganizationProfile";
 import VideoOrganization from "../pages/organization/VideoOrganization";
 
@@ -52,6 +49,8 @@ import VideoVolunteer from "../pages/volunteer/VideoVolunteer";
 import AddCustomer from "../pages/admin/AddCustomer";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminLogin from "../pages/admin/AdminLogin";
+import AllBlog from "../pages/admin/allblog";
+import BlogForm from "../pages/admin/BlogForm";
 import LocationRequest from "../pages/admin/LocationRequest";
 import ManageQuote from "../pages/admin/ManageQuote";
 import ManageSubscription from "../pages/admin/ManageSubscription";
@@ -60,14 +59,11 @@ import ManageVolunteer from "../pages/admin/ManageVolunteer";
 import OrganizationCreated from "../pages/admin/OrganizationCreated";
 import SubscriptionOverview from "../pages/admin/SubscriptionOverview";
 import VolunteerDetail from "../pages/admin/VolunteerDetail";
+import TrainingDetails from "../pages/admin/VolunteerTrainingDetails";
 
 // Component imports
 import ProtectedRoute from "../components/ProtectedRoute";
 import Otp from "../pages/website/OTP";
-import WhyNatureMatters from "../pages/website/WhyNatureMatters";
-import PowerofWalking from "../pages/website/PowerofWalking";
-import HealthandHappiness from "../pages/website/HealthandHappiness";
-import NatureBenefits from "../pages/website/NatureBenefits";
 
 export const router = createBrowserRouter([
   {
@@ -95,20 +91,24 @@ export const router = createBrowserRouter([
         element: <Blog />,
       },
       {
+        path: "blog/:id",
+        element: <ViewBlog />,
+      },
+      {
         path: "payment",
         element: <PaymentPageForIndividual />,
       },
       {
         path: "video-training",
-        element: <VideoTraining />,
+        element: <Training />,
       },
       {
         path: "camera-tips",
-        element: <CameraTips />,
+        element: <Training />,
       },
       {
         path: "nature-walking",
-        element: <NatureWalking />,
+        element: <Training />,
       },
       {
         path: "volunteer-signup",
@@ -121,22 +121,6 @@ export const router = createBrowserRouter([
       {
         path: "choose-experience",
         element: <ChooseYourExperience />,
-      },
-      {
-        path: "nature-matters",
-        element: <WhyNatureMatters />,
-      },
-      {
-        path: "power-of-walking",
-        element: <PowerofWalking />,
-      },
-      {
-        path: "health-and-happiness",
-        element: <HealthandHappiness />,
-      },
-      {
-        path: "nature-benefits",
-        element: <NatureBenefits />,
       },
       {
         path: "generate-pass/:id",
@@ -306,6 +290,22 @@ export const router = createBrowserRouter([
       {
         path: "create-video",
         element: <CreateVideo />,
+      },
+      {
+        path: "all-blog",
+        element: <AllBlog />,
+      },
+      {
+        path: "blog-form",
+        element: <BlogForm />,
+      },
+      {
+        path: "blog-form/:id",
+        element: <BlogForm />,
+      },
+      {
+        path: "training-details",
+        element: <TrainingDetails />,
       },
     ],
   },
