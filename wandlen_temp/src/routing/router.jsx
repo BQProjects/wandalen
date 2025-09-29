@@ -56,6 +56,7 @@ import BlogForm from "../pages/admin/BlogForm";
 import LocationRequest from "../pages/admin/LocationRequest";
 import ManageQuote from "../pages/admin/ManageQuote";
 import ManageSubscription from "../pages/admin/ManageSubscription";
+import ManageSubscribers from "../pages/admin/ManageSubscribers";
 import ManageVideos from "../pages/admin/ManageVideos";
 import ManageVolunteer from "../pages/admin/ManageVolunteer";
 import OrganizationCreated from "../pages/admin/OrganizationCreated";
@@ -284,6 +285,10 @@ export const router = createBrowserRouter([
       {
         path: "manage-subscription",
         element: <ManageSubscription />,
+      },
+      {
+        path: "manage-subscribers",
+        element: <ManageSubscribers />,
       },
       {
         path: "subscription-overview",
