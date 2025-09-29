@@ -46,7 +46,7 @@ const Footer = () => {
                 </Link>
                 <span className="hidden sm:inline">|</span>
                 <Link
-                  to="/privacy"
+                  to="/agreement"
                   className="hover:text-[#a6a643] transition-colors"
                 >
                   {t("footer.privacyPolicy")}

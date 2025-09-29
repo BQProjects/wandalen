@@ -8,6 +8,7 @@ const {
   getAllOrgRequest,
   getOrgRequest,
   getAllVolunteerData,
+  getVolunteerInfo,
   getallVideoRequest,
   getAllvideos,
   getAllBlogs,
@@ -18,6 +19,8 @@ const {
   getTrainings,
   createTraining,
   updateTraining,
+  approveOrg,
+  updateOrg,
 } = require("../components/admin");
 
 const adminRouter = express.Router();
@@ -30,6 +33,7 @@ adminRouter.get("/org/:orgId", getOrginfo);
 adminRouter.get("/all-requests", getAllOrgRequest);
 adminRouter.get("/org-requests/:orgId", getOrgRequest);
 adminRouter.get("/all-volunteers", getAllVolunteerData);
+adminRouter.get("/volunteer/:id", getVolunteerInfo);
 adminRouter.get("/video-req", getallVideoRequest);
 adminRouter.get("/all-videos", getAllvideos);
 adminRouter.get("/blogs", getAllBlogs);
@@ -40,5 +44,7 @@ adminRouter.delete("/blogs/:id", deleteBlog);
 adminRouter.get("/trainings", getTrainings);
 adminRouter.post("/trainings", createTraining);
 adminRouter.put("/trainings/:id", updateTraining);
+adminRouter.put("/approve-org/:orgId", approveOrg);
+adminRouter.put("/update-org/:orgId", updateOrg);
 
 module.exports = adminRouter;

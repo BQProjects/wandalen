@@ -15,7 +15,7 @@
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
         "termsAndConditions": "Algemene Voorwaarden",
-        "privacyPolicy": "Privacybeleid",
+        "privacyPolicy": "overeenkomst",
         "menu": "Menu",
         "home": "Home",
         "ourVision": "Onze Visie",
@@ -1159,5 +1159,106 @@
     "common": {
         "language": "Taal",
         "and": "en"
+    },
+    "agreement": {
+        "title": "Algemene Voorwaarden Virtueel Wandelen",
+        "article1": {
+            "title": "Artikel 1 – Definities",
+            "point1": "Virtueel Wandelen, gevestigd te Lemelerveld, KvK-nummer 85578509, wordt in deze algemene voorwaarden aangeduid als dienstverlener.",
+            "point2": "De wederpartij wordt in deze algemene voorwaarden aangeduid als klant.",
+            "point3": "Met overeenkomst wordt bedoeld de overeenkomst waarbij de klant toegang krijgt tot het digitale platform Virtueel Wandelen en/of de bijbehorende diensten en producten tegen betaling van een vergoeding."
+        },
+        "article2": {
+            "title": "Artikel 2 – Toepasselijkheid",
+            "point1": "Deze voorwaarden zijn van toepassing op alle offertes, abonnementen, leveringen van (digitale) diensten en producten, overeenkomsten en facturen van dienstverlener, tenzij uitdrukkelijk en schriftelijk anders is overeengekomen.",
+            "point2": "Deze voorwaarden zijn tevens van toepassing op door dienstverlener ingeschakelde derden.",
+            "point3": "Steeds is de laatst toegezonden versie van deze voorwaarden van toepassing.",
+            "point4": "Algemene voorwaarden van de klant worden nadrukkelijk van de hand gewezen.",
+            "point5": "Indien bepalingen geheel of gedeeltelijk ongeldig blijken, blijft het overige van kracht."
+        },
+        "article3": {
+            "title": "Artikel 3 – Aanbod en abonnementen",
+            "point1": "Offertes of aanbiedingen hebben een geldigheid van 21 kalenderdagen, tenzij anders vermeld.",
+            "point2": "Dienstverlener kan niet aan een aanbod worden gehouden indien er sprake is van een kennelijke vergissing of verschrijving.",
+            "point3": "Met een abonnement op Virtueel Wandelen krijgt de klant onbeperkt toegang tot de natuurwandeling-video's van het platform.",
+            "point4": "Het lidmaatschap gaat direct in op het moment van afsluiten.",
+            "point5": "Voor het beëindigen van een maandelijks lidmaatschap geldt een opzegtermijn van één maand.",
+            "point6": "Voor het beëindigen van een 12-maanden lidmaatschap geldt een opzegtermijn van drie maanden voor de einddatum van het lidmaatschap.",
+            "point7": "Zonder tijdige opzegging wordt een lidmaatschap na afloop van de eerste periode automatisch omgezet in een lidmaatschap voor onbepaalde tijd. De inning van de kosten blijft dan gelijk aan de periode waarvoor het lidmaatschap oorspronkelijk is aangegaan.",
+            "point8": "Na omzetting naar een lidmaatschap voor onbepaalde tijd geldt een opzegtermijn van één maand vanaf de dag dat de opzegging Virtueel Wandelen heeft bereikt."
+        },
+        "article4": {
+            "title": "Artikel 4 – Tarieven en betalingen",
+            "point1": "Tarieven voor abonnementen of losse aankopen worden duidelijk vermeld inclusief btw.",
+            "point2": "Betaling geschiedt vooraf via de door dienstverlener aangeboden betaalmethoden.",
+            "point3": "Bij automatische verlenging van een abonnement vindt ook automatische incasso of betaling plaats.",
+            "point4": "Dienstverlener behoudt zich het recht voor tarieven jaarlijks of tussentijds te wijzigen. Klanten worden hiervan tijdig op de hoogte gesteld.",
+            "point5": "Bij uitblijven van betaling kan de toegang tot het platform worden opgeschort."
+        },
+        "article5": {
+            "title": "Artikel 5 – Gebruik en toegang",
+            "point1": "Na betaling krijgt de klant toegang tot het digitale platform Virtueel Wandelen en de daarbij behorende content.",
+            "point2": "Het is niet toegestaan inloggegevens te delen met derden.",
+            "point3": "Toegang kan tijdelijk worden onderbroken wegens onderhoud of technische storingen. Dienstverlener streeft naar een goede beschikbaarheid maar kan dit niet garanderen."
+        },
+        "article6": {
+            "title": "Artikel 6 – Herroepingsrecht",
+            "point1": "Voor digitale producten en abonnementen geldt dat, zodra de klant toegang heeft verkregen, de klant afstand doet van het wettelijke herroepingsrecht.",
+            "point2": "Door het plaatsen van een bestelling stemt de klant hier nadrukkelijk mee in."
+        },
+        "article7": {
+            "title": "Artikel 7 – Intellectueel eigendom",
+            "point1": "Alle video's, afbeeldingen, teksten en overige materialen op het platform blijven eigendom van dienstverlener, tenzij anders vermeld.",
+            "point2": "Het is klant niet toegestaan deze materialen te kopiëren, verspreiden, openbaar te maken of commercieel te gebruiken zonder schriftelijke toestemming.",
+            "point3": "Overtreding van deze bepalingen kan leiden tot beëindiging van toegang en aanspraak op schadevergoeding."
+        },
+        "article8": {
+            "title": "Artikel 8 – Aansprakelijkheid",
+            "point1": "Dienstverlener is niet aansprakelijk voor storingen of onbereikbaarheid van het platform, tenzij er sprake is van opzet of grove schuld.",
+            "point2": "Dienstverlener is niet aansprakelijk voor schade die ontstaat door verkeerd gebruik van het platform door de klant.",
+            "point3": "Indien dienstverlener aansprakelijk is, bedraagt de schadevergoeding nooit meer dan het bedrag van het betreffende abonnement of aankoop."
+        },
+        "article9": {
+            "title": "Artikel 9 – Privacy en gegevens",
+            "point1": "Dienstverlener verwerkt persoonsgegevens conform de geldende privacywetgeving.",
+            "point2": "Klant is verantwoordelijk voor het juist aanleveren en bijhouden van persoonlijke gegevens die nodig zijn voor toegang en facturatie."
+        },
+        "article10": {
+            "title": "Artikel 10 – Duur en beëindiging",
+            "point1": "Opzeggen van het lidmaatschap kan schriftelijk, telefonisch of per e-mail via de klantenservice van Virtueel Wandelen:",
+            "phone": "Telefoon: 06-43754290 (maandag t/m vrijdag 9:00 – 17:00 uur)",
+            "email": "E-mail: info@virtueelwandelen.nl",
+            "point2": "Opzeggingen worden altijd bevestigd per e-mail.",
+            "point3": "Vermeld bij opzegging altijd het e-mailadres dat gekoppeld is aan het account van Virtueel Wandelen.",
+            "point4": "Bij tussentijdse beëindiging of niet-gebruik vindt geen restitutie plaats."
+        },
+        "article11": {
+            "title": "Artikel 11 – Overmacht",
+            "point1": "In geval van overmacht (zoals technische storingen buiten invloed van dienstverlener, natuurrampen, ziekte of overheidsmaatregelen) kan dienstverlener de levering tijdelijk onderbreken.",
+            "point2": "Bij overmacht langer dan 30 dagen hebben beide partijen het recht de overeenkomst te ontbinden."
+        },
+        "article12": {
+            "title": "Artikel 12 – Klachten",
+            "point1": "Klachten over facturen of diensten dienen binnen 7 kalenderdagen schriftelijk en gemotiveerd kenbaar gemaakt te worden.",
+            "point2": "Dienstverlener streeft ernaar klachten binnen 5 werkdagen te behandelen."
+        },
+        "article13": {
+            "title": "Artikel 13 – Geschillen",
+            "point1": "Op deze voorwaarden is Nederlands recht van toepassing.",
+            "point2": "Geschillen worden eerst in onderling overleg geprobeerd op te lossen.",
+            "point3": "Indien dit niet lukt, worden geschillen voorgelegd aan de bevoegde rechter in het arrondissement waar dienstverlener gevestigd is."
+        },
+        "disclaimer": {
+            "title": "Disclaimer Virtueel Wandelen",
+            "paragraph1": "Ondanks de constante zorg en aandacht die Virtueel Wandelen besteedt aan de samenstelling en inhoud van het platform en de bijbehorende video's, is het mogelijk dat de aangeboden informatie onvolledig of onjuist is. Fouten kunnen echter niet altijd worden voorkomen.",
+            "paragraph2": "Beweringen en meningen die in video's, artikelen of ander materiaal op het platform worden geuit, zijn die van de maker(s) en niet noodzakelijkerwijs die van Virtueel Wandelen als organisatie. Virtueel Wandelen kan er niet voor instaan dat de informatie en content op het platform in alle gevallen geschikt is voor het doel waarvoor de gebruiker deze raadpleegt. Alle informatie, producten en diensten worden aangeboden in de staat waarin deze zich feitelijk bevinden, zonder enige (impliciete) garantie of waarborg ten aanzien van hun geschiktheid voor een bepaald doel.",
+            "paragraph3": "Virtueel Wandelen sluit alle aansprakelijkheid uit voor directe of indirecte schade, van welke aard dan ook, die voortvloeit uit of in enig opzicht verband houdt met het gebruik van het platform, de video's of andere informatie die via het platform beschikbaar wordt gesteld.",
+            "paragraph4": "Virtueel Wandelen zal zich inspannen om de beschikbaarheid van het platform zo groot mogelijk te maken en eventuele storingen zo spoedig mogelijk te verhelpen. Toch is Virtueel Wandelen niet aansprakelijk voor directe of indirecte schade die voortvloeit uit het tijdelijk niet beschikbaar zijn van het platform of onderdelen daarvan."
+        },
+        "copyright": {
+            "title": "Auteursrecht",
+            "paragraph1": "Alle video's, afbeeldingen, teksten en overige materialen op het platform Virtueel Wandelen zijn auteursrechtelijk beschermd en eigendom van Virtueel Wandelen, tenzij anders vermeld. Het is bezoekers en gebruikers nadrukkelijk niet toegestaan deze materialen te kopiëren, verspreiden, openbaar te maken of commercieel te gebruiken zonder voorafgaande schriftelijke toestemming.",
+            "paragraph2": "Wanneer gebruikers materiaal (zoals reacties of suggesties) inzenden voor publicatie op het platform, geldt dat Virtueel Wandelen het recht heeft dit materiaal te bewerken, in te korten of niet te plaatsen. Gebruikers dienen ervoor in te staan dat ingezonden materiaal geen inbreuk maakt op rechten van derden (waaronder auteursrechten) en geen onrechtmatig handelen jegens derden oplevert. Gebruikers zijn zelf aansprakelijk voor eventuele schade die hieruit voortvloeit."
+        }
     }
 }

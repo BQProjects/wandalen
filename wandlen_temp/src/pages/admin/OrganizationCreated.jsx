@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const OrganizationCreated = () => {
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(true); // Modal opens by default
+  const location = useLocation();
+  const user = location.state?.user;
+
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
   const handleBackToHome = () => {
-    navigate("/admin/manage"); // Assuming admin home is /admin/manage
+    navigate("/admin/manage");
   };
 
   return (
@@ -44,11 +47,14 @@ const OrganizationCreated = () => {
             {/* Success Message */}
             <div className="text-center mb-6">
               <h2 className="text-2xl font-semibold text-[#381207] font-['Poppins'] mb-4">
-                Organization Created Successfully!
+                Organization{" "}
+                {user?.requestStates === "approved" ? "Updated" : "Created"}{" "}
+                Successfully!
               </h2>
               <p className="text-xl text-[#381207] font-['Poppins'] font-medium">
-                We’ve sent login details to [Contact Email]. They can now log in
-                and add their patient or members.
+                We've sent login details to{" "}
+                {user?.contactPerson?.email || user?.email || "[Contact Email]"}
+                . They can now log in and add their patients or members.
               </p>
             </div>
 
@@ -82,10 +88,12 @@ const OrganizationCreated = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <p className="text-[#381207] font-['Poppins'] text-lg font-medium">
-              johnlee@gmail.com
+              {user?.contactPerson?.email || user?.email || "johnlee@gmail.com"}
             </p>
             <p className="text-[#4b4741] font-['Poppins'] text-sm">
-              31-08-2025
+              {user?.createdAt
+                ? new Date(user.createdAt).toLocaleDateString()
+                : "31-08-2025"}
             </p>
           </div>
         </div>
@@ -94,12 +102,14 @@ const OrganizationCreated = () => {
           <div className="space-y-4">
             <div>
               <p className="text-[#8d8d8d] font-['Poppins']">Full name</p>
-              <p className="text-[#381207] font-['Poppins'] text-lg">John</p>
+              <p className="text-[#381207] font-['Poppins'] text-lg">
+                {user?.contactPerson?.fullName || "John"}
+              </p>
             </div>
             <div>
               <p className="text-[#8d8d8d] font-['Poppins']">Phone number</p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                +31 6 1234 5678
+                {user?.phoneNo || "+31 6 1234 5678"}
               </p>
             </div>
           </div>
@@ -109,13 +119,15 @@ const OrganizationCreated = () => {
                 Organization name / Family name
               </p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                Sunrise Wellness Center
+                {user?.orgName || "Sunrise Wellness Center"}
               </p>
             </div>
             <div>
               <p className="text-[#8d8d8d] font-['Poppins']">Contact Email</p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                johnlee@gmail.com
+                {user?.contactPerson?.email ||
+                  user?.email ||
+                  "johnlee@gmail.com"}
               </p>
             </div>
           </div>
@@ -124,50 +136,16 @@ const OrganizationCreated = () => {
         <div>
           <p className="text-[#8d8d8d] font-['Poppins']">Address</p>
           <p className="text-[#381207] font-['Poppins'] text-lg">
-            Dominee C. Keersstraat 798151 AB Lemelerveld
+            {user?.address || "Dominee C. Keersstraat 798151 AB Lemelerveld"}
           </p>
         </div>
 
         <div>
           <p className="text-[#8d8d8d] font-['Poppins']">Notes</p>
           <p className="text-[#381207] font-['Poppins'] text-lg">
-            We’re looking to start this plan by mid-August for a small group of
-            caregivers. Please let us know if early onboarding support is
-            available, and if we can upgrade the number of users later.
+            {user?.notes ||
+              "We're looking to start this plan by mid-August for a small group of caregivers. Please let us know if early onboarding support is available, and if we can upgrade the number of users later."}
           </p>
-        </div>
-
-        <div className="text-center">
-          <p className="text-[#381207] font-['Poppins'] text-lg">All Patient</p>
-        </div>
-
-        <div className="flex justify-center">
-          <button className="px-4 py-2 rounded border border-[#5b6502] bg-white text-[#5b6502] font-['Poppins'] hover:bg-[#5b6502] hover:text-white">
-            <svg
-              width={16}
-              height={16}
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="inline mr-2"
-            >
-              <path
-                d="M8 10V2M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10"
-                stroke="currentColor"
-                strokeWidth="1.33333"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4.66406 6.66797L7.9974 10.0013L11.3307 6.66797"
-                stroke="currentColor"
-                strokeWidth="1.33333"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Download PDF
-          </button>
         </div>
       </div>
     </div>

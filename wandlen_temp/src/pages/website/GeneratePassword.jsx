@@ -7,7 +7,7 @@ import LoginImg from "../../assets/LoginImg.png";
 const GeneratePassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { DATABASE_URL } = useContext(DatabaseContext); // ✅ fixed typo
+  const { DATABASE_URL } = useContext(DatabaseContext);
   const { id } = useParams();
   const navigate = useNavigate();
 

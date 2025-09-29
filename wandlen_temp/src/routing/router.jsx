@@ -11,6 +11,8 @@ import VideoAdmin from "../pages/admin/VideoAdmin";
 import CreateVideo from "../pages/admin/CreateVideo";
 
 // Website page imports (alphabetized)
+import Agreement from "../pages/website/Agreement";
+import TermnCondition from "../pages/website/TermnCondition";
 import Aran from "../pages/website/Aran";
 import BecomeVolunteer from "../pages/website/BecomeVolunteer";
 import ChooseYourExperience from "../pages/website/ChoseYourExperience";
@@ -125,6 +127,14 @@ export const router = createBrowserRouter([
       {
         path: "generate-pass/:id",
         element: <GeneratePassword />,
+      },
+      {
+        path: "agreement",
+        element: <Agreement />,
+      },
+      {
+        path: "terms",
+        element: <TermnCondition />,
       },
     ],
   },
@@ -260,7 +270,7 @@ export const router = createBrowserRouter([
         element: <ManageVolunteer />,
       },
       {
-        path: "volunteer-detail",
+        path: "volunteer/:id",
         element: <VolunteerDetail />,
       },
       {
