@@ -1,16 +1,221 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useContext } from "react";
+import axios from "axios";
+import * as XLSX from "xlsx";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, userType, isAuthenticated, logout } = useContext(AuthContext);
+  const { DATABASE_URL } = useContext(DatabaseContext);
 
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const downloadAllData = async () => {
+    try {
+      const sessionId = localStorage.getItem("sessionId");
+
+      // Show loading state
+      const originalText = document.getElementById("downloadBtn").innerText;
+      document.getElementById("downloadBtn").innerText = "Downloading...";
+      document.getElementById("downloadBtn").disabled = true;
+
+      // Fetch all data
+      const [
+        clientsRes,
+        volunteersRes,
+        orgsRes,
+        videosRes,
+        requestsRes,
+        subscriptionsRes,
+      ] = await Promise.all([
+        axios.get(`${DATABASE_URL}/admin/all-clients`, {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }),
+        axios.get(`${DATABASE_URL}/admin/all-volunteers`, {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }),
+        axios.get(`${DATABASE_URL}/admin/all-orgs`, {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }),
+        axios.get(`${DATABASE_URL}/admin/all-videos`, {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }),
+        axios
+          .get(`${DATABASE_URL}/volunteer/getAllRequests`, {
+            headers: { Authorization: `Bearer ${sessionId}` },
+          })
+          .catch(() => ({ data: [] })), // Handle if this endpoint fails
+        axios
+          .get(`${DATABASE_URL}/utils/subscriptions`, {
+            headers: { Authorization: `Bearer ${sessionId}` },
+          })
+          .catch(() => ({ data: { subscriptions: [] } })), // Handle if this endpoint fails
+      ]);
+
+      // Prepare data for Excel sheets
+      const clientsData = (clientsRes.data || []).map((client, index) => ({
+        "S.No": index + 1,
+        "First Name": client.firstName || "N/A",
+        "Last Name": client.lastName || "N/A",
+        Email: client.email || "N/A",
+        Phone: client.phoneNumber || "N/A",
+        Organization: client.orgId?.name || "N/A",
+        "Plan Type": client.plan?.title || client.subscriptionType || "N/A",
+        "Start Date": client.startDate
+          ? new Date(client.startDate).toLocaleDateString()
+          : "N/A",
+        "End Date": client.endDate
+          ? new Date(client.endDate).toLocaleDateString()
+          : "N/A",
+        Status:
+          client.endDate && new Date(client.endDate) > new Date()
+            ? "Active"
+            : "Inactive",
+        "Created At": client.createdAt
+          ? new Date(client.createdAt).toLocaleDateString()
+          : "N/A",
+      }));
+
+      const volunteersData = (volunteersRes.data || []).map(
+        (volunteer, index) => ({
+          "S.No": index + 1,
+          "First Name": volunteer.firstName || "N/A",
+          "Last Name": volunteer.lastName || "N/A",
+          Email: volunteer.email || "N/A",
+          Phone: volunteer.phoneNumber || "N/A",
+          Address: volunteer.address || "N/A",
+          "Postal Code": volunteer.postal || "N/A",
+          "Created At": volunteer.createdAt
+            ? new Date(volunteer.createdAt).toLocaleDateString()
+            : "N/A",
+        })
+      );
+
+      const orgsData = (orgsRes.data || []).map((org, index) => ({
+        "S.No": index + 1,
+        "Organization Name": org.name || "N/A",
+        "Contact Person": org.contactPersonName || "N/A",
+        "Contact Email": org.contactPersonEmail || "N/A",
+        "Contact Phone": org.contactPersonPhone || "N/A",
+        Address: org.address || "N/A",
+        Website: org.website || "N/A",
+        "Created At": org.createdAt
+          ? new Date(org.createdAt).toLocaleDateString()
+          : "N/A",
+      }));
+
+      const videosData = (videosRes.data?.videos || videosRes.data || []).map(
+        (video, index) => ({
+          "S.No": index + 1,
+          Title: video.title || "N/A",
+          Description: video.description || "N/A",
+          Location: video.location || "N/A",
+          Duration: video.duration ? `${video.duration} min` : "N/A",
+          Season: video.season || "N/A",
+          "Nature Type": video.nature || "N/A",
+          Animals: video.animals || "N/A",
+          Sound: video.sound || "N/A",
+          Tags: Array.isArray(video.tags)
+            ? video.tags.join(", ")
+            : video.tags || "N/A",
+          Views: video.views || 0,
+          Likes: video.likes || 0,
+          "Uploaded By": video.uploadedBy
+            ? `${video.uploadedBy.firstName || ""} ${
+                video.uploadedBy.lastName || ""
+              }`.trim()
+            : "N/A",
+          "Video URL": video.url || "N/A",
+          "Thumbnail URL": video.imgUrl || "N/A",
+          "Created At": video.createdAt
+            ? new Date(video.createdAt).toLocaleDateString()
+            : "N/A",
+        })
+      );
+
+      const requestsData = (requestsRes.data || []).map((request, index) => ({
+        "S.No": index + 1,
+        Email: request.email || "N/A",
+        "Location Details": request.location || "N/A",
+        "Google Maps Link": request.link || "N/A",
+        Status: request.currentStatus || "Pending",
+        "Completed By": request.completedBy
+          ? `${request.completedBy.firstName || ""} ${
+              request.completedBy.lastName || ""
+            }`.trim()
+          : "N/A",
+        "Created At": request.createdAt
+          ? new Date(request.createdAt).toLocaleDateString()
+          : "N/A",
+      }));
+
+      const subscriptionsData = (
+        subscriptionsRes.data?.subscriptions || []
+      ).map((subscription, index) => ({
+        "S.No": index + 1,
+        "First Name": subscription.firstName || "N/A",
+        "Last Name": subscription.lastName || "N/A",
+        Email: subscription.email || "N/A",
+        Notes: subscription.notes || "N/A",
+        Status: subscription.isActive ? "Active" : "Inactive",
+        "Subscribed At": subscription.subscribedAt
+          ? new Date(subscription.subscribedAt).toLocaleDateString()
+          : "N/A",
+        "Created At": subscription.createdAt
+          ? new Date(subscription.createdAt).toLocaleDateString()
+          : "N/A",
+      }));
+
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+
+      // Add sheets
+      const clientsWs = XLSX.utils.json_to_sheet(clientsData);
+      const volunteersWs = XLSX.utils.json_to_sheet(volunteersData);
+      const orgsWs = XLSX.utils.json_to_sheet(orgsData);
+      const videosWs = XLSX.utils.json_to_sheet(videosData);
+      const requestsWs = XLSX.utils.json_to_sheet(requestsData);
+      const subscriptionsWs = XLSX.utils.json_to_sheet(subscriptionsData);
+
+      XLSX.utils.book_append_sheet(wb, clientsWs, "Clients");
+      XLSX.utils.book_append_sheet(wb, volunteersWs, "Volunteers");
+      XLSX.utils.book_append_sheet(wb, orgsWs, "Organizations");
+      XLSX.utils.book_append_sheet(wb, videosWs, "Videos");
+      XLSX.utils.book_append_sheet(wb, requestsWs, "Video Requests");
+      XLSX.utils.book_append_sheet(
+        wb,
+        subscriptionsWs,
+        "Newsletter Subscriptions"
+      );
+
+      // Generate filename with current date
+      const now = new Date();
+      const dateStr = now.toISOString().split("T")[0];
+      const filename = `BrainQuest_All_Data_${dateStr}.xlsx`;
+
+      // Download file
+      XLSX.writeFile(wb, filename);
+
+      // Reset button state
+      document.getElementById("downloadBtn").innerText = originalText;
+      document.getElementById("downloadBtn").disabled = false;
+
+      alert("Data downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading data:", error);
+      alert("Error downloading data. Please try again.");
+
+      // Reset button state on error
+      document.getElementById("downloadBtn").innerText = "Download All Data";
+      document.getElementById("downloadBtn").disabled = false;
+    }
   };
 
   const menuItems = [
@@ -127,6 +332,24 @@ const AdminSidebar = () => {
       ),
     },
     {
+      label: "Newsletter Subscribers",
+      path: "/admin/manage-subscribers",
+      icon: (
+        <svg
+          width={18}
+          height={19}
+          viewBox="0 0 18 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15 2.5H3C2.175 2.5 1.5 3.175 1.5 4V15C1.5 15.825 2.175 16.5 3 16.5H15C15.825 16.5 16.5 15.825 16.5 15V4C16.5 3.175 15.825 2.5 15 2.5ZM15 6.25L9 10.75L3 6.25V4L9 8.5L15 4V6.25Z"
+            fill="#7A756E"
+          />
+        </svg>
+      ),
+    },
+    {
       label: "Blog",
       path: "/admin/all-blog",
       icon: (
@@ -203,6 +426,45 @@ const AdminSidebar = () => {
           </div>
         </div>
       ))}
+
+      {/* Download All Data Button */}
+      <button
+        id="downloadBtn"
+        onClick={downloadAllData}
+        className="flex items-center justify-center gap-2 p-3 w-full rounded-lg bg-[#a6a643] text-white font-['Poppins'] text-sm font-medium hover:bg-[#8b8b3a] transition-colors mb-4"
+      >
+        <svg
+          width={16}
+          height={16}
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M4.66667 6.66667L8 10L11.3333 6.66667"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M8 10V2"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Download All Data
+      </button>
+
       {/* Logout Button */}
       <button
         onClick={() => {

@@ -108,18 +108,87 @@ const uploadVideos = async (req, res) => {
 
 const selfUploaded = async (req, res) => {
   const { volunteerId } = req.params;
+  const {
+    page = 1,
+    limit = 9,
+    search = "",
+    duration,
+    location,
+    season,
+    nature,
+    animals,
+    sound,
+  } = req.query;
+
   try {
-    await VideoModel.find({
+    // Build filter query object - start with volunteer-specific filters
+    const query = {
       uploadedBy: volunteerId,
       uploaderModel: "Volunteer",
-    })
-      .then((videos) => {
-        res.json(videos);
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({ message: "Server error" });
+    };
+
+    // Add search filter
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+
+    // Add duration filter
+    if (duration) {
+      const durationFilters = Array.isArray(duration) ? duration : [duration];
+      const durationConditions = [];
+      durationFilters.forEach((d) => {
+        if (d.includes("Short")) {
+          durationConditions.push({ duration: { $lte: 5 } });
+        } else if (d.includes("Medium")) {
+          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
+        } else if (d.includes("Long")) {
+          durationConditions.push({ duration: { $gt: 15 } });
+        }
       });
+      if (durationConditions.length > 0) {
+        // Combine with existing query using $and
+        query.$and = query.$and || [];
+        query.$and.push({ $or: durationConditions });
+      }
+    }
+
+    // Add other filters
+    if (location) {
+      const locations = Array.isArray(location) ? location : [location];
+      query.location = { $in: locations };
+    }
+    if (season) {
+      const seasons = Array.isArray(season) ? season : [season];
+      query.season = { $in: seasons };
+    }
+    if (nature) {
+      const natures = Array.isArray(nature) ? nature : [nature];
+      query.nature = { $in: natures };
+    }
+    if (animals) {
+      const animalList = Array.isArray(animals) ? animals : [animals];
+      query.animals = { $in: animalList };
+    }
+    if (sound) {
+      const sounds = Array.isArray(sound) ? sound : [sound];
+      query.sound = { $in: sounds };
+    }
+
+    // Fetch videos with filters and pagination
+    const videos = await VideoModel.find(query)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    // Count total with filters
+    const total = await VideoModel.countDocuments(query);
+
+    res.json({
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total,
+      videos,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

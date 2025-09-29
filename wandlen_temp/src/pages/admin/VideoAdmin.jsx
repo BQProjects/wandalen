@@ -16,19 +16,60 @@ const VideoAdmin = () => {
   const sessionId = localStorage.getItem("sessionId");
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState([]);
+
+  // Add pagination state for reviews
+  const [currentPage, setCurrentPage] = useState(0);
+  const reviewsPerPage = 3;
+
+  // Calculate total pages
+  const totalPages = Math.ceil((reviews?.length || 0) / reviewsPerPage);
+
+  // Navigation functions
+  const goToPreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const res = await axios.get(`${DATABASE_URL}/admin/get-reviews/${id}`, {
+        headers: {
+          Authorization: `Bearer ${sessionId}`,
+        },
+      });
+      setReviews(res.data.reviews || []);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      // If admin endpoint doesn't exist, try client endpoint
+      try {
+        const res = await axios.get(`${DATABASE_URL}/client/get-reviews/${id}`);
+        setReviews(res.data.reviews || []);
+      } catch (clientError) {
+        console.error(
+          "Error fetching reviews from client endpoint:",
+          clientError
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchVideo = async () => {
       try {
         console.log("Fetching video with ID:", id);
-        const res = await axios.get(
-          `${DATABASE_URL}/client/get-video/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${sessionId}`,
-            },
-          }
-        );
+        const res = await axios.get(`${DATABASE_URL}/admin/get-video/${id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+        });
         console.log("Video data received:", res.data);
         console.log("Video URL (imgUrl):", res.data.imgUrl);
         setVideo(res.data);
@@ -41,6 +82,7 @@ const VideoAdmin = () => {
 
     if (id) {
       fetchVideo();
+      fetchReviews();
     }
   }, [id, DATABASE_URL, sessionId]);
   return (
@@ -87,106 +129,211 @@ const VideoAdmin = () => {
           <div className=" text-[#381207] font-['Poppins'] text-[2.5rem] font-semibold leading-[136%] pb-10">
             Ervaringen met deze video:
           </div>
-          {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 pb-8 sm:pb-16">
-            {/* Testimonial 1 */}
-            <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-              <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                Naam
-              </div>
-              <div className="text-brown font-medium mb-4">-</div>
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(4)].map((_, i) => (
-                  <img
-                    key={i}
-                    src={StarFilled}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                ))}
-                <img
-                  src={StarEmpty}
-                  alt="Star"
-                  className="w-4 h-4 sm:w-5 sm:h-5"
-                />
-              </div>
-              <div className="flex justify-center">
-                <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                  <img
-                    src={Quote}
-                    alt="Quote"
-                    className="w-6 h-6 sm:w-8 sm:h-8"
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Testimonial 2 */}
-            <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-              <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                Sanne
+          {/* Dynamic Reviews Section with Navigation Arrows */}
+          {reviews.length > 0 ? (
+            <div className="mt-10">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-semibold text-brown">
+                  Alle beoordelingen
+                </h3>
               </div>
-              <div className="text-brown font-medium mb-4 text-sm sm:text-base">
-                Tijdens de boswandeling met herfstbladeren begon mevrouw De
-                Vries spontaan te glimlachen. Ze wees naar het scherm.
-              </div>
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(4)].map((_, i) => (
-                  <img
-                    key={i}
-                    src={StarFilled}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                ))}
-                <img
-                  src={StarEmpty}
-                  alt="Star"
-                  className="w-4 h-4 sm:w-5 sm:h-5"
-                />
-              </div>
-              <div className="flex justify-center">
-                <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                  <img
-                    src={Quote}
-                    alt="Quote"
-                    className="w-6 h-6 sm:w-8 sm:h-8"
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Testimonial 3 */}
-            <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-              <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                Martijn
-              </div>
-              <div className="text-brown font-medium mb-4 text-sm sm:text-base">
-                Mijn vader herkende meteen de dijk in de video. Hij begon te
-                vertellen over fietstochten met zijn broer. Ik had hem in tijden
-                niet zo enthousiast gehoord.
-              </div>
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <img
-                    key={i}
-                    src={StarFilled}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                ))}
-              </div>
-              <div className="flex justify-center">
-                <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                  <img
-                    src={Quote}
-                    alt="Quote"
-                    className="w-6 h-6 sm:w-8 sm:h-8"
-                  />
+              <div className="relative">
+                {/* Left Arrow */}
+                {currentPage > 0 && (
+                  <button
+                    onClick={goToPreviousPage}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center shadow-md focus:outline-none"
+                    aria-label="Previous reviews"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15 18L9 12L15 6"
+                        stroke="#381207"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* Right Arrow */}
+                {currentPage < totalPages - 1 && (
+                  <button
+                    onClick={goToNextPage}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center shadow-md focus:outline-none"
+                    aria-label="Next reviews"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 6L15 12L9 18"
+                        stroke="#381207"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* Reviews Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {reviews
+                    .slice(
+                      currentPage * reviewsPerPage,
+                      currentPage * reviewsPerPage + reviewsPerPage
+                    )
+                    .map((review, index) => (
+                      <div
+                        key={index}
+                        className="bg-border p-4 sm:p-6 rounded-lg shadow-lg"
+                      >
+                        <div className="flex justify-center">
+                          <div className="bg-secondary p-2 sm:p-3 rounded-full">
+                            <img
+                              src={Quote}
+                              alt="Quote"
+                              className="w-6 h-6 sm:w-8 sm:h-8"
+                            />
+                          </div>
+                        </div>
+                        <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                          {review.username || "Anonymous"}
+                        </div>
+                        <div className="text-brown font-medium mb-4 text-sm sm:text-base">
+                          {review.review}
+                        </div>
+                        <div className="flex items-center gap-1 mb-4">
+                          {[...Array(5)].map((_, i) => (
+                            <img
+                              key={i}
+                              src={i < review.rating ? StarFilled : StarEmpty}
+                              alt="Star"
+                              className="w-4 h-4 sm:w-5 sm:h-5"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            /* Fallback Static Testimonials when no reviews */
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 pb-8 sm:pb-16">
+              {/* Testimonial 1 */}
+              <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
+                <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                  Naam
+                </div>
+                <div className="text-brown font-medium mb-4">-</div>
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(4)].map((_, i) => (
+                    <img
+                      key={i}
+                      src={StarFilled}
+                      alt="Star"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
+                    />
+                  ))}
+                  <img
+                    src={StarEmpty}
+                    alt="Star"
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <div className="bg-secondary p-2 sm:p-3 rounded-full">
+                    <img
+                      src={Quote}
+                      alt="Quote"
+                      className="w-6 h-6 sm:w-8 sm:h-8"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
+                <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                  Sanne
+                </div>
+                <div className="text-brown font-medium mb-4 text-sm sm:text-base">
+                  Tijdens de boswandeling met herfstbladeren begon mevrouw De
+                  Vries spontaan te glimlachen. Ze wees naar het scherm.
+                </div>
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(4)].map((_, i) => (
+                    <img
+                      key={i}
+                      src={StarFilled}
+                      alt="Star"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
+                    />
+                  ))}
+                  <img
+                    src={StarEmpty}
+                    alt="Star"
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <div className="bg-secondary p-2 sm:p-3 rounded-full">
+                    <img
+                      src={Quote}
+                      alt="Quote"
+                      className="w-6 h-6 sm:w-8 sm:h-8"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 3 */}
+              <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
+                <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                  Martijn
+                </div>
+                <div className="text-brown font-medium mb-4 text-sm sm:text-base">
+                  Mijn vader herkende meteen de dijk in de video. Hij begon te
+                  vertellen over fietstochten met zijn broer. Ik had hem in
+                  tijden niet zo enthousiast gehoord.
+                </div>
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <img
+                      key={i}
+                      src={StarFilled}
+                      alt="Star"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-center">
+                  <div className="bg-secondary p-2 sm:p-3 rounded-full">
+                    <img
+                      src={Quote}
+                      alt="Quote"
+                      className="w-6 h-6 sm:w-8 sm:h-8"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -57,7 +57,7 @@ const getOrginfo = async (req, res) => {
 
 const getAllOrgRequest = async (req, res) => {
   try {
-    const requests = await OrgModel.find({ requestStatus: "requested" })
+    const requests = await OrgModel.find({})
       .populate("clients")
       .select("-password");
     res.status(200).json(requests);
@@ -90,6 +90,22 @@ const getAllVolunteerData = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getVolunteerInfo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const volunteer = await VolunteerModel.findById(id).select("-password");
+
+    if (!volunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+
+    res.status(200).json(volunteer);
+  } catch (error) {
+    console.error("Error fetching volunteer details:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -299,6 +315,136 @@ const updateTraining = async (req, res) => {
   }
 };
 
+const approveOrg = async (req, res) => {
+  try {
+    const { orgId } = req.params;
+    const updates = req.body;
+
+    // Set status to approved
+    updates.requestStates = "approved";
+
+    const updatedOrg = await OrgModel.findByIdAndUpdate(orgId, updates, {
+      new: true,
+    }).select("-password");
+
+    if (!updatedOrg) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+
+    res.status(200).json(updatedOrg);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const updateOrg = async (req, res) => {
+  try {
+    const { orgId } = req.params;
+    const updates = req.body;
+
+    const updatedOrg = await OrgModel.findByIdAndUpdate(orgId, updates, {
+      new: true,
+    }).select("-password");
+
+    if (!updatedOrg) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+
+    res.status(200).json(updatedOrg);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const uploadVideo = async (req, res) => {
+  const {
+    title,
+    url,
+    location,
+    description,
+    season,
+    nature,
+    sound,
+    animals,
+    tags,
+    imgUrl,
+    duration,
+  } = req.body;
+
+  try {
+    // Admin-uploaded videos are automatically approved
+    const newVideo = new VideoModel({
+      title,
+      url,
+      uploaderModel: "Admin",
+      location,
+      description,
+      season,
+      nature,
+      sound,
+      animals,
+      tags,
+      imgUrl,
+      duration,
+      uploadedBy: req.user?.id, // This would come from auth middleware if available
+      isApproved: true, // Admin videos are automatically approved
+    });
+
+    await newVideo.save();
+    res
+      .status(201)
+      .json({ message: "Video uploaded successfully", video: newVideo });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const getVideo = async (req, res) => {
+  try {
+    const { videoId } = req.params;
+    const video = await VideoModel.findById(videoId)
+      .populate("uploadedBy", "firstName lastName email")
+      .populate("comments");
+
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    res.status(200).json(video);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const toggleVideoApproval = async (req, res) => {
+  try {
+    const { videoId } = req.params;
+    const { isApproved } = req.body;
+
+    const updatedVideo = await VideoModel.findByIdAndUpdate(
+      videoId,
+      { isApproved },
+      { new: true }
+    ).populate("uploadedBy", "firstName lastName email");
+
+    if (!updatedVideo) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    res.status(200).json({
+      message: `Video ${isApproved ? "approved" : "unapproved"} successfully`,
+      video: updatedVideo,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -307,6 +453,7 @@ module.exports = {
   getAllOrgRequest,
   getOrgRequest,
   getAllVolunteerData,
+  getVolunteerInfo,
   getallVideoRequest,
   getAllvideos,
   getAllBlogs,
@@ -317,4 +464,9 @@ module.exports = {
   getTrainings,
   createTraining,
   updateTraining,
+  approveOrg,
+  updateOrg,
+  uploadVideo,
+  getVideo,
+  toggleVideoApproval,
 };

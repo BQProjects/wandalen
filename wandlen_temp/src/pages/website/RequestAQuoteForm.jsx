@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const RequestAQuoteForm = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -158,11 +158,29 @@ const RequestAQuoteForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
+    const targetGroupMapping = {
+      Dementia: "dementia",
+      Elderly: "elderly",
+      Disabled: "disabled",
+      Other: "other",
+    };
+
+    const mappedFormData = {
+      ...formData,
+      targetGroups: formData.targetGroups.map(
+        (group) => targetGroupMapping[group] || "other"
+      ),
+    };
+
     try {
-      const response = await axios.post(`${DATABASE_URL}/org/signup`, formData);
+      const response = await axios.post(
+        `${DATABASE_URL}/org/signup`,
+        mappedFormData
+      );
       console.log("Form submitted successfully:", response.data);
       alert(t("requestQuoteForm.form.messages.success"));
-      navigate("/generate-pass/" + response.data._id);
+      // navigate("/generate-pass/" + response.data._id);
     } catch (error) {
       console.error("Error submitting form:", error);
       alert(t("requestQuoteForm.form.messages.error"));
@@ -575,10 +593,11 @@ const RequestAQuoteForm = () => {
                   {t("requestQuoteForm.form.labels.startDate")}
                 </label>
                 <input
-                  type="text"
+                  type="date"
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
+                  min={new Date().toISOString().split("T")[0]}
                   placeholder={t(
                     "requestQuoteForm.form.placeholders.startDate"
                   )}
@@ -680,7 +699,15 @@ const RequestAQuoteForm = () => {
                 className="w-4 h-4"
               />
               <span className="text-[#2a341f] text-sm">
-                {t("requestQuoteForm.form.labels.agreeToTerms")}
+                {t("requestQuoteForm.form.labels.agreeToTerms")}{" "}
+                <Link
+                  to="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#5b6502] hover:text-[#4a5201] underline"
+                >
+                  ({t("footer.termsAndConditions")})
+                </Link>
               </span>
             </div>
             {errors.agreeToTerms && (

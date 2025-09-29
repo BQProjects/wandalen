@@ -106,7 +106,9 @@ const getAllvideos = async (req, res) => {
   } = req.query;
   try {
     // Build filter query object
-    const query = {};
+    const query = {
+      isApproved: true, // Only show approved videos to clients
+    };
     if (search) {
       query.title = { $regex: search, $options: "i" };
     }
@@ -283,8 +285,15 @@ const getAllReviews = async (req, res) => {
 const getVideo = async (req, res) => {
   const { videoId } = req.params;
   try {
-    const video = await VideoModel.findById(videoId).populate("comments");
-    if (!video) return res.status(404).json({ message: "Video not found" });
+    const video = await VideoModel.findOne({
+      _id: videoId,
+      isApproved: true,
+    }).populate("comments");
+
+    if (!video)
+      return res
+        .status(404)
+        .json({ message: "Video not found or not approved" });
     res.json(video);
   } catch (error) {
     console.error(error);

@@ -1,24 +1,179 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const AddCustomer = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const user = location.state?.user;
+  const { DATABASE_URL } = useContext(DatabaseContext);
+
+  // State for form fields
+  const [amountPaid, setAmountPaid] = useState("€ 120,00");
+  const [planValidFrom, setPlanValidFrom] = useState("2025-07-01");
+  const [planValidTo, setPlanValidTo] = useState("2026-08-31");
+  const [noOfUsers, setNoOfUsers] = useState("10 users");
+  const [orgName, setOrgName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [address, setAddress] = useState("");
+  const [street, setStreet] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [website, setWebsite] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [email, setEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [totalClients, setTotalClients] = useState("");
+  const [numberOfLocations, setNumberOfLocations] = useState("");
+  const [targetGroup, setTargetGroup] = useState([]);
+  const [estimatedClients, setEstimatedClients] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [needSupport, setNeedSupport] = useState(false);
+  const [additionalServices, setAdditionalServices] = useState("");
+  const [notes, setNotes] = useState("");
+  const [clientLimit, setClientLimit] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setOrgName(user.orgName || "");
+      setContactEmail(user.email || "");
+      setPhoneNo(user.phoneNo || "");
+      setAddress(user.address || "");
+      setStreet(user.address || "");
+      setPostalCode(user.postal || "");
+      setCity(user.city || "");
+      setWebsite(user.website || "");
+      setFullName(user.contactPerson?.fullName || "");
+      setJobTitle(user.contactPerson?.jobTitle || "");
+      setEmail(user.contactPerson?.email || "");
+      setContactPhone(user.contactPerson?.phoneNumber || "");
+      setTotalClients(user.totalClients || "");
+      setNumberOfLocations(user.numberOfLocations || "");
+      setTargetGroup(user.targetGroup || []);
+      setEstimatedClients(user.estimatedUsers || "");
+      setStartDate(
+        user.desiredStartDate
+          ? new Date(user.desiredStartDate).toISOString().split("T")[0]
+          : ""
+      );
+      setNeedSupport(user.needIntegrationSupport || false);
+      setAdditionalServices(user.additionalServices || "");
+      setNotes(user.notes || "");
+      setClientLimit(user.clientLimit || "");
+      setNoOfUsers(
+        user.totalClients ? `${user.totalClients} users` : "10 users"
+      );
+    }
+  }, [user]);
+
+  // Added to keep totalClients and clientLimit synchronized
+  useEffect(() => {
+    if (totalClients) {
+      setClientLimit(totalClients);
+    }
+  }, [totalClients]);
 
   const handleBack = () => {
     navigate("/admin/manage");
   };
 
-  const handleCreateUser = () => {
-    navigate("/admin/organization-created");
+  // Custom handler for totalClients to sync with noOfUsers
+  const handleTotalClientsChange = (e) => {
+    const value = e.target.value;
+    setTotalClients(value);
+    setNoOfUsers(`${value} users`);
+    setClientLimit(value); // Also update clientLimit
+  };
+
+  // Custom handler for noOfUsers to sync with totalClients
+  const handleNoOfUsersChange = (e) => {
+    const value = e.target.value;
+    setNoOfUsers(value);
+    // Extract just the number from "X users" format
+    const numericValue = value.replace(/[^0-9]/g, "");
+    setTotalClients(numericValue);
+  };
+
+  const handleClientLimitChange = (e) => {
+    const value = e.target.value;
+    setClientLimit(value);
+    setTotalClients(value);
+  };
+
+  const handleCreateUser = async () => {
+    // Prepare data to send - include ALL form fields
+    const data = {
+      amountPaid,
+      planValidFrom,
+      planValidTo,
+      noOfUsers: noOfUsers.replace(" users", ""),
+      orgName,
+      email: contactEmail,
+      phoneNo,
+      address,
+      street,
+      postal: postalCode,
+      city,
+      website,
+      contactPerson: {
+        fullName,
+        jobTitle,
+        email,
+        phoneNumber: contactPhone,
+      },
+      totalClients: totalClients ? parseInt(totalClients, 10) : 0,
+      numberOfLocations,
+      targetGroup,
+      estimatedUsers: estimatedClients,
+      desiredStartDate: startDate,
+      needIntegrationSupport: needSupport,
+      additionalServices,
+      notes,
+      clientLimit: clientLimit ? parseInt(clientLimit, 10) : 5,
+    };
+
+    try {
+      console.log("Sending data to backend:", data);
+      console.log("User ID:", user?._id);
+
+      let response;
+      if (user?.requestStates === "approved") {
+        response = await axios.put(
+          `${DATABASE_URL}/admin/update-org/${user._id}`,
+          data
+        );
+      } else {
+        response = await axios.put(
+          `${DATABASE_URL}/admin/approve-org/${user._id}`,
+          data
+        );
+      }
+
+      console.log("Response from backend:", response.data);
+
+      // Navigate with the updated user data
+      navigate("/admin/organization-created", {
+        state: { user: response.data },
+      });
+    } catch (error) {
+      console.error("Error creating/updating organization:", error);
+      console.error(
+        "Error details:",
+        error.response?.data || "No response data"
+      );
+      alert(
+        `Error creating/updating organization: ${error.message}. Please try again.`
+      );
+    }
   };
 
   return (
     <div className="flex-1 bg-white p-6 max-w-4xl mx-auto font-base">
       <div className="flex items-center gap-4 mb-6">
-        <button
-          onClick={handleBack}
-          className="text-brown hover:text-brand"
-        >
+        <button onClick={handleBack} className="text-brown hover:text-brand">
           <svg
             width={25}
             height={50}
@@ -32,7 +187,11 @@ const AddCustomer = () => {
             />
           </svg>
         </button>
-        <h1 className="text-2xl font-semibold text-brown">Add Customer</h1>
+        <h1 className="text-2xl font-semibold text-brown">
+          {user?.requestStates === "approved"
+            ? "Edit Customer"
+            : "Add Customer"}
+        </h1>
       </div>
 
       {/* Customer & Plan Details - Moved to Top */}
@@ -51,7 +210,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="€ 120,00"
+                value={amountPaid}
+                onChange={(e) => setAmountPaid(e.target.value)}
               />
             </div>
             <div>
@@ -59,8 +219,10 @@ const AddCustomer = () => {
                 Plan Valid From
               </label>
               <input
+                type="date"
                 className="input"
-                defaultValue="01-07-2025"
+                value={planValidFrom}
+                onChange={(e) => setPlanValidFrom(e.target.value)}
               />
             </div>
             <div>
@@ -68,17 +230,22 @@ const AddCustomer = () => {
                 Plan Valid To
               </label>
               <input
+                type="date"
                 className="input"
-                defaultValue="31-08-2026"
+                value={planValidTo}
+                onChange={(e) => setPlanValidTo(e.target.value)}
               />
             </div>
             <div>
               <label className="block text-brown font-base font-medium mb-2">
-                No. of Users
+                Client Limit
               </label>
               <input
                 className="input"
-                defaultValue="10 users"
+                type="number"
+                min="0"
+                value={clientLimit}
+                onChange={handleClientLimitChange}
               />
             </div>
           </div>
@@ -87,7 +254,9 @@ const AddCustomer = () => {
               className="px-6 py-2 rounded-lg btn btn-secondary"
               onClick={handleCreateUser}
             >
-              Create User
+              {user?.requestStates === "approved"
+                ? "Update User"
+                : "Create User"}
             </button>
           </div>
         </div>
@@ -106,7 +275,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="Sunrise Wellness Center"
+                value={orgName}
+                onChange={(e) => setOrgName(e.target.value)}
               />
             </div>
             <div>
@@ -115,7 +285,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="info@sunrisewellness.nl"
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
               />
             </div>
             <div>
@@ -124,7 +295,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="+31 6 9876 5432"
+                value={phoneNo}
+                onChange={(e) => setPhoneNo(e.target.value)}
               />
             </div>
             <div className="md:col-span-2">
@@ -133,7 +305,8 @@ const AddCustomer = () => {
               </label>
               <textarea
                 className="input h-20 py-2 resize-none"
-                defaultValue="Dominee C. Keersstraat 798, 8151 AB, Lemelerveld"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               ></textarea>
             </div>
             <div>
@@ -142,7 +315,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="Dominee C. Keersstraat 798"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
               />
             </div>
             <div>
@@ -151,7 +325,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="8151 AB"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
               />
             </div>
             <div>
@@ -160,7 +335,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="Lemelerveld"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
               />
             </div>
             <div className="md:col-span-2">
@@ -169,7 +345,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="https://www.sunrisewellness.nl"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
               />
             </div>
           </div>
@@ -187,7 +364,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="Anna Jansen"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
               />
             </div>
             <div>
@@ -196,7 +374,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="Activities Coordinator"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
               />
             </div>
             <div>
@@ -205,7 +384,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="anna.jansen@sunrisewellness.nl"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -214,7 +394,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="+31 6 2345 6789"
+                value={contactPhone}
+                onChange={(e) => setContactPhone(e.target.value)}
               />
             </div>
           </div>
@@ -232,7 +413,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="45"
+                value={totalClients}
+                onChange={handleTotalClientsChange}
               />
             </div>
             <div>
@@ -241,7 +423,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="2 care homes, 1 daycare center"
+                value={numberOfLocations}
+                onChange={(e) => setNumberOfLocations(e.target.value)}
               />
             </div>
             <div className="md:col-span-2">
@@ -249,74 +432,27 @@ const AddCustomer = () => {
                 Target group(s) for which the platform will be used
               </label>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2">
-                  <svg
-                    width={18}
-                    height={19}
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.25 2.75H3.75C3.35218 2.75 2.97064 2.90804 2.68934 3.18934C2.40804 3.47064 2.25 3.85218 2.25 4.25V14.75C2.25 15.1478 2.40804 15.5294 2.68934 15.8107C2.97064 16.092 3.35218 16.25 3.75 16.25H14.25C14.6478 16.25 15.0294 16.092 15.3107 15.8107C15.592 15.5294 15.75 15.1478 15.75 14.75V4.25C15.75 3.85218 15.592 3.47064 15.3107 3.18934C15.0294 2.90804 14.6478 2.75 14.25 2.75ZM14.25 4.25V14.75H3.75V4.25H14.25ZM7.5 13.25L4.5 10.25L5.5575 9.185L7.5 11.1275L12.4425 6.185L13.5 7.25"
-                      fill="#DD9219"
+                {["elderly", "disabled", "dementia", "other"].map((group) => (
+                  <div key={group} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={targetGroup.includes(group)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setTargetGroup([...targetGroup, group]);
+                        } else {
+                          setTargetGroup(
+                            targetGroup.filter((g) => g !== group)
+                          );
+                        }
+                      }}
+                      className="w-4 h-4"
                     />
-                  </svg>
-                  <span className="text-dark-green font-base text-sm">
-                    Dementia
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg
-                    width={18}
-                    height={19}
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.25 2.75H3.75C3.35218 2.75 2.97064 2.90804 2.68934 3.18934C2.40804 3.47064 2.25 3.85218 2.25 4.25V14.75C2.25 15.1478 2.40804 15.5294 2.68934 15.8107C2.97064 16.092 3.35218 16.25 3.75 16.25H14.25C14.6478 16.25 15.0294 16.092 15.3107 15.8107C15.592 15.5294 15.75 15.1478 15.75 14.75V4.25C15.75 3.85218 15.592 3.47064 15.3107 3.18934C15.0294 2.90804 14.6478 2.75 14.25 2.75ZM14.25 4.25V14.75H3.75V4.25H14.25ZM7.5 13.25L4.5 10.25L5.5575 9.185L7.5 11.1275L12.4425 6.185L13.5 7.25"
-                      fill="#DD9219"
-                    />
-                  </svg>
-                  <span className="text-dark-green font-base text-sm">
-                    Day care
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg
-                    width={18}
-                    height={19}
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.25 2.75H3.75C2.9175 2.75 2.25 3.4175 2.25 4.25V14.75C2.25 15.1478 2.40804 15.5294 2.68934 15.8107C2.97064 16.092 3.35218 16.25 3.75 16.25H14.25C14.6478 16.25 15.0294 16.092 15.3107 15.8107C15.592 15.5294 15.75 15.1478 15.75 14.75V4.25C15.75 3.85218 15.592 3.47064 15.3107 3.18934C15.0294 2.90804 14.6478 2.75 14.25 2.75ZM14.25 4.25V14.75H3.75V4.25H14.25Z"
-                      fill="#D0D0D0"
-                    />
-                  </svg>
-                  <span className="text-dark-green font-base text-sm">
-                    Rehabilitation
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg
-                    width={18}
-                    height={19}
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.25 2.75H3.75C2.9175 2.75 2.25 3.4175 2.25 4.25V14.75C2.25 15.1478 2.40804 15.5294 2.68934 15.8107C2.97064 16.092 3.35218 16.25 3.75 16.25H14.25C14.6478 16.25 15.0294 16.092 15.3107 15.8107C15.592 15.5294 15.75 15.1478 15.75 14.75V4.25C15.75 3.85218 15.592 3.47064 15.3107 3.18934C15.0294 2.90804 14.6478 2.75 14.25 2.75ZM14.25 4.25V14.75H3.75V4.25H14.25Z"
-                      fill="#D0D0D0"
-                    />
-                  </svg>
-                  <span className="text-dark-green font-base text-sm">
-                    Other
-                  </span>
-                </div>
+                    <span className="text-dark-green font-base text-sm">
+                      {group.charAt(0).toUpperCase() + group.slice(1)}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -334,7 +470,8 @@ const AddCustomer = () => {
               </label>
               <input
                 className="input"
-                defaultValue="20 clients per week"
+                value={estimatedClients}
+                onChange={(e) => setEstimatedClients(e.target.value)}
               />
             </div>
             <div>
@@ -342,8 +479,10 @@ const AddCustomer = () => {
                 Desired start date of use
               </label>
               <input
+                type="date"
                 className="input"
-                defaultValue="01 October 2025"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
               />
             </div>
           </div>
@@ -361,47 +500,29 @@ const AddCustomer = () => {
               </label>
               <div className="flex gap-4">
                 <div className="flex items-center gap-2">
-                  <svg
-                    width={18}
-                    height={19}
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 15.125C12.1066 15.125 14.625 12.6066 14.625 9.5C14.625 6.3934 12.1066 3.875 9 3.875C5.8934 3.875 3.375 6.3934 3.375 9.5C3.375 12.6066 5.8934 15.125 9 15.125Z"
-                      fill="#DD9219"
-                    />
-                    <path
-                      d="M9 17.375C7.44248 17.375 5.91992 16.9131 4.62489 16.0478C3.32985 15.1825 2.32049 13.9526 1.72445 12.5136C1.12841 11.0747 0.972461 9.49127 1.27632 7.96367C1.58018 6.43607 2.3302 5.03288 3.43154 3.93154C4.53288 2.8302 5.93607 2.08018 7.46367 1.77632C8.99127 1.47246 10.5747 1.62841 12.0136 2.22445C13.4526 2.82049 14.6825 3.82985 15.5478 5.12489C16.4131 6.41992 16.875 7.94248 16.875 9.5C16.8726 11.5879 16.0422 13.5895 14.5658 15.0658C13.0895 16.5422 11.0879 17.3726 9 17.375ZM9 2.75C7.66498 2.75 6.35994 3.14588 5.2499 3.88758C4.13987 4.62928 3.27471 5.68349 2.76382 6.91689C2.25293 8.15029 2.11925 9.50749 2.3797 10.8169C2.64015 12.1262 3.28303 13.329 4.22703 14.273C5.17104 15.217 6.37377 15.8599 7.68314 16.1203C8.99252 16.3808 10.3497 16.2471 11.5831 15.7362C12.8165 15.2253 13.8707 14.3601 14.6124 13.2501C15.3541 12.1401 15.75 10.835 15.75 9.5C15.7479 7.71043 15.0361 5.99475 13.7707 4.72933C12.5053 3.46392 10.7896 2.75209 9 2.75Z"
-                      fill="#DD9219"
-                    />
-                  </svg>
-                  <span className="text-dark-green font-base text-sm">
-                    Yes
-                  </span>
+                  <input
+                    type="radio"
+                    name="support"
+                    checked={needSupport}
+                    onChange={() => setNeedSupport(true)}
+                  />
+                  <span className="text-dark-green font-base text-sm">Yes</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <svg
-                    width={18}
-                    height={19}
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 15.5C7.4087 15.5 5.88258 14.8679 4.75736 13.7426C3.63214 12.6174 3 11.0913 3 9.5C3 7.9087 3.63214 6.38258 4.75736 5.25736C5.88258 4.13214 7.4087 3.5 9 3.5C10.5913 3.5 12.1174 4.13214 13.2426 5.25736C14.3679 6.38258 15 7.9087 15 9.5C15 11.0913 14.3679 12.6174 13.2426 13.7426C12.1174 14.8679 10.5913 15.5 9 15.5ZM9 2C8.01509 2 7.03982 2.19399 6.12987 2.5709C5.21993 2.94781 4.39314 3.50026 3.6967 4.1967C2.29018 5.60322 1.5 7.51088 1.5 9.5C1.5 11.4891 2.29018 13.3968 3.6967 14.8033C4.39314 15.4997 5.21993 16.0522 6.12987 16.4291C7.03982 16.806 8.01509 17 9 17C10.9891 17 12.8968 16.2098 14.3033 14.8033C15.7098 13.3968 16.5 11.4891 16.5 9.5C16.5 8.51509 16.306 7.53982 15.9291 6.62987C15.5522 5.71993 14.9997 4.89314 14.3033 4.1967C13.6069 3.50026 12.7801 2.94781 11.8701 2.5709C10.9602 2.19399 9.98491 2 9 2Z"
-                      fill="#D0D0D0"
-                    />
-                  </svg>
-                  <span className="text-dark-green font-base text-sm">
-                    No
-                  </span>
+                  <input
+                    type="radio"
+                    name="support"
+                    checked={!needSupport}
+                    onChange={() => setNeedSupport(false)}
+                  />
+                  <span className="text-dark-green font-base text-sm">No</span>
                 </div>
               </div>
               <textarea
                 className="input h-20 py-2 resize-none"
-                defaultValue="We’d like guidance for staff during setup."
+                value={additionalServices}
+                onChange={(e) => setAdditionalServices(e.target.value)}
+                placeholder="Details about support needed"
               ></textarea>
             </div>
             <div>
@@ -410,7 +531,8 @@ const AddCustomer = () => {
               </label>
               <textarea
                 className="input h-20 py-2 resize-none"
-                defaultValue="Interested in Virtual Walking Experience Box with scent & sound modules (€93 each)."
+                value={additionalServices}
+                onChange={(e) => setAdditionalServices(e.target.value)}
               ></textarea>
             </div>
             <div>
@@ -419,7 +541,8 @@ const AddCustomer = () => {
               </label>
               <textarea
                 className="input h-20 py-2 resize-none"
-                defaultValue="Please send invoice details to our finance department. Accessibility support for visually impaired clients needed."
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
               ></textarea>
             </div>
           </div>

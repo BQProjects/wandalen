@@ -15,7 +15,7 @@
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
         "termsAndConditions": "Terms and Conditions",
-        "privacyPolicy": "Privacy Policy",
+        "privacyPolicy": "Agreement",
         "menu": "Menu",
         "home": "Home",
         "ourVision": "Our Vision",
@@ -125,6 +125,13 @@
             "I already like to walk and this is a nice combination between being physically active and doing something useful",
             "Perfect for people who can no longer walk, but still want to enjoy nature."
         ]
+    },
+    "videoExperiences": {
+        "title": "Experiences with this video:",
+        "noReviews": {
+            "title": "No reviews available for this video",
+            "subtitle": "Be the first to leave a review!"
+        }
     },
     "faq": {
         "title": "Frequently Asked Questions",
@@ -1159,5 +1166,106 @@
     "common": {
         "language": "Language",
         "and": "and"
+    },
+    "agreement": {
+        "title": "General Terms and Conditions Virtual Walking",
+        "article1": {
+            "title": "Article 1 – Definitions",
+            "point1": "Virtual Walking, located in Lemelerveld, Chamber of Commerce number 85578509, is referred to as the service provider in these general terms and conditions.",
+            "point2": "The counterparty is referred to as the customer in these general terms and conditions.",
+            "point3": "Agreement means the agreement whereby the customer gains access to the Virtual Walking digital platform and/or the associated services and products in exchange for payment of a fee."
+        },
+        "article2": {
+            "title": "Article 2 – Applicability",
+            "point1": "These terms and conditions apply to all quotes, subscriptions, deliveries of (digital) services and products, agreements and invoices from the service provider, unless explicitly agreed otherwise in writing.",
+            "point2": "These terms and conditions also apply to third parties engaged by the service provider.",
+            "point3": "The most recently sent version of these terms and conditions always applies.",
+            "point4": "The customer's general terms and conditions are expressly rejected.",
+            "point5": "If provisions prove to be wholly or partially invalid, the remainder remains in force."
+        },
+        "article3": {
+            "title": "Article 3 – Offer and subscriptions",
+            "point1": "Quotes or offers are valid for 21 calendar days, unless stated otherwise.",
+            "point2": "The service provider cannot be bound to an offer if there is an obvious mistake or error.",
+            "point3": "With a Virtual Walking subscription, the customer gets unlimited access to the nature walk videos of the platform.",
+            "point4": "The membership takes effect immediately at the time of subscription.",
+            "point5": "To terminate a monthly membership, a notice period of one month applies.",
+            "point6": "To terminate a 12-month membership, a notice period of three months applies before the end date of the membership.",
+            "point7": "Without timely cancellation, a membership is automatically converted to an indefinite-term membership after the end of the first period. The collection of costs then remains equal to the period for which the membership was originally entered into.",
+            "point8": "After conversion to an indefinite-term membership, a notice period of one month applies from the day that Virtual Walking received the cancellation."
+        },
+        "article4": {
+            "title": "Article 4 – Rates and payments",
+            "point1": "Rates for subscriptions or individual purchases are clearly stated including VAT.",
+            "point2": "Payment is made in advance via the payment methods offered by the service provider.",
+            "point3": "Automatic direct debit or payment also takes place with automatic renewal of a subscription.",
+            "point4": "The service provider reserves the right to change rates annually or in the interim. Customers will be notified of this in a timely manner.",
+            "point5": "If payment is not made, access to the platform may be suspended."
+        },
+        "article5": {
+            "title": "Article 5 – Use and access",
+            "point1": "After payment, the customer gains access to the Virtual Walking digital platform and the associated content.",
+            "point2": "It is not permitted to share login credentials with third parties.",
+            "point3": "Access may be temporarily interrupted due to maintenance or technical failures. The service provider strives for good availability but cannot guarantee this."
+        },
+        "article6": {
+            "title": "Article 6 – Right of withdrawal",
+            "point1": "For digital products and subscriptions, once the customer has gained access, the customer waives the statutory right of withdrawal.",
+            "point2": "By placing an order, the customer expressly agrees to this."
+        },
+        "article7": {
+            "title": "Article 7 – Intellectual property",
+            "point1": "All videos, images, texts and other materials on the platform remain the property of the service provider, unless stated otherwise.",
+            "point2": "The customer is not permitted to copy, distribute, make public or use these materials commercially without written permission.",
+            "point3": "Violation of these provisions may result in termination of access and a claim for damages."
+        },
+        "article8": {
+            "title": "Article 8 – Liability",
+            "point1": "The service provider is not liable for malfunctions or unavailability of the platform, unless there is intent or gross negligence.",
+            "point2": "The service provider is not liable for damage that arises from incorrect use of the platform by the customer.",
+            "point3": "If the service provider is liable, the compensation will never exceed the amount of the relevant subscription or purchase."
+        },
+        "article9": {
+            "title": "Article 9 – Privacy and data",
+            "point1": "The service provider processes personal data in accordance with applicable privacy legislation.",
+            "point2": "Customer is responsible for correctly providing and maintaining personal data required for access and billing."
+        },
+        "article10": {
+            "title": "Article 10 – Duration and termination",
+            "point1": "Cancellation of the membership can be done in writing, by telephone or by e-mail via Virtual Walking's customer service:",
+            "phone": "Telephone: 06-43754290 (Monday through Friday 9:00 AM - 5:00 PM)",
+            "email": "E-mail: info@virtueelwandelen.nl",
+            "point2": "Cancellations are always confirmed by e-mail.",
+            "point3": "When canceling, always mention the e-mail address associated with the Virtual Walking account.",
+            "point4": "No refund will be given for early termination or non-use."
+        },
+        "article11": {
+            "title": "Article 11 – Force majeure",
+            "point1": "In case of force majeure (such as technical failures beyond the service provider's control, natural disasters, illness or government measures), the service provider may temporarily interrupt delivery.",
+            "point2": "In the event of force majeure lasting longer than 30 days, both parties have the right to terminate the agreement."
+        },
+        "article12": {
+            "title": "Article 12 – Complaints",
+            "point1": "Complaints about invoices or services must be submitted in writing and with reasons within 7 calendar days.",
+            "point2": "The service provider aims to process complaints within 5 working days."
+        },
+        "article13": {
+            "title": "Article 13 – Disputes",
+            "point1": "Dutch law applies to these terms and conditions.",
+            "point2": "Disputes are first attempted to be resolved through mutual consultation.",
+            "point3": "If this is not successful, disputes will be submitted to the competent court in the district where the service provider is located."
+        },
+        "disclaimer": {
+            "title": "Virtual Walking Disclaimer",
+            "paragraph1": "Despite the constant care and attention that Virtual Walking devotes to the composition and content of the platform and the associated videos, it is possible that the information provided is incomplete or incorrect. However, errors cannot always be prevented.",
+            "paragraph2": "Claims and opinions expressed in videos, articles or other material on the platform are those of the creator(s) and not necessarily those of Virtual Walking as an organization. Virtual Walking cannot guarantee that the information and content on the platform is suitable in all cases for the purpose for which the user consults it. All information, products and services are offered in the state in which they actually are, without any (implicit) guarantee or warranty regarding their suitability for a specific purpose.",
+            "paragraph3": "Virtual Walking excludes all liability for direct or indirect damage, of whatever nature, resulting from or in any way related to the use of the platform, the videos or other information made available via the platform.",
+            "paragraph4": "Virtual Walking will make efforts to maximize the availability of the platform and to resolve any malfunctions as quickly as possible. Nevertheless, Virtual Walking is not liable for direct or indirect damage resulting from the temporary unavailability of the platform or parts thereof."
+        },
+        "copyright": {
+            "title": "Copyright",
+            "paragraph1": "All videos, images, texts and other materials on the Virtual Walking platform are protected by copyright and owned by Virtual Walking, unless stated otherwise. Visitors and users are expressly prohibited from copying, distributing, making public or using these materials commercially without prior written permission.",
+            "paragraph2": "When users submit material (such as comments or suggestions) for publication on the platform, Virtual Walking has the right to edit, shorten or not place this material. Users must ensure that submitted material does not infringe on the rights of third parties (including copyrights) and does not constitute unlawful conduct towards third parties. Users themselves are liable for any damage resulting from this."
+        }
     }
 }

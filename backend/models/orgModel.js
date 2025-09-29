@@ -42,7 +42,7 @@ const OrgSchema = new Schema(
     },
 
     // Organization & Target Group
-    totalClients: { type: String },
+    totalClients: { type: Number },
     targetGroup: {
       type: [String],
       enum: ["elderly", "disabled", "dementia", "other"],

@@ -1,17 +1,57 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const VolunteerDetail = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const [volunteer, setVolunteer] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchVolunteerData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${DATABASE_URL}/admin/volunteer/${id}`
+        );
+        setVolunteer(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching volunteer data:", err);
+        setError("Failed to load volunteer details");
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchVolunteerData();
+    }
+  }, [id, DATABASE_URL]);
 
   const handleBack = () => {
     navigate("/admin/manage-volunteer");
   };
 
-  const handleConfirm = () => {
-    // Add logic for confirm action, e.g., API call or state update
-    alert("Volunteer confirmed!"); // Placeholder
+  const handleConfirm = async () => {
+    try {
+      await axios.put(`${DATABASE_URL}/volunteer/${id}/confirm`, {
+        status: "confirmed",
+      });
+      alert("Volunteer confirmed successfully!");
+    } catch (err) {
+      console.error("Error confirming volunteer:", err);
+      alert("Failed to confirm volunteer");
+    }
   };
+
+  if (loading)
+    return <div className="flex-1 p-6">Loading volunteer details...</div>;
+  if (error) return <div className="flex-1 p-6 text-red-500">{error}</div>;
+  if (!volunteer) return <div className="flex-1 p-6">Volunteer not found</div>;
 
   return (
     <div className="flex-1 bg-white p-6 mx-auto">
@@ -49,7 +89,7 @@ const VolunteerDetail = () => {
                 <div>
                   <p className="text-[#4b4741] font-['Poppins']">First name</p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
-                    John
+                    {volunteer.firstName}
                   </p>
                 </div>
                 <div>
@@ -57,21 +97,23 @@ const VolunteerDetail = () => {
                     Phone number
                   </p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
-                    +31 6 1234 5678
+                    {volunteer.phoneNumber}
                   </p>
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
                   <p className="text-[#4b4741] font-['Poppins']">Last Name</p>
-                  <p className="text-[#381207] font-['Poppins'] text-lg">Lee</p>
+                  <p className="text-[#381207] font-['Poppins'] text-lg">
+                    {volunteer.lastName}
+                  </p>
                 </div>
                 <div>
                   <p className="text-[#4b4741] font-['Poppins']">
                     Contact Email
                   </p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
-                    johnlee@gmail.com
+                    {volunteer.email}
                   </p>
                 </div>
               </div>
@@ -79,15 +121,13 @@ const VolunteerDetail = () => {
             <div className="mt-6">
               <p className="text-[#4b4741] font-['Poppins']">Address</p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                Dominee C. Keersstraat 798151 AB Lemelerveld
+                {volunteer.address}
               </p>
             </div>
             <div className="mt-6">
               <p className="text-[#4b4741] font-['Poppins']">Note</p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                We’re looking to start this plan by mid-August for a small group
-                of caregivers. Please let us know if early onboarding support is
-                available, and if we can upgrade the number of users later.
+                {volunteer.notes || "No notes provided"}
               </p>
             </div>
           </div>
@@ -98,7 +138,7 @@ const VolunteerDetail = () => {
           <h2 className="text-2xl font-semibold mb-6 font-['Poppins']">
             Practical Information
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-start gap-4">
               <svg
                 width={50}
@@ -117,7 +157,7 @@ const VolunteerDetail = () => {
                   Location
                 </p>
                 <p className="text-xl font-medium font-['Poppins']">
-                  Dominee C. Keersstraat 798151 AB Lemelerveld
+                  {volunteer.address || "Location not specified"}
                 </p>
               </div>
             </div>
@@ -135,43 +175,27 @@ const VolunteerDetail = () => {
                 />
               </svg>
               <div>
-                <p className="text-2xl font-semibold font-['Poppins']">Time</p>
+                <p className="text-2xl font-semibold font-['Poppins']">Postal Code</p>
                 <p className="text-xl font-medium font-['Poppins']">
-                  10:00 AM to 2:30 PM
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <svg
-                width={50}
-                height={50}
-                viewBox="0 0 50 50"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M39.9414 16.9189C40.9993 17.4561 41.9515 18.1152 42.7979 18.8965C43.6442 19.6777 44.3766 20.5566 44.9951 21.5332C45.6136 22.5098 46.0775 23.5514 46.3867 24.6582C46.696 25.765 46.8587 26.9206 46.875 28.125H43.75C43.75 26.8392 43.5059 25.6266 43.0176 24.4873C42.5293 23.348 41.8538 22.3551 40.9912 21.5088C40.1286 20.6624 39.1357 19.9951 38.0127 19.5068C36.8896 19.0186 35.6771 18.7663 34.375 18.75C33.0892 18.75 31.8766 18.9941 30.7373 19.4824C29.598 19.9707 28.6051 20.6462 27.7588 21.5088C26.9124 22.3714 26.2451 23.3643 25.7568 24.4873C25.2686 25.6104 25.0163 26.8229 25 28.125C25 29.6061 24.6663 31.014 23.999 32.3486C23.3317 33.6833 22.3958 34.79 21.1914 35.6689C22.2493 36.2061 23.2015 36.8652 24.0479 37.6465C24.8942 38.4277 25.6266 39.3066 26.2451 40.2832C26.8636 41.2598 27.3275 42.3014 27.6367 43.4082C27.946 44.515 28.1087 45.6706 28.125 46.875H25C25 45.5892 24.7559 44.3766 24.2676 43.2373C23.7793 42.098 23.1038 41.1051 22.2412 40.2588C21.3786 39.4124 20.3857 38.7451 19.2627 38.2568C18.1396 37.7686 16.9271 37.5163 15.625 37.5C14.3392 37.5 13.1266 37.7441 11.9873 38.2324C10.848 38.7207 9.85514 39.3962 9.00879 40.2588C8.16244 41.1214 7.49512 42.1143 7.00684 43.2373C6.51855 44.3604 6.26628 45.5729 6.25 46.875H3.125C3.125 45.6868 3.28776 44.5394 3.61328 43.4326C3.9388 42.3258 4.40267 41.2842 5.00488 40.3076C5.6071 39.3311 6.33138 38.4521 7.17773 37.6709C8.02409 36.8896 8.98438 36.2223 10.0586 35.6689C8.87044 34.79 7.94271 33.6833 7.27539 32.3486C6.60807 31.014 6.26628 29.6061 6.25 28.125C6.25 26.8392 6.49414 25.6266 6.98242 24.4873C7.4707 23.348 8.14616 22.3551 9.00879 21.5088C9.87142 20.6624 10.8643 19.9951 11.9873 19.5068C13.1104 19.0186 14.3229 18.7663 15.625 18.75C17.1061 18.75 18.514 19.0837 19.8486 19.751C21.1833 20.4183 22.29 21.3542 23.1689 22.5586C23.7874 21.3379 24.5768 20.2474 25.5371 19.2871C26.4974 18.3268 27.5879 17.5374 28.8086 16.9189C27.6204 16.04 26.6927 14.9333 26.0254 13.5986C25.3581 12.264 25.0163 10.8561 25 9.375C25 8.08919 25.2441 6.87663 25.7324 5.7373C26.2207 4.59798 26.8962 3.60514 27.7588 2.75879C28.6214 1.91243 29.6143 1.24512 30.7373 0.756836C31.8604 0.268555 33.0729 0.016276 34.375 0C35.6608 0 36.8734 0.244141 38.0127 0.732422C39.152 1.2207 40.1449 1.89616 40.9912 2.75879C41.8376 3.62142 42.5049 4.61426 42.9932 5.7373C43.4814 6.86035 43.7337 8.07292 43.75 9.375C43.75 10.8561 43.4163 12.264 42.749 13.5986C42.0817 14.9333 41.1458 16.04 39.9414 16.9189ZM15.625 34.375C16.4714 34.375 17.277 34.2122 18.042 33.8867C18.807 33.5612 19.4661 33.1136 20.0195 32.5439C20.5729 31.9743 21.0205 31.3151 21.3623 30.5664C21.7041 29.8177 21.875 29.0039 21.875 28.125C21.875 27.2786 21.7122 26.473 21.3867 25.708C21.0612 24.943 20.6136 24.2839 20.0439 23.7305C19.4743 23.1771 18.807 22.7295 18.042 22.3877C17.277 22.0459 16.4714 21.875 15.625 21.875C14.7624 21.875 13.9567 22.0378 13.208 22.3633C12.4593 22.6888 11.8001 23.1364 11.2305 23.7061C10.6608 24.2757 10.2132 24.943 9.8877 25.708C9.56217 26.473 9.39128 27.2786 9.375 28.125C9.375 28.9876 9.53776 29.7933 9.86328 30.542C10.1888 31.2907 10.6364 31.9499 11.2061 32.5195C11.7757 33.0892 12.4349 33.5368 13.1836 33.8623C13.9323 34.1878 14.7461 34.3587 15.625 34.375ZM28.125 9.375C28.125 10.2376 28.2878 11.0433 28.6133 11.792C28.9388 12.5407 29.3864 13.1999 29.9561 13.7695C30.5257 14.3392 31.1849 14.7868 31.9336 15.1123C32.6823 15.4378 33.4961 15.6087 34.375 15.625C35.2214 15.625 36.027 15.4622 36.792 15.1367C37.557 14.8112 38.2161 14.3636 38.7695 13.7939C39.3229 13.2243 39.7705 12.5651 40.1123 11.8164C40.4541 11.0677 40.625 10.2539 40.625 9.375C40.625 8.52865 40.4622 7.72298 40.1367 6.95801C39.8112 6.19303 39.3636 5.53385 38.7939 4.98047C38.2243 4.42708 37.557 3.97949 36.792 3.6377C36.027 3.2959 35.2214 3.125 34.375 3.125C33.5124 3.125 32.7067 3.28776 31.958 3.61328C31.2093 3.9388 30.5501 4.38639 29.9805 4.95605C29.4108 5.52572 28.9632 6.19303 28.6377 6.95801C28.3122 7.72298 28.1413 8.52865 28.125 9.375Z"
-                  fill="#EDE4DC"
-                />
-              </svg>
-              <div>
-                <p className="text-2xl font-semibold font-['Poppins']">
-                  For whom?
-                </p>
-                <p className="text-xl font-medium font-['Poppins'] w-full">
-                  Volunteers who create videos for Virtual Walking (or want to
-                  get started)
+                  {volunteer.postal || "Postal code not specified"}
                 </p>
               </div>
             </div>
           </div>
           <div className="mt-6 flex justify-center">
-            <button
-              onClick={handleConfirm}
-              className="px-6 py-3 rounded-lg bg-[#a6a643] text-[#381207] font-['Poppins'] font-medium hover:bg-[#8f9b3a]"
-            >
-              Confirm
-            </button>
+            {volunteer.status !== "confirmed" && (
+              <button
+                onClick={handleConfirm}
+                className="px-6 py-3 rounded-lg bg-[#a6a643] text-[#381207] font-['Poppins'] font-medium hover:bg-[#8f9b3a]"
+              >
+                Confirm
+              </button>
+            )}
+            {volunteer.status === "confirmed" && (
+              <span className="px-6 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium">
+                Already Confirmed
+              </span>
+            )}
           </div>
         </div>
       </div>

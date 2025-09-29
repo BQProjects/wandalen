@@ -139,8 +139,10 @@ const VolunteerHome = () => {
           values.forEach((value) => params.append(field, value));
         }
       });
+
+      const userId = localStorage.getItem("userId");
       const res = await axios.get(
-        `${DATABASE_URL}/client/get-all-videos?${params}`, // Use query params instead of hardcoded /1/10
+        `${DATABASE_URL}/volunteer/getSelfVideos/${userId}?${params}`,
         {
           headers: { Authorization: `Bearer ${sessionId}` },
         }
@@ -224,6 +226,14 @@ const VolunteerHome = () => {
           onFilterChange={setActiveFilters}
           totalPages={Math.ceil(total / itemsPerPage)}
           total={total} // Pass total matching videos
+          customFilterOptions={{
+            Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"],
+            Locatie: ["forest", "beach", "mountain", "park", "garden"],
+            Seizoen: ["spring", "summer", "autumn", "winter"],
+            Natuurtype: ["woodland", "wetland", "grassland", "aquatic"],
+            Dieren: ["birds", "mammals", "insects", "fish"],
+            Geluidsprikkels: ["birds", "water", "wind", "forest sounds"],
+          }}
         />
       </div>
       {/* Existing section remains unchanged */}

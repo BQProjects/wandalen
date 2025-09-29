@@ -127,15 +127,20 @@ const VideoCard = ({
   onEdit,
   onDelete,
   videoId,
-  uploadedBy, // Add uploadedBy prop
-  isAdminView = false, // Add isAdminView prop
+  uploadedBy,
+  isAdminView = false,
+  isApproved = false,
 }) => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
-  const currentUserId = localStorage.getItem("userId"); // Get current user ID
+  const currentUserId = localStorage.getItem("userId");
 
   // Check if current user is the uploader or if this is admin view
-  const isUploader = uploadedBy === currentUserId;
+  const uploaderId =
+    typeof uploadedBy === "object"
+      ? uploadedBy?._id || uploadedBy?.id
+      : uploadedBy;
+  const isUploader = uploaderId === currentUserId;
   const canEdit = isAdminView || isUploader;
 
   return (
@@ -158,6 +163,15 @@ const VideoCard = ({
         {isClientView && (
           <div className="absolute top-2 left-2 bg-[#dd9219] text-white px-2 py-1 rounded text-sm font-medium">
             NEW
+          </div>
+        )}
+        {isAdminView && (
+          <div
+            className={`absolute top-2 left-2 px-2 py-1 rounded text-sm font-medium ${
+              isApproved ? "bg-green-500 text-white" : "bg-red-500 text-white"
+            }`}
+          >
+            {isApproved ? "APPROVED" : "PENDING"}
           </div>
         )}
       </div>
@@ -461,7 +475,8 @@ const VideoGridWithFilters = ({
                 onEdit={onVideoEdit}
                 onDelete={onVideoDelete}
                 uploadedBy={video.uploadedBy}
-                isAdminView={isAdminView} // Add isAdminView prop
+                isAdminView={isAdminView}
+                isApproved={video.isApproved}
               />
             ))
           ) : (

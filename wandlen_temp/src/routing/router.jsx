@@ -11,6 +11,8 @@ import VideoAdmin from "../pages/admin/VideoAdmin";
 import CreateVideo from "../pages/admin/CreateVideo";
 
 // Website page imports (alphabetized)
+import Agreement from "../pages/website/Agreement";
+import TermnCondition from "../pages/website/TermnCondition";
 import Aran from "../pages/website/Aran";
 import BecomeVolunteer from "../pages/website/BecomeVolunteer";
 import ChooseYourExperience from "../pages/website/ChoseYourExperience";
@@ -54,6 +56,7 @@ import BlogForm from "../pages/admin/BlogForm";
 import LocationRequest from "../pages/admin/LocationRequest";
 import ManageQuote from "../pages/admin/ManageQuote";
 import ManageSubscription from "../pages/admin/ManageSubscription";
+import ManageSubscribers from "../pages/admin/ManageSubscribers";
 import ManageVideos from "../pages/admin/ManageVideos";
 import ManageVolunteer from "../pages/admin/ManageVolunteer";
 import OrganizationCreated from "../pages/admin/OrganizationCreated";
@@ -125,6 +128,14 @@ export const router = createBrowserRouter([
       {
         path: "generate-pass/:id",
         element: <GeneratePassword />,
+      },
+      {
+        path: "agreement",
+        element: <Agreement />,
+      },
+      {
+        path: "terms",
+        element: <TermnCondition />,
       },
     ],
   },
@@ -260,7 +271,7 @@ export const router = createBrowserRouter([
         element: <ManageVolunteer />,
       },
       {
-        path: "volunteer-detail",
+        path: "volunteer/:id",
         element: <VolunteerDetail />,
       },
       {
@@ -274,6 +285,10 @@ export const router = createBrowserRouter([
       {
         path: "manage-subscription",
         element: <ManageSubscription />,
+      },
+      {
+        path: "manage-subscribers",
+        element: <ManageSubscribers />,
       },
       {
         path: "subscription-overview",

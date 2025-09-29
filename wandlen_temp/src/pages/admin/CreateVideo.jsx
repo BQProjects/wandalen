@@ -280,7 +280,7 @@ const CreateVideo = () => {
       } else {
         // Create logic (unchanged, but ensure URLs are correct)
         const res = await axios.post(
-          `${DATABASE_URL}/admin`,
+          `${DATABASE_URL}/admin/uploadVideo`,
           payload,
           {
             headers: {
@@ -329,7 +329,7 @@ const CreateVideo = () => {
   const getVideoDetails = async () => {
     try {
       const res = await axios.get(
-        `${DATABASE_URL}/client/get-video/${videoId}`, // Changed to match VideoAdmin and VideoClient
+        `${DATABASE_URL}/admin/get-video/${videoId}`,
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
       setFormData({
