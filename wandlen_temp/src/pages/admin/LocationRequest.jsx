@@ -77,8 +77,8 @@ const LocationRequest = () => {
             return (
               <div
                 key={index}
-                className={`flex items-center gap-4 py-1 px-6 border-b border-b-[#d9bbaa] min-w-full ${
-                  index % 2 === 0 ? "bg-[#ede4dc]" : ""
+                className={`flex items-center w-full py-3 px-6 min-h-[60px] border-b border-b-[#d9bbaa] ${
+                  index % 2 === 0 ? "bg-[#ede4dc]" : "bg-white"
                 }`}
               >
                 <div className="flex items-center gap-2 pr-2 w-[200px] flex-shrink-0">

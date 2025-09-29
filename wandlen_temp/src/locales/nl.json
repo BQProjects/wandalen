@@ -270,6 +270,13 @@
             "Perfect voor mensen die niet meer kunnen wandelen, maar wel willen genieten van de natuur."
         ]
     },
+    "videoExperiences": {
+        "title": "Ervaringen met deze video:",
+        "noReviews": {
+            "title": "Geen reviews beschikbaar voor deze video",
+            "subtitle": "Wees de eerste om een review achter te laten!"
+        }
+    },
     "faq": {
         "title": "Veelgestelde Vragen",
         "questions": [

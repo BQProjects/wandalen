@@ -126,6 +126,13 @@
             "Perfect for people who can no longer walk, but still want to enjoy nature."
         ]
     },
+    "videoExperiences": {
+        "title": "Experiences with this video:",
+        "noReviews": {
+            "title": "No reviews available for this video",
+            "subtitle": "Be the first to leave a review!"
+        }
+    },
     "faq": {
         "title": "Frequently Asked Questions",
         "questions": [

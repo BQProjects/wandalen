@@ -64,6 +64,11 @@ const VideoSchema = new Schema(
         ref: "Comment",
       },
     ],
+    isApproved: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
   },
   { timestamps: true }
 );

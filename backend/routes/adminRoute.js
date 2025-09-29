@@ -21,6 +21,9 @@ const {
   updateTraining,
   approveOrg,
   updateOrg,
+  uploadVideo,
+  getVideo,
+  toggleVideoApproval,
 } = require("../components/admin");
 
 const adminRouter = express.Router();
@@ -46,5 +49,8 @@ adminRouter.post("/trainings", createTraining);
 adminRouter.put("/trainings/:id", updateTraining);
 adminRouter.put("/approve-org/:orgId", approveOrg);
 adminRouter.put("/update-org/:orgId", updateOrg);
+adminRouter.post("/uploadVideo", uploadVideo);
+adminRouter.get("/get-video/:videoId", getVideo);
+adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);
 
 module.exports = adminRouter;

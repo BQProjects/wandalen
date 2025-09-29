@@ -129,6 +129,7 @@ const VideoCard = ({
   videoId,
   uploadedBy,
   isAdminView = false,
+  isApproved = false,
 }) => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
@@ -162,6 +163,15 @@ const VideoCard = ({
         {isClientView && (
           <div className="absolute top-2 left-2 bg-[#dd9219] text-white px-2 py-1 rounded text-sm font-medium">
             NEW
+          </div>
+        )}
+        {isAdminView && (
+          <div
+            className={`absolute top-2 left-2 px-2 py-1 rounded text-sm font-medium ${
+              isApproved ? "bg-green-500 text-white" : "bg-red-500 text-white"
+            }`}
+          >
+            {isApproved ? "APPROVED" : "PENDING"}
           </div>
         )}
       </div>
@@ -465,7 +475,8 @@ const VideoGridWithFilters = ({
                 onEdit={onVideoEdit}
                 onDelete={onVideoDelete}
                 uploadedBy={video.uploadedBy}
-                isAdminView={isAdminView} // Add isAdminView prop
+                isAdminView={isAdminView}
+                isApproved={video.isApproved}
               />
             ))
           ) : (

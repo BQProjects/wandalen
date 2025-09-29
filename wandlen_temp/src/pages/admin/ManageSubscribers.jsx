@@ -372,11 +372,11 @@ const ManageSubscribers = () => {
       </div>
 
       {/* Simplified Subscriptions Table */}
-      <div className="inline-flex flex-col justify-center items-start rounded-[0.625rem] bg-[#ede4dc]/[.30] overflow-hidden">
+      <div className="w-full bg-[#ede4dc]/[.30] rounded-[0.625rem] overflow-hidden">
         {/* Header Row */}
-        <div className="flex items-center gap-6 self-stretch py-1 px-5 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
-          <div className="flex items-center gap-2 p-2 w-[16rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
+        <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
+          <div className="flex items-center gap-2 w-[23%] min-w-[170px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Full Name
             </div>
             <SortIcon
@@ -385,8 +385,8 @@ const ManageSubscribers = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[20rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
+          <div className="flex items-center gap-2 w-[28%] min-w-[200px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Email
             </div>
             <SortIcon
@@ -395,8 +395,8 @@ const ManageSubscribers = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[12rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
+          <div className="flex items-center gap-2 w-[22%] min-w-[160px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Subscribed Date
             </div>
             <SortIcon
@@ -405,8 +405,13 @@ const ManageSubscribers = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[8rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
+          <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Status
+            </div>
+          </div>
+          <div className="flex items-center gap-2 w-[15%] min-w-[110px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Actions
             </div>
           </div>
@@ -417,43 +422,62 @@ const ManageSubscribers = () => {
           sortedSubscriptions.map((subscription, index) => (
             <div
               key={subscription._id || index}
-              className={`flex items-center gap-6 self-stretch py-1 px-5 min-h-16 border-b border-b-[#d9bbaa] cursor-pointer hover:bg-[#ede4dc]/50 transition-colors ${
-                index % 2 === 0 ? "bg-[#ede4dc]" : ""
+              className={`flex items-center w-full py-3 px-6 min-h-[60px] border-b border-b-[#d9bbaa] cursor-pointer hover:bg-[#ede4dc]/50 transition-colors ${
+                index % 2 === 0 ? "bg-[#ede4dc]" : "bg-white"
               }`}
               onClick={() => handleRowClick(subscription)}
             >
-              <div className="flex items-center gap-2 pr-2 w-[16rem]">
-                <div className="flex flex-col items-start gap-2 p-2">
-                  <div className="flex flex-col items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
-                    {`${subscription.firstName || ""} ${
-                      subscription.lastName || ""
-                    }`.trim() || "N/A"}
-                  </div>
+              <div className="w-[23%] min-w-[170px] pr-4">
+                <div className="text-[#381207] font-['Poppins'] font-medium truncate">
+                  {`${subscription.firstName || ""} ${
+                    subscription.lastName || ""
+                  }`.trim() || "N/A"}
                 </div>
               </div>
-              <div className="flex items-center gap-0.5 p-2 w-[20rem]">
-                <div className="flex flex-col justify-center items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal] break-all">
+              <div className="w-[28%] min-w-[200px] pr-4">
+                <div className="text-[#381207] font-['Poppins'] truncate">
                   {subscription.email || "N/A"}
                 </div>
               </div>
-              <div className="flex items-center gap-0.5 p-2 w-[12rem]">
-                <div className="flex flex-col items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
+              <div className="w-[22%] min-w-[160px] pr-4">
+                <div className="text-[#381207] font-['Poppins'] text-sm truncate">
                   {subscription.subscribedAt
                     ? new Date(subscription.subscribedAt).toLocaleDateString()
                     : "N/A"}
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-2 w-[8rem]">
+              <div className="w-[12%] min-w-[90px] pr-4">
+                <div className="flex items-center gap-2">
+                  <svg
+                    width={10}
+                    height={10}
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx={5}
+                      cy={5}
+                      r={4}
+                      fill={subscription.isActive ? "#12B76A" : "#FF674F"}
+                    />
+                  </svg>
+                  <span className="text-[#381207] font-['Poppins'] text-xs">
+                    {subscription.isActive ? "Active" : "Inactive"}
+                  </span>
+                </div>
+              </div>
+              <div className="w-[15%] min-w-[110px] flex items-center">
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent row click when clicking action button
+                    e.stopPropagation();
                     if (subscription.isActive) {
                       handleUnsubscribe(subscription.email);
                     } else {
                       handleReactivate(subscription.email);
                     }
                   }}
-                  className={`px-3 py-1 text-white text-xs rounded transition-colors ${
+                  className={`px-2 py-1 text-white text-xs rounded transition-colors ${
                     subscription.isActive
                       ? "bg-red-500 hover:bg-red-600"
                       : "bg-green-500 hover:bg-green-600"

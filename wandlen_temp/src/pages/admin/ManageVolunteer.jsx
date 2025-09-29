@@ -10,7 +10,6 @@ const ManageVolunteer = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const { DATABASE_URL } = useContext(DatabaseContext);
 
-
   // This should view/edit existing volunteer
   const handleViewDetails = (volunteerId) => {
     navigate(`/admin/volunteer/${volunteerId}`);
@@ -147,86 +146,90 @@ const ManageVolunteer = () => {
       </div>
 
       {/* Table Section */}
-      <div className="overflow-x-auto rounded-[0.625rem] bg-[#ede4dc]/[.30]">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-[#a6a643]/[.2] border-b border-b-[#d9bbaa]">
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("firstName")}
+      <div className="w-full bg-[#ede4dc]/[.30] rounded-[0.625rem] overflow-hidden">
+        {/* Header Row */}
+        <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
+          <div
+            className="flex items-center gap-2 w-[18%] min-w-[150px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("firstName")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              First Name
+            </div>
+            {getSortIcon("firstName")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[18%] min-w-[150px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("lastName")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Last Name
+            </div>
+            {getSortIcon("lastName")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[20%] min-w-[180px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("phoneNumber")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Phone Number
+            </div>
+            {getSortIcon("phoneNumber")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[25%] min-w-[220px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("email")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Contact Email
+            </div>
+            {getSortIcon("email")}
+          </div>
+          <div className="flex items-center gap-2 w-[19%] min-w-[170px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Actions
+            </div>
+          </div>
+        </div>
+
+        {/* Data Rows */}
+        {users.map((user, index) => (
+          <div
+            key={user._id}
+            className={`flex items-center w-full py-3 px-6 min-h-[60px] border-b border-b-[#d9bbaa] ${
+              index % 2 === 0 ? "bg-[#ede4dc]" : "bg-white"
+            }`}
+          >
+            <div className="w-[18%] min-w-[150px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] font-medium truncate">
+                {user.firstName}
+              </div>
+            </div>
+            <div className="w-[18%] min-w-[150px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] font-medium truncate">
+                {user.lastName}
+              </div>
+            </div>
+            <div className="w-[20%] min-w-[180px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
+                {user.phoneNumber || user.phone}
+              </div>
+            </div>
+            <div className="w-[25%] min-w-[220px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
+                {user.email}
+              </div>
+            </div>
+            <div className="w-[19%] min-w-[170px] flex items-center gap-3">
+              <button
+                className="px-3 py-1 rounded bg-[#dd9219] text-white font-['Poppins'] text-sm hover:bg-[#c4a016] transition-colors"
+                onClick={() => handleViewDetails(user._id)}
               >
-                First name
-                {getSortIcon("firstName")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("lastName")}
-              >
-                Last name
-                {getSortIcon("lastName")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("phoneNumber")}
-              >
-                Phone number
-                {getSortIcon("phoneNumber")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("email")}
-              >
-                Contact email
-                {getSortIcon("email")}
-              </th>
-              <th className="px-6 py-4 text-center text-[#2a341f] font-['Poppins'] text-lg">
-                Volunteer
-              </th>
-              <th className="px-6 py-4 text-center text-[#2a341f] font-['Poppins'] text-lg">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr
-                key={user._id}
-                className={`border-b border-b-[#d9bbaa] ${
-                  user.isVolunteer ? "bg-[#ede4dc]" : ""
-                }`}
-              >
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.firstName}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.lastName}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.phoneNumber || user.phone}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.email}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <input
-                    type="checkbox"
-                    checked={user.isVolunteer}
-                    readOnly
-                    className="w-5 h-5 text-[#dd9219] bg-gray-100 border-gray-300 rounded focus:ring-[#dd9219] focus:ring-2"
-                  />
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <button
-                    className="px-4 py-2 rounded bg-[#dd9219] text-white font-['Poppins'] hover:bg-[#c4a016] cursor-pointer"
-                    onClick={() => handleViewDetails(user._id)}
-                  >
-                    View Details
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                View Details
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

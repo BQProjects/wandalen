@@ -129,12 +129,12 @@ const ManageSubscription = () => {
       </div>
 
       {/* New Layout Section */}
-      <div className="flex flex-col justify-center items-start w-[1280px] rounded-[0.625rem] bg-[#ede4dc]/[.30]">
+      <div className="w-full bg-[#ede4dc]/[.30] rounded-[0.625rem] overflow-hidden">
         {/* Header Row */}
-        <div className="flex items-center gap-4 self-stretch py-1 px-5 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
-          <div className="flex items-center gap-2 p-2 w-[8.75rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
-              First name
+        <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
+          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              First Name
             </div>
             <SortIcon
               column="firstName"
@@ -142,9 +142,9 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[8.75rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
-              Last name
+          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Last Name
             </div>
             <SortIcon
               column="lastName"
@@ -152,9 +152,9 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[8.375rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
-              Plan type
+          <div className="flex items-center gap-2 w-[16%] min-w-[120px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Plan Type
             </div>
             <SortIcon
               column="planType"
@@ -162,8 +162,8 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[7.75rem]">
-            <div className="flex flex-col justify-center items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
+          <div className="flex items-center gap-2 w-[12%] min-w-[80px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Status
             </div>
             <SortIcon
@@ -172,9 +172,9 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[8.75rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
-              Start date
+          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Start Date
             </div>
             <SortIcon
               column="startDate"
@@ -182,9 +182,9 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 p-2 w-[8.75rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
-              End date
+          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              End Date
             </div>
             <SortIcon
               column="endDate"
@@ -192,9 +192,9 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 py-2 pl-2 pr-0 w-[15.5rem]">
-            <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
-              Last payment status
+          <div className="flex items-center gap-2 w-[13%] min-w-[110px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Payment
             </div>
             <SortIcon
               column="paymentStatus"
@@ -202,107 +202,109 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="mdi_delete-outline flex justify-center items-center pl-[0.1875rem] pr-[0.1875rem] p-0 w-4 h-4"></div>
+          <div className="flex items-center gap-2 w-[3%] min-w-[40px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Action
+            </div>
+          </div>
         </div>
 
         {/* Data Rows */}
         {sortedSubscriptions.map((sub, index) => (
           <div
             key={index}
-            className={`flex items-center gap-4 self-stretch py-1 px-5 border-b border-b-[#d9bbaa] cursor-pointer ${
-              index % 2 === 0 ? "bg-[#ede4dc]" : ""
+            className={`flex items-center w-full py-3 px-6 min-h-[60px] border-b border-b-[#d9bbaa] cursor-pointer ${
+              index % 2 === 0 ? "bg-[#ede4dc]" : "bg-white"
             }`}
             onClick={() => handleRowClick(sub)}
           >
-            <div className="flex items-center gap-2 pr-2 w-[8.75rem]">
-              <div className="flex flex-col items-start gap-2 p-2">
-                <div className="flex flex-col items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
-                  {sub.firstName}
-                </div>
+            <div className="w-[14%] min-w-[100px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] font-medium truncate">
+                {sub.firstName}
               </div>
             </div>
-            <div className="flex items-center gap-2 pr-2 w-[8.75rem]">
-              <div className="flex flex-col items-start gap-2 p-2">
-                <div className="flex flex-col items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
-                  {sub.lastName}
-                </div>
+            <div className="w-[14%] min-w-[100px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] font-medium truncate">
+                {sub.lastName}
               </div>
             </div>
-            <div className="flex items-center gap-0.5 p-2 w-[8.375rem]">
-              <div className="flex flex-col justify-center items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
+            <div className="w-[16%] min-w-[120px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
                 {sub.planType}
               </div>
             </div>
-            <div className="flex items-center p-2 w-[7.75rem]">
-              <div className="flex items-start">
-                <div className="flex justify-center items-center gap-2">
-                  <svg
-                    width={10}
-                    height={10}
-                    viewBox="0 0 10 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx={5}
-                      cy={5}
-                      r={4}
-                      fill={
-                        sub.status === "Active"
-                          ? "#12B76A"
-                          : sub.status === "Trial"
-                          ? "#FFBE41"
-                          : "#FF674F"
-                      }
-                    />
-                  </svg>
-                  <div className="text text-[#381207] font-['Poppins'] leading-[normal]">
-                    {sub.status}
-                  </div>
+            <div className="w-[12%] min-w-[80px] pr-4">
+              <div className="flex items-center gap-2">
+                <svg
+                  width={10}
+                  height={10}
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx={5}
+                    cy={5}
+                    r={4}
+                    fill={
+                      sub.status === "Active"
+                        ? "#12B76A"
+                        : sub.status === "Trial"
+                        ? "#FFBE41"
+                        : "#FF674F"
+                    }
+                  />
+                </svg>
+                <div className="text-[#381207] font-['Poppins'] text-sm truncate">
+                  {sub.status}
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-0.5 p-2 w-[8.75rem]">
-              <div className="flex flex-col items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
+            <div className="w-[14%] min-w-[100px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] text-sm truncate">
                 {sub.startDate}
               </div>
             </div>
-            <div className="flex items-center gap-0.5 p-2 w-[8.75rem]">
-              <div className="flex flex-col justify-center items-start gap-2 text-[#381207] font-['Poppins'] leading-[normal]">
+            <div className="w-[14%] min-w-[100px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] text-sm truncate">
                 {sub.endDate}
               </div>
             </div>
-            <div className="flex items-center gap-0.5 p-2 w-[15.5rem]">
-              <div className="flex items-start">
-                <div className="flex justify-center items-center gap-2">
-                  <svg
-                    width={10}
-                    height={10}
-                    viewBox="0 0 10 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx={5} cy={5} r={4} fill="#12B76A" />
-                  </svg>
-                  <div className="text text-[#381207] font-['Poppins'] leading-[normal]">
-                    {sub.paymentStatus}
-                  </div>
+            <div className="w-[13%] min-w-[110px] pr-4">
+              <div className="flex items-center gap-2">
+                <svg
+                  width={10}
+                  height={10}
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx={5} cy={5} r={4} fill="#12B76A" />
+                </svg>
+                <div className="text-[#381207] font-['Poppins'] text-sm truncate">
+                  {sub.paymentStatus}
                 </div>
               </div>
             </div>
-            <svg
-              width={16}
-              height={16}
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="cursor-pointer"
-            >
-              <path
-                d="M4.0026 12.6667C4.0026 13.0203 4.14308 13.3594 4.39313 13.6095C4.64318 13.8595 4.98232 14 5.33594 14H10.6693C11.0229 14 11.362 13.8595 11.6121 13.6095C11.8621 13.3594 12.0026 13.0203 12.0026 12.6667V4.66667H4.0026V12.6667ZM5.33594 6H10.6693V12.6667H5.33594V6ZM10.3359 2.66667L9.66927 2H6.33594L5.66927 2.66667H3.33594V4H12.6693V2.66667H10.3359Z"
-                fill="#7A756E"
-              />
-            </svg>
+            <div className="w-[3%] min-w-[40px] flex justify-center">
+              <svg
+                width={16}
+                height={16}
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="cursor-pointer hover:scale-110 transition-transform"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Add delete functionality here
+                }}
+              >
+                <path
+                  d="M4.0026 12.6667C4.0026 13.0203 4.14308 13.3594 4.39313 13.6095C4.64318 13.8595 4.98232 14 5.33594 14H10.6693C11.0229 14 11.362 13.8595 11.6121 13.6095C11.8621 13.3594 12.0026 13.0203 12.0026 12.6667V4.66667H4.0026V12.6667ZM5.33594 6H10.6693V12.6667H5.33594V6ZM10.3359 2.66667L9.66927 2H6.33594L5.66927 2.66667H3.33594V4H12.6693V2.66667H10.3359Z"
+                  fill="#7A756E"
+                />
+              </svg>
+            </div>
           </div>
         ))}
       </div>

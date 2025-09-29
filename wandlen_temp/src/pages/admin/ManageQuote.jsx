@@ -154,111 +154,135 @@ const ManageQuote = () => {
         </p>
       </div>
       {/* Content Section */}
-      <div className="overflow-x-auto rounded-[0.625rem] bg-[#ede4dc]/[.30]">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-[#a6a643]/[.2] border-b border-b-[#d9bbaa]">
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("firstName")}
-              >
-                First name
-                {getSortIcon("firstName")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("lastName")}
-              >
-                Last name
-                {getSortIcon("lastName")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("orgName")}
-              >
-                Organization name
-                {getSortIcon("orgName")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("phoneNo")}
-              >
-                Phone number
-                {getSortIcon("phoneNo")}
-              </th>
-              <th
-                className="px-6 py-4 text-left text-[#2a341f] font-['Poppins'] text-lg cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors"
-                onClick={() => handleSort("email")}
-              >
-                Contact email
-                {getSortIcon("email")}
-              </th>
-              <th className="px-6 py-4 text-center text-[#2a341f] font-['Poppins'] text-lg">
-                Status
-              </th>
-              <th className="px-6 py-4 text-center text-[#2a341f] font-['Poppins'] text-lg">
-                T&C
-              </th>
-              <th className="px-6 py-4 text-center text-[#2a341f] font-['Poppins'] text-lg">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {reqUsers.map((user, index) => (
-              <tr
-                key={index}
-                className={`border-b border-b-[#d9bbaa] ${
-                  index % 2 === 0 ? "bg-[#ede4dc]" : ""
-                }`}
-              >
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.contactPerson?.fullName?.split(" ")[0] || "N/A"}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.contactPerson?.fullName
-                    ?.split(" ")
-                    .slice(1)
-                    .join(" ") || "N/A"}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.orgName}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.phoneNo}
-                </td>
-                <td className="px-6 py-4 text-[#381207] font-['Poppins']">
-                  {user.contactPerson?.email || "N/A"}
-                </td>
-                <td className="px-6 py-4 text-center text-[#381207] font-['Poppins']">
+      <div className="w-full bg-[#ede4dc]/[.30] rounded-[0.625rem] overflow-hidden">
+        {/* Header Row */}
+        <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
+          <div
+            className="flex items-center gap-2 w-[12%] min-w-[120px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("firstName")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              First Name
+            </div>
+            {getSortIcon("firstName")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[12%] min-w-[120px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("lastName")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Last Name
+            </div>
+            {getSortIcon("lastName")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[20%] min-w-[200px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("orgName")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Organization
+            </div>
+            {getSortIcon("orgName")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[15%] min-w-[150px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("phoneNo")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Phone
+            </div>
+            {getSortIcon("phoneNo")}
+          </div>
+          <div
+            className="flex items-center gap-2 w-[20%] min-w-[200px] cursor-pointer hover:bg-[#a6a643]/[.3] transition-colors px-2 py-1 rounded"
+            onClick={() => handleSort("email")}
+          >
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Email
+            </div>
+            {getSortIcon("email")}
+          </div>
+          <div className="flex items-center gap-2 w-[10%] min-w-[100px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Status
+            </div>
+          </div>
+          <div className="flex items-center gap-2 w-[11%] min-w-[110px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              Actions
+            </div>
+          </div>
+        </div>
+
+        {/* Data Rows */}
+        {reqUsers.map((user, index) => (
+          <div
+            key={index}
+            className={`flex items-center w-full py-3 px-6 min-h-[60px] border-b border-b-[#d9bbaa] ${
+              index % 2 === 0 ? "bg-[#ede4dc]" : "bg-white"
+            }`}
+          >
+            <div className="w-[12%] min-w-[120px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
+                {user.contactPerson?.fullName?.split(" ")[0] || "N/A"}
+              </div>
+            </div>
+            <div className="w-[12%] min-w-[120px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
+                {user.contactPerson?.fullName?.split(" ").slice(1).join(" ") ||
+                  "N/A"}
+              </div>
+            </div>
+            <div className="w-[20%] min-w-[200px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] font-medium truncate">
+                {user.orgName}
+              </div>
+            </div>
+            <div className="w-[15%] min-w-[150px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
+                {user.phoneNo}
+              </div>
+            </div>
+            <div className="w-[20%] min-w-[200px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] truncate">
+                {user.contactPerson?.email || "N/A"}
+              </div>
+            </div>
+            <div className="w-[10%] min-w-[100px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] text-sm">
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    user.requestStates === "approved"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
                   {user.requestStates}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <input
-                    type="checkbox"
-                    checked={user.requestStates === "approved"}
-                    readOnly
-                    className="w-5 h-5 text-[#dd9219] bg-gray-100 border-gray-300 rounded focus:ring-[#dd9219] focus:ring-2"
-                  />
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <button
-                    className="px-4 py-2 rounded bg-[#dd9219] text-white font-['Poppins'] hover:bg-[#c4a016] cursor-pointer"
-                    onClick={() => {
-                      if (user.requestStates === "approved") {
-                        handleEdit(user);
-                      } else {
-                        handleAdd(user);
-                      }
-                    }}
-                  >
-                    {user.requestStates === "approved" ? "Edit" : "Add"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </span>
+              </div>
+            </div>
+            <div className="w-[11%] min-w-[110px] flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={user.requestStates === "approved"}
+                readOnly
+                className="w-4 h-4 text-[#dd9219] bg-gray-100 border-gray-300 rounded focus:ring-[#dd9219] focus:ring-2"
+              />
+              <button
+                className="w-12 px-3 py-1 rounded bg-[#dd9219] text-white font-['Poppins'] text-sm hover:bg-[#c4a016] transition-colors text-center"
+                onClick={() => {
+                  if (user.requestStates === "approved") {
+                    handleEdit(user);
+                  } else {
+                    handleAdd(user);
+                  }
+                }}
+              >
+                {user.requestStates === "approved" ? "Edit" : "Add"}
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
