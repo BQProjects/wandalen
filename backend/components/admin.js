@@ -6,6 +6,7 @@ const VideoModel = require("../models/videoModel");
 const videoRequestModel = require("../models/videoRequestModel");
 const BlogModel = require("../models/blogModel");
 const TrainingModel = require("../models/trainingModel");
+const { sendEmail, emailTemplates } = require("../services/emailService");
 
 const adminLogin = (req, res) => {
   const { username, password } = req.body;
@@ -130,6 +131,8 @@ const getAllvideos = async (req, res) => {
     search = "",
     duration,
     location,
+    province,
+    municipality,
     season,
     nature,
     animals,
@@ -160,6 +163,16 @@ const getAllvideos = async (req, res) => {
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
       query.location = { $in: locations };
+    }
+    if (province) {
+      const provinces = Array.isArray(province) ? province : [province];
+      query.province = { $in: provinces };
+    }
+    if (municipality) {
+      const municipalities = Array.isArray(municipality)
+        ? municipality
+        : [municipality];
+      query.municipality = { $in: municipalities };
     }
     if (season) {
       const seasons = Array.isArray(season) ? season : [season];
@@ -331,6 +344,38 @@ const approveOrg = async (req, res) => {
       return res.status(404).json({ message: "Organization not found" });
     }
 
+    // Send emails after successful approval
+    try {
+      const adminEmail = "crc6892@gmail.com";
+      const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
+
+      // Create password setup link
+      const passwordLink = `${
+        process.env.FRONTEND_URL || "http://localhost:5173"
+      }/generate-pass/${updatedOrg._id}`;
+
+      // Send email to customer (isUpdate = false for new approvals)
+      await sendEmail(
+        customerEmail,
+        "Welcome to Virtual Wandlen - Your Organization Account is Approved!",
+        emailTemplates.customerApprovalUser(updatedOrg, passwordLink, false)
+      );
+
+      // Send email to admin
+      if (adminEmail) {
+        await sendEmail(
+          adminEmail,
+          "Organization Account Created - Virtual Wandlen",
+          emailTemplates.customerApprovalAdmin(updatedOrg)
+        );
+      }
+
+      console.log("Approval emails sent successfully");
+    } catch (emailError) {
+      console.error("Error sending approval emails:", emailError);
+      // Don't fail the request if email sending fails
+    }
+
     res.status(200).json(updatedOrg);
   } catch (error) {
     console.error(error);
@@ -349,6 +394,37 @@ const updateOrg = async (req, res) => {
 
     if (!updatedOrg) {
       return res.status(404).json({ message: "Organization not found" });
+    }
+    // Send emails after successful update
+    try {
+      const adminEmail = "crc6892@gmail.com";
+      const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
+
+      // For updates, we don't include password setup link in customer email
+      const passwordLink = `${
+        process.env.FRONTEND_URL || "http://localhost:5173"
+      }/generate-pass/${updatedOrg._id}`;
+
+      // Send email to customer (isUpdate = true for updates, no password link)
+      await sendEmail(
+        customerEmail,
+        "Virtual Wandlen - Your Organization Account has been Updated",
+        emailTemplates.customerApprovalUser(updatedOrg, passwordLink, true)
+      );
+
+      // Send email to admin
+      if (adminEmail) {
+        await sendEmail(
+          adminEmail,
+          "Organization Account Updated - Virtual Wandlen",
+          emailTemplates.customerApprovalAdmin(updatedOrg)
+        );
+      }
+
+      console.log("Update emails sent successfully");
+    } catch (emailError) {
+      console.error("Error sending update emails:", emailError);
+      // Don't fail the request if email sending fails
     }
 
     res.status(200).json(updatedOrg);

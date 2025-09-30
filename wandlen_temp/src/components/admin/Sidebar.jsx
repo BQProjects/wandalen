@@ -198,7 +198,7 @@ const AdminSidebar = () => {
       // Generate filename with current date
       const now = new Date();
       const dateStr = now.toISOString().split("T")[0];
-      const filename = `BrainQuest_All_Data_${dateStr}.xlsx`;
+      const filename = `Virtual_Wandelen_${dateStr}.xlsx`;
 
       // Download file
       XLSX.writeFile(wb, filename);

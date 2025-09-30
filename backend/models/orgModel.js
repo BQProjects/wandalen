@@ -90,6 +90,15 @@ const OrgSchema = new Schema(
     amount: {
       type: Number,
     },
+    amountPaid: {
+      type: String,
+    },
+    planValidFrom: {
+      type: String,
+    },
+    planValidTo: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

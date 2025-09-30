@@ -37,7 +37,5 @@ const subscriptionSchema = new mongoose.Schema(
   }
 );
 
-// Index for email for faster queries
-subscriptionSchema.index({ email: 1 });
 
 module.exports = mongoose.model("Subscription", subscriptionSchema);

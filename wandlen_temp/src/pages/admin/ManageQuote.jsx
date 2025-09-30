@@ -262,12 +262,6 @@ const ManageQuote = () => {
               </div>
             </div>
             <div className="w-[11%] min-w-[110px] flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={user.requestStates === "approved"}
-                readOnly
-                className="w-4 h-4 text-[#dd9219] bg-gray-100 border-gray-300 rounded focus:ring-[#dd9219] focus:ring-2"
-              />
               <button
                 className="w-12 px-3 py-1 rounded bg-[#dd9219] text-white font-['Poppins'] text-sm hover:bg-[#c4a016] transition-colors text-center"
                 onClick={() => {

@@ -122,6 +122,8 @@ const AllVideos = () => {
       // Map filters to backend fields (matching the backend query)
       const fieldMap = {
         Lengte: "duration",
+        Provincie: "province",
+        Gemeente: "municipality",
         Locatie: "location",
         Seizoen: "season",
         Natuurtype: "nature",

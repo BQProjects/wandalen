@@ -82,6 +82,376 @@ const CreateVideo = () => {
   const sessionId =
     localStorage.getItem("sessionId") || useContext(AuthContext)?.sessionId;
 
+  // Municipality options based on selected province
+  const getMunicipalityOptions = (selectedProvince) => {
+    const municipalityData = {
+      Drenthe: [
+        "Aa en Hunze",
+        "Assen",
+        "Borger-Odoorn",
+        "Coevorden",
+        "De Wolden",
+        "Emmen",
+        "Hoogeveen",
+        "Meppel",
+        "Midden-Drenthe",
+        "Noordenveld",
+        "Tynaarlo",
+        "Westerveld",
+      ],
+      Flevoland: [
+        "Almere",
+        "Dronten",
+        "Lelystad",
+        "Noordoostpolder",
+        "Urk",
+        "Zeewolde",
+      ],
+      Friesland: [
+        "Achtkarspelen",
+        "Ameland",
+        "Dantumadiel",
+        "De Fryske Marren",
+        "Harlingen",
+        "Heerenveen",
+        "Leeuwarden",
+        "Noardeast-Fryslân",
+        "Ooststellingwerf",
+        "Opsterland",
+        "Schiermonnikoog",
+        "Smallingerland",
+        "Súdwest-Fryslân",
+        "Terschelling",
+        "Tytsjerksteradiel",
+        "Vlieland",
+        "Waadhoeke",
+        "Weststellingwerf",
+      ],
+      Gelderland: [
+        "Aalten",
+        "Apeldoorn",
+        "Arnhem",
+        "Barneveld",
+        "Berg en Dal",
+        "Berkelland",
+        "Beuningen",
+        "Bronckhorst",
+        "Brummen",
+        "Buren",
+        "Culemborg",
+        "Doesburg",
+        "Doetinchem",
+        "Druten",
+        "Duiven",
+        "Ede",
+        "Elburg",
+        "Epe",
+        "Ermelo",
+        "Harderwijk",
+        "Hattem",
+        "Heerde",
+        "Heumen",
+        "Lingewaard",
+        "Lochem",
+        "Maasdriel",
+        "Montferland",
+        "Neder-Betuwe",
+        "Nijkerk",
+        "Nijmegen",
+        "Nunspeet",
+        "Oldebroek",
+        "Oost Gelre",
+        "Oude IJsselstreek",
+        "Overbetuwe",
+        "Putten",
+        "Renkum",
+        "Rheden",
+        "Rozendaal",
+        "Scherpenzeel",
+        "Tiel",
+        "Voorst",
+        "Wageningen",
+        "West Betuwe",
+        "West Maas en Waal",
+        "Westervoort",
+        "Wijchen",
+        "Winterswijk",
+        "Zaltbommel",
+        "Zevenaar",
+        "Zutphen",
+      ],
+      Groningen: [
+        "Eemsdelta",
+        "Groningen",
+        "Het Hogeland",
+        "Midden-Groningen",
+        "Pekela",
+        "Stadskanaal",
+        "Veendam",
+        "Westerkwartier",
+        "Westerwolde",
+      ],
+      Limburg: [
+        "Beek",
+        "Beekdaelen",
+        "Beesel",
+        "Bergen",
+        "Brunssum",
+        "Echt-Susteren",
+        "Eijsden-Margraten",
+        "Gennep",
+        "Gulpen-Wittem",
+        "Heerlen",
+        "Horst aan de Maas",
+        "Kerkrade",
+        "Landgraaf",
+        "Leudal",
+        "Maasgouw",
+        "Maastricht",
+        "Meerssen",
+        "Mook en Middelaar",
+        "Nederweert",
+        "Peel en Maas",
+        "Roerdalen",
+        "Roermond",
+        "Sittard-Geleen",
+        "Simpelveld",
+        "Stein",
+        "Vaals",
+        "Valkenburg aan de Geul",
+        "Venlo",
+        "Venray",
+        "Voerendaal",
+        "Weert",
+      ],
+      "Noord-Brabant": [
+        "Alphen-Chaam",
+        "Altena",
+        "Asten",
+        "Baarle-Nassau",
+        "Bergeijk",
+        "Bergen op Zoom",
+        "Bernheze",
+        "Best",
+        "Bladel",
+        "Boekel",
+        "Boxtel",
+        "Breda",
+        "Cranendonck",
+        "Deurne",
+        "Dongen",
+        "Drimmelen",
+        "Eersel",
+        "Eindhoven",
+        "Etten-Leur",
+        "Geertruidenberg",
+        "Geldrop-Mierlo",
+        "Gemert-Bakel",
+        "Gilze en Rijen",
+        "Goirle",
+        "Halderberge",
+        "Heeze-Leende",
+        "Helmond",
+        "'s-Hertogenbosch",
+        "Heusden",
+        "Hilvarenbeek",
+        "Laarbeek",
+        "Land van Cuijk",
+        "Loon op Zand",
+        "Maashorst",
+        "Meierijstad",
+        "Moerdijk",
+        "Nuenen, Gerwen en Nederwetten",
+        "Oirschot",
+        "Oisterwijk",
+        "Oosterhout",
+        "Oss",
+        "Reusel-De Mierden",
+        "Roosendaal",
+        "Rucphen",
+        "Sint-Michielsgestel",
+        "Someren",
+        "Son en Breugel",
+        "Steenbergen",
+        "Tilburg",
+        "Valkenswaard",
+        "Veldhoven",
+        "Vught",
+        "Waalre",
+        "Waalwijk",
+        "Woensdrecht",
+        "Zundert",
+      ],
+      "Noord-Holland": [
+        "Aalsmeer",
+        "Alkmaar",
+        "Amstelveen",
+        "Amsterdam",
+        "Beemster",
+        "Bergen",
+        "Beverwijk",
+        "Blaricum",
+        "Bloemendaal",
+        "Bussum",
+        "Castricum",
+        "Den Helder",
+        "Diemen",
+        "Drechterland",
+        "Edam-Volendam",
+        "Enkhuizen",
+        "Haarlem",
+        "Haarlemmermeer",
+        "Haarlemmerliede & Spaarnwoude",
+        "Heemskerk",
+        "Heemstede",
+        "Heiloo",
+        "Hollands Kroon",
+        "Hoorn",
+        "Huizen",
+        "Koggenland",
+        "Landsmeer",
+        "Langedijk",
+        "Laren",
+        "Medemblik",
+        "Opmeer",
+        "Oostzaan",
+        "Ouder-Amstel",
+        "Purmerend",
+        "Schagen",
+        "Stede Broec",
+        "Texel",
+        "Uitgeest",
+        "Uithoorn",
+        "Velsen",
+        "Waterland",
+        "Zaanstad",
+        "Zandvoort",
+      ],
+      Overijssel: [
+        "Almelo",
+        "Borne",
+        "Dalfsen",
+        "Deventer",
+        "Dinkelland",
+        "Enschede",
+        "Haaksbergen",
+        "Hardenberg",
+        "Hellendoorn",
+        "Hengelo",
+        "Hof van Twente",
+        "Kampen",
+        "Losser",
+        "Oldenzaal",
+        "Olst-Wijhe",
+        "Ommen",
+        "Raalte",
+        "Rijssen-Holten",
+        "Staphorst",
+        "Steenwijkerland",
+        "Tubbergen",
+        "Twenterand",
+        "Wierden",
+        "Zwartewaterland",
+        "Zwolle",
+      ],
+      Utrecht: [
+        "Amersfoort",
+        "Baarn",
+        "Bunnik",
+        "Bunschoten",
+        "De Bilt",
+        "De Ronde Venen",
+        "Eemnes",
+        "Houten",
+        "IJsselstein",
+        "Leusden",
+        "Lopik",
+        "Montfoort",
+        "Nieuwegein",
+        "Oudewater",
+        "Renswoude",
+        "Rhenen",
+        "Soest",
+        "Stichtse Vecht",
+        "Utrechse Heuvelrug",
+        "Utrecht",
+        "Veenendaal",
+        "Vleuten-De Meern",
+        "Woerden",
+        "Woudenberg",
+        "Zeist",
+      ],
+      Zeeland: [
+        "Borsele",
+        "Goes",
+        "Hulst",
+        "Kapelle",
+        "Middelburg",
+        "Noord-Beveland",
+        "Reimerswaal",
+        "Schouwen-Duiveland",
+        "Sluis",
+        "Terneuzen",
+        "Tholen",
+        "Veere",
+        "Vlissingen",
+      ],
+      "Zuid-Holland": [
+        "Alblasserdam",
+        "Albrandswaard",
+        "Alphen aan den Rijn",
+        "Barendrecht",
+        "Bodegraven-Reeuwijk",
+        "Capelle aan den IJssel",
+        "Delft",
+        "Den Haag",
+        "Dordrecht",
+        "Goeree-Overflakkee",
+        "Gorinchem",
+        "Gouda",
+        "Hardinxveld-Giessendam",
+        "Hendrik-Ido-Ambacht",
+        "Hillegom",
+        "Hoeksche Waard",
+        "Kaag en Braassem",
+        "Katwijk",
+        "Krimpen aan den IJssel",
+        "Krimpenerwaard",
+        "Lansingerland",
+        "Leiden",
+        "Leiderdorp",
+        "Leidschendam-Voorburg",
+        "Lisse",
+        "Maassluis",
+        "Midden-Delfland",
+        "Molenlanden",
+        "Nieuwkoop",
+        "Nissewaard",
+        "Noordwijk",
+        "Oegstgeest",
+        "Papendrecht",
+        "Pijnacker-Nootdorp",
+        "Ridderkerk",
+        "Rijswijk",
+        "Rotterdam",
+        "Schiedam",
+        "Sliedrecht",
+        "Teylingen",
+        "Vlaardingen",
+        "Voorne aan Zee",
+        "Voorschoten",
+        "Waddinxveen",
+        "Wassenaar",
+        "Westland",
+        "Zoetermeer",
+        "Zoeterwoude",
+        "Zuidplas",
+        "Zwijndrecht",
+      ],
+    };
+    return municipalityData[selectedProvince] || [];
+  };
+
   // Predefined tags with their display names
   const predefinedTags = [
     "Opkomende zon",
@@ -107,6 +477,8 @@ const CreateVideo = () => {
     description: "",
     duration: "",
     location: "",
+    province: "",
+    municipality: "",
     season: "",
     natureType: "",
     soundStimuli: "",
@@ -119,6 +491,9 @@ const CreateVideo = () => {
   const [coverImage, setCoverImage] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [showUploadOptions, setShowUploadOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState("");
 
   // Handle tag selection
   const handleTagChange = (e) => {
@@ -181,7 +556,15 @@ const CreateVideo = () => {
   }, [editMode, videoId]);
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const newData = { ...prev, [name]: value };
+      // Clear municipality when province changes
+      if (name === "province") {
+        newData.municipality = "";
+      }
+      return newData;
+    });
   };
 
   const handleCoverImageUpload = (e) => {
@@ -201,6 +584,9 @@ const CreateVideo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setUploadProgress(0);
+    setCurrentStep("Starting upload...");
 
     let videoUrl = formData.url; // Existing or new
     let imgUrl = formData.imgUrl; // Existing or new
@@ -208,6 +594,9 @@ const CreateVideo = () => {
     try {
       // Upload video file only if new
       if (videoFile) {
+        setCurrentStep("Uploading video...");
+        setUploadProgress(20);
+
         const data1 = new FormData();
         data1.append("file", videoFile);
         data1.append("upload_preset", "wandelen");
@@ -223,10 +612,14 @@ const CreateVideo = () => {
         const result1 = await res1.json();
         if (!res1.ok) throw new Error("Video upload failed");
         videoUrl = result1.secure_url; // Correct: video URL
+        setUploadProgress(50);
       }
 
       // Upload cover image only if new
       if (coverImage) {
+        setCurrentStep("Uploading cover image...");
+        setUploadProgress(60);
+
         const data2 = new FormData();
         data2.append("file", coverImage);
         data2.append("upload_preset", "wandelen");
@@ -242,12 +635,18 @@ const CreateVideo = () => {
         const result2 = await res2.json();
         if (!res2.ok) throw new Error("Cover upload failed");
         imgUrl = result2.secure_url; // Correct: cover URL
+        setUploadProgress(80);
       }
+
+      setCurrentStep(editMode ? "Updating video..." : "Creating video...");
+      setUploadProgress(90);
 
       const payload = {
         title: formData.title,
         url: videoUrl, // Fixed: video URL
         location: formData.location,
+        province: formData.province,
+        municipality: formData.municipality,
         description: formData.description,
         season: formData.season,
         nature: formData.natureType,
@@ -272,10 +671,14 @@ const CreateVideo = () => {
           }
         );
         if (res.status === 200) {
-          alert("Video updated successfully");
-          navigate("/admin/all-videos");
+          setUploadProgress(100);
+          setCurrentStep("Video updated successfully!");
+          setTimeout(() => {
+            alert("Video updated successfully");
+            navigate("/admin/all-videos");
+          }, 1000);
         } else {
-          alert("Video update failed");
+          throw new Error("Video update failed");
         }
       } else {
         // Create logic (unchanged, but ensure URLs are correct)
@@ -290,15 +693,24 @@ const CreateVideo = () => {
           }
         );
         if (res.status === 201) {
-          alert("Video uploaded successfully");
-          navigate("/admin/all-videos"); // Changed for admin
+          setUploadProgress(100);
+          setCurrentStep("Video created successfully!");
+          setTimeout(() => {
+            alert("Video uploaded successfully");
+            navigate("/admin/all-videos"); // Changed for admin
+          }, 1000);
         } else {
-          alert("Video upload failed");
+          throw new Error("Video upload failed");
         }
       }
     } catch (error) {
       console.error("Error:", error);
+      setCurrentStep("Error occurred");
       alert("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+      setUploadProgress(0);
+      setCurrentStep("");
     }
   };
 
@@ -337,6 +749,8 @@ const CreateVideo = () => {
         description: res.data.description,
         duration: res.data.duration,
         location: res.data.location,
+        province: res.data.province || "",
+        municipality: res.data.municipality || "",
         season: res.data.season,
         natureType: res.data.nature,
         soundStimuli: res.data.sound,
@@ -365,6 +779,32 @@ const CreateVideo = () => {
 
   return (
     <div className="min-h-screen bg-white py-8 px-4">
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div className="text-center">
+              <div className="mb-4">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#a6a643]"></div>
+              </div>
+              <h3 className="text-lg font-medium text-[#381207] mb-2">
+                {editMode ? "Updating Video" : "Creating Video"}
+              </h3>
+              <p className="text-sm text-[#7a756e] mb-4">{currentStep}</p>
+
+              {/* Progress Bar */}
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-[#a6a643] h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+              <p className="text-xs text-[#7a756e] mt-2">{uploadProgress}%</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-medium text-[#381207] font-[Poppins] text-center mb-8">
           {editMode ? "Edit Video" : "Create Video"}
@@ -584,6 +1024,62 @@ const CreateVideo = () => {
               </div>
             </div>
 
+            {/* Province and Municipality */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
+                  Province
+                </label>
+                <select
+                  name="province"
+                  value={formData.province}
+                  onChange={handleInputChange}
+                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
+                >
+                  <option value="">-Select an option-</option>
+                  <option value="Drenthe">Drenthe</option>
+                  <option value="Flevoland">Flevoland</option>
+                  <option value="Friesland">Friesland</option>
+                  <option value="Gelderland">Gelderland</option>
+                  <option value="Groningen">Groningen</option>
+                  <option value="Limburg">Limburg</option>
+                  <option value="Noord-Brabant">Noord-Brabant</option>
+                  <option value="Noord-Holland">Noord-Holland</option>
+                  <option value="Overijssel">Overijssel</option>
+                  <option value="Utrecht">Utrecht</option>
+                  <option value="Zeeland">Zeeland</option>
+                  <option value="Zuid-Holland">Zuid-Holland</option>
+                </select>
+              </div>
+              <div>
+                <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
+                  Municipality
+                </label>
+                <select
+                  name="municipality"
+                  value={formData.municipality}
+                  onChange={handleInputChange}
+                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
+                  disabled={!formData.province}
+                >
+                  <option value="">
+                    {formData.province
+                      ? "-Select an option-"
+                      : "Select Province First"}
+                  </option>
+                  {/* Municipality options will be populated based on selected province */}
+                  {formData.province &&
+                    getMunicipalityOptions(formData.province).map(
+                      (municipality) => (
+                        <option key={municipality} value={municipality}>
+                          {municipality}
+                        </option>
+                      )
+                    )}
+                </select>
+              </div>
+            </div>
+
             {/* Season and Nature Type */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -618,6 +1114,9 @@ const CreateVideo = () => {
                   <option value="wetland">Wetland</option>
                   <option value="grassland">Grassland</option>
                   <option value="aquatic">Aquatic</option>
+                  <option value="meer">Meer</option>
+                  <option value="weide">Weide</option>
+                  <option value="moeras">Moeras</option>
                 </select>
               </div>
             </div>
@@ -638,7 +1137,7 @@ const CreateVideo = () => {
                   <option value="birds">Birds</option>
                   <option value="water">Water</option>
                   <option value="wind">Wind</option>
-                  <option value="forest">Forest Sounds</option>
+                  <option value="forest sounds">Forest Sounds</option>
                 </select>
               </div>
               <div>
@@ -656,6 +1155,9 @@ const CreateVideo = () => {
                   <option value="mammals">Mammals</option>
                   <option value="insects">Insects</option>
                   <option value="fish">Fish</option>
+                  <option value="konijnen/hazen">Konijnen/Hazen</option>
+                  <option value="herten">Herten</option>
+                  <option value="krekels">Krekels</option>
                 </select>
               </div>
             </div>
@@ -705,9 +1207,23 @@ const CreateVideo = () => {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 font-[Poppins] bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
+                disabled={isLoading}
+                className={`px-6 py-2 font-[Poppins] rounded-lg transition font-medium ${
+                  isLoading
+                    ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                    : "bg-[#a6a643] text-white hover:bg-[#8b8b3a]"
+                }`}
               >
-                {editMode ? "Update Video" : "Submit"}
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    {editMode ? "Updating..." : "Creating..."}
+                  </div>
+                ) : editMode ? (
+                  "Update Video"
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </form>

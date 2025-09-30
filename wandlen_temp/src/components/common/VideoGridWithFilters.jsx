@@ -150,13 +150,7 @@ const VideoCard = ({
     >
       {/* Video Thumbnail */}
       <div className="relative">
-        <video
-          className="w-full h-48 object-cover"
-          src={thumbnail}
-          muted
-          onMouseEnter={(e) => e.target.play()}
-          onMouseLeave={(e) => e.target.pause()}
-        />
+        <img className="w-full h-48 object-cover" src={thumbnail} alt={title} />
         <div className="absolute top-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
           {duration || "N/A"} {/* Fallback if duration is null */}
         </div>
@@ -343,12 +337,412 @@ const VideoGridWithFilters = ({
 
   // Updated to match database values (lowercase for consistency), and conditionally add "Uploaded By" for volunteers only
   const defaultFilterOptions = {
-    Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"], // Keep as display labels for UI
-    Locatie: ["forest", "beach", "mountain", "park", "garden"], // Changed to lowercase to match database
+    Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"], // Changed to match parent components
+    Provincie: [
+      "Drenthe",
+      "Flevoland",
+      "Friesland",
+      "Gelderland",
+      "Groningen",
+      "Limburg",
+      "Noord-Brabant",
+      "Noord-Holland",
+      "Overijssel",
+      "Utrecht",
+      "Zeeland",
+      "Zuid-Holland",
+    ],
+    Locatie: ["forest", "beach", "mountain", "park", "garden"], // Restored location options
     Seizoen: ["spring", "summer", "autumn", "winter"], // Changed to lowercase
-    Natuurtype: ["woodland", "wetland", "grassland", "aquatic"], // Changed to lowercase
-    Dieren: ["birds", "mammals", "insects", "fish"], // Changed to lowercase
-    Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Changed to lowercase
+    Natuurtype: [
+      "woodland",
+      "wetland",
+      "grassland",
+      "aquatic",
+      "meer",
+      "weide",
+      "moeras",
+    ], // Added new options
+    Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Restored sound options
+    Dieren: [
+      "birds",
+      "mammals",
+      "insects",
+      "fish",
+      "konijnen/hazen",
+      "herten",
+      "krekels",
+    ], // Added new options
+  };
+
+  // Dynamic municipality options based on selected province
+  const getMunicipalityOptions = (selectedProvince) => {
+    const municipalityData = {
+      Drenthe: [
+        "Aa en Hunze",
+        "Assen",
+        "Borger-Odoorn",
+        "Coevorden",
+        "De Wolden",
+        "Emmen",
+        "Hoogeveen",
+        "Meppel",
+        "Midden-Drenthe",
+        "Noordenveld",
+        "Tynaarlo",
+        "Westerveld",
+      ],
+      Flevoland: [
+        "Almere",
+        "Dronten",
+        "Lelystad",
+        "Noordoostpolder",
+        "Urk",
+        "Zeewolde",
+      ],
+      Friesland: [
+        "Achtkarspelen",
+        "Ameland",
+        "Dantumadiel",
+        "De Fryske Marren",
+        "Harlingen",
+        "Heerenveen",
+        "Leeuwarden",
+        "Noardeast-Fryslân",
+        "Ooststellingwerf",
+        "Opsterland",
+        "Schiermonnikoog",
+        "Smallingerland",
+        "Súdwest-Fryslân",
+        "Terschelling",
+        "Tytsjerksteradiel",
+        "Vlieland",
+        "Waadhoeke",
+        "Weststellingwerf",
+      ],
+      Gelderland: [
+        "Aalten",
+        "Apeldoorn",
+        "Arnhem",
+        "Barneveld",
+        "Berg en Dal",
+        "Berkelland",
+        "Beuningen",
+        "Bronckhorst",
+        "Brummen",
+        "Buren",
+        "Culemborg",
+        "Doesburg",
+        "Doetinchem",
+        "Druten",
+        "Duiven",
+        "Ede",
+        "Elburg",
+        "Epe",
+        "Ermelo",
+        "Harderwijk",
+        "Hattem",
+        "Heerde",
+        "Heumen",
+        "Lingewaard",
+        "Lochem",
+        "Maasdriel",
+        "Montferland",
+        "Neder-Betuwe",
+        "Nijkerk",
+        "Nijmegen",
+        "Nunspeet",
+        "Oldebroek",
+        "Oost Gelre",
+        "Oude IJsselstreek",
+        "Overbetuwe",
+        "Putten",
+        "Renkum",
+        "Rheden",
+        "Rozendaal",
+        "Scherpenzeel",
+        "Tiel",
+        "Voorst",
+        "Wageningen",
+        "West Betuwe",
+        "West Maas en Waal",
+        "Westervoort",
+        "Wijchen",
+        "Winterswijk",
+        "Zaltbommel",
+        "Zevenaar",
+        "Zutphen",
+      ],
+      Groningen: [
+        "Eemsdelta",
+        "Groningen",
+        "Het Hogeland",
+        "Midden-Groningen",
+        "Pekela",
+        "Stadskanaal",
+        "Veendam",
+        "Westerkwartier",
+        "Westerwolde",
+      ],
+      Limburg: [
+        "Beek",
+        "Beekdaelen",
+        "Beesel",
+        "Bergen",
+        "Brunssum",
+        "Echt-Susteren",
+        "Eijsden-Margraten",
+        "Gennep",
+        "Gulpen-Wittem",
+        "Heerlen",
+        "Horst aan de Maas",
+        "Kerkrade",
+        "Landgraaf",
+        "Leudal",
+        "Maasgouw",
+        "Maastricht",
+        "Meerssen",
+        "Mook en Middelaar",
+        "Nederweert",
+        "Peel en Maas",
+        "Roerdalen",
+        "Roermond",
+        "Sittard-Geleen",
+        "Simpelveld",
+        "Stein",
+        "Vaals",
+        "Valkenburg aan de Geul",
+        "Venlo",
+        "Venray",
+        "Voerendaal",
+        "Weert",
+      ],
+      "Noord-Brabant": [
+        "Alphen-Chaam",
+        "Altena",
+        "Asten",
+        "Baarle-Nassau",
+        "Bergeijk",
+        "Bergen op Zoom",
+        "Bernheze",
+        "Best",
+        "Bladel",
+        "Boekel",
+        "Boxtel",
+        "Breda",
+        "Cranendonck",
+        "Deurne",
+        "Dongen",
+        "Drimmelen",
+        "Eersel",
+        "Eindhoven",
+        "Etten-Leur",
+        "Geertruidenberg",
+        "Geldrop-Mierlo",
+        "Gemert-Bakel",
+        "Gilze en Rijen",
+        "Goirle",
+        "Halderberge",
+        "Heeze-Leende",
+        "Helmond",
+        "'s-Hertogenbosch",
+        "Heusden",
+        "Hilvarenbeek",
+        "Laarbeek",
+        "Land van Cuijk",
+        "Loon op Zand",
+        "Maashorst",
+        "Meierijstad",
+        "Moerdijk",
+        "Nuenen, Gerwen en Nederwetten",
+        "Oirschot",
+        "Oisterwijk",
+        "Oosterhout",
+        "Oss",
+        "Reusel-De Mierden",
+        "Roosendaal",
+        "Rucphen",
+        "Sint-Michielsgestel",
+        "Someren",
+        "Son en Breugel",
+        "Steenbergen",
+        "Tilburg",
+        "Valkenswaard",
+        "Veldhoven",
+        "Vught",
+        "Waalre",
+        "Waalwijk",
+        "Woensdrecht",
+        "Zundert",
+      ],
+      "Noord-Holland": [
+        "Aalsmeer",
+        "Alkmaar",
+        "Amstelveen",
+        "Amsterdam",
+        "Beemster",
+        "Bergen",
+        "Beverwijk",
+        "Blaricum",
+        "Bloemendaal",
+        "Bussum",
+        "Castricum",
+        "Den Helder",
+        "Diemen",
+        "Drechterland",
+        "Edam-Volendam",
+        "Enkhuizen",
+        "Haarlem",
+        "Haarlemmermeer",
+        "Haarlemmerliede & Spaarnwoude",
+        "Heemskerk",
+        "Heemstede",
+        "Heiloo",
+        "Hollands Kroon",
+        "Hoorn",
+        "Huizen",
+        "Koggenland",
+        "Landsmeer",
+        "Langedijk",
+        "Laren",
+        "Medemblik",
+        "Opmeer",
+        "Oostzaan",
+        "Ouder-Amstel",
+        "Purmerend",
+        "Schagen",
+        "Stede Broec",
+        "Texel",
+        "Uitgeest",
+        "Uithoorn",
+        "Velsen",
+        "Waterland",
+        "Zaanstad",
+        "Zandvoort",
+      ],
+      Overijssel: [
+        "Almelo",
+        "Borne",
+        "Dalfsen",
+        "Deventer",
+        "Dinkelland",
+        "Enschede",
+        "Haaksbergen",
+        "Hardenberg",
+        "Hellendoorn",
+        "Hengelo",
+        "Hof van Twente",
+        "Kampen",
+        "Losser",
+        "Oldenzaal",
+        "Olst-Wijhe",
+        "Ommen",
+        "Raalte",
+        "Rijssen-Holten",
+        "Staphorst",
+        "Steenwijkerland",
+        "Tubbergen",
+        "Twenterand",
+        "Wierden",
+        "Zwartewaterland",
+        "Zwolle",
+      ],
+      Utrecht: [
+        "Amersfoort",
+        "Baarn",
+        "Bunnik",
+        "Bunschoten",
+        "De Bilt",
+        "De Ronde Venen",
+        "Eemnes",
+        "Houten",
+        "IJsselstein",
+        "Leusden",
+        "Lopik",
+        "Montfoort",
+        "Nieuwegein",
+        "Oudewater",
+        "Renswoude",
+        "Rhenen",
+        "Soest",
+        "Stichtse Vecht",
+        "Utrechse Heuvelrug",
+        "Utrecht",
+        "Veenendaal",
+        "Vleuten-De Meern",
+        "Woerden",
+        "Woudenberg",
+        "Zeist",
+      ],
+      Zeeland: [
+        "Borsele",
+        "Goes",
+        "Hulst",
+        "Kapelle",
+        "Middelburg",
+        "Noord-Beveland",
+        "Reimerswaal",
+        "Schouwen-Duiveland",
+        "Sluis",
+        "Terneuzen",
+        "Tholen",
+        "Veere",
+        "Vlissingen",
+      ],
+      "Zuid-Holland": [
+        "Alblasserdam",
+        "Albrandswaard",
+        "Alphen aan den Rijn",
+        "Barendrecht",
+        "Bodegraven-Reeuwijk",
+        "Capelle aan den IJssel",
+        "Delft",
+        "Den Haag",
+        "Dordrecht",
+        "Goeree-Overflakkee",
+        "Gorinchem",
+        "Gouda",
+        "Hardinxveld-Giessendam",
+        "Hendrik-Ido-Ambacht",
+        "Hillegom",
+        "Hoeksche Waard",
+        "Kaag en Braassem",
+        "Katwijk",
+        "Krimpen aan den IJssel",
+        "Krimpenerwaard",
+        "Lansingerland",
+        "Leiden",
+        "Leiderdorp",
+        "Leidschendam-Voorburg",
+        "Lisse",
+        "Maassluis",
+        "Midden-Delfland",
+        "Molenlanden",
+        "Nieuwkoop",
+        "Nissewaard",
+        "Noordwijk",
+        "Oegstgeest",
+        "Papendrecht",
+        "Pijnacker-Nootdorp",
+        "Ridderkerk",
+        "Rijswijk",
+        "Rotterdam",
+        "Schiedam",
+        "Sliedrecht",
+        "Teylingen",
+        "Vlaardingen",
+        "Voorne aan Zee",
+        "Voorschoten",
+        "Waddinxveen",
+        "Wassenaar",
+        "Westland",
+        "Zoetermeer",
+        "Zoeterwoude",
+        "Zuidplas",
+        "Zwijndrecht",
+      ],
+    };
+    return municipalityData[selectedProvince] || [];
   };
 
   // Only add "Uploaded By" filter for volunteers (when not client view and not admin view)
@@ -356,19 +750,35 @@ const VideoGridWithFilters = ({
     defaultFilterOptions["Uploaded By"] = ["Me"];
   }
 
-  const filterOptions = customFilterOptions || defaultFilterOptions;
+  const filterOptions = customFilterOptions || { ...defaultFilterOptions };
+
+  // Add municipality options to filter options if a province is selected
+  if (activeFilters["Provincie"]?.length > 0) {
+    const selectedProvince = activeFilters["Provincie"][0]; // Take the first selected province
+    const municipalities = getMunicipalityOptions(selectedProvince);
+    if (municipalities.length > 0) {
+      filterOptions["Gemeente"] = municipalities;
+    }
+  }
 
   const handleFilterClick = (filter) => {
     setOpenDropdown(openDropdown === filter ? null : filter);
   };
 
   const handleOptionSelect = (filter, option) => {
+    // Store filters using frontend names (not backend names) so parent components can map them correctly
     const updatedFilters = {
       ...activeFilters,
       [filter]: activeFilters[filter]?.includes(option)
         ? activeFilters[filter].filter((item) => item !== option)
         : [...(activeFilters[filter] || []), option],
     };
+
+    // Clear municipality filter if province changes
+    if (filter === "Provincie") {
+      delete updatedFilters["Gemeente"];
+    }
+
     onFilterChange(updatedFilters); // Call prop callback
     setOpenDropdown(null);
   };
@@ -409,16 +819,21 @@ const VideoGridWithFilters = ({
         {/* Filters */}
         {showFilters && (
           <div className="filters flex flex-wrap items-center gap-4 mb-8">
-            {Object.keys(filterOptions).map((filter) => (
-              <FilterButton
-                key={filter}
-                label={filter}
-                onClick={() => handleFilterClick(filter)}
-                isActive={activeFilters[filter]?.length > 0}
-                options={openDropdown === filter ? filterOptions[filter] : []}
-                onOptionSelect={(option) => handleOptionSelect(filter, option)}
-              />
-            ))}
+            {Object.keys(filterOptions).map((filter) => {
+              // Check if this filter has active selections using frontend names
+              return (
+                <FilterButton
+                  key={filter}
+                  label={filter}
+                  onClick={() => handleFilterClick(filter)}
+                  isActive={activeFilters[filter]?.length > 0}
+                  options={openDropdown === filter ? filterOptions[filter] : []}
+                  onOptionSelect={(option) =>
+                    handleOptionSelect(filter, option)
+                  }
+                />
+              );
+            })}
           </div>
         )}
 
@@ -427,22 +842,27 @@ const VideoGridWithFilters = ({
           (key) => activeFilters[key]?.length > 0
         ) && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {Object.entries(activeFilters).map(([filter, options]) =>
-              options?.map((option) => (
+            {Object.entries(activeFilters).map(([filterName, options]) => {
+              // Use frontend filter names directly (no mapping needed)
+              const displayFilterName = filterName;
+
+              return options?.map((option) => (
                 <div
-                  key={`${filter}-${option}`}
+                  key={`${filterName}-${option}`}
                   className="flex items-center gap-2 px-3 py-1 bg-[#381207] text-[#ede4dc] rounded-lg text-sm"
                 >
                   <span>{option}</span>
                   <button
-                    onClick={() => handleOptionSelect(filter, option)}
+                    onClick={() =>
+                      handleOptionSelect(displayFilterName, option)
+                    }
                     className="text-[#ede4dc] hover:text-[#dd9219]"
                   >
                     ×
                   </button>
                 </div>
-              ))
-            )}
+              ));
+            })}
           </div>
         )}
 

@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const CommentModel = require("../models/commentModel");
 const LikeModel = require("../models/likeModel");
 const mongoose = require("mongoose");
+const { sendEmail, emailTemplates } = require("../services/emailService");
 
 const clientLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -85,6 +86,32 @@ const clientSignUp = async (req, res) => {
       endDate: new Date(endDate),
     });
     await newClient.save();
+    // Send emails after successful client registration
+    try {
+      const adminEmail = "crc6892@gmail.com";
+
+      // Send email to user
+      await sendEmail(
+        newClient.email,
+        "Subscription Received - Virtual Wandlen",
+        emailTemplates.individualSubscriptionUser(newClient)
+      );
+
+      // Send email to admin
+      if (adminEmail) {
+        await sendEmail(
+          adminEmail,
+          "New Individual Subscription - Virtual Wandlen",
+          emailTemplates.individualSubscriptionAdmin(newClient)
+        );
+      }
+
+      console.log("Client signup emails sent successfully");
+    } catch (emailError) {
+      console.error("Error sending client signup emails:", emailError);
+      // Don't fail the request if email sending fails
+    }
+
     res.status(201).json({ message: "Client registered successfully" });
   } catch (error) {
     console.error(error);
@@ -99,6 +126,8 @@ const getAllvideos = async (req, res) => {
     search = "",
     duration,
     location,
+    province,
+    municipality,
     season,
     nature,
     animals,
@@ -131,6 +160,16 @@ const getAllvideos = async (req, res) => {
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
       query.location = { $in: locations };
+    }
+    if (province) {
+      const provinces = Array.isArray(province) ? province : [province];
+      query.province = { $in: provinces };
+    }
+    if (municipality) {
+      const municipalities = Array.isArray(municipality)
+        ? municipality
+        : [municipality];
+      query.municipality = { $in: municipalities };
     }
     if (season) {
       const seasons = Array.isArray(season) ? season : [season];

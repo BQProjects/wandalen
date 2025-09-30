@@ -20,6 +20,12 @@ const VideoSchema = new Schema(
     location: {
       type: String,
     },
+    province: {
+      type: String,
+    },
+    municipality: {
+      type: String,
+    },
     description: {
       type: String,
     },

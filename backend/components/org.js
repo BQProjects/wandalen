@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const smsStoreModel = require("../models/smsStoreModel");
 const ClientModel = require("../models/clientModel");
+const { sendEmail, emailTemplates } = require("../services/emailService");
 
 const orgLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -84,6 +85,33 @@ const orgSignUp = async (req, res) => {
 
     await newOrg.save();
     console.log("New organization registered:", newOrg);
+
+    // Send emails after successful organization creation
+    try {
+      const adminEmail = "crc6892@gmail.com";
+
+      // Send email to user
+      await sendEmail(
+        newOrg.contactPerson?.email || newOrg.email,
+        "Quote Request Received - Virtual Wandlen",
+        emailTemplates.quoteRequestUser(newOrg)
+      );
+
+      // Send email to admin
+      if (adminEmail) {
+        await sendEmail(
+          adminEmail,
+          "New Quote Request - Virtual Wandlen",
+          emailTemplates.quoteRequestAdmin(newOrg)
+        );
+      }
+
+      console.log("Organization signup emails sent successfully");
+    } catch (emailError) {
+      console.error("Error sending organization signup emails:", emailError);
+      // Don't fail the request if email sending fails
+    }
+
     return res.status(201).json(newOrg);
   } catch (error) {
     console.error("Org sign-up error:", error);

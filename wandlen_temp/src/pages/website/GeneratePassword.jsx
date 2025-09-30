@@ -29,7 +29,7 @@ const GeneratePassword = () => {
         password,
       });
       console.log("Server response:", res.data);
-      alert("Password set successfully");
+      alert("Password set successfully! You can now log in to your account.");
       navigate("/login");
     } catch (error) {
       console.error(
