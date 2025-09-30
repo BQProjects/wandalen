@@ -12,6 +12,9 @@ const {
   deleteVideo,
   getProfile,
   editProfile,
+  uploadProfilePicture,
+  updatePassword,
+  deleteAccount,
 } = require("../components/volunteer");
 const validateActiveSession = require("../utils/middleware");
 
@@ -45,6 +48,21 @@ volunteerRouter.put(
   "/editProfile/:volunteerId",
   validateActiveSession,
   editProfile
+);
+volunteerRouter.put(
+  "/upload-profile-picture/:volunteerId",
+  validateActiveSession,
+  uploadProfilePicture
+);
+volunteerRouter.put(
+  "/update-password/:volunteerId",
+  validateActiveSession,
+  updatePassword
+);
+volunteerRouter.delete(
+  "/delete-account/:volunteerId",
+  validateActiveSession,
+  deleteAccount
 );
 
 module.exports = volunteerRouter;

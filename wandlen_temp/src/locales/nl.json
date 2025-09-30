@@ -1046,7 +1046,15 @@
         "closeAccountButton": "Uw Account Sluiten",
         "closeAccountDescription": "Om uw account te sluiten, verplaats eerst alle resterende sites naar de prullenbak. Als uw site Premium-abonnementen of verbonden domeinen heeft, moet u deze eerst annuleren of overdragen.",
         "profileUpdatedSuccess": "Profiel succesvol bijgewerkt",
-        "profileUpdateFailed": "Profiel bijwerken mislukt"
+        "profileUpdateFailed": "Profiel bijwerken mislukt",
+        "confirmCloseAccount": "Bevestig Account Sluiten",
+        "closeAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Uw account en alle bijbehorende gegevens worden permanent verwijderd.",
+        "typeToConfirm": "Typ 'sluit mijn account' hieronder om te bevestigen:",
+        "closeMyAccount": "sluit mijn account",
+        "deleteAccount": "Account Verwijderen",
+        "closeAccountConfirmError": "Typ 'sluit mijn account' exact zoals weergegeven",
+        "accountClosedSuccess": "Uw account is succesvol gesloten",
+        "accountCloseError": "Kan account niet sluiten. Probeer het opnieuw."
     },
     "volunteerHome": {
         "welcome": "Welkom bij Virtual Walking!",
@@ -1161,7 +1169,15 @@
         "closeAccountButton": "Uw account sluiten",
         "saveChanges": "Wijzigingen opslaan",
         "cancel": "Annuleren",
-        "editProfile": "Profiel bewerken"
+        "editProfile": "Profiel bewerken",
+        "confirmCloseAccount": "Bevestig Account Sluiten",
+        "closeAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Uw account en alle bijbehorende gegevens worden permanent verwijderd.",
+        "typeToConfirm": "Typ 'sluit mijn account' hieronder om te bevestigen:",
+        "closeMyAccount": "sluit mijn account",
+        "deleteAccount": "Account Verwijderen",
+        "closeAccountConfirmError": "Typ 'sluit mijn account' exact zoals weergegeven",
+        "accountClosedSuccess": "Uw account is succesvol gesloten",
+        "accountCloseError": "Kan account niet sluiten. Probeer het opnieuw."
     },
     "common": {
         "language": "Taal",

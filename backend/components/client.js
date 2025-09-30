@@ -5,7 +5,6 @@ const ReviewModel = require("../models/reviewModel");
 const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
 const bcrypt = require("bcrypt");
-const CommentModel = require("../models/commentModel");
 const LikeModel = require("../models/likeModel");
 const mongoose = require("mongoose");
 const { sendEmail, emailTemplates } = require("../services/emailService");
@@ -430,33 +429,18 @@ const checkLikeStatus = async (req, res) => {
   }
 };
 
-const addComment = async (req, res) => {
-  const { videoId } = req.params;
-  const { username, comment, stars, userId } = req.body;
-  try {
-    const video = await VideoModel.findById(videoId);
-    if (!video) return res.status(404).json({ message: "Video not found" });
-    const newComment = new CommentModel({
-      userName: username,
-      commentText: comment,
-      stars,
-      userId,
-    });
-    await newComment.save();
-    video.comments.push(newComment._id);
-
-    await video.save();
-    res.json({ message: "Comment added successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 const updateAccountInfo = async (req, res) => {
   const clientId = req.params.clientId;
-  const { firstName, lastName, phoneNo, address, postal, country, company } =
-    req.body; // Only allow safe fields to update
+  const {
+    firstName,
+    lastName,
+    phoneNo,
+    address,
+    postal,
+    country,
+    company,
+    profilePic,
+  } = req.body; // Only allow safe fields to update
 
   try {
     const client = await ClientModel.findById(clientId);
@@ -470,9 +454,56 @@ const updateAccountInfo = async (req, res) => {
     if (postal !== undefined) client.postal = postal;
     if (country !== undefined) client.country = country;
     if (company !== undefined) client.company = company;
+    if (profilePic !== undefined) client.profilePic = profilePic;
 
     await client.save();
     res.json({ message: "Profile updated successfully", client });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const uploadProfilePicture = async (req, res) => {
+  const clientId = req.params.clientId;
+  const { profilePicUrl } = req.body;
+
+  try {
+    const client = await ClientModel.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    client.profilePic = profilePicUrl;
+    await client.save();
+
+    res.json({
+      message: "Profile picture updated successfully",
+      profilePic: client.profilePic,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  const clientId = req.params.clientId;
+  const { newPassword } = req.body;
+
+  try {
+    const client = await ClientModel.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    client.password = hashedPassword;
+    await client.save();
+
+    res.json({ message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -492,7 +523,8 @@ module.exports = {
   getVideo,
   addView,
   addLike,
-  addComment,
   updateAccountInfo,
   checkLikeStatus,
+  uploadProfilePicture,
+  updatePassword,
 };

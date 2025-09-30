@@ -71,6 +71,10 @@ const ClientSchema = new Schema(
     endDate: {
       type: Date,
     },
+    profilePic: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
