@@ -39,6 +39,10 @@ const VolunteerSchema = new Schema(
         ref: "Video",
       },
     ],
+    profilePic: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

@@ -25,7 +25,8 @@ import Training from "../pages/website/Traning";
 import VolunteerSignupForm from "../pages/website/VolunteerSignup";
 import ViewBlog from "../pages/website/ViewBlog";
 import Blog from "../pages/website/Blog";
-import GeneratePassword from "../pages/website/GeneratePassword"; //To generate password for organization
+import GeneratePassword from "../pages/website/GeneratePassword";
+import ReadMoreAboutTina from "../pages/website/ReadMoreAboutTina";
 
 // Client page imports (alphabetized)
 import Login from "../pages/website/Login";
@@ -137,6 +138,10 @@ export const router = createBrowserRouter([
         path: "terms",
         element: <TermnCondition />,
       },
+      {
+        path: "read-more",
+        element: <ReadMoreAboutTina />,
+      }
     ],
   },
   // Authentication routes without layouts (no headers)

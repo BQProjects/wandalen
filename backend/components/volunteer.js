@@ -364,6 +364,69 @@ const editProfile = async (req, res) => {
   }
 };
 
+const uploadProfilePicture = async (req, res) => {
+  const { volunteerId } = req.params;
+  const { profilePicUrl } = req.body;
+
+  try {
+    const volunteer = await VolunteerModel.findById(volunteerId);
+    if (!volunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+
+    volunteer.profilePic = profilePicUrl;
+    await volunteer.save();
+
+    res.json({
+      message: "Profile picture updated successfully",
+      profilePic: volunteer.profilePic,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  const { volunteerId } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const volunteer = await VolunteerModel.findById(volunteerId);
+    if (!volunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    volunteer.password = hashedPassword;
+    await volunteer.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteAccount = async (req, res) => {
+  const { volunteerId } = req.params;
+
+  try {
+    const volunteer = await VolunteerModel.findByIdAndDelete(volunteerId);
+
+    if (!volunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+
+    res.json({ message: "Volunteer account deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   volunteerLogin,
   volunteerSigUp,
@@ -376,4 +439,7 @@ module.exports = {
   deleteVideo,
   getProfile,
   editProfile,
+  uploadProfilePicture,
+  updatePassword,
+  deleteAccount,
 };

@@ -10,7 +10,7 @@ import leaf from "../../assets/leaf.svg";
 import click from "../../assets/click.svg";
 import human from "../../assets/walkinghuman.svg";
 import wheelchair from "../../assets/wheelchair.png";
-import girl from "../../assets/girl.png";
+import girl from "../../assets/tinasection.jpg";
 import walking from "../../assets/walking.png";
 import camera from "../../assets/camera.png";
 import PreviewExperience from "../../components/PreviewExperience";
@@ -1156,33 +1156,38 @@ const Aran = () => {
 
       {/* Tina Section */}
       <div className="w-full bg-[#ede4dc] py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
-              {/* Left Content */}
-              <div className="space-y-6 sm:space-y-8">
-                <div className="space-y-3 sm:space-y-4">
-                  <h3 className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-2xl font-semibold leading-tight">
-                    {t("dawnForest.tinaSection.title")}
-                  </h3>
-                  <blockquote className="text-[#381207] font-['Poppins'] text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left sm:text-justify">
-                    {t("dawnForest.tinaSection.quote")}
-                  </blockquote>
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
+                {/* Left Content */}
+                <div className="space-y-6 sm:space-y-8">
+                  <div className="space-y-3 sm:space-y-4">
+                    <h3 className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-2xl font-semibold leading-tight">
+                      {t("dawnForest.tinaSection.title")}
+                    </h3>
+                    <blockquote className="text-[#381207] font-['Poppins'] text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left">
+                      {t("dawnForest.tinaSection.quote")}
+                    </blockquote>
+                  </div>
+                  <div className="flex justify-start">
+                    <button
+                      className="cursor-pointer px-3 sm:px-4 py-2 bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg transition-all hover:bg-[#8a8f39] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50 w-full sm:w-auto"
+                      onClick={() => (window.location.href = "/read-more")}
+                    >
+                      {t("dawnForest.tinaSection.readMore")}
+                    </button>
+                  </div>
                 </div>
-                <div className="flex justify-start">
-                  <button className="cursor-pointer px-3 sm:px-4 py-2 bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg transition-all hover:bg-[#8a8f39] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50 w-full sm:w-auto">
-                    {t("dawnForest.tinaSection.readMore")}
-                  </button>
-                </div>
-              </div>
 
-              {/* Right Image */}
-              <div className="flex justify-center lg:justify-end mt-6 lg:mt-0">
-                <img
-                  src={girl}
-                  alt="Tina"
-                  className="w-full max-w-[250px] sm:max-w-[300px] md:max-w-sm h-auto rounded-lg object-cover"
-                />
+                {/* Right Image */}
+                <div className="flex justify-center lg:justify-end mt-6 lg:mt-0">
+                  <img
+                    src={girl}
+                    alt="Tina"
+                    className="w-full max-w-[250px] sm:max-w-[500px] md:max-w-sm h-auto min-h-[500px] rounded-xl object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>

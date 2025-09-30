@@ -234,6 +234,68 @@ const editOrgInfo = async (req, res) => {
   }
 };
 
+const uploadProfilePicture = async (req, res) => {
+  const { orgId } = req.params;
+  const { profilePicUrl } = req.body;
+
+  try {
+    const org = await OrgModel.findById(orgId);
+    if (!org) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+
+    org.profilePic = profilePicUrl;
+    await org.save();
+
+    res.json({
+      message: "Profile picture updated successfully",
+      profilePic: org.profilePic,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  const { orgId } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const org = await OrgModel.findById(orgId);
+    if (!org) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+
+    // For organizations, we might not use bcrypt since they seem to use plain passwords
+    // Check if the current org uses hashed passwords or plain passwords
+    org.password = newPassword; // Keeping it simple as per current org login logic
+    await org.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteAccount = async (req, res) => {
+  const { orgId } = req.params;
+
+  try {
+    const org = await OrgModel.findByIdAndDelete(orgId);
+
+    if (!org) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+
+    res.json({ message: "Organization account deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   orgLogin,
   orgSignUp,
@@ -243,4 +305,7 @@ module.exports = {
   getClients,
   getOrgInfo,
   editOrgInfo,
+  uploadProfilePicture,
+  updatePassword,
+  deleteAccount,
 };

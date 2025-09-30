@@ -9,6 +9,9 @@ const {
   getClients,
   getOrgInfo,
   editOrgInfo,
+  uploadProfilePicture,
+  updatePassword,
+  deleteAccount,
 } = require("../components/org");
 
 const orgRouter = express.Router();
@@ -24,5 +27,8 @@ orgRouter.get("/getClients/:orgId", getClients);
 orgRouter.get("/getOrg/:orgId", getOrgInfo);
 
 orgRouter.put("/editOrg/:orgId", editOrgInfo);
+orgRouter.put("/upload-profile-picture/:orgId", uploadProfilePicture);
+orgRouter.put("/update-password/:orgId", updatePassword);
+orgRouter.delete("/delete-account/:orgId", deleteAccount);
 
 module.exports = orgRouter;

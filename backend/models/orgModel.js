@@ -99,6 +99,10 @@ const OrgSchema = new Schema(
     planValidTo: {
       type: String,
     },
+    profilePic: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
