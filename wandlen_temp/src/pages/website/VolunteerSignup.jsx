@@ -113,7 +113,10 @@ const VolunteerSignupForm = () => {
         address: `${formData.street}, ${formData.city}`,
       });
       if (res.status === 201) {
-        alert(t("volunteerSignup.form.messages.signupSuccess"));
+        alert(
+          t("volunteerSignup.form.messages.signupSuccess") +
+            " A confirmation email has been sent to your email address."
+        );
         console.log(res.data);
         setFormData({
           firstName: "",

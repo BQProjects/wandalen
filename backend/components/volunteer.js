@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const smsStoreModel = require("../models/smsStoreModel");
 const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
+const { sendEmail, emailTemplates } = require("../services/emailService");
 
 const volunteerLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -52,7 +53,35 @@ const volunteerSigUp = async (req, res) => {
       postal,
       address,
     });
+
     await newVolunteer.save();
+
+    // Send emails after successful volunteer creation
+    try {
+      const adminEmail = "crc6892@gmail.com";
+
+      // Send email to user
+      await sendEmail(
+        newVolunteer.email,
+        "Welcome to Virtual Wandlen - Volunteer Registration Confirmed",
+        emailTemplates.volunteerSignupUser(newVolunteer)
+      );
+
+      // Send email to admin
+      if (adminEmail) {
+        await sendEmail(
+          adminEmail,
+          "New Volunteer Registration - Virtual Wandlen",
+          emailTemplates.volunteerSignupAdmin(newVolunteer)
+        );
+      }
+
+      console.log("Volunteer signup emails sent successfully");
+    } catch (emailError) {
+      console.error("Error sending volunteer signup emails:", emailError);
+      // Don't fail the request if email sending fails
+    }
+
     res.status(201).json({ message: "Volunteer registered successfully" });
   } catch (error) {
     console.error(error);
@@ -65,6 +94,8 @@ const uploadVideos = async (req, res) => {
     title,
     url,
     location,
+    province,
+    municipality,
     description,
     season,
     nature,
@@ -83,6 +114,8 @@ const uploadVideos = async (req, res) => {
       url,
       uploaderModel: "Volunteer",
       location,
+      province,
+      municipality,
       description,
       season,
       nature,
@@ -114,6 +147,8 @@ const selfUploaded = async (req, res) => {
     search = "",
     duration,
     location,
+    province,
+    municipality,
     season,
     nature,
     animals,
@@ -156,6 +191,16 @@ const selfUploaded = async (req, res) => {
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
       query.location = { $in: locations };
+    }
+    if (province) {
+      const provinces = Array.isArray(province) ? province : [province];
+      query.province = { $in: provinces };
+    }
+    if (municipality) {
+      const municipalities = Array.isArray(municipality)
+        ? municipality
+        : [municipality];
+      query.municipality = { $in: municipalities };
     }
     if (season) {
       const seasons = Array.isArray(season) ? season : [season];

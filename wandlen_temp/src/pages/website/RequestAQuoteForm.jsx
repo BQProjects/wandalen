@@ -179,8 +179,11 @@ const RequestAQuoteForm = () => {
         mappedFormData
       );
       console.log("Form submitted successfully:", response.data);
-      alert(t("requestQuoteForm.form.messages.success"));
-      // navigate("/generate-pass/" + response.data._id);
+      alert(
+        t("requestQuoteForm.form.messages.success") +
+          " A confirmation email has been sent to your email address. Our support team will get back to you soon."
+      );
+      navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error);
       alert(t("requestQuoteForm.form.messages.error"));

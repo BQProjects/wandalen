@@ -38,6 +38,13 @@ const AddCustomer = () => {
 
   useEffect(() => {
     if (user) {
+      // Plan Details
+      setAmountPaid(user.amountPaid || "€ 120,00");
+      setPlanValidFrom(user.planValidFrom || "2025-07-01");
+      setPlanValidTo(user.planValidTo || "2026-08-31");
+      setClientLimit(user.clientLimit || "");
+
+      // Organization Details
       setOrgName(user.orgName || "");
       setContactEmail(user.email || "");
       setPhoneNo(user.phoneNo || "");
@@ -46,10 +53,14 @@ const AddCustomer = () => {
       setPostalCode(user.postal || "");
       setCity(user.city || "");
       setWebsite(user.website || "");
+
+      // Contact Person
       setFullName(user.contactPerson?.fullName || "");
       setJobTitle(user.contactPerson?.jobTitle || "");
       setEmail(user.contactPerson?.email || "");
       setContactPhone(user.contactPerson?.phoneNumber || "");
+
+      // Organization & Target Group
       setTotalClients(user.totalClients || "");
       setNumberOfLocations(user.numberOfLocations || "");
       setTargetGroup(user.targetGroup || []);
@@ -59,10 +70,13 @@ const AddCustomer = () => {
           ? new Date(user.desiredStartDate).toISOString().split("T")[0]
           : ""
       );
+
+      // Onboarding
       setNeedSupport(user.needIntegrationSupport || false);
       setAdditionalServices(user.additionalServices || "");
       setNotes(user.notes || "");
-      setClientLimit(user.clientLimit || "");
+
+      // Sync users display
       setNoOfUsers(
         user.totalClients ? `${user.totalClients} users` : "10 users"
       );
@@ -153,6 +167,23 @@ const AddCustomer = () => {
       }
 
       console.log("Response from backend:", response.data);
+
+      // Show success message with email confirmation
+      const isUpdate = user?.requestStates === "approved";
+      const action = isUpdate ? "updated" : "created";
+
+      if (isUpdate) {
+        alert(
+          `Organization ${action} successfully! ` +
+            `Confirmation emails have been sent to the customer and admin team.`
+        );
+      } else {
+        alert(
+          `Organization ${action} successfully! ` +
+            `Confirmation emails have been sent to the customer and admin team. ` +
+            `The customer will receive a password setup link to complete their account activation.`
+        );
+      }
 
       // Navigate with the updated user data
       navigate("/admin/organization-created", {

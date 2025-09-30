@@ -277,12 +277,15 @@ const PaymentPageForIndividual = () => {
           expiryDate: formData.expiryDate,
           cvc: formData.cvc,
         },
-        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // Example: 1 year from now
+        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
       };
 
       const res = await axios.post(`${DATABASE_URL}/client/signup`, signupData);
       console.log("Sign up response:", res.data);
-      alert(t("payment.messages.signupSuccess"));
+      alert(
+        t("payment.messages.signupSuccess") +
+          " A confirmation email has been sent to your email address. Our support team will get back to you soon with setup instructions."
+      );
       navigate("/login");
     } catch (error) {
       console.error("Error during sign up:", error);
