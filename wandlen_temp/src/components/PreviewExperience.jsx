@@ -93,10 +93,7 @@ const PreviewExperience = () => {
       <div className=" mx-auto">
         {/* Header */}
         <div className="flex flex-col items-start gap-2 max-w-[1136px] mb-8">
-          <div className="text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#5b6502] font-[Poppins]">
-            {t("previewExperience.title")}
-          </div>
-          <div className="max-w-[835px] opacity-[0.8] text-[#381207] font-[Poppins] text-2xl lg:text-4xl xl:text-[48px] font-semibold">
+          <div className="max-w-[835px] opacity-[0.8] text-[#5b6502] font-[Poppins] text-2xl lg:text-4xl xl:text-[48px] font-semibold">
             {t("previewExperience.subtitle")}
           </div>
         </div>

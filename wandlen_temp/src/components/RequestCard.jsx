@@ -186,9 +186,12 @@ const RequestCard = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="text-white text-center font-['Poppins'] text-xl sm:text-2xl font-medium leading-normal">
-                  {t("requestCard.homeUsers.title")}
-                </h3>
+                <h3
+                  className="text-white text-center font-['Poppins'] text-xl sm:text-2xl font-medium leading-normal"
+                  dangerouslySetInnerHTML={{
+                    __html: t("requestCard.homeUsers.title"),
+                  }}
+                ></h3>
                 <div className="flex flex-col gap-3 sm:gap-4 w-full">
                   <div className="flex flex-col items-start gap-2 sm:gap-3">
                     <div className="flex items-center gap-2 sm:gap-3">

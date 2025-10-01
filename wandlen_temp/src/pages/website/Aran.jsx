@@ -9,10 +9,10 @@ import RequestCard from "../../components/RequestCard";
 import leaf from "../../assets/leaf.svg";
 import click from "../../assets/click.svg";
 import human from "../../assets/walkinghuman.svg";
-import wheelchair from "../../assets/wheelchair.png";
+import wheelchair from "../../assets/wheelchair.jpg";
 import girl from "../../assets/tinasection.jpg";
-import walking from "../../assets/walking.png";
-import camera from "../../assets/camera.png";
+import walking from "../../assets/walking.jpg";
+import camera from "../../assets/CameraTips.png";
 import PreviewExperience from "../../components/PreviewExperience";
 import Mute from "../../assets/Mute.svg";
 import UnMute from "../../assets/UnMute.svg";
@@ -167,7 +167,7 @@ const Aran = () => {
             <h1 className="text-xl sm:text-2xl md:text-[32px] font-semibold text-[#A6A643] mb-2 sm:mb-4 font-poppins tracking-wide">
               {t("aran.hero.title")}
             </h1>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold text-white mb-3 sm:mb-6 leading-tight font-poppins">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-3 sm:mb-6 leading-tight font-poppins">
               {t("aran.hero.subtitle")}
             </h2>
             <p className="text-base sm:text-lg md:text-xl font-medium text-white mb-4 sm:mb-8 leading-relaxed font-poppins max-w-xl">
@@ -550,6 +550,16 @@ const Aran = () => {
               </div>
             </div>
           </div>
+
+          {/* Watch Now Button */}
+          <div className="mt-8 sm:mt-12 text-center">
+            <button
+              className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
+              onClick={() => (window.location.href = "/subscribe")}
+            >
+              {t("positiveExperiences.watchNow")}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -719,6 +729,7 @@ const Aran = () => {
                 ref={scrollRef}
                 className="scroll-container flex gap-4 overflow-x-auto whitespace-nowrap flex-1"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                onClick={() => (window.location.href = "/subscribe")}
               >
                 <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Dalfsen
@@ -800,9 +811,16 @@ const Aran = () => {
 
               <button
                 className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                onClick={() => (window.location.href = "/become-volunteer")}
+                onClick={() => (window.location.href = "/subscribe")}
               >
                 {t("dawnForest.discoverRoutes.exploreFeature")}
+              </button>
+
+              <button
+                className="cursor-pointer ml-6 inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
+                onClick={() => (window.location.href = "/become-volunteer")}
+              >
+                {t("dawnForest.discoverRoutes.moreAboutVolunteering")}
               </button>
             </div>
           </div>
@@ -815,7 +833,7 @@ const Aran = () => {
         className={`flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-12 py-8 px-4 sm:py-12 sm:px-6 md:py-16 md:px-12 lg:p-20 w-full transition-all duration-500 ${
           activeTab === "organizations"
             ? "bg-[#1f1915]"
-            : activeTab === "families"
+            : activeTab === "Thuis"
             ? "bg-[#ede4dc]"
             : activeTab === "volunteer"
             ? "bg-[#1f1915]"
@@ -836,9 +854,9 @@ const Aran = () => {
               {t("dawnForest.organizationsTabs.organizations")}
             </button>
             <button
-              onClick={() => setActiveTab("families")}
+              onClick={() => setActiveTab("Thuis")}
               className={`cursor-pointer flex justify-center items-center gap-2.5 py-2 px-3 sm:px-4 rounded-lg font-['Poppins'] text-base sm:text-lg md:text-xl lg:text-2xl leading-[136%] transition-all whitespace-nowrap ${
-                activeTab === "families"
+                activeTab === "Thuis"
                   ? "bg-[#5b6502] text-white"
                   : "bg-[#f7f6f4] text-[#4b4741] hover:bg-[#e5e3df]"
               }`}
@@ -868,7 +886,7 @@ const Aran = () => {
                   {activeTab === "organizations" &&
                     (t("dawnForest.organizationsTabs.organizationsTitle") ||
                       "Virtual Walking for Organizations")}
-                  {activeTab === "families" &&
+                  {activeTab === "Thuis" &&
                     (t("dawnForest.organizationsTabs.familiesTitle") ||
                       "Virtual Walking at Home")}
                   {activeTab === "volunteer" &&
@@ -876,8 +894,8 @@ const Aran = () => {
                       "Virtual Walking as a Volunteer")}
                 </div>
                 <div
-                  className={`w-full text-white font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight ${
-                    activeTab === "families" ? "text-[#381207]" : ""
+                  className={`w-full font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight ${
+                    activeTab === "Thuis" ? "text-[#381207]" : "text-white"
                   }`}
                 >
                   {activeTab === "organizations" &&
@@ -886,7 +904,7 @@ const Aran = () => {
                   {activeTab === "volunteer" &&
                     (t("dawnForest.organizationsTabs.volunteerSubtitle") ||
                       "Share walks, spread joy.")}
-                  {activeTab === "families" &&
+                  {activeTab === "Thuis" &&
                     (t("dawnForest.organizationsTabs.familiesSubtitle") ||
                       "Nature's beauty, just a click away.")}
                 </div>
@@ -965,7 +983,7 @@ const Aran = () => {
                   </>
                 )}
 
-                {activeTab === "families" && (
+                {activeTab === "Thuis" && (
                   <>
                     {(Array.isArray(
                       t("dawnForest.organizationsTabs.familiesBenefits", {
@@ -1108,7 +1126,7 @@ const Aran = () => {
               to={
                 activeTab === "organizations"
                   ? "/request-quote"
-                  : activeTab === "families"
+                  : activeTab === "Thuis"
                   ? "/subscribe"
                   : "/volunteer-signup"
               }
@@ -1117,7 +1135,7 @@ const Aran = () => {
               <div className="cursor-pointer hover:bg-[#5B6502] flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg lg:text-xl font-medium leading-tight transition-all w-full sm:w-auto">
                 {activeTab === "organizations" &&
                   (t("dawnForest.organizationsTabs.getQuote") || "Get a Quote")}
-                {activeTab === "families" &&
+                {activeTab === "Thuis" &&
                   (t("dawnForest.organizationsTabs.subscribeNow") ||
                     "Subscribe Now")}
                 {activeTab === "volunteer" &&
@@ -1128,7 +1146,7 @@ const Aran = () => {
           </div>
 
           {/* Right Image */}
-          <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden">
+          <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[800px] rounded-lg overflow-hidden">
             {activeTab === "organizations" && (
               <img
                 src={wheelchair}
@@ -1136,7 +1154,7 @@ const Aran = () => {
                 className="w-full h-full object-cover rounded-lg"
               />
             )}
-            {activeTab === "families" && (
+            {activeTab === "Thuis" && (
               <img
                 src={walking}
                 alt="Virtual Walking at Home"

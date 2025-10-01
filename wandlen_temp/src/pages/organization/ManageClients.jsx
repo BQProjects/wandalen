@@ -270,7 +270,7 @@ const ManageClients = () => {
                     {t("manageClients.totalAmountPaid")}
                   </div>
                   <div className="flex flex-col justify-center self-stretch h-10 text-[#381207] font-['Poppins'] text-[2rem] font-medium leading-[normal]">
-                    {orgData?.totalPaid || "€1,250"}
+                    {orgData?.amountPaid}
                   </div>
                 </div>
                 <div className="text-[#381207] font-['Poppins'] text-lg leading-[normal]">

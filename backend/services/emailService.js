@@ -156,9 +156,9 @@ const emailTemplates = {
         <li><strong>Number of Locations:</strong> ${
           formData.numberLocations
         }</li>
-        <li><strong>Target Groups:</strong> ${formData.targetGroups.join(
-          ", "
-        )}</li>
+        <li><strong>Target Groups:</strong> ${
+          formData.soortZorgorganisatie
+        }</li>
         <li><strong>Estimated Users:</strong> ${formData.estimatedClients}</li>
         <li><strong>Desired Start Date:</strong> ${formData.startDate}</li>
         <li><strong>Onboarding Support:</strong> ${
@@ -382,11 +382,10 @@ const emailTemplates = {
           orgData.numberOfLocations,
           "Not specified"
         )}</li>
-        <li><strong>Target Groups:</strong> ${
-          orgData.targetGroup && orgData.targetGroup.length > 0
-            ? orgData.targetGroup.join(", ")
-            : "Not specified"
-        }</li>
+        <li><strong>Type of Care Organization:</strong> ${getDisplayValue(
+          orgData.soortZorgorganisatie,
+          "Not specified"
+        )}</li>
         <li><strong>Estimated Users:</strong> ${getDisplayValue(
           orgData.estimatedUsers,
           "Not specified"

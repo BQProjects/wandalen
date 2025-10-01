@@ -267,20 +267,20 @@ const VolunteerSignupForm = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Street
+                    {t("volunteerSignup.form.labels.street")}
                   </label>
                   <input
                     type="text"
                     name="street"
                     value={formData.street}
                     onChange={handleInputChange}
-                    placeholder="Street"
+                    placeholder={t("volunteerSignup.form.placeholders.street")}
                     className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
                   />
                 </div>
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">
-                    Postal Code
+                    {t("volunteerSignup.form.labels.postalCode")}
                   </label>
                   <input
                     type="text"
@@ -288,7 +288,9 @@ const VolunteerSignupForm = () => {
                     value={formData.postalCode}
                     onChange={handleInputChange}
                     onInput={handleNumberInput}
-                    placeholder="Postal Code"
+                    placeholder={t(
+                      "volunteerSignup.form.placeholders.postalCode"
+                    )}
                     className="w-full p-3 rounded-lg border border-[#cbcbcb] text-[#381207] focus:outline-none focus:ring-2 focus:ring-[#a6a643]"
                   />
                 </div>

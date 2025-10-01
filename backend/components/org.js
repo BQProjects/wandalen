@@ -40,13 +40,17 @@ const orgSignUp = async (req, res) => {
     postalCode,
     city,
     website,
+    orgFullName,
+    orgJobTitle,
+    orgEmailAddress,
+    orgPhoneContact,
     fullName,
     jobTitle,
     emailAddress,
     phoneContact,
     totalClients,
     numberLocations,
-    targetGroups,
+    soortZorgorganisatie,
     estimatedClients,
     startDate,
     onboardingSupport,
@@ -54,12 +58,13 @@ const orgSignUp = async (req, res) => {
     additionalServices,
     notes,
     agreeToTerms,
+    newsletter,
   } = req.body;
 
   try {
     const newOrg = new OrgModel({
       orgName: organizationName,
-      email: emailAddress,
+      email: contactEmail, // main email from organization details
       password: "", // maybe auto-generated or handled later
       phoneNo: phone,
       address: address,
@@ -67,19 +72,27 @@ const orgSignUp = async (req, res) => {
       city: city,
       website,
       contactPerson: {
-        fullName,
-        jobTitle,
-        email: contactEmail,
+        fullName: fullName, // contact person
+        jobTitle: jobTitle,
+        email: emailAddress,
         phoneNumber: phoneContact,
       },
-      totalClients: Number(totalClients),
-      targetGroup: targetGroups,
-      numberOfLocations: Number(numberLocations),
-      estimatedUsers: Number(estimatedClients),
+      organizationDetails: {
+        fullName: orgFullName,
+        jobTitle: orgJobTitle,
+        email: orgEmailAddress,
+        phoneNumber: orgPhoneContact,
+      },
+      totalClients: totalClients,
+      targetGroup: [], // soortZorgorganisatie is separate
+      numberOfLocations: numberLocations,
+      estimatedUsers: estimatedClients,
       desiredStartDate: new Date(startDate),
       needIntegrationSupport: onboardingSupport === "Yes",
       additionalServices,
       notes,
+      soortZorgorganisatie,
+      newsletter,
       requestStates: "requested",
     });
 

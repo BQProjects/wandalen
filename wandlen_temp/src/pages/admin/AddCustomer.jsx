@@ -26,9 +26,14 @@ const AddCustomer = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [email, setEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  // New organization details fields
+  const [orgFullName, setOrgFullName] = useState("");
+  const [orgJobTitle, setOrgJobTitle] = useState("");
+  const [orgEmailAddress, setOrgEmailAddress] = useState("");
+  const [orgPhoneContact, setOrgPhoneContact] = useState("");
   const [totalClients, setTotalClients] = useState("");
   const [numberOfLocations, setNumberOfLocations] = useState("");
-  const [targetGroup, setTargetGroup] = useState([]);
+  const [soortZorgorganisatie, setSoortZorgorganisatie] = useState("");
   const [estimatedClients, setEstimatedClients] = useState("");
   const [startDate, setStartDate] = useState("");
   const [needSupport, setNeedSupport] = useState(false);
@@ -60,10 +65,16 @@ const AddCustomer = () => {
       setEmail(user.contactPerson?.email || "");
       setContactPhone(user.contactPerson?.phoneNumber || "");
 
+      // Organization Details
+      setOrgFullName(user.organizationDetails?.fullName || "");
+      setOrgJobTitle(user.organizationDetails?.jobTitle || "");
+      setOrgEmailAddress(user.organizationDetails?.email || "");
+      setOrgPhoneContact(user.organizationDetails?.phoneNumber || "");
+
       // Organization & Target Group
       setTotalClients(user.totalClients || "");
       setNumberOfLocations(user.numberOfLocations || "");
-      setTargetGroup(user.targetGroup || []);
+      setSoortZorgorganisatie(user.soortZorgorganisatie || "");
       setEstimatedClients(user.estimatedUsers || "");
       setStartDate(
         user.desiredStartDate
@@ -75,31 +86,17 @@ const AddCustomer = () => {
       setNeedSupport(user.needIntegrationSupport || false);
       setAdditionalServices(user.additionalServices || "");
       setNotes(user.notes || "");
-
-      // Sync users display
-      setNoOfUsers(
-        user.totalClients ? `${user.totalClients} users` : "10 users"
-      );
     }
   }, [user]);
-
-  // Added to keep totalClients and clientLimit synchronized
-  useEffect(() => {
-    if (totalClients) {
-      setClientLimit(totalClients);
-    }
-  }, [totalClients]);
 
   const handleBack = () => {
     navigate("/admin/manage");
   };
 
-  // Custom handler for totalClients to sync with noOfUsers
+  // Custom handler for totalClients
   const handleTotalClientsChange = (e) => {
     const value = e.target.value;
     setTotalClients(value);
-    setNoOfUsers(`${value} users`);
-    setClientLimit(value); // Also update clientLimit
   };
 
   // Custom handler for noOfUsers to sync with totalClients
@@ -114,11 +111,9 @@ const AddCustomer = () => {
   const handleClientLimitChange = (e) => {
     const value = e.target.value;
     setClientLimit(value);
-    setTotalClients(value);
   };
 
   const handleCreateUser = async () => {
-    // Prepare data to send - include ALL form fields
     const data = {
       amountPaid,
       planValidFrom,
@@ -138,9 +133,15 @@ const AddCustomer = () => {
         email,
         phoneNumber: contactPhone,
       },
-      totalClients: totalClients ? parseInt(totalClients, 10) : 0,
+      organizationDetails: {
+        fullName: orgFullName,
+        jobTitle: orgJobTitle,
+        email: orgEmailAddress,
+        phoneNumber: orgPhoneContact,
+      },
+      totalClients: totalClients,
       numberOfLocations,
-      targetGroup,
+      soortZorgorganisatie,
       estimatedUsers: estimatedClients,
       desiredStartDate: startDate,
       needIntegrationSupport: needSupport,
@@ -383,6 +384,55 @@ const AddCustomer = () => {
           </div>
         </div>
 
+        {/* Organization Representative */}
+        <div>
+          <h2 className="text-2xl font-medium text-muted-foreground mb-4">
+            Organization Representative
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-muted-foreground font-base text-sm mb-2">
+                Full Name
+              </label>
+              <input
+                className="input"
+                value={orgFullName}
+                onChange={(e) => setOrgFullName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-muted-foreground font-base text-sm mb-2">
+                Job Title / Position
+              </label>
+              <input
+                className="input"
+                value={orgJobTitle}
+                onChange={(e) => setOrgJobTitle(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-muted-foreground font-base text-sm mb-2">
+                Email Address
+              </label>
+              <input
+                className="input"
+                value={orgEmailAddress}
+                onChange={(e) => setOrgEmailAddress(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-muted-foreground font-base text-sm mb-2">
+                Phone Number
+              </label>
+              <input
+                className="input"
+                value={orgPhoneContact}
+                onChange={(e) => setOrgPhoneContact(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Contact Person */}
         <div>
           <h2 className="text-2xl font-medium text-muted-foreground mb-4">
@@ -442,11 +492,7 @@ const AddCustomer = () => {
               <label className="block text-muted-foreground font-base text-sm mb-2">
                 Total Number of Clients
               </label>
-              <input
-                className="input"
-                value={totalClients}
-                onChange={handleTotalClientsChange}
-              />
+              <input className="input" value={totalClients} />
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
@@ -459,32 +505,22 @@ const AddCustomer = () => {
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-muted-foreground font-base font-medium mb-2">
-                Target group(s) for which the platform will be used
+              <label className="block text-muted-foreground font-base text-sm mb-2">
+                Type of care organization
               </label>
-              <div className="flex flex-wrap gap-4">
-                {["elderly", "disabled", "dementia", "other"].map((group) => (
-                  <div key={group} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={targetGroup.includes(group)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setTargetGroup([...targetGroup, group]);
-                        } else {
-                          setTargetGroup(
-                            targetGroup.filter((g) => g !== group)
-                          );
-                        }
-                      }}
-                      className="w-4 h-4"
-                    />
-                    <span className="text-dark-green font-base text-sm">
-                      {group.charAt(0).toUpperCase() + group.slice(1)}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <select
+                className="input"
+                value={soortZorgorganisatie}
+                onChange={(e) => setSoortZorgorganisatie(e.target.value)}
+              >
+                <option value="">Select type</option>
+                <option value="Nursing home">Nursing home</option>
+                <option value="Disability care">Disability care</option>
+                <option value="Mental health care">Mental health care</option>
+                <option value="Home care">Home care</option>
+                <option value="Day care">Day care</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
           </div>
         </div>
