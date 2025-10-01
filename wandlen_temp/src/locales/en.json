@@ -52,8 +52,8 @@
             "description": "Imagine: a forest walk, the rustling of leaves and singing birds. For people with dementia such a nature experience can mean a lot. Virtual Walking brings this experience close, right from home or a care facility. It offers peace, relaxation and recognition.",
             "features": {
                 "exploreNature": "Explore Overijssel's Nature Videos",
-                "simpleViewing": "Enjoy Unique & Simple Viewing",
-                "instantWatch": "Watch Instantly with One Click"
+                "simpleViewing": "Enjoy Unique & Simple<br /> Viewing",
+                "instantWatch": "Watch Instantly with<br /> One Click"
             }
         },
         "chat": {
@@ -74,7 +74,7 @@
         "lastNameLabel": "Last name",
         "lastNamePlaceholder": "Last name",
         "notesLabel": "Notes",
-        "notesPlaceholder": "E.g. Add special billing instructions",
+        "notesPlaceholder": "I would like to stay informed about Virtual Walking...",
         "subscribeButton": "Subscribe",
         "imageAlt": "Holding hands in nature"
     },
@@ -95,7 +95,7 @@
             "button": "Request a Quote"
         },
         "homeUsers": {
-            "title": "Virtueel Wandelen at Home €12,99 per month",
+            "title": "Virtueel Wandelen at Home<br />€12.99 per month",
             "features": {
                 "affordable": "Affordable – €12.99/month unlimited access",
                 "videos": "100+ Videos – New walks monthly",
@@ -107,8 +107,8 @@
         }
     },
     "testimonials": {
-        "title": "Testimonials",
-        "subtitle": "Our Success Stories",
+        "title": "Volunteers",
+        "subtitle": "why we participate",
         "readMore": "Read More",
         "readLess": "Read Less",
         "items": [
@@ -155,19 +155,10 @@
             {
                 "question": "Can I choose walks by theme or location?",
                 "answer": "Absolutely! Virtual Walking offers a wide variety of walks categorized by themes (e.g., forest, beach, mountain) and specific locations from around the world, allowing you to choose based on your preferences."
-            },
-            {
-                "question": "Can Virtual Walking be used independently?",
-                "answer": "Yes, Virtual Walking is designed for independent use. The interface is user-friendly, and you can navigate through walks at your own pace without assistance."
-            },
-            {
-                "question": "Do I need to be able to walk to use Virtual Walking?",
-                "answer": "No physical walking ability is required. Virtual Walking is entirely virtual, so you can enjoy the experience from a seated position or even while lying down."
             }
         ]
     },
     "previewExperience": {
-        "title": "Preview Your Experience",
         "subtitle": "See how it looks on laptop, tablet, and mobile",
         "devices": {
             "desktop": "Desktop View",
@@ -223,6 +214,7 @@
             "inspireDescription1": "Have a scenic or special route we haven't covered yet? Log in and submit your favorite – we might feature it in our next video!",
             "inspireDescription2": "We publish new videos and community-suggested routes every month, so keep exploring and stay inspired.",
             "exploreFeature": "Explore this feature",
+            "moreAboutVolunteering": "More about volunteering",
             "formTitle": "Got a special location in mind? Tell us about it!",
             "emailLabel": "Your Email",
             "emailPlaceholder": "name@example.com",
@@ -570,7 +562,7 @@
                 "year": "year"
             }
         },
-        "discountBadge": "25% discount"
+        "discountBadge": "20% discount"
     },
     "payment": {
         "header": {
@@ -751,7 +743,6 @@
         }
     },
     "chooseYourExperience": {
-        "title": "Choose Your Experience",
         "subtitle": "Select the option that best fits you.",
         "organization": {
             "title": "For Care Organizations",
@@ -767,7 +758,7 @@
     "requestQuoteForm": {
         "header": {
             "title": "Get a Custom Quote",
-            "subtitle": "Tell us a bit about your organization or family. We'll help you take the next step toward meaningful, nature-connected experiences. Just fill in the details, and we'll get back to you shortly with a tailored quote."
+            "subtitle": "Tell us about your organization. We'll help you take the next step toward meaningful, nature-connected experiences. Fill in the details below and we'll get back to you shortly with a tailored quote."
         },
         "form": {
             "title": "Please fill in the details below",
@@ -776,11 +767,12 @@
                 "contactPerson": "Contact person",
                 "organizationTargetGroup": "Organization & Target Group",
                 "virtualWalkingUse": "Use of Virtual Walking",
+                "extraInfo": "Extra information",
                 "quotationSetup": "Quotation & set-up fee"
             },
             "labels": {
                 "organizationName": "Organization Name",
-                "contactEmail": "Contact Email",
+                "contactEmail": "Organization Email",
                 "phoneNumber": "Phone Number",
                 "address": "Address",
                 "street": "Street",
@@ -790,14 +782,17 @@
                 "fullName": "Full Name",
                 "jobTitle": "Job Title / Position",
                 "emailAddress": "Email Address",
-                "totalClients": "Total Number of Clients",
+                "phoneContact": "Phone",
                 "numberLocations": "Number of Locations",
                 "targetGroups": "Target group(s) for which the platform will be used",
+                "totalClients": "Total Number of Clients",
+                "soortZorgorganisatie": "Type of Care Organization",
                 "estimatedClients": "Estimated number of clients who will use the platform",
-                "startDate": "Desired start date of use",
+                "startDate": "Desired Start Date",
                 "onboardingSupport": "Do you need onboarding and integration support?",
                 "additionalServices": "Additional services or custom solutions you are interested in?",
                 "notes": "Notes",
+                "newsletter": "Newsletter",
                 "agreeToTerms": "I agree that my details will be used to prepare a quotation."
             },
             "placeholders": {
@@ -813,10 +808,12 @@
                 "jobTitle": "E.g., Activities Coordinator, Care Manager",
                 "emailAddress": "Your direct work email",
                 "phoneContact": "+31 | Direct line for quick contact",
-                "totalClients": "How many people are in your care?",
                 "numberLocations": "E.g., 1 care home, 3 daycare centers",
+                "targetGroups": "",
+                "totalClients": "Select the total number of clients",
+                "soortZorgorganisatie": "Select the type of care organization",
                 "estimatedClients": "E.g., 20 clients per week",
-                "startDate": "E.g., 01 October 2025",
+                "startDate": "mm/dd/yyyy",
                 "onboardingExplanation": "Please explain",
                 "additionalServices": "Tell us what you'd like to explore. Example: \"Virtual Walking Experience Box with scent, sound, and touch elements (€93 each).",
                 "notes": "E.g., special billing instructions or accessibility needs"
@@ -826,6 +823,20 @@
                     "Dementia",
                     "Day care",
                     "Rehabilitation",
+                    "Other"
+                ],
+                "totalClients": [
+                    "2–30",
+                    "31–60",
+                    "61–90",
+                    ">90"
+                ],
+                "soortZorgorganisatie": [
+                    "Nursing home",
+                    "Disability care",
+                    "Mental health care",
+                    "Home care",
+                    "Day care",
                     "Other"
                 ],
                 "onboardingSupport": [
@@ -843,7 +854,7 @@
         },
         "validation": {
             "organizationName": "Organization name is required",
-            "contactEmail": "Contact email is required",
+            "contactEmail": "Organization email is required",
             "contactEmailInvalid": "Invalid email format",
             "phone": "Phone number is required",
             "phoneInvalid": "Invalid phone format",
@@ -858,9 +869,10 @@
             "emailAddressInvalid": "Invalid email format",
             "phoneContact": "Phone contact is required",
             "phoneContactInvalid": "Invalid phone format",
-            "totalClients": "Total clients is required",
             "numberLocations": "Number of locations is required",
             "targetGroups": "At least one target group is required",
+            "totalClients": "Total clients is required",
+            "soortZorgorganisatie": "Type of care organization is required",
             "estimatedClients": "Estimated clients is required",
             "startDate": "Start date is required",
             "onboardingSupport": "Onboarding support selection is required",
@@ -897,7 +909,7 @@
                 "notes": "Share any skills, availability, or special interests"
             },
             "checkboxes": {
-                "firstTime": "I'm a first-time volunteer",
+                "firstTime": "I am interested in becoming a volunteer",
                 "updateInfo": "I'm already volunteering and want to update my info"
             },
             "buttons": {
@@ -908,11 +920,7 @@
                 "lastNameRequired": "Last name is required",
                 "emailRequired": "Email is required",
                 "emailInvalid": "Invalid email format",
-                "phoneInvalid": "Invalid phone format",
-                "passwordRequired": "Password is required",
-                "passwordMinLength": "Password must be at least 6 characters",
-                "confirmPasswordRequired": "Confirm password is required",
-                "passwordMismatch": "Passwords do not match"
+                "phoneInvalid": "Invalid phone format"
             },
             "messages": {
                 "signupSuccess": "Signup successful! Please log in.",

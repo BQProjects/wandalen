@@ -8,7 +8,8 @@ const TrainingSchema = new Schema(
     date: { type: Date, required: true },
     location: { type: String, required: true },
     timing: { type: String, required: true },
-    audience: { type: String, required: true },
+    description: { type: String, required: true },
+    createdBy: { type: String, required: true },
   },
   { timestamps: true }
 );

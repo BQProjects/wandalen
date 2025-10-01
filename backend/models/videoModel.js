@@ -64,12 +64,6 @@ const VideoSchema = new Schema(
       type: Number,
       default: 0,
     },
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
     isApproved: {
       type: Boolean,
       default: false,

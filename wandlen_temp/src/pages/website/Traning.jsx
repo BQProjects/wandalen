@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { MapPin, Clock, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import Testimonial from "../../components/common/TestimonialScroll";
@@ -11,29 +11,19 @@ import FaqQuestionsVolunteer from "../../components/volunteer/FaqQuestionsVolunt
 
 const Training = () => {
   const { t } = useTranslation();
-  const location = useLocation();
+  const { id } = useParams();
   const { DATABASE_URL } = useContext(DatabaseContext);
   const [training, setTraining] = useState(null);
 
   useEffect(() => {
     fetchTraining();
-  }, [location.pathname]);
+  }, [id]);
 
   const fetchTraining = async () => {
     try {
       const response = await axios.get(`${DATABASE_URL}/admin/trainings`);
       const data = response.data;
-      let filter = "";
-      if (location.pathname === "/video-training") {
-        filter = "video training";
-      } else if (location.pathname === "/camera-tips") {
-        filter = "camera";
-      } else if (location.pathname === "/nature-walking") {
-        filter = "nature";
-      }
-      const selectedTraining = data.find((t) =>
-        t.title.toLowerCase().includes(filter)
-      );
+      const selectedTraining = data.find((t) => t._id === id);
       setTraining(selectedTraining);
     } catch (error) {
       console.error("Error fetching training:", error);
@@ -41,7 +31,7 @@ const Training = () => {
   };
 
   if (!training) {
-    return <div>Loading...</div>;
+    return <div>Training not found</div>;
   }
 
   return (
@@ -143,7 +133,7 @@ const Training = () => {
                       {t("videoTraining.practicalInfo.audience.title")}
                     </h4>
                     <p className="text-[#ede4dc] text-base md:text-lg font-['Poppins']">
-                      {training.audience}
+                      {training.createdBy}
                     </p>
                   </div>
                 </div>

@@ -41,8 +41,16 @@ const OrgSchema = new Schema(
       phoneNumber: { type: String },
     },
 
+    // Organization Details
+    organizationDetails: {
+      fullName: { type: String },
+      email: { type: String },
+      jobTitle: { type: String },
+      phoneNumber: { type: String },
+    },
+
     // Organization & Target Group
-    totalClients: { type: Number },
+    totalClients: { type: String },
     targetGroup: {
       type: [String],
       enum: ["elderly", "disabled", "dementia", "other"],
@@ -58,6 +66,8 @@ const OrgSchema = new Schema(
     needIntegrationSupport: { type: Boolean, default: false },
     additionalServices: { type: String },
     notes: { type: String },
+    soortZorgorganisatie: { type: String },
+    newsletter: { type: Boolean, default: false },
 
     // System Fields
     paymentMethod: {

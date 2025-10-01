@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
 import { useTranslation } from "react-i18next";
+import ReadMoreAboutTina from "./ReadMoreAboutTina";
 
 const OurApproach = () => {
   const { t } = useTranslation();
@@ -48,6 +49,9 @@ const OurApproach = () => {
                 <div className="w-full md:w-[550px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
                   {t("ourApproach.description2")}
                 </div>
+                <div className="w-full md:w-[550px] text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
+                  {t("ourApproach.description3")}
+                </div>
               </div>
             </div>
 
@@ -83,7 +87,8 @@ const OurApproach = () => {
 
       {/* Other Sections */}
       <PartnersSection />
-      <OurWalking />
+      <ReadMoreAboutTina />
+      {/* <OurWalking /> */}
       <Testimonial />
       <FaqQuestions />
       <SubscribeCard />

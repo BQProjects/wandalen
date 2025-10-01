@@ -45,9 +45,9 @@ const subscribe = async (req, res) => {
 
   try {
     // Validate required fields
-    if (!email || !firstName || !lastName) {
+    if (!email || !firstName) {
       return res.status(400).json({
-        message: "Email, first name, and last name are required",
+        message: "Email and first name are required",
       });
     }
 

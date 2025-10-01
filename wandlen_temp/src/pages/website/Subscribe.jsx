@@ -152,13 +152,13 @@ const Subscribe = () => {
 
   const monthlyPlan = {
     ...basePlan,
-    price: "12.99",
+    price: "9.99",
     period: t("subscribe.plan.periods.month"),
   };
 
   const yearlyPlan = {
     ...basePlan,
-    price: "116.91",
+    price: "95.90",
     period: t("subscribe.plan.periods.year"),
   };
 

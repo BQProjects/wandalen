@@ -16,7 +16,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     notes: {
@@ -36,6 +36,5 @@ const subscriptionSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 
 module.exports = mongoose.model("Subscription", subscriptionSchema);

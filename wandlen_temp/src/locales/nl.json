@@ -42,18 +42,18 @@
     "aran": {
         "hero": {
             "title": "Virtueel Wandelen",
-            "subtitle": "Verander je leven herinneringen",
-            "description": "Virtueel Wandelen brengt het natuurlijke leven tot leven met natuurlijke verandering video's voor de buitenwereld.",
+            "subtitle": "Beleef Nederlandse natuur wandelingen",
+            "description": "Virtueel Wandelen brengt herkenbare natuurwandelingen dichtbij voor wie dat zelf niet meer fysiek kan. Ontspan & geniet.",
             "requestQuote": "Offerte aanvragen",
             "viewPlans": "Bekijk abonnementen"
         },
         "secondHero": {
             "subtitle": "Digitale transformaties in de Overijsselse natuur",
-            "description": "Stel je voor: een boswandeling, het ruisen van bladeren en zingende vogels. Voor mensen met dementie kan zo'n natuurervaring veel betekenen. Virtueel Wandelen brengt deze ervaring dichtbij, rechtstreeks vanuit huis of een zorginstelling. Het biedt rust, ontspanning en herkenning.",
+            "description": "Stel je voor: een boswandeling over dat smalle paadje, het ruisen van bladeren door de bomen en zingende vogels. Voor veel mensen kan zo’n natuurervaring veel betekenen. Virtueel Wandelen brengt deze ervaring weer dichtbij, rechtstreeks vanuit huis of een zorgorganisatie. Het biedt rust, ontspanning èn herkenning.",
             "features": {
-                "exploreNature": "Ontdek Overijssels Natuur Video's",
-                "simpleViewing": "Geniet van Uniek & Eenvoudig Bekijken",
-                "instantWatch": "Bekijk Direct met Één Klik"
+                "exploreNature": "Ontdek Nederlandse natuur wandelingen",
+                "simpleViewing": "Uniek en makkelijk in gebruik",
+                "instantWatch": "Bekijk Direct met Één klik"
             }
         },
         "chat": {
@@ -77,16 +77,17 @@
             },
             "sharingMemories": {
                 "title": "Herinneringen Delen",
-                "description": "Bewoners genieten van het spotten van vertrouwde scènes en het vertellen van verhalen."
+                "description": "Bewoners genieten van het bekijken van vertrouwde natuur en het vertellen van verhalen en herinneringen."
             }
         },
         "discoverRoutes": {
-            "title": "Ontdek Routes Dichtbij",
-            "subtitle": "Verken prachtige reizen van deelnemende gemeenten.",
-            "inspireTitle": "Jouw Beurt om te Inspireren – Elke Maand Nieuw!",
-            "inspireDescription1": "Heb je een schilderachtige of speciale route die we nog niet hebben behandeld? Log in en dien je favoriet in – misschien plaatsen we het in onze volgende video!",
-            "inspireDescription2": "We publiceren nieuwe video's en door de gemeenschap voorgestelde routes elke maand, dus blijf verkennen en laat je inspireren.",
+            "title": "Ontdek routes dichtbij",
+            "subtitle": "In deze gemeenten hebben we al routes opgenomen.",
+            "inspireTitle": "Jouw beurt om te inspireren: elke maand nieuwe routes!",
+            "inspireDescription1": "Heb je een speciale route die we nog niet hebben vastgelegd? Log in en dien je favoriete route in – misschien plaatsen we het in onze volgende release!",
+            "inspireDescription2": "We publiceren nieuwe video's en door de gemeenschap voorgestelde routes elke maand, dus blijf verkennen en laat je inspireren.Vrijwilligers nemen deze routes op.",
             "exploreFeature": "Deze functie verkennen",
+            "moreAboutVolunteering": "Meer over vrijwilligerswerk",
             "formTitle": "Heb je een speciale locatie in gedachten? Vertel ons erover!",
             "emailLabel": "Jouw E-mail",
             "emailPlaceholder": "naam@voorbeeld.com",
@@ -100,13 +101,13 @@
         },
         "organizationsTabs": {
             "organizations": "Organisaties",
-            "families": "Families",
+            "families": "Thuis",
             "volunteer": "Vrijwilliger",
-            "organizationsTitle": "Virtueel Wandelen voor Organisaties",
+            "organizationsTitle": "Virtueel wandelen voor organisaties",
             "organizationsSubtitle": "Rustige momenten, samen gedeeld.",
-            "familiesTitle": "Virtueel Wandelen Thuis",
-            "familiesSubtitle": "Natuur's schoonheid, op een klik afstand.",
-            "volunteerTitle": "Virtueel Wandelen als Vrijwilliger",
+            "familiesTitle": "Virtueel wandelen thuis",
+            "familiesSubtitle": "Natuurlijke schoonheid op een klik afstand.",
+            "volunteerTitle": "Virtueel wandelen als vrijwilliger",
             "volunteerSubtitle": "Deel wandelingen, verspreid vreugde.",
             "organizationsBenefits": [
                 {
@@ -133,11 +134,11 @@
             "familiesBenefits": [
                 {
                     "title": "Betaalbaar Abonnement",
-                    "description": "Geniet van onbeperkte toegang voor slechts €12.99/maand."
+                    "description": "Geniet van onbeperkte toegang voor slechts €12,99/maand."
                 },
                 {
                     "title": "100+ Schilderachtige Video's",
-                    "description": "Verken Overijssel, met verse wandelingen elke maand."
+                    "description": "Beleef Nederlandse natuurwandelingen, met iedere maand nieuwe content."
                 },
                 {
                     "title": "Persoonlijke Touch",
@@ -145,7 +146,7 @@
                 },
                 {
                     "title": "Echte Impact",
-                    "description": "Verzorgers delen verhalen van vreugde en ontspanning."
+                    "description": "Mantelzorgers delen verhalen van vreugde, ontspanning èn herkenning."
                 },
                 {
                     "title": "Eenvoudig & Direct",
@@ -155,15 +156,15 @@
             "volunteerBenefits": [
                 {
                     "title": "Vergroot de Collectie",
-                    "description": "Jouw wandelingen helpen onze bibliotheek elke week uit te breiden."
+                    "description": "Jouw wandelingen helpen ons platform elke maand uit te breiden."
                 },
                 {
-                    "title": "Film met Ondersteuning",
-                    "description": "Wij zetten de camera op en begeleiden je filmen."
+                    "title": "Leer makkelijk filmen ",
+                    "description": "Wij leren je hoe je een ontspannende natuurwandeling opneemt."
                 },
                 {
                     "title": "Wandel Samen",
-                    "description": "Alleen op het pad, maar deel van een grotere gemeenschap."
+                    "description": "Alleen op pad, maar onderdeel van een grotere gemeenschap."
                 },
                 {
                     "title": "Vind Erkenning",
@@ -210,7 +211,7 @@
         "imageAlt": "Virtueel Wandelen"
     },
     "subscribeCard": {
-        "title": "Blijf Geïnspireerd",
+        "title": "Blijf geïnspireerd",
         "emailLabel": "E-mailadres",
         "emailPlaceholder": "E-mailadres",
         "firstNameLabel": "Voornaam",
@@ -218,28 +219,28 @@
         "lastNameLabel": "Achternaam",
         "lastNamePlaceholder": "Achternaam",
         "notesLabel": "Notities",
-        "notesPlaceholder": "Bijv. Voeg speciale factureringsinstructies toe",
-        "subscribeButton": "Abonneren",
+        "notesPlaceholder": "ik blijf graag op de hoogte van Virtueel Wandelen.",
+        "subscribeButton": "ontvang inspiratie",
         "imageAlt": "Handen vasthouden in de natuur"
     },
     "requestCard": {
         "header": {
-            "subtitle": "Voor Zorginstellingen en Thuisklanten",
+            "subtitle": "Voor zorg organisaties en particulieren thuis",
             "title": "Onbeperkte toegang tot natuurwandelingen. Probeer 7 dagen gratis. Annuleer wanneer je wilt."
         },
         "careInstitutions": {
-            "title": "Virtueel Wandelen voor Zorginstellingen",
+            "title": "Virtueel Wandelen voor zorgorganisaties",
             "features": {
-                "easyQuotes": "Gemakkelijke Offertes – Snel formulier & persoonlijk bezoek",
-                "wellBeing": "Welzijn – Kalmeert en verzacht",
-                "connection": "Verbinding – Ontsteekt gesprekken",
-                "flexible": "Flexibel – Werkt op alle apparaten",
-                "simpleStart": "Eenvoudige Start – Minimale setup & volledige ondersteuning"
+                "easyQuotes": "Snel & op maat – Offerte afgestemd op jouw organisatie",
+                "wellBeing": "Welzijn – Rustgevend en kalmerend voor bewoners",
+                "connection": "Verbinding – Haalt herinneringen op, stimuleert gesprekken",
+                "flexible": "Flexibel – Werkt op tablet, laptop en mobiel",
+                "simpleStart": "Eenvoudig – Snel inzetbaar, zonder gedoe"
             },
             "button": "Offerte Aanvragen"
         },
         "homeUsers": {
-            "title": "Virtueel Wandelen Thuis €12,99 per maand",
+            "title": "Virtueel Wandelen Thuis<br />€12,99 per maand",
             "features": {
                 "affordable": "Betaalbaar – €12.99/maand onbeperkte toegang",
                 "videos": "100+ Video's – Nieuwe wandelingen maandelijks",
@@ -251,8 +252,8 @@
         }
     },
     "testimonials": {
-        "title": "Getuigenissen",
-        "subtitle": "Onze Succesverhalen",
+        "title": "Vrijwilligers",
+        "subtitle": "waarom wij meedoen",
         "readMore": "Meer Lezen",
         "readLess": "Minder Lezen",
         "items": [
@@ -282,37 +283,28 @@
         "questions": [
             {
                 "question": "Wat is Virtueel Wandelen?",
-                "answer": "Virtueel Wandelen is een innovatief platform dat immersieve virtuele realiteit ervaringen biedt van wandelen door verschillende schilderachtige locaties, ontworpen om ontspanning en mentaal welzijn te bevorderen."
+                "answer": "Virtueel Wandelen is een innovatief platform dat natuur wandeling video’s aanbiedt. Herkenbare natuur uit de eigen omgeving brengen wij weer dichtbij, zodat jouw dierbare of cliënt weer kan beleven: herkennen, genieten en tot rust komen. Dit platform is speciaal ontwikkeld voor mensen die zelf niet meer in staat zijn om onze Nederlandse natuurwandelingen zelf te wandelen. Mensen met dementie zijn onze grootste doelgroep."
             },
             {
                 "question": "Voor wie is Virtueel Wandelen?",
-                "answer": "Virtueel Wandelen is geschikt voor iedereen die wil ontspannen, stress wil verminderen, of de voordelen van wandelen wil ervaren zonder fysieke inspanning. Het is bijzonder nuttig voor mensen met mobiliteitsproblemen, ouderen, of mensen die op zoek zijn naar mindfulness praktijken."
+                "answer": "Virtueel Wandelen is geschikt voor iedereen die wil ontspannen, stress wil verminderen, of de voordelen van de natuur wil ervaren zonder fysieke inspanning. Het is bijzonder nuttig voor mensen met mobiliteitsproblemen, ouderen, mensen met dementie, ten behoeve van revalidatie en herstel van patiënten."
             },
             {
                 "question": "Zijn de video's en geluiden kalmerend?",
-                "answer": "Ja, alle Virtueel Wandelen video's bevatten rustgevende beelden en kalmerende soundscapes, inclusief zachte natuurgeluiden, zachte muziek en ambient audio om de ontspanningservaring te verbeteren."
+                "answer": "Ja, alle Virtueel Wandelen video's bevatten rustgevende beelden. De geluiden van de wandeling zijn de geluiden die je hoort, voetstappen, vogels, kabbelend water, de wind door de bomen. Er is geen muziek toegevoegd."
             },
             {
                 "question": "Is het geschikt voor mensen in een gevorderd stadium van dementie?",
-                "answer": "Virtueel Wandelen kan nuttig zijn voor mensen met dementie, omdat het vertrouwde en comfortabele omgevingen biedt. Het wordt echter aanbevolen om met zorgprofessionals te overleggen voor persoonlijke geschiktheid."
+                "answer": "Virtueel Wandelen kan nuttig zijn voor mensen met dementie, omdat het vertrouwde en herkenbare natuurlijke omgevingen biedt. Onze samenwerking met Hogeschool Windesheim met het Lectoraat ‘Goed leven met dementie’ heeft dit ook getest. De natuurervaring op zich werd al als prettig ervaren. De herkenning van de eigen omgeving zorgde veelal voor een glimlach en grote ogen van herkenning. Dat is waar wij het voor doen."
             },
             {
                 "question": "Kan ik wandelingen kiezen op thema of locatie?",
-                "answer": "Absoluut! Virtueel Wandelen biedt een grote verscheidenheid aan wandelingen gecategoriseerd op thema's (bijv. bos, strand, berg) en specifieke locaties van over de hele wereld, zodat je kunt kiezen op basis van je voorkeuren."
-            },
-            {
-                "question": "Kan Virtueel Wandelen onafhankelijk worden gebruikt?",
-                "answer": "Ja, Virtueel Wandelen is ontworpen voor onafhankelijk gebruik. De interface is gebruiksvriendelijk en je kunt door wandelingen navigeren in je eigen tempo zonder hulp."
-            },
-            {
-                "question": "Moet ik kunnen lopen om Virtueel Wandelen te gebruiken?",
-                "answer": "Er is geen fysieke loopvaardigheid vereist. Virtueel Wandelen is volledig virtueel, dus je kunt van de ervaring genieten vanuit een zittende positie of zelfs liggend."
+                "answer": "Absoluut! Virtueel Wandelen biedt een grote verscheidenheid aan wandelingen gecategoriseerd op thema's (bijv. bos, strand, rivier) en specifieke locaties zoals de gemeente waarin u woont. Onze meeste video’s zijn gemaakt in Overijssel, maar wij breiden ons aanbod op dit moment ook uit naar andere provincies."
             }
         ]
     },
     "previewExperience": {
-        "title": "Bekijk Je Ervaring",
-        "subtitle": "Zie hoe het eruitziet op laptop, tablet en mobiel",
+        "subtitle": "Zie hoe het eruitziet op laptop, tablet of mobiel",
         "devices": {
             "desktop": "Desktop Weergave",
             "tablet": "Tablet Weergave",
@@ -322,22 +314,23 @@
     },
     "ourApproach": {
         "vision": "Onze Visie",
-        "title": "Natuur Toegankelijk Maken, Overal",
-        "description1": "Virtueel Wandelen opent de deur naar de natuur voor iedereen — ongeacht fysieke beperkingen. Door authentieke, echte wandelvideo's brengen we de schoonheid, vrede en vertrouwdheid van lokale landschappen naar mensen die ze misschien niet meer in persoon kunnen ervaren.",
-        "description2": "Van senioren met dementie tot mensen met beperkte mobiliteit, onze video's brengen rust, wekken herkenning op en ondersteunen welzijn — waardoor verbindingen met de wereld en met jezelf worden versterkt.",
-        "ctaButton": "Begin Jouw Reis"
+        "title": "Natuur toegankelijk maken, overal en voor iedereen",
+        "description1": "Virtueel Wandelen maakt natuurbeleving toegankelijk voor iedereen, ongeacht fysieke beperkingen, en bevordert ontspanning, herkenning en welzijn met echte natuur wandeling video’s.",
+        "description2": "Laagdrempelig en toegankelijk",
+        "description3": "Virtueel Wandelen brengt de kracht van natuurbeleving naar mensen die minder mobiel zijn, door middel van opgenomen echte natuurvideo's uit de buurt te tonen. Met authentieke, zorgvuldig samengestelde beelden zorgen we voor ontspanning, herkenning en een positieve impact op welzijn en gezondheid. Ons doel is om natuur toegankelijk te maken voor iedereen en zo de verbinding met jezelf en mogelijk ook de buitenwereld te versterken.",
+        "ctaButton": "start jouw wandeling"
     },
     "partnersSection": {
-        "title": "Onze Samenwerkende Partners",
-        "subtitle": "Samenwerken om de natuur dichter bij iedereen te brengen.",
+        "title": "Onze samenwerkende partners",
+        "subtitle": "Samenwerken om mensen dichter bij de natuur te brengen, of de natuur dichter bij mensen",
         "partner1Text": "We werken samen met 10 Natuurlijk om fysieke buitenervaringen en vergroening in de gezondheidszorg aan te moedigen.",
-        "partner2Title": "De Stichting Document Maatschappij",
-        "partner2Text": "Deze stichting is gewijd aan het maken van documentaires, films en documenten met sociale nut en/of impact, evenals het behoud van immaterieel erfgoed voor toekomstige generaties. Vrijwilligers die graag video's maken voor dit platform krijgen toegang tot een camera via de stichting."
+        "partner2Title": "Stichting The Society Documents Foundation.",
+        "partner2Text": "Deze stichting is gewijd aan het maken van documentaires, films en documenten met sociaal nut en met maken van impact. Evenals het behoud van immaterieel erfgoed voor toekomstige generaties. Vanuit deze stichting helpen zo’n 20 vrijwilligers om prachtige natuur wandeling video’s te maken voor ons platform."
     },
     "becomeVolunteer": {
         "hero": {
-            "title": "Word Vrijwilliger bij Virtueel Wandelen",
-            "description": "Voor velen - van senioren in zorg tot mensen met beperkte mobiliteit - kan de natuur ver weg voelen. Virtueel Wandelen brengt de schoonheid van Overijssel naar binnen met kalmerende wandelvideo's die ontspanning en verbinding inspireren. En we kunnen het niet zonder jou."
+            "title": "Word vrijwilliger bij Virtueel Wandelen",
+            "description": "Voor velen – van mensen met dementie tot mensen met beperkte mobiliteit – kan de natuur ver weg voelen. Virtueel Wandelen brengt de schoonheid van onze Nederlandse natuur naar binnen met kalmerende en herkenbare wandelvideo’s. En we kunnen het niet zonder jou."
         },
         "events": {
             "videoTraining": {
@@ -445,9 +438,9 @@
         "title": "Video Training",
         "date": "19 sep 2025 | Lemelerveld",
         "whatToExpect": {
-            "title": "Wat Kun Je Verwachten?",
+            "title": "Wat Kun Je verwachten?",
             "items": [
-                "Praktische camera workshop: leer hoe je stabiele, kalme en atmosferische opnames maakt",
+                "Praktische tips en oefenen : leer hoe je stabiele, kalme en ontspannen opnames maakt.",
                 "Tips over geluid, licht en beweging",
                 "Samen oefenen met de camera",
                 "Vragen stellen aan de video coach",
@@ -455,12 +448,12 @@
             ]
         },
         "whyJoin": {
-            "title": "Waarom Meedoen?",
-            "description": "Of je nu net begint of al filmervaring hebt, deze dag helpt je om mooie wandelvideo's te maken voor ouderen (met dementie). Het is ook een geweldige manier om andere vrijwilligers te ontmoeten en ervaringen te delen."
+            "title": "Waarom meedoen?",
+            "description": "Of je nu net begint of al filmervaring hebt, deze dag helpt je om mooie wandelvideo's te maken voor de medemens!. Het is ook een geweldige manier om andere vrijwilligers te ontmoeten en ervaringen te delen. Een gezellige ochtend dus!"
         },
         "signupButton": "Schrijf je nu in voor de bijeenkomst",
         "practicalInfo": {
-            "title": "Praktische Informatie",
+            "title": "Praktische informatie",
             "location": {
                 "title": "Locatie",
                 "address": "Dominee C. Keersstraat 79\n8151 AB Lemelerveld"
@@ -553,7 +546,7 @@
     },
     "subscribe": {
         "hero": {
-            "title": "Abonnementsplannen",
+            "title": "Abonnementen",
             "subtitle": "Onbeperkte wandelingen, nieuwe routes elke maand."
         },
         "plan": {
@@ -570,7 +563,7 @@
                 "year": "jaar"
             }
         },
-        "discountBadge": "25% korting"
+        "discountBadge": "20% korting"
     },
     "payment": {
         "header": {
@@ -751,29 +744,29 @@
         }
     },
     "chooseYourExperience": {
-        "title": "Kies Uw Ervaring",
-        "subtitle": "Selecteer de optie die het beste bij u past.",
+        "subtitle": "Selecteer de optie die het beste bij u jou past.",
         "organization": {
             "title": "Voor Zorgorganisaties",
             "description": "Breng natuur in groepsomgevingen met eenvoudige toegang, ondersteuning en hulpmiddelen voor bewoners.",
             "button": "Ga verder als organisatie"
         },
         "family": {
-            "title": "Voor Gezinnen Thuis",
+            "title": "Voor Thuis",
             "description": "Geniet samen van kalmerende natuurwandelingen vanuit het comfort van uw huis.",
-            "button": "Ga verder als gezin"
+            "button": "Ga verder als thuisgebruiker"
         }
     },
     "requestQuoteForm": {
         "header": {
-            "title": "Ontvang een Aangepaste Offerte",
-            "subtitle": "Vertel ons een beetje over uw organisatie of gezin. We helpen u de volgende stap te zetten naar betekenisvolle, natuurverbonden ervaringen. Vul gewoon de details in, en we komen binnenkort bij u terug met een op maat gemaakte offerte."
+            "title": "Ontvang een op maat offerte",
+            "subtitle": "Vertel ons over uw organisatie. Wij helpen u de volgende stap te zetten naar betekenisvolle, natuurverbonden ervaringen. Vul hieronder de details in en we komen binnenkort bij u terug met een op maat gemaakte offerte."
         },
         "form": {
-            "title": "Vul hieronder de details in",
+            "title": "Vul hieronder de details in:",
             "sections": {
                 "organizationDetails": "Organisatie gegevens",
                 "contactPerson": "Contact persoon",
+                "extraInfo": "Extra informatie",
                 "organizationTargetGroup": "Organisatie & Doelgroep",
                 "virtualWalkingUse": "Gebruik van Virtueel Wandelen",
                 "quotationSetup": "Offerte & opstartkosten"
@@ -785,20 +778,21 @@
                 "address": "Adres",
                 "street": "Straat",
                 "postalCode": "Postcode",
-                "city": "Stad",
-                "websiteLink": "Website Link",
-                "fullName": "Volledige Naam",
-                "jobTitle": "Functie / Positie",
-                "emailAddress": "E-mailadres",
-                "totalClients": "Totaal Aantal Cliënten",
-                "numberLocations": "Aantal Locaties",
-                "targetGroups": "Doelgroep(en) waarvoor het platform zal worden gebruikt",
+                "city": "Plaats",
+                "websiteLink": "Website link:",
+                "fullName": "Naam",
+                "jobTitle": "Functie",
+                "emailAddress": "E-mail adres",
+                "totalClients": "Totaal aantal cliënten",
+                "numberLocations": "Hoeveel locaties heeft uw organisatie?",
+                "soortZorgorganisatie": "Soort zorgorganisatie",
                 "estimatedClients": "Geschat aantal cliënten dat het platform zal gebruiken",
                 "startDate": "Gewenste startdatum van gebruik",
                 "onboardingSupport": "Heeft u behoefte aan onboarding en integratieondersteuning?",
-                "additionalServices": "Aanvullende diensten of maatwerkoplossingen waarin u geïnteresseerd bent?",
+                "additionalServices": "Heeft u interesse in onze Virtueel Wandelen Beleefbox?",
                 "notes": "Opmerkingen",
-                "agreeToTerms": "Ik ga ermee akkoord dat mijn gegevens worden gebruikt om een offerte voor te bereiden."
+                "agreeToTerms": "Ik ga ermee akkoord dat mijn gegevens worden gebruikt om een offerte voor te bereiden.",
+                "newsletter": "Ja, ik wil mij ook aanmelden voor de nieuwsbrief van Virtueel Wandelen met updates en inspiratie."
             },
             "placeholders": {
                 "organizationName": "Bijv., Sunrise Wellness Center, City Care Home, Lokale Kinderopvang",
@@ -813,19 +807,29 @@
                 "jobTitle": "Bijv., Activiteiten Coördinator, Zorgmanager",
                 "emailAddress": "Uw directe werk-e-mail",
                 "phoneContact": "+31 | Directe lijn voor snel contact",
-                "totalClients": "Hoeveel mensen zijn in uw zorg?",
+                "totalClients": "Kies uit: 2–30, 31–60, 61–90, >90",
                 "numberLocations": "Bijv., 1 zorginstelling, 3 kinderopvangcentra",
                 "estimatedClients": "Bijv., 20 cliënten per week",
                 "startDate": "Bijv., 01 Oktober 2025",
                 "onboardingExplanation": "Leg uit alstublieft",
-                "additionalServices": "Vertel ons wat u wilt verkennen. Voorbeeld: \"Virtuele Wandeling Ervaringsbox met geur, geluid en tast elementen (€93 per stuk).",
+                "additionalServices": "Vertel ons wat u wilt verkennen. Voorbeeld: \"Ja, neem een X aantal beleefboxen met geur, geluid en tast elementen mee in de offerte (€85,99 per stuk).",
                 "notes": "Bijv., speciale factureringsinstructies of toegankelijkheidsbehoeften"
             },
             "options": {
-                "targetGroups": [
-                    "Dementie",
-                    "Dagopvang",
-                    "Revalidatie",
+                "totalClients": [
+                    "2–30",
+                    "31–60",
+                    "61–90",
+                    ">90"
+                ],
+                "soortZorgorganisatie": [
+                    "Ouderenzorg",
+                    "Ziekenhuiszorg",
+                    "GGZ",
+                    "Welzijnsorganisatie",
+                    "Fysiotherapie",
+                    "Hospice",
+                    "Gehandicaptenzorg",
                     "Anders"
                 ],
                 "onboardingSupport": [
@@ -847,10 +851,9 @@
             "contactEmailInvalid": "Ongeldig e-mailformaat",
             "phone": "Telefoonnummer is verplicht",
             "phoneInvalid": "Ongeldig telefoonformaat",
-            "address": "Adres is verplicht",
             "street": "Straat is verplicht",
             "postalCode": "Postcode is verplicht",
-            "city": "Stad is verplicht",
+            "city": "Plaats is verplicht",
             "websiteInvalid": "Ongeldig URL-formaat",
             "fullName": "Volledige naam is verplicht",
             "jobTitle": "Functie is verplicht",
@@ -860,7 +863,7 @@
             "phoneContactInvalid": "Ongeldig telefoonformaat",
             "totalClients": "Totaal aantal cliënten is verplicht",
             "numberLocations": "Aantal locaties is verplicht",
-            "targetGroups": "Minstens één doelgroep is verplicht",
+            "soortZorgorganisatie": "Soort zorgorganisatie is verplicht",
             "estimatedClients": "Geschat aantal cliënten is verplicht",
             "startDate": "Startdatum is verplicht",
             "onboardingSupport": "Selectie onboarding ondersteuning is verplicht",
@@ -876,13 +879,13 @@
             "labels": {
                 "firstName": "Voornaam",
                 "lastName": "Achternaam",
-                "contactEmail": "Contact E-mail",
+                "contactEmail": "E-mail",
                 "phoneNumber": "Telefoonnummer",
                 "street": "Straat",
                 "postalCode": "Postcode",
-                "city": "Stad",
                 "password": "Wachtwoord",
                 "confirmPassword": "Bevestig Wachtwoord",
+                "city": "Plaats",
                 "notes": "Opmerkingen",
                 "volunteerStatus": "Vrijwilligersstatus"
             },
@@ -897,7 +900,7 @@
                 "notes": "Deel eventuele vaardigheden, beschikbaarheid of speciale interesses"
             },
             "checkboxes": {
-                "firstTime": "Ik ben een eerste keer vrijwilliger",
+                "firstTime": "ik heb interesse om vrijwilliger te wordenr",
                 "updateInfo": "Ik ben al vrijwilliger en wil mijn informatie bijwerken"
             },
             "buttons": {
