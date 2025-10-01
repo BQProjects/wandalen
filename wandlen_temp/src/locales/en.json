@@ -52,8 +52,8 @@
             "description": "Imagine: a forest walk, the rustling of leaves and singing birds. For people with dementia such a nature experience can mean a lot. Virtual Walking brings this experience close, right from home or a care facility. It offers peace, relaxation and recognition.",
             "features": {
                 "exploreNature": "Explore Overijssel's Nature Videos",
-                "simpleViewing": "Enjoy Unique & Simple Viewing",
-                "instantWatch": "Watch Instantly with One Click"
+                "simpleViewing": "Enjoy Unique & Simple<br /> Viewing",
+                "instantWatch": "Watch Instantly with<br /> One Click"
             }
         },
         "chat": {
@@ -74,7 +74,7 @@
         "lastNameLabel": "Last name",
         "lastNamePlaceholder": "Last name",
         "notesLabel": "Notes",
-        "notesPlaceholder": "E.g. Add special billing instructions",
+        "notesPlaceholder": "I would like to stay informed about Virtual Walking...",
         "subscribeButton": "Subscribe",
         "imageAlt": "Holding hands in nature"
     },
@@ -743,7 +743,6 @@
         }
     },
     "chooseYourExperience": {
-        "title": "Choose Your Experience",
         "subtitle": "Select the option that best fits you.",
         "organization": {
             "title": "For Care Organizations",

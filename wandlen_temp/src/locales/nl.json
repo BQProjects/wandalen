@@ -314,22 +314,23 @@
     },
     "ourApproach": {
         "vision": "Onze Visie",
-        "title": "Natuur Toegankelijk Maken, Overal",
-        "description1": "Virtueel Wandelen opent de deur naar de natuur voor iedereen — ongeacht fysieke beperkingen. Door authentieke, echte wandelvideo's brengen we de schoonheid, vrede en vertrouwdheid van lokale landschappen naar mensen die ze misschien niet meer in persoon kunnen ervaren.",
-        "description2": "Van senioren met dementie tot mensen met beperkte mobiliteit, onze video's brengen rust, wekken herkenning op en ondersteunen welzijn — waardoor verbindingen met de wereld en met jezelf worden versterkt.",
-        "ctaButton": "Begin Jouw Reis"
+        "title": "Natuur toegankelijk maken, overal en voor iedereen",
+        "description1": "Virtueel Wandelen maakt natuurbeleving toegankelijk voor iedereen, ongeacht fysieke beperkingen, en bevordert ontspanning, herkenning en welzijn met echte natuur wandeling video’s.",
+        "description2": "Laagdrempelig en toegankelijk",
+        "description3": "Virtueel Wandelen brengt de kracht van natuurbeleving naar mensen die minder mobiel zijn, door middel van opgenomen echte natuurvideo's uit de buurt te tonen. Met authentieke, zorgvuldig samengestelde beelden zorgen we voor ontspanning, herkenning en een positieve impact op welzijn en gezondheid. Ons doel is om natuur toegankelijk te maken voor iedereen en zo de verbinding met jezelf en mogelijk ook de buitenwereld te versterken.",
+        "ctaButton": "start jouw wandeling"
     },
     "partnersSection": {
-        "title": "Onze Samenwerkende Partners",
-        "subtitle": "Samenwerken om de natuur dichter bij iedereen te brengen.",
+        "title": "Onze samenwerkende partners",
+        "subtitle": "Samenwerken om mensen dichter bij de natuur te brengen, of de natuur dichter bij mensen",
         "partner1Text": "We werken samen met 10 Natuurlijk om fysieke buitenervaringen en vergroening in de gezondheidszorg aan te moedigen.",
-        "partner2Title": "De Stichting Document Maatschappij",
-        "partner2Text": "Deze stichting is gewijd aan het maken van documentaires, films en documenten met sociale nut en/of impact, evenals het behoud van immaterieel erfgoed voor toekomstige generaties. Vrijwilligers die graag video's maken voor dit platform krijgen toegang tot een camera via de stichting."
+        "partner2Title": "Stichting The Society Documents Foundation.",
+        "partner2Text": "Deze stichting is gewijd aan het maken van documentaires, films en documenten met sociaal nut en met maken van impact. Evenals het behoud van immaterieel erfgoed voor toekomstige generaties. Vanuit deze stichting helpen zo’n 20 vrijwilligers om prachtige natuur wandeling video’s te maken voor ons platform."
     },
     "becomeVolunteer": {
         "hero": {
-            "title": "Word Vrijwilliger bij Virtueel Wandelen",
-            "description": "Voor velen - van senioren in zorg tot mensen met beperkte mobiliteit - kan de natuur ver weg voelen. Virtueel Wandelen brengt de schoonheid van Overijssel naar binnen met kalmerende wandelvideo's die ontspanning en verbinding inspireren. En we kunnen het niet zonder jou."
+            "title": "Word vrijwilliger bij Virtueel Wandelen",
+            "description": "Voor velen – van mensen met dementie tot mensen met beperkte mobiliteit – kan de natuur ver weg voelen. Virtueel Wandelen brengt de schoonheid van onze Nederlandse natuur naar binnen met kalmerende en herkenbare wandelvideo’s. En we kunnen het niet zonder jou."
         },
         "events": {
             "videoTraining": {
@@ -437,9 +438,9 @@
         "title": "Video Training",
         "date": "19 sep 2025 | Lemelerveld",
         "whatToExpect": {
-            "title": "Wat Kun Je Verwachten?",
+            "title": "Wat Kun Je verwachten?",
             "items": [
-                "Praktische camera workshop: leer hoe je stabiele, kalme en atmosferische opnames maakt",
+                "Praktische tips en oefenen : leer hoe je stabiele, kalme en ontspannen opnames maakt.",
                 "Tips over geluid, licht en beweging",
                 "Samen oefenen met de camera",
                 "Vragen stellen aan de video coach",
@@ -447,12 +448,12 @@
             ]
         },
         "whyJoin": {
-            "title": "Waarom Meedoen?",
-            "description": "Of je nu net begint of al filmervaring hebt, deze dag helpt je om mooie wandelvideo's te maken voor ouderen (met dementie). Het is ook een geweldige manier om andere vrijwilligers te ontmoeten en ervaringen te delen."
+            "title": "Waarom meedoen?",
+            "description": "Of je nu net begint of al filmervaring hebt, deze dag helpt je om mooie wandelvideo's te maken voor de medemens!. Het is ook een geweldige manier om andere vrijwilligers te ontmoeten en ervaringen te delen. Een gezellige ochtend dus!"
         },
         "signupButton": "Schrijf je nu in voor de bijeenkomst",
         "practicalInfo": {
-            "title": "Praktische Informatie",
+            "title": "Praktische informatie",
             "location": {
                 "title": "Locatie",
                 "address": "Dominee C. Keersstraat 79\n8151 AB Lemelerveld"
@@ -743,17 +744,16 @@
         }
     },
     "chooseYourExperience": {
-        "title": "Kies Uw Ervaring",
-        "subtitle": "Selecteer de optie die het beste bij u past.",
+        "subtitle": "Selecteer de optie die het beste bij u jou past.",
         "organization": {
             "title": "Voor Zorgorganisaties",
             "description": "Breng natuur in groepsomgevingen met eenvoudige toegang, ondersteuning en hulpmiddelen voor bewoners.",
             "button": "Ga verder als organisatie"
         },
         "family": {
-            "title": "Voor Gezinnen Thuis",
+            "title": "Voor Thuis",
             "description": "Geniet samen van kalmerende natuurwandelingen vanuit het comfort van uw huis.",
-            "button": "Ga verder als gezin"
+            "button": "Ga verder als thuisgebruiker"
         }
     },
     "requestQuoteForm": {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Laptop_trail from "../assets/laptop_trail.png";
-import Tablet_trail from "../assets/Tablet_iPad_mini_trail.png";
-import Phone_trail from "../assets/Phone_trail.png";
+import Laptop_trail from "../assets/previewExp.jpg";
+import Tablet_trail from "../assets/previewExp.jpg";
+import Phone_trail from "../assets/previewExp.jpg";
 import { useTranslation } from "react-i18next";
 
 const PreviewExperience = () => {

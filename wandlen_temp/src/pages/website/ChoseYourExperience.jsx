@@ -12,9 +12,6 @@ const ChooseYourExperience = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <h1 className="text-[#a6a643] text-4xl md:text-5xl font-semibold mb-4">
-            {t("chooseYourExperience.title")}
-          </h1>
           <p className="text-white text-3xl md:text-5xl font-semibold leading-tight max-w-3xl mx-auto">
             {t("chooseYourExperience.subtitle")}
           </p>
@@ -28,7 +25,7 @@ const ChooseYourExperience = () => {
               <img
                 src={OrganizationIcon}
                 alt="Organization"
-                className="mx-auto"
+                className="w-40 h-40 mx-auto"
               />
             </div>
 
@@ -51,7 +48,11 @@ const ChooseYourExperience = () => {
           {/* For Families at Home */}
           <div className="bg-[#454c36] rounded-2xl p-8 md:p-10 flex flex-col items-center text-center">
             <div className="mb-8">
-              <img src={FamilyIcon} alt="Family" className="mx-auto" />
+              <img
+                src={FamilyIcon}
+                alt="Family"
+                className="w-40 h-40 mx-auto"
+              />
             </div>
 
             <div className="mb-8">

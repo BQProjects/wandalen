@@ -317,8 +317,12 @@ const Aran = () => {
                   className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
                 />
               </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
-                {t("aran.secondHero.features.simpleViewing")}
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins ">
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("aran.secondHero.features.simpleViewing"),
+                  }}
+                />
               </h3>
             </div>
 
@@ -332,7 +336,11 @@ const Aran = () => {
                 />
               </div>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
-                {t("aran.secondHero.features.instantWatch")}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("aran.secondHero.features.instantWatch"),
+                  }}
+                />
               </h3>
             </div>
           </div>
@@ -808,20 +816,21 @@ const Aran = () => {
                   {t("dawnForest.discoverRoutes.inspireDescription2")}
                 </div>
               </div>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <button
+                  className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
+                  onClick={() => (window.location.href = "/subscribe")}
+                >
+                  {t("dawnForest.discoverRoutes.exploreFeature")}
+                </button>
 
-              <button
-                className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                onClick={() => (window.location.href = "/subscribe")}
-              >
-                {t("dawnForest.discoverRoutes.exploreFeature")}
-              </button>
-
-              <button
-                className="cursor-pointer ml-6 inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                onClick={() => (window.location.href = "/become-volunteer")}
-              >
-                {t("dawnForest.discoverRoutes.moreAboutVolunteering")}
-              </button>
+                <button
+                  className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
+                  onClick={() => (window.location.href = "/become-volunteer")}
+                >
+                  {t("dawnForest.discoverRoutes.moreAboutVolunteering")}
+                </button>
+              </div>
             </div>
           </div>
         </div>

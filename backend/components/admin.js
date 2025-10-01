@@ -293,13 +293,14 @@ const getTrainings = async (req, res) => {
 
 const createTraining = async (req, res) => {
   try {
-    const { title, date, location, timing, audience } = req.body;
+    const { title, date, location, timing, description, createdBy } = req.body;
     const newTraining = new TrainingModel({
       title,
       date,
       location,
       timing,
-      audience,
+      description,
+      createdBy,
     });
     await newTraining.save();
     res.status(201).json(newTraining);
@@ -312,16 +313,30 @@ const createTraining = async (req, res) => {
 const updateTraining = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, date, location, timing, audience } = req.body;
+    const { title, date, location, timing, description, createdBy } = req.body;
     const updatedTraining = await TrainingModel.findByIdAndUpdate(
       id,
-      { title, date, location, timing, audience },
+      { title, date, location, timing, description, createdBy },
       { new: true }
     );
     if (!updatedTraining) {
       return res.status(404).json({ message: "Training not found" });
     }
     res.status(200).json(updatedTraining);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteTraining = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedTraining = await TrainingModel.findByIdAndDelete(id);
+    if (!deletedTraining) {
+      return res.status(404).json({ message: "Training not found" });
+    }
+    res.status(200).json({ message: "Training deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -540,6 +555,7 @@ module.exports = {
   getTrainings,
   createTraining,
   updateTraining,
+  deleteTraining,
   approveOrg,
   updateOrg,
   uploadVideo,

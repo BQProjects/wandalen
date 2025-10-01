@@ -103,15 +103,7 @@ export const router = createBrowserRouter([
         element: <PaymentPageForIndividual />,
       },
       {
-        path: "video-training",
-        element: <Training />,
-      },
-      {
-        path: "camera-tips",
-        element: <Training />,
-      },
-      {
-        path: "nature-walking",
+        path: "training/:id",
         element: <Training />,
       },
       {

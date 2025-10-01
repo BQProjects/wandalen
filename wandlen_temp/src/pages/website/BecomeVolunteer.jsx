@@ -40,12 +40,8 @@ const BecomeVolunteer = () => {
     return VideoTraning; // default
   };
 
-  const getLinkForTitle = (title) => {
-    if (title.toLowerCase().includes("video training"))
-      return "/video-training";
-    if (title.toLowerCase().includes("camera")) return "/camera-tips";
-    if (title.toLowerCase().includes("nature")) return "/nature-walking";
-    return "/video-training"; // default
+  const getLinkForTitle = (training) => {
+    return `/training/${training._id}`;
   };
   return (
     <div className="min-h-screen bg-secondary">
@@ -60,52 +56,52 @@ const BecomeVolunteer = () => {
           </p>
         </div>
       </section>
-      {/* Events Section */}
+      {/* How It Works Section */}
       <section className="bg-secondary px-4 py-16">
         <div className="max-w-7xl mx-auto">
-          <div className="space-y-12">
-            {trainings.map((training, index) => (
-              <div
-                key={training._id}
-                className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-white p-6 rounded-xl shadow-sm"
-              >
-                <div className="bg-brown text-secondary rounded-lg p-4 text-center min-w-[110px]">
-                  <div className="text-4xl font-['Poppins'] font-bold">
-                    {new Date(training.date).getDate()}
-                  </div>
-                  <div className="text-xl font-['Poppins'] font-medium">
-                    {new Date(training.date).toLocaleString("default", {
-                      month: "short",
-                    })}
-                  </div>
-                </div>
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <p className="text-primary font-['Poppins'] text-2xl font-semibold mb-2">
+                {t("becomeVolunteer.howItWorks.title")}
+              </p>
+              <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-brown">
+                {t("becomeVolunteer.howItWorks.subtitle")}
+              </h2>
+            </div>
+            <button
+              className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block"
+              onClick={() => (window.location.href = "/volunteer-signup")}
+            >
+              {t("becomeVolunteer.howItWorks.knowMore")}
+            </button>
+          </div>
 
-                <div className="bg-gray-300 w-full md:w-60 h-48 md:h-40 rounded-lg bg-gradient-to-br from-orange-200 to-orange-400 flex items-center justify-center flex-shrink-0">
-                  <img
-                    src={getImageForTitle(training.title)}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {t("becomeVolunteer.howItWorks.steps", { returnObjects: true }).map(
+              (step, index) => (
+                <div
+                  key={index}
+                  className="bg-[#f7f6f4] rounded-2xl p-8 space-y-6"
+                >
+                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center">
+                    <span className="text-brown text-3xl font-['Poppins'] font-semibold">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-brown text-2xl font-['Poppins'] font-medium">
+                      {step.title}
+                    </h3>
+                    <p className="text-brown font-['Poppins'] leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-
-                <div className="flex-1 space-y-4">
-                  <h3 className="text-primary font-['Poppins'] text-2xl font-semibold">
-                    {training.title}
-                  </h3>
-                  <p className="text-brown font-['Poppins'] text-lg leading-relaxed">
-                    {training.audience}
-                  </p>
-                  <Link to={getLinkForTitle(training.title)}>
-                    <button className="bg-primary font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
-                      {t("becomeVolunteer.events.moreInfo")}
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
       </section>
-
       {/* Benefits Section */}
       <section className="bg-dark-green text-white px-4 py-16">
         <div className="max-w-7xl mx-auto">
@@ -164,50 +160,48 @@ const BecomeVolunteer = () => {
           </div>
         </div>
       </section>
-
-      {/* How It Works Section */}
+      {/* Events Section */}
       <section className="bg-secondary px-4 py-16">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <p className="text-primary font-['Poppins'] text-2xl font-semibold mb-2">
-                {t("becomeVolunteer.howItWorks.title")}
-              </p>
-              <h2 className="text-4xl md:text-5xl font-['Poppins'] font-semibold text-brown">
-                {t("becomeVolunteer.howItWorks.subtitle")}
-              </h2>
-            </div>
-            <button
-              className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block"
-              onClick={() => (window.location.href = "/volunteer-signup")}
-            >
-              {t("becomeVolunteer.howItWorks.knowMore")}
-            </button>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {t("becomeVolunteer.howItWorks.steps", { returnObjects: true }).map(
-              (step, index) => (
-                <div
-                  key={index}
-                  className="bg-[#f7f6f4] rounded-2xl p-8 space-y-6"
-                >
-                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center">
-                    <span className="text-brown text-3xl font-['Poppins'] font-semibold">
-                      {index + 1}
-                    </span>
+          <div className="space-y-12">
+            {trainings.map((training, index) => (
+              <div
+                key={training._id}
+                className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-white p-6 rounded-xl shadow-sm"
+              >
+                <div className="bg-brown text-secondary rounded-lg p-4 text-center min-w-[110px]">
+                  <div className="text-4xl font-['Poppins'] font-bold">
+                    {new Date(training.date).getDate()}
                   </div>
-                  <div className="space-y-4">
-                    <h3 className="text-brown text-2xl font-['Poppins'] font-medium">
-                      {step.title}
-                    </h3>
-                    <p className="text-brown font-['Poppins'] leading-relaxed">
-                      {step.description}
-                    </p>
+                  <div className="text-xl font-['Poppins'] font-medium">
+                    {new Date(training.date).toLocaleString("default", {
+                      month: "short",
+                    })}
                   </div>
                 </div>
-              )
-            )}
+
+                <div className="bg-gray-300 w-full md:w-60 h-48 md:h-40 rounded-lg bg-gradient-to-br from-orange-200 to-orange-400 flex items-center justify-center flex-shrink-0">
+                  <img
+                    src={getImageForTitle(training.title)}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-primary font-['Poppins'] text-2xl font-semibold">
+                    {training.title}
+                  </h3>
+                  <p className="text-brown font-['Poppins'] text-lg leading-relaxed">
+                    {training.description}
+                  </p>
+                  <Link to={getLinkForTitle(training)}>
+                    <button className="bg-primary font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
+                      {t("becomeVolunteer.events.moreInfo")}
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
