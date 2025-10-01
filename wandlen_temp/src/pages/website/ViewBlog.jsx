@@ -48,6 +48,11 @@ const ViewBlog = () => {
           <div className="w-full md:w-[654px] text-brown font-[Poppins] text-2xl sm:text-3xl md:text-5xl font-semibold leading-[136%] text-center md:text-left">
             {blog.title}
           </div>
+          {blog.date && (
+            <div className="text-brown font-[Poppins] text-lg leading-[136%]">
+              {new Date(blog.date).toLocaleDateString()}
+            </div>
+          )}
         </div>
 
         {/* Main section */}
@@ -63,8 +68,12 @@ const ViewBlog = () => {
                 {blog.content &&
                   blog.content.map((item, index) => (
                     <div key={index} className="w-full">
-                      {item.type === "text" ? (
-                        <div className="text-brown text-left font-[Poppins] text-base sm:text-lg md:text-2xl leading-[136%]">
+                      {item.type === "heading" ? (
+                        <div className="text-primary font-[Poppins] text-xl md:text-2xl font-semibold leading-[136%]">
+                          {item.value}
+                        </div>
+                      ) : item.type === "text" ? (
+                        <div className="text-brown text-left font-[Poppins] text-base sm:text-lg md:text-xl leading-[136%]">
                           {item.value}
                         </div>
                       ) : item.type === "image" ? (

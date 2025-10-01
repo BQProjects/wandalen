@@ -7,6 +7,7 @@ const BlogForm = () => {
   const { id } = useParams(); // id will be undefined for create
   const isEdit = !!id;
   const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
   const [imgUrl, setImgUrl] = useState("");
@@ -26,6 +27,7 @@ const BlogForm = () => {
       const response = await axios.get(`${DATABASE_URL}/admin/blogs/${id}`);
       const blog = response.data;
       setTitle(blog.title);
+      setDate(blog.date ? new Date(blog.date).toISOString().split("T")[0] : "");
       setImgUrl(blog.imgUrl);
       setCoverPreview(blog.imgUrl);
       setContent(
@@ -60,6 +62,10 @@ const BlogForm = () => {
     setContent([...content, { type: "text", value: "" }]);
   };
 
+  const addHeading = () => {
+    setContent([...content, { type: "heading", value: "" }]);
+  };
+
   const addImage = () => {
     setContent([
       ...content,
@@ -88,6 +94,10 @@ const BlogForm = () => {
       newContent[index].preview = "";
       setContent(newContent);
     }
+  };
+
+  const removeContent = (index) => {
+    setContent(content.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async () => {
@@ -122,7 +132,7 @@ const BlogForm = () => {
           } else {
             return {
               type: item.type,
-              value: item.type === "text" ? item.value : item.url,
+              value: item.value,
             };
           }
         })
@@ -130,6 +140,7 @@ const BlogForm = () => {
 
       const body = {
         title,
+        date,
         imgUrl: finalImgUrl,
         content: finalContent,
         author: "Admin", // You can make this dynamic if needed
@@ -218,6 +229,19 @@ const BlogForm = () => {
           />
         </div>
 
+        {/* Date */}
+        <div className="flex flex-col items-start gap-2 self-stretch">
+          <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+            Blog date *
+          </div>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="flex items-center gap-2.5 self-stretch p-3 h-11 rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643]"
+          />
+        </div>
+
         {/* Dynamic Content */}
         {content.map((item, index) => (
           <div
@@ -225,44 +249,84 @@ const BlogForm = () => {
             className="flex flex-col items-start gap-2 self-stretch"
           >
             {item.type === "text" ? (
-              <textarea
-                value={item.value}
-                onChange={(e) => handleContentChange(index, e.target.value)}
-                placeholder="What's this blog about? Share key highlights or content..."
-                className="flex items-center gap-2.5 self-stretch p-3 min-h-[100px] rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643] resize-vertical"
-              />
-            ) : (
-              <div className="flex flex-col items-center gap-2.5 self-stretch p-3 rounded-lg border border-[#b3b1ac]">
-                {item.preview || item.url ? (
-                  <img
-                    src={item.preview || item.url}
-                    alt={`Content ${index}`}
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
-                ) : (
-                  <div
-                    className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white text-center font-['Poppins'] font-medium leading-[136%] cursor-pointer"
-                    onClick={() =>
-                      document.getElementById(`image-upload-${index}`).click()
-                    }
-                  >
-                    Upload Image
-                  </div>
-                )}
-                <input
-                  id={`image-upload-${index}`}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(index, e.target.files[0])}
-                  className="hidden"
+              <>
+                <textarea
+                  value={item.value}
+                  onChange={(e) => handleContentChange(index, e.target.value)}
+                  placeholder="What's this blog about? Share key highlights or content..."
+                  className="flex items-center gap-2.5 self-stretch p-3 min-h-[100px] rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643] resize-vertical"
                 />
-              </div>
+                <button
+                  onClick={() => removeContent(index)}
+                  className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm"
+                >
+                  Remove
+                </button>
+              </>
+            ) : item.type === "heading" ? (
+              <>
+                <input
+                  type="text"
+                  value={item.value}
+                  onChange={(e) => handleContentChange(index, e.target.value)}
+                  placeholder="Enter heading text..."
+                  className="flex items-center gap-2.5 self-stretch p-3 h-11 rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] font-semibold leading-[normal] focus:outline-none focus:border-[#a6a643]"
+                />
+                <button
+                  onClick={() => removeContent(index)}
+                  className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm"
+                >
+                  Remove
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-col items-center gap-2.5 self-stretch p-3 rounded-lg border border-[#b3b1ac]">
+                  {item.preview || item.url ? (
+                    <img
+                      src={item.preview || item.url}
+                      alt={`Content ${index}`}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div
+                      className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white text-center font-['Poppins'] font-medium leading-[136%] cursor-pointer"
+                      onClick={() =>
+                        document.getElementById(`image-upload-${index}`).click()
+                      }
+                    >
+                      Upload Image
+                    </div>
+                  )}
+                  <input
+                    id={`image-upload-${index}`}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      handleImageChange(index, e.target.files[0])
+                    }
+                    className="hidden"
+                  />
+                </div>
+                <button
+                  onClick={() => removeContent(index)}
+                  className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm"
+                >
+                  Remove
+                </button>
+              </>
             )}
           </div>
         ))}
 
         {/* Add Buttons */}
         <div className="flex items-start gap-4">
+          <button
+            onClick={addHeading}
+            className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#e5e3df] text-[#4b4741] font-['Poppins'] font-medium leading-[136%] hover:bg-[#d5d3cf] transition-colors"
+          >
+            Add Heading
+          </button>
           <button
             onClick={addParagraph}
             className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#e5e3df] text-[#4b4741] font-['Poppins'] font-medium leading-[136%] hover:bg-[#d5d3cf] transition-colors"

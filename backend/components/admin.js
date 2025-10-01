@@ -238,8 +238,8 @@ const getBlog = async (req, res) => {
 
 const createBlog = async (req, res) => {
   try {
-    const { title, content, imgUrl, author } = req.body;
-    const newBlog = new BlogModel({ title, content, imgUrl, author });
+    const { title, content, imgUrl, author, date } = req.body;
+    const newBlog = new BlogModel({ title, content, imgUrl, author, date });
     await newBlog.save();
     res.status(201).json(newBlog);
   } catch (error) {
@@ -251,10 +251,10 @@ const createBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content, imgUrl, author } = req.body;
+    const { title, content, imgUrl, author, date } = req.body;
     const updatedBlog = await BlogModel.findByIdAndUpdate(
       id,
-      { title, content, imgUrl, author },
+      { title, content, imgUrl, author, date },
       { new: true }
     );
     if (!updatedBlog) {
