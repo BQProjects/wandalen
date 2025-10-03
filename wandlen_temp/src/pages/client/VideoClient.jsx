@@ -20,6 +20,7 @@ const VideoClient = () => {
     url: "",
     views: 0,
     likes: 0,
+    description: "",
   });
   const [isLiked, setIsLiked] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -59,6 +60,7 @@ const VideoClient = () => {
         url: res.data.url,
         views: res.data.views,
         likes: res.data.likes,
+        description: res.data.description || "",
       });
     } catch (error) {
       console.error("Error fetching video:", error);
@@ -256,6 +258,13 @@ const VideoClient = () => {
           <div className=" text-[#381207] font-['Poppins'] text-[2.5rem] font-semibold leading-[136%] pb-10">
             {t("videoClient.experiencesTitle")}
           </div>
+
+          {/* Video Description */}
+          {formData.description && (
+            <div className="text-[#381207] font-['Poppins'] text-lg leading-relaxed mb-8 w-full">
+              {formData.description}
+            </div>
+          )}
 
           {/* Dynamic Reviews Section with Navigation Arrows */}
           {reviews.length > 0 && (

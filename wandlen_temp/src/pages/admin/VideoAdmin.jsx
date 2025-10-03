@@ -144,6 +144,13 @@ const VideoAdmin = () => {
             Ervaringen met deze video:
           </div>
 
+          {/* Video Description */}
+          {video?.description && (
+            <div className="text-[#381207] font-['Poppins'] text-lg leading-relaxed mb-8 w-full">
+              {video.description}
+            </div>
+          )}
+
           {/* Dynamic Reviews Section with Navigation Arrows */}
           {reviews.length > 0 ? (
             <div className="mt-10 pb-10">
