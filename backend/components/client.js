@@ -326,7 +326,7 @@ const getVideo = async (req, res) => {
     const video = await VideoModel.findOne({
       _id: videoId,
       isApproved: true,
-    }).populate("comments");
+    }).populate("reviews");
 
     if (!video)
       return res

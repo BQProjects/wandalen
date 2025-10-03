@@ -4,6 +4,9 @@ const smsStoreModel = require("../models/smsStoreModel");
 const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
+const vimeoService = require("../services/vimeoService");
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
 const volunteerLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -427,6 +430,63 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+const uploadToVimeo = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No video file provided" });
+    }
+
+    const videoBuffer = req.file.buffer;
+    const { title, description } = req.body;
+
+    // Upload to Vimeo
+    const result = await vimeoService.uploadVideo(videoBuffer, {
+      title: title || "Untitled Video",
+      description: description || "",
+    });
+
+    res.status(200).json({
+      message: "Video uploaded to Vimeo successfully",
+      videoUrl: result.videoUrl, // Changed from result.embedUrl to result.videoUrl
+      videoId: result.videoId,
+      link: result.link,
+      duration: result.duration,
+      playerUrl: result.videoUrl,
+    });
+  } catch (error) {
+    console.error("Error uploading to Vimeo:", error);
+    res.status(500).json({
+      message: "Failed to upload video to Vimeo",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Upload cover image to Vimeo (or keep using Cloudinary for images)
+ * This endpoint can be used if you want to upload thumbnails
+ */
+const uploadCoverImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image file provided" });
+    }
+
+    // For images, you can continue using Cloudinary or implement your own solution
+    // This is just a placeholder
+    res.status(200).json({
+      message: "Cover image upload endpoint",
+      note: "You can continue using Cloudinary for images or implement another solution",
+    });
+  } catch (error) {
+    console.error("Error uploading cover image:", error);
+    res.status(500).json({
+      message: "Failed to upload cover image",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   volunteerLogin,
   volunteerSigUp,
@@ -442,4 +502,7 @@ module.exports = {
   uploadProfilePicture,
   updatePassword,
   deleteAccount,
+  uploadToVimeo,
+  uploadCoverImage,
+  upload,
 };

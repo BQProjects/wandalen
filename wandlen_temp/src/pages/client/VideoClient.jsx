@@ -56,7 +56,7 @@ const VideoClient = () => {
       const res = await axios.get(`${DATABASE_URL}/client/get-video/${id}`);
       setFormData({
         name: res.data.title,
-        url: res.data.imgUrl,
+        url: res.data.url,
         views: res.data.views,
         likes: res.data.likes,
       });
@@ -198,20 +198,34 @@ const VideoClient = () => {
 
               {/* Video Player */}
               <div className="bg-black rounded-lg sm:rounded-2xl overflow-hidden mb-6 sm:mb-8">
-                <video
-                  src={formData.url || BgVideo}
-                  controls
-                  className="w-full h-auto object-cover"
-                  style={{ aspectRatio: "16/9" }}
-                  onError={(e) => {
-                    console.error("Video failed to load:", e);
-                    e.target.src = BgVideo;
-                  }}
-                  onLoadStart={() => console.log("Video loading started")}
-                  onCanPlay={() => console.log("Video can play")}
-                >
-                  Your browser does not support the video tag.
-                </video>
+                {formData.url && formData.url.includes("vimeo.com") ? (
+                  // Vimeo video player
+                  <iframe
+                    src={formData.url}
+                    className="w-full h-auto"
+                    style={{ aspectRatio: "16/9" }}
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    title={formData.name || "Video"}
+                  ></iframe>
+                ) : (
+                  // Regular video player for non-Vimeo videos
+                  <video
+                    src={formData.url}
+                    controls
+                    className="w-full h-auto object-cover"
+                    style={{ aspectRatio: "16/9" }}
+                    onError={(e) => {
+                      console.error("Video failed to load:", e);
+                      e.target.src = BgVideo;
+                    }}
+                    onLoadStart={() => console.log("Video loading started")}
+                    onCanPlay={() => console.log("Video can play")}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                )}
               </div>
 
               {/* Video Controls */}

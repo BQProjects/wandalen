@@ -189,7 +189,7 @@ const SubscribeCard = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium tracking-[-0.2px] cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#5b6502] hover:bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium tracking-[-0.2px] cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -213,7 +213,7 @@ const SubscribeCard = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    {t("subscribeCard.subscribing") || "Subscribing..."}
+                    {"Subscribing..." || "Subscribing..."}
                   </>
                 ) : (
                   t("subscribeCard.subscribeButton")

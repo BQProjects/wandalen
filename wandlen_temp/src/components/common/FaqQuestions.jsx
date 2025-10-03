@@ -17,7 +17,7 @@ const FaqQuestions = () => {
     <div className="flex flex-shrink-0 justify-center items-center pt-8 md:pt-[6.75rem] pb-8 md:pb-[6.75rem] px-4 md:px-[10.125rem] w-full bg-dark-green">
       <div className="flex flex-col items-start gap-6 md:gap-8 w-full max-w-4xl">
         <div className="frame-1 flex flex-col md:flex-row md:items-center justify-center md:justify-between self-stretch gap-4 md:gap-0">
-          <div className="w-full text-white text-center font-semibold font-poppins text-xl md:text-2xl leading-[1.875rem]">
+          <div className="w-full text-white text-center font-semibold font-[Poppins] text-xl md:text-4xl leading-[1.875rem]">
             {t("faq.title")}
           </div>
         </div>
@@ -28,7 +28,7 @@ const FaqQuestions = () => {
                 className="flex justify-between items-center py-4 md:py-6 px-0 w-full cursor-pointer"
                 onClick={() => toggleFaq(index)}
               >
-                <div className="text-white font-poppins text-lg md:text-xl font-medium leading-[1.3125rem] pr-4">
+                <div className="text-white font-[Poppins] text-lg md:text-xl font-medium leading-[1.3125rem] pr-4">
                   {faq.question}
                 </div>
                 <img
@@ -40,7 +40,7 @@ const FaqQuestions = () => {
                 />
               </div>
               <div
-                className={`text-white font-poppins text-sm md:text-base leading-[1.5rem] pb-4 md:pb-6 px-0 ${
+                className={`text-white font-[Poppins] text-sm md:text-base leading-[1.5rem] pb-4 md:pb-6 px-0 ${
                   openIndex === index ? "block" : "hidden"
                 }`}
               >

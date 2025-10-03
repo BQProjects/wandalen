@@ -15,6 +15,9 @@ const {
   uploadProfilePicture,
   updatePassword,
   deleteAccount,
+  uploadToVimeo,
+  uploadCoverImage,
+  upload,
 } = require("../components/volunteer");
 const validateActiveSession = require("../utils/middleware");
 
@@ -25,6 +28,19 @@ volunteerRouter.use(cors());
 volunteerRouter.post("/signup", volunteerSigUp);
 volunteerRouter.post("/login", volunteerLogin);
 volunteerRouter.post("/uploadVideos", validateActiveSession, uploadVideos);
+volunteerRouter.post(
+  "/upload-to-vimeo",
+  validateActiveSession,
+  upload.single("video"),
+  uploadToVimeo
+);
+volunteerRouter.post(
+  "/upload-cover-image",
+  validateActiveSession,
+  upload.single("image"),
+  uploadCoverImage
+);
+
 volunteerRouter.get("/getSelfVideos/:volunteerId", selfUploaded);
 volunteerRouter.put(
   "/editVideoInfo/:videoId",

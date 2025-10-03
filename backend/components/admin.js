@@ -7,6 +7,9 @@ const videoRequestModel = require("../models/videoRequestModel");
 const BlogModel = require("../models/blogModel");
 const TrainingModel = require("../models/trainingModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
+const vimeoService = require("../services/vimeoService");
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
 const adminLogin = (req, res) => {
   const { username, password } = req.body;
@@ -121,6 +124,17 @@ const getallVideoRequest = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deteleteVideoRequest = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await videoRequestModel.findByIdAndDelete(id);
+    res.status(200).json({ message: "Video request deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -351,12 +365,40 @@ const approveOrg = async (req, res) => {
     // Set status to approved
     updates.requestStates = "approved";
 
+    if (updates.planValidFrom) {
+      updates.planValidFrom = new Date(updates.planValidFrom);
+    }
+    if (updates.planValidTo) {
+      updates.planValidTo = new Date(updates.planValidTo);
+    }
+
     const updatedOrg = await OrgModel.findByIdAndUpdate(orgId, updates, {
       new: true,
     }).select("-password");
 
     if (!updatedOrg) {
       return res.status(404).json({ message: "Organization not found" });
+    }
+
+    // If plan dates were set, update all clients' dates to match
+    if (updates.planValidFrom || updates.planValidTo) {
+      try {
+        const updateFields = {};
+        if (updates.planValidFrom) {
+          updateFields.startDate = updates.planValidFrom;
+        }
+        if (updates.planValidTo) {
+          updateFields.endDate = updates.planValidTo;
+        }
+
+        await ClientModel.updateMany({ orgId: orgId }, updateFields);
+
+        console.log(
+          `Updated dates for all clients of newly approved organization ${orgId}`
+        );
+      } catch (clientUpdateError) {
+        console.error("Error updating client dates:", clientUpdateError);
+      }
     }
 
     // Send emails after successful approval
@@ -366,7 +408,7 @@ const approveOrg = async (req, res) => {
 
       // Create password setup link
       const passwordLink = `${
-        process.env.FRONTEND_URL || "http://localhost:5173"
+        process.env.FRONTEND_URL || "https://wandalen-nw69.vercel.app/"
       }/generate-pass/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = false for new approvals)
@@ -403,12 +445,39 @@ const updateOrg = async (req, res) => {
     const { orgId } = req.params;
     const updates = req.body;
 
+    if (updates.planValidFrom) {
+      updates.planValidFrom = new Date(updates.planValidFrom);
+    }
+    if (updates.planValidTo) {
+      updates.planValidTo = new Date(updates.planValidTo);
+    }
+
     const updatedOrg = await OrgModel.findByIdAndUpdate(orgId, updates, {
       new: true,
     }).select("-password");
 
     if (!updatedOrg) {
       return res.status(404).json({ message: "Organization not found" });
+    }
+
+    // If plan dates were updated, update all clients' dates to match
+    if (updates.planValidFrom || updates.planValidTo) {
+      try {
+        const updateFields = {};
+        if (updates.planValidFrom) {
+          updateFields.startDate = updates.planValidFrom;
+        }
+        if (updates.planValidTo) {
+          updateFields.endDate = updates.planValidTo;
+        }
+
+        await ClientModel.updateMany({ orgId: orgId }, updateFields);
+
+        console.log(`Updated dates for all clients of organization ${orgId}`);
+      } catch (clientUpdateError) {
+        console.error("Error updating client dates:", clientUpdateError);
+        // Don't fail the request if client update fails
+      }
     }
     // Send emails after successful update
     try {
@@ -498,7 +567,7 @@ const getVideo = async (req, res) => {
     const { videoId } = req.params;
     const video = await VideoModel.findById(videoId)
       .populate("uploadedBy", "firstName lastName email")
-      .populate("comments");
+      .populate("reviews");
 
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
@@ -536,6 +605,38 @@ const toggleVideoApproval = async (req, res) => {
   }
 };
 
+const uploadToVimeo = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No video file provided" });
+    }
+
+    const videoBuffer = req.file.buffer;
+    const { title, description } = req.body;
+
+    // Upload to Vimeo
+    const result = await vimeoService.uploadVideo(videoBuffer, {
+      title: title || "Untitled Video",
+      description: description || "",
+    });
+
+    res.status(200).json({
+      message: "Video uploaded to Vimeo successfully",
+      videoUrl: result.videoUrl, // Changed from result.embedUrl to result.videoUrl
+      videoId: result.videoId,
+      link: result.link,
+      duration: result.duration,
+      playerUrl: result.videoUrl,
+    });
+  } catch (error) {
+    console.error("Error uploading to Vimeo:", error);
+    res.status(500).json({
+      message: "Failed to upload video to Vimeo",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -546,6 +647,7 @@ module.exports = {
   getAllVolunteerData,
   getVolunteerInfo,
   getallVideoRequest,
+  deteleteVideoRequest,
   getAllvideos,
   getAllBlogs,
   getBlog,
@@ -561,4 +663,6 @@ module.exports = {
   uploadVideo,
   getVideo,
   toggleVideoApproval,
+  uploadToVimeo,
+  upload,
 };

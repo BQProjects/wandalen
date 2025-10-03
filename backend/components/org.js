@@ -133,7 +133,16 @@ const orgSignUp = async (req, res) => {
 };
 
 const addClient = async (req, res) => {
-  const { firstName, lastName, email, password, orgId, phoneNo } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    orgId,
+    phoneNo,
+    startDate,
+    endDate,
+  } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -146,7 +155,8 @@ const addClient = async (req, res) => {
       plainPassword: password,
       orgId,
       subscriptionType: "org",
-      startDate: new Date(),
+      startDate: startDate ? new Date(startDate) : new Date(),
+      endDate: endDate ? new Date(endDate) : null,
     });
     await newClient.save();
 
@@ -166,6 +176,14 @@ const addClient = async (req, res) => {
 const editClient = async (req, res) => {
   const { clientId } = req.params;
   const updateData = req.body;
+
+  // Convert string dates to Date objects
+  if (updateData.startDate) {
+    updateData.startDate = new Date(updateData.startDate);
+  }
+  if (updateData.endDate) {
+    updateData.endDate = new Date(updateData.endDate);
+  }
 
   try {
     const updatedClient = await ClientModel.findByIdAndUpdate(

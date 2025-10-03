@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import OrangeWood from "../assets/orangeWood.jpg";
 import MemoryIcon from "../assets/MemoryIcon.svg";
 import BrainIcon from "../assets/BrainIcon.svg";
@@ -7,43 +7,6 @@ import { useTranslation } from "react-i18next";
 
 const DawnForest = () => {
   const { t } = useTranslation();
-  const [currentSection, setCurrentSection] = useState(0);
-  const [sectionProgress, setSectionProgress] = useState(0);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const containerHeight = containerRef.current.offsetHeight;
-      const windowHeight = window.innerHeight;
-
-      // Calculate overall progress through the component
-      const scrolled = -rect.top;
-      const maxScroll = containerHeight - windowHeight;
-      const totalProgress = Math.max(0, Math.min(1, scrolled / maxScroll));
-
-      // Determine which section we're in (0 or 1)
-      const newSection = totalProgress < 0.5 ? 0 : 1;
-      setCurrentSection(newSection);
-
-      // Calculate progress within the current section (0 to 1)
-      const sectionProg =
-        newSection === 0
-          ? Math.min(1, totalProgress * 2) // First half maps to 0-1
-          : Math.min(1, (totalProgress - 0.5) * 2); // Second half maps to 0-1
-
-      setSectionProgress(sectionProg);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial calculation
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   // First set of benefits
   const firstBenefitsData = t("dawnForest.benefits.first", {
@@ -89,30 +52,12 @@ const DawnForest = () => {
       ),
   }));
 
-  const BenefitItem = ({
-    benefit,
-    index,
-    isCurrentSection,
-    sectionProgress,
-  }) => {
-    // Stagger the animation of benefits within each section
-    const delay = index * 0.3;
-    const adjustedProgress = Math.max(0, sectionProgress - delay);
+  // Combine both benefit sets
+  const allBenefits = [...firstBenefits, ...secondBenefits];
 
-    const opacity = isCurrentSection ? Math.min(1, adjustedProgress * 2) : 0;
-
-    const translateY = isCurrentSection
-      ? Math.max(0, (1 - adjustedProgress * 2) * 30)
-      : 30;
-
+  const BenefitItem = ({ benefit }) => {
     return (
-      <div
-        className="flex items-start gap-2 sm:gap-3 md:gap-4 transition-all duration-500 ease-out"
-        style={{
-          opacity,
-          transform: `translateY(${translateY}px)`,
-        }}
-      >
+      <div className="flex items-start gap-2 sm:gap-3 md:gap-4">
         <div className="flex-shrink-0 mt-1">{benefit.icon}</div>
         <div className="flex flex-col items-start gap-1 sm:gap-2">
           <div className="text-white font-poppins text-lg sm:text-xl md:text-2xl font-semibold">
@@ -126,81 +71,41 @@ const DawnForest = () => {
     );
   };
 
-  const currentBenefits = currentSection === 0 ? firstBenefits : secondBenefits;
-
   return (
-    <div ref={containerRef} className="h-[200vh]">
-      {/* Double height for two sections */}
-      <div className="sticky top-0 flex flex-col md:flex-row w-full h-screen bg-accent">
-        {/* Image - Full width on mobile, half width on md+ */}
-        <div className="w-full md:w-1/2 h-[40vh] md:h-full">
-          <img
-            src={OrangeWood}
-            className="w-full h-full object-cover"
-            alt={t("dawnForest.imageAlt")}
-          />
+    <div className="flex flex-col md:flex-row w-full min-h-screen bg-accent">
+      {/* Image - Full width on mobile, half width on md+ */}
+      <div className="w-full md:w-1/2 h-[40vh] md:h-screen">
+        <img
+          src={OrangeWood}
+          className="w-full h-full object-cover"
+          alt={t("dawnForest.imageAlt")}
+        />
+      </div>
+
+      {/* Content - Full width on mobile, half width on md+ */}
+      <div className="w-full md:w-1/2 flex flex-col justify-center p-4 sm:p-6 md:p-8 py-8 md:py-16">
+        {/* Header */}
+        <div className="mb-6 sm:mb-8 md:mb-12">
+          <div className="text-primary font-poppins text-lg sm:text-xl md:text-2xl lg:text-[2rem] font-semibold mb-2 sm:mb-3 md:mb-4 pl-4 sm:pl-8 md:pl-14">
+            {t("dawnForest.header")}
+          </div>
+          <div className="text-secondary font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold pl-4 sm:pl-8 md:pl-14 leading-tight">
+            {t("dawnForest.subtitle")}
+          </div>
         </div>
 
-        {/* Content - Full width on mobile, half width on md+ */}
-        <div className="w-full md:w-1/2 h-[60vh] md:h-full flex flex-col justify-center p-4 sm:p-6 md:p-8">
-          {/* Header */}
-          <div
-            style={{
-              opacity: Math.min(1, sectionProgress * 3),
-              transform: `translateY(${Math.max(
-                0,
-                (1 - sectionProgress * 3) * 20
-              )}px)`,
-            }}
-            className="transition-all duration-500 ease-out"
-          >
-            <div className="text-primary font-poppins text-lg sm:text-xl md:text-2xl lg:text-[2rem] font-semibold mb-2 sm:mb-3 md:mb-4 pl-4 sm:pl-8 md:pl-14">
-              {t("dawnForest.header")}
-            </div>
-            <div className="text-secondary font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-8 md:pl-14 leading-tight">
-              {t("dawnForest.subtitle")}
-            </div>
-          </div>
+        {/* Benefits Container */}
+        <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 px-4 sm:px-8 md:px-16">
+          <div className="space-y-4 sm:space-y-6 md:space-y-8">
+            {/* Top border */}
+            <div className="w-full h-px bg-border" />
 
-          {/* Benefits Container */}
-          <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 px-4 sm:px-8 md:px-16 mt-6 sm:mt-8 md:mt-12">
-            <div className="space-y-4 sm:space-y-6 md:space-y-8 relative min-h-[180px] sm:min-h-[240px] md:min-h-[300px]">
-              {/* Top border */}
-              <div
-                className="w-full h-px bg-border transition-opacity duration-500"
-                style={{ opacity: sectionProgress > 0.2 ? 1 : 0 }}
-              />
-
-              {/* Current Benefits */}
-              {currentBenefits.map((benefit, index) => (
-                <React.Fragment key={`${currentSection}-${index}`}>
-                  <BenefitItem
-                    benefit={benefit}
-                    index={index}
-                    isCurrentSection={true}
-                    sectionProgress={sectionProgress}
-                  />
-                  <div
-                    className="w-full h-px bg-border transition-opacity duration-500"
-                    style={{
-                      opacity:
-                        sectionProgress > 0.2 + index * 0.3 + 0.2 ? 1 : 0,
-                    }}
-                  />
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-
-          {/* Section indicator */}
-          <div className="flex justify-center mt-4 sm:mt-6 md:mt-8 gap-2">
-            {[0, 1].map((section) => (
-              <div
-                key={section}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  currentSection === section ? "bg-primary" : "bg-border"
-                }`}
-              />
+            {/* All Benefits */}
+            {allBenefits.map((benefit, index) => (
+              <React.Fragment key={index}>
+                <BenefitItem benefit={benefit} />
+                <div className="w-full h-px bg-border" />
+              </React.Fragment>
             ))}
           </div>
         </div>

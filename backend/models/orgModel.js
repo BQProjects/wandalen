@@ -104,10 +104,10 @@ const OrgSchema = new Schema(
       type: String,
     },
     planValidFrom: {
-      type: String,
+      type: Date,
     },
     planValidTo: {
-      type: String,
+      type: Date,
     },
     profilePic: {
       type: String,

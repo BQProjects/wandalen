@@ -311,3 +311,228 @@ const Group1321314552 = () => (
 );
 
 export default Group1321314552;
+
+node utils/updateVideoUrls.js
+
+/**
+ * Update database URLs for existing Vimeo videos
+ * Run: node backend/utils/updateVideoUrls.js
+ */
+
+require("dotenv").config();
+const mongoose = require("mongoose");
+const axios = require("axios");
+
+// Database connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.DATABASE_URL || process.env.MONGO_URI);
+    console.log("✅ Connected to database");
+  } catch (error) {
+    console.error("❌ Database connection error:", error);
+    process.exit(1);
+  }
+};
+
+// Video model (simplified)
+const VideoSchema = new mongoose.Schema(
+  {
+    title: String,
+    url: String,
+    imgUrl: String,
+    // ... other fields
+  },
+  { timestamps: true }
+);
+
+const VideoModel = mongoose.model("Video", VideoSchema);
+
+const VIMEO_ACCESS_TOKEN = process.env.VIMEO_ACCESS_TOKEN;
+
+async function updateVideoUrls() {
+  try {
+    console.log("\n🔄 Updating video URLs in database...\n");
+
+    // Find all videos with Vimeo URLs
+    const videos = await VideoModel.find({
+      url: { $regex: /vimeo\.com/, $options: "i" },
+    });
+
+    console.log(`Found ${videos.length} videos with Vimeo URLs\n`);
+
+    for (const video of videos) {
+      try {
+        // Extract video ID from URL
+        const videoIdMatch = video.url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+        if (!videoIdMatch) {
+          console.log(
+            `⚠️  Skipping video "${video.title}" - invalid Vimeo URL`
+          );
+          continue;
+        }
+
+        const videoId = videoIdMatch[1];
+        console.log(`🔧 Updating video: ${video.title} (ID: ${videoId})`);
+
+        // Get video details from Vimeo
+        const videoDetails = await axios.get(
+          `https://api.vimeo.com/videos/${videoId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${VIMEO_ACCESS_TOKEN}`,
+              Accept: "application/vnd.vimeo.*+json;version=3.4",
+            },
+          }
+        );
+
+        // Construct proper embed URL
+        const privacyHash =
+          videoDetails.data.player_embed_url.split("?h=")[1]?.split("&")[0] ||
+          "";
+        const embedParams = `?h=${privacyHash}&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479`;
+        const fullEmbedUrl = `https://player.vimeo.com/video/${videoId}${embedParams}`;
+
+        // Update database
+        await VideoModel.findByIdAndUpdate(video._id, {
+          url: fullEmbedUrl,
+        });
+
+        console.log(`✅ Updated: ${fullEmbedUrl}\n`);
+      } catch (error) {
+        console.error(
+          `❌ Error updating video "${video.title}":`,
+          error.message
+        );
+      }
+    }
+
+    console.log("✨ Database update complete!\n");
+  } catch (error) {
+    console.error("❌ Error:", error);
+  } finally {
+    await mongoose.disconnect();
+    console.log("🔌 Disconnected from database");
+  }
+}
+
+// Run the update
+connectDB().then(() => {
+  updateVideoUrls();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+node utils/fixVimeoVideo.js
+
+
+/**
+ * Update existing Vimeo video privacy settings
+ * Run: node backend/utils/fixVimeoVideo.js
+ */
+
+require("dotenv").config();
+const axios = require("axios");
+
+const VIMEO_ACCESS_TOKEN = process.env.VIMEO_ACCESS_TOKEN;
+const VIMEO_VIDEO_ID = "1124210155"; // Your video ID
+
+async function fixVideo() {
+  try {
+    console.log(`\n🔧 Fixing Vimeo video ${VIMEO_VIDEO_ID}...\n`);
+
+    // Update video privacy settings
+    const response = await axios.patch(
+      `https://api.vimeo.com/videos/${VIMEO_VIDEO_ID}`,
+      {
+        privacy: {
+          view: "unlisted", // Not in public search, but playable with link
+          embed: "public", // Can be embedded anywhere
+          download: false, // No downloads
+        },
+        embed: {
+          buttons: {
+            like: false,
+            watchlater: false,
+            share: false, // Hide share button!
+            embed: false, // Hide embed button!
+          },
+          logos: {
+            vimeo: false, // Hide Vimeo logo
+          },
+          title: {
+            name: "hide", // Hide video title
+            owner: "hide", // Hide owner
+            portrait: "hide", // Hide portrait
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${VIMEO_ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+          Accept: "application/vnd.vimeo.*+json;version=3.4",
+        },
+      }
+    );
+
+    console.log("✅ Video privacy settings updated successfully!\n");
+    console.log("Privacy settings:");
+    console.log("  - View: unlisted (not searchable)");
+    console.log("  - Embed: public (works on your site)");
+    console.log("  - Download: disabled");
+    console.log("  - Share button: hidden");
+    console.log("  - Embed button: hidden\n");
+
+    // Get updated video details to construct proper embed URL
+    const videoDetails = await axios.get(
+      `https://api.vimeo.com/videos/${VIMEO_VIDEO_ID}`,
+      {
+        headers: {
+          Authorization: `Bearer ${VIMEO_ACCESS_TOKEN}`,
+          Accept: "application/vnd.vimeo.*+json;version=3.4",
+        },
+      }
+    );
+
+    // Construct embed URL with privacy hash and embed parameters
+    const privacyHash =
+      videoDetails.data.player_embed_url.split("?h=")[1]?.split("&")[0] || "";
+    const embedParams = `?h=${privacyHash}&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479`;
+    const fullEmbedUrl = `https://player.vimeo.com/video/${VIMEO_VIDEO_ID}${embedParams}`;
+
+    console.log("🎬 Video URL:", videoDetails.data.link);
+    console.log("📺 Embed URL:", fullEmbedUrl);
+    console.log("\n✨ Done! The embed URL above should work in your app.\n");
+  } catch (error) {
+    console.error("\n❌ Error updating video:");
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Message:", error.response.data);
+    } else {
+      console.error(error.message);
+    }
+    console.log("\n💡 Make sure:");
+    console.log("  1. Your VIMEO_ACCESS_TOKEN is set in .env");
+    console.log("  2. The token has 'edit' scope permissions");
+    console.log("  3. The video ID is correct\n");
+  }
+}
+
+fixVideo();

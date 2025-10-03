@@ -9,10 +9,17 @@ const AddCustomer = () => {
   const user = location.state?.user;
   const { DATABASE_URL } = useContext(DatabaseContext);
 
+  // Calculate default dates
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const oneYearFromToday = new Date(today);
+  oneYearFromToday.setFullYear(today.getFullYear() + 1);
+  const oneYearFromTodayStr = oneYearFromToday.toISOString().split("T")[0];
+
   // State for form fields
   const [amountPaid, setAmountPaid] = useState("€ 120,00");
-  const [planValidFrom, setPlanValidFrom] = useState("2025-07-01");
-  const [planValidTo, setPlanValidTo] = useState("2026-08-31");
+  const [planValidFrom, setPlanValidFrom] = useState(todayStr);
+  const [planValidTo, setPlanValidTo] = useState(oneYearFromTodayStr);
   const [noOfUsers, setNoOfUsers] = useState("10 users");
   const [orgName, setOrgName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -43,10 +50,25 @@ const AddCustomer = () => {
 
   useEffect(() => {
     if (user) {
+      // Calculate default dates
+      const today = new Date();
+      const todayStr = today.toISOString().split("T")[0];
+      const oneYearFromToday = new Date(today);
+      oneYearFromToday.setFullYear(today.getFullYear() + 1);
+      const oneYearFromTodayStr = oneYearFromToday.toISOString().split("T")[0];
+
       // Plan Details
       setAmountPaid(user.amountPaid || "€ 120,00");
-      setPlanValidFrom(user.planValidFrom || "2025-07-01");
-      setPlanValidTo(user.planValidTo || "2026-08-31");
+      setPlanValidFrom(
+        user.planValidFrom
+          ? new Date(user.planValidFrom).toISOString().split("T")[0]
+          : todayStr
+      );
+      setPlanValidTo(
+        user.planValidTo
+          ? new Date(user.planValidTo).toISOString().split("T")[0]
+          : oneYearFromTodayStr
+      );
       setClientLimit(user.clientLimit || "");
 
       // Organization Details
@@ -203,7 +225,7 @@ const AddCustomer = () => {
   };
 
   return (
-    <div className="flex-1 bg-white p-6 max-w-4xl mx-auto font-base">
+    <div className="flex-1 bg-[#f7f6f4] p-6 mx-auto font-base">
       <div className="flex items-center gap-4 mb-6">
         <button onClick={handleBack} className="text-brown hover:text-brand">
           <svg
@@ -227,21 +249,37 @@ const AddCustomer = () => {
       </div>
 
       {/* Customer & Plan Details - Moved to Top */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-medium text-muted-foreground mb-4">
-          Customer & Plan Details
-        </h2>
-        <div className="p-6 rounded-2xl bg-secondary">
+      <div className="relative mb-10">
+        <div className="pt-16 p-6 rounded-2xl bg-secondary">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <svg
+              width={96}
+              height={96}
+              viewBox="0 0 96 96"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width={96} height={96} rx={48} fill="#ede4dc" />
+              <path
+                d="M29.3133 92.999C38.0078 90.9819 46.9693 90.0855 55.5001 87.4564C66.6331 84.0257 78.0247 76.7764 79.7739 64.45C81.4542 52.5804 78.0678 40.7367 78.2229 28.8672L73.0096 31.1514C59.0158 38.7886 60.3428 44.2192 60.3428 44.2192C60.5582 46.3827 62.3333 48.5291 64.1687 50.7616C65.6163 52.5287 68.2789 53.9424 65.668 56.0456C64.9184 56.649 63.7465 56.8904 63.2381 57.3127C62.1782 58.2006 63.4018 59.4849 63.6344 60.2262C64.0653 61.6313 63.5827 62.5019 62.385 63.1742C63.1347 63.8638 63.531 64.088 63.3587 65.2172C63.2553 65.9326 62.4108 66.1481 62.0317 66.7773C61.2217 68.122 61.9111 68.9065 62.0489 70.1994C62.8503 77.9401 52.4497 73.8456 48.2705 74.2852L43.9017 73.9577C39.7742 73.9318 34.7937 74.8024 33.3374 79.1296L29.3047 92.9903L29.3133 92.999Z"
+                fill="#381207"
+              />
+              <path
+                d="M40.1584 58.1327C43.0106 51.8143 46.2075 45.4701 46.9744 38.5828C47.6982 32.0834 46.1989 25.5409 44.217 19.3088C42.528 13.9989 40.4428 8.49085 41.4423 3C37.1339 8.35294 31.8689 12.8439 27.1038 17.7917C22.3386 22.7395 17.9699 28.3596 16.0914 34.9711C13.3167 44.7115 16.2896 55.1071 19.9001 64.5717C23.3296 73.5536 27.707 82.8199 27.8362 92.6207C31.395 80.8805 35.083 69.3385 40.1498 58.1327H40.1584Z"
+                fill="#381207"
+              />
+            </svg>
+          </div>
           <div className="text-brown font-base text-lg font-medium mb-4">
             Complete the User & Plan Information
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid gap-4">
             <div>
               <label className="block text-brown font-base font-medium mb-2">
                 Amount Paid
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={amountPaid}
                 onChange={(e) => setAmountPaid(e.target.value)}
               />
@@ -252,7 +290,7 @@ const AddCustomer = () => {
               </label>
               <input
                 type="date"
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={planValidFrom}
                 onChange={(e) => setPlanValidFrom(e.target.value)}
               />
@@ -263,7 +301,7 @@ const AddCustomer = () => {
               </label>
               <input
                 type="date"
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={planValidTo}
                 onChange={(e) => setPlanValidTo(e.target.value)}
               />
@@ -273,7 +311,7 @@ const AddCustomer = () => {
                 Client Limit
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 type="number"
                 min="0"
                 value={clientLimit}
@@ -294,7 +332,7 @@ const AddCustomer = () => {
         </div>
       </div>
 
-      <div className="space-y-10">
+      <div className="space-y-10 w-11/12 mx-auto">
         {/* Organization Details */}
         <div>
           <h2 className="text-2xl font-medium text-muted-foreground mb-4">
@@ -306,7 +344,7 @@ const AddCustomer = () => {
                 Organization Name
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
               />
@@ -316,7 +354,7 @@ const AddCustomer = () => {
                 Contact Email
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
               />
@@ -326,7 +364,7 @@ const AddCustomer = () => {
                 Phone Number
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={phoneNo}
                 onChange={(e) => setPhoneNo(e.target.value)}
               />
@@ -336,7 +374,7 @@ const AddCustomer = () => {
                 Address
               </label>
               <textarea
-                className="input h-20 py-2 resize-none"
+                className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               ></textarea>
@@ -346,7 +384,7 @@ const AddCustomer = () => {
                 Street
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
               />
@@ -356,7 +394,7 @@ const AddCustomer = () => {
                 Postal Code
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
               />
@@ -366,7 +404,7 @@ const AddCustomer = () => {
                 City
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
@@ -376,7 +414,7 @@ const AddCustomer = () => {
                 Website Link
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
               />
@@ -395,7 +433,7 @@ const AddCustomer = () => {
                 Full Name
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={orgFullName}
                 onChange={(e) => setOrgFullName(e.target.value)}
               />
@@ -405,7 +443,7 @@ const AddCustomer = () => {
                 Job Title / Position
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={orgJobTitle}
                 onChange={(e) => setOrgJobTitle(e.target.value)}
               />
@@ -415,7 +453,7 @@ const AddCustomer = () => {
                 Email Address
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={orgEmailAddress}
                 onChange={(e) => setOrgEmailAddress(e.target.value)}
               />
@@ -425,7 +463,7 @@ const AddCustomer = () => {
                 Phone Number
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={orgPhoneContact}
                 onChange={(e) => setOrgPhoneContact(e.target.value)}
               />
@@ -444,7 +482,7 @@ const AddCustomer = () => {
                 Full Name
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -454,7 +492,7 @@ const AddCustomer = () => {
                 Job Title / Position
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
               />
@@ -464,7 +502,7 @@ const AddCustomer = () => {
                 Email Address
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -474,7 +512,7 @@ const AddCustomer = () => {
                 Phone Number
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
               />
@@ -492,14 +530,17 @@ const AddCustomer = () => {
               <label className="block text-muted-foreground font-base text-sm mb-2">
                 Total Number of Clients
               </label>
-              <input className="input" value={totalClients} />
+              <input
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
+                value={totalClients}
+              />
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
                 Number of Locations
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={numberOfLocations}
                 onChange={(e) => setNumberOfLocations(e.target.value)}
               />
@@ -509,7 +550,7 @@ const AddCustomer = () => {
                 Type of care organization
               </label>
               <select
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={soortZorgorganisatie}
                 onChange={(e) => setSoortZorgorganisatie(e.target.value)}
               >
@@ -536,7 +577,7 @@ const AddCustomer = () => {
                 Estimated number of clients who will use the platform
               </label>
               <input
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={estimatedClients}
                 onChange={(e) => setEstimatedClients(e.target.value)}
               />
@@ -547,7 +588,7 @@ const AddCustomer = () => {
               </label>
               <input
                 type="date"
-                className="input"
+                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
@@ -586,7 +627,7 @@ const AddCustomer = () => {
                 </div>
               </div>
               <textarea
-                className="input h-20 py-2 resize-none"
+                className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"
                 value={additionalServices}
                 onChange={(e) => setAdditionalServices(e.target.value)}
                 placeholder="Details about support needed"
@@ -597,7 +638,7 @@ const AddCustomer = () => {
                 Additional services or custom solutions you are interested in?
               </label>
               <textarea
-                className="input h-20 py-2 resize-none"
+                className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"
                 value={additionalServices}
                 onChange={(e) => setAdditionalServices(e.target.value)}
               ></textarea>
@@ -607,7 +648,7 @@ const AddCustomer = () => {
                 Notes
               </label>
               <textarea
-                className="input h-20 py-2 resize-none"
+                className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
               ></textarea>

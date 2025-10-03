@@ -58,6 +58,14 @@ const Login = () => {
       if (res.status === successStatus) {
         alert("Login successful!");
         if (selectedRole === "organization") {
+          // Check if plan has expired
+          if (res.data.endDate && new Date() > new Date(res.data.endDate)) {
+            alert(
+              "Your plan has expired. Please contact the admin at admin@wandalen.com"
+            );
+            return;
+          }
+
           login({ email: formData.email }, selectedRole);
 
           // Set auth context for org

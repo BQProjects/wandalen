@@ -592,30 +592,37 @@ const CreateVideo = () => {
     let imgUrl = formData.imgUrl; // Existing or new
 
     try {
-      // Upload video file only if new
+      // Upload video file to Vimeo only if new
       if (videoFile) {
-        setCurrentStep("Uploading video...");
+        setCurrentStep("Uploading video to Vimeo...");
         setUploadProgress(20);
 
-        const data1 = new FormData();
-        data1.append("file", videoFile);
-        data1.append("upload_preset", "wandelen");
-        data1.append("cloud_name", "dojwaepbj");
+        const videoFormData = new FormData();
+        videoFormData.append("video", videoFile);
+        videoFormData.append("title", formData.title || "Untitled Video");
+        videoFormData.append("description", formData.description || "");
 
-        const res1 = await fetch(
-          "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        const vimeoResponse = await axios.post(
+          `${DATABASE_URL}/admin/upload-to-vimeo`,
+          videoFormData,
           {
-            method: "POST",
-            body: data1,
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${sessionId}`,
+            },
           }
         );
-        const result1 = await res1.json();
-        if (!res1.ok) throw new Error("Video upload failed");
-        videoUrl = result1.secure_url; // Correct: video URL
+
+        if (vimeoResponse.status === 200) {
+          videoUrl = vimeoResponse.data.videoUrl; // Vimeo embed URL
+          console.log("Vimeo upload success:", vimeoResponse.data);
+        } else {
+          throw new Error("Video upload to Vimeo failed");
+        }
         setUploadProgress(50);
       }
 
-      // Upload cover image only if new
+      // Upload cover image (keep using Cloudinary or your preferred service)
       if (coverImage) {
         setCurrentStep("Uploading cover image...");
         setUploadProgress(60);
@@ -634,7 +641,7 @@ const CreateVideo = () => {
         );
         const result2 = await res2.json();
         if (!res2.ok) throw new Error("Cover upload failed");
-        imgUrl = result2.secure_url; // Correct: cover URL
+        imgUrl = result2.secure_url; // Cover URL
         setUploadProgress(80);
       }
 
@@ -643,7 +650,7 @@ const CreateVideo = () => {
 
       const payload = {
         title: formData.title,
-        url: videoUrl, // Fixed: video URL
+        url: videoUrl, // Vimeo video URL
         location: formData.location,
         province: formData.province,
         municipality: formData.municipality,
@@ -653,14 +660,12 @@ const CreateVideo = () => {
         sound: formData.soundStimuli,
         animals: formData.animals,
         tags: formData.tags.join(", "), // Changed to string to match backend expectation
-        imgUrl: imgUrl, // Fixed: cover URL
+        imgUrl: imgUrl, // Cover URL
         duration: formData.duration,
-        // Removed id: localStorage.getItem("userId"), as it may not be set for admin
       };
 
       if (editMode) {
         const res = await axios.put(
-          // Changed from post to put
           `${DATABASE_URL}/volunteer/editVideoInfo/${videoId}`,
           payload,
           {
@@ -681,7 +686,6 @@ const CreateVideo = () => {
           throw new Error("Video update failed");
         }
       } else {
-        // Create logic (unchanged, but ensure URLs are correct)
         const res = await axios.post(
           `${DATABASE_URL}/admin/uploadVideo`,
           payload,
@@ -697,7 +701,7 @@ const CreateVideo = () => {
           setCurrentStep("Video created successfully!");
           setTimeout(() => {
             alert("Video uploaded successfully");
-            navigate("/admin/all-videos"); // Changed for admin
+            navigate("/admin/all-videos");
           }, 1000);
         } else {
           throw new Error("Video upload failed");
@@ -706,7 +710,9 @@ const CreateVideo = () => {
     } catch (error) {
       console.error("Error:", error);
       setCurrentStep("Error occurred");
-      alert("An error occurred. Please try again.");
+      alert(
+        `An error occurred: ${error.response?.data?.message || error.message}`
+      );
     } finally {
       setIsLoading(false);
       setUploadProgress(0);

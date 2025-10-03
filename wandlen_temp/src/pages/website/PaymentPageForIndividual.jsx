@@ -277,7 +277,7 @@ const PaymentPageForIndividual = () => {
           expiryDate: formData.expiryDate,
           cvc: formData.cvc,
         },
-        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       };
 
       const res = await axios.post(`${DATABASE_URL}/client/signup`, signupData);

@@ -2,6 +2,7 @@ const smsStoreModel = require("../models/smsStoreModel");
 const SessionStoreModel = require("../models/sessionStoreModel.js");
 const SubscriptionModel = require("../models/subscriptionModel");
 const crypto = require("crypto");
+const axios = require("axios");
 
 const verifyOtp = async (req, res) => {
   const { email, otp, type } = req.body;
@@ -43,6 +44,14 @@ const verifyOtp = async (req, res) => {
 const subscribe = async (req, res) => {
   const { email, firstName, lastName, notes } = req.body;
 
+  // Get client IP
+  const clientIP =
+    req.ip ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    "127.0.0.1";
+  console.log("Client IP:", clientIP);
+
   try {
     // Validate required fields
     if (!email || !firstName) {
@@ -68,6 +77,38 @@ const subscribe = async (req, res) => {
     });
 
     await newSubscription.save();
+
+    // Send to Laposta
+    try {
+      const lapostaResponse = await axios.post(
+        "https://api.laposta.nl/v2/member",
+        {
+          list_id: process.env.LAPOSTA_LIST_ID || "1wxtckhyt7",
+          email: email,
+          ip: "1.1.1.1",
+          custom_fields: {
+            voornaam: firstName,
+            achternaam: lastName || "",
+          },
+          options: {
+            ignore_double_optin: true,
+          },
+        },
+        {
+          auth: {
+            username: process.env.LAPOSTA_API_KEY || "VYgJJ2g6ihPna2pI2ZDg",
+            password: "",
+          },
+        }
+      );
+      console.log("Laposta response:", lapostaResponse.data);
+    } catch (lapostaError) {
+      console.error(
+        "Laposta error:",
+        lapostaError.response?.data || lapostaError.message
+      );
+      // Don't fail the subscription if Laposta fails
+    }
 
     res.status(201).json({
       message: "Successfully subscribed to our newsletter!",
