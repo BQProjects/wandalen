@@ -20,7 +20,8 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const MessageUs = () => {
-  const [isOpen, setIsOpen] = useState(false); // For modal or tooltip
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
@@ -163,14 +164,14 @@ const Aran = () => {
         {/* Main Content */}
         <div className="relative z-10 flex flex-col items-start justify-start h-1/3 mx-auto pt-16 md:pt-24">
           {/* Left Content - Text */}
-          <div className="flex-1 max-w-2xl px-4 sm:px-10 md:px-20">
-            <h1 className="text-xl sm:text-2xl md:text-[32px] font-semibold text-[#A6A643] mb-2 sm:mb-4 font-poppins tracking-wide">
+          <div className="flex-1 max-w-3xl px-4 sm:px-10 md:px-20 pt-12">
+            <h1 className="text-xl sm:text-2xl md:text-[32px] font-semibold text-[#A6A643] mb-2 sm:mb-4 font-[Poppins] tracking-wide">
               {t("aran.hero.title")}
             </h1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-3 sm:mb-6 leading-tight font-poppins">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-3 sm:mb-6 leading-tight font-[Poppins]">
               {t("aran.hero.subtitle")}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl font-medium text-white mb-4 sm:mb-8 leading-relaxed font-poppins max-w-xl">
+            <p className="text-base sm:text-lg md:text-xl font-medium text-white mb-4 sm:mb-8 leading-relaxed font-[Poppins] max-w-xl">
               {t("aran.hero.description")}
             </p>
 
@@ -182,7 +183,7 @@ const Aran = () => {
                 </button>
               </Link>
               <Link to="/subscribe">
-                <button className="cursor-pointer text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-[Poppins] text-base sm:text-lg md:text-xl font-medium leading-[136%] w-full sm:w-auto mt-2 sm:mt-0">
+                <button className="cursor-pointer text-white hover:text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-[Poppins] text-base sm:text-lg md:text-xl font-medium leading-[136%] w-full sm:w-auto mt-2 sm:mt-0">
                   {t("aran.hero.viewPlans")}
                 </button>
               </Link>
@@ -288,7 +289,7 @@ const Aran = () => {
           </h2>
 
           {/* Main Description */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#381207] leading-relaxed mb-8 sm:mb-16 max-w-full mx-auto font-[Poppins] font-medium">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#381207] leading-relaxed mb-8 sm:mb-16 max-w-full mx-auto font-[Poppins] font-semibold">
             {t("aran.secondHero.description")}
           </p>
 
@@ -303,7 +304,7 @@ const Aran = () => {
                   className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
                 />
               </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
                 {t("aran.secondHero.features.exploreNature")}
               </h3>
             </div>
@@ -317,7 +318,7 @@ const Aran = () => {
                   className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
                 />
               </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins ">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
                 <span
                   dangerouslySetInnerHTML={{
                     __html: t("aran.secondHero.features.simpleViewing"),
@@ -335,7 +336,7 @@ const Aran = () => {
                   className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
                 />
               </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-poppins">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
                 <span
                   dangerouslySetInnerHTML={{
                     __html: t("aran.secondHero.features.instantWatch"),
@@ -355,13 +356,13 @@ const Aran = () => {
           {/* Header Section */}
           <div className="mb-8 sm:mb-12 md:mb-16">
             <div
-              className="text-[#5b6502] font-['Poppins'] text-xl sm:text-2xl md:text-[32px] font-semibold leading-[136%] mb-2 sm:mb-4"
+              className="text-[#5b6502] font-['Poppins'] text-xl sm:text-2xl md:text-[32px] font-semibold leading-[136%] mb-2"
               style={{ letterSpacing: "-0.32px" }}
             >
               {t("discoverVideos.title")}
             </div>
             <div
-              className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl font-semibold leading-[136%]"
+              className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-5xl font-semibold leading-[136%]"
               style={{ letterSpacing: "-0.48px" }}
             >
               {t("discoverVideos.subtitle")}
@@ -887,42 +888,37 @@ const Aran = () => {
 
         {/* Content Section - Stacked on mobile, side by side on larger screens */}
         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8 lg:gap-12 w-full max-w-7xl">
-          {/* Left Content */}
-          <div className="flex flex-col items-start gap-6 sm:gap-8 lg:gap-10 w-full lg:w-1/2">
-            <div className="flex flex-col items-start gap-4 sm:gap-6 w-full">
-              <div className="flex flex-col items-start gap-2 sm:gap-4 w-full">
-                <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-tight">
-                  {activeTab === "organizations" &&
-                    (t("dawnForest.organizationsTabs.organizationsTitle") ||
-                      "Virtual Walking for Organizations")}
-                  {activeTab === "Thuis" &&
-                    (t("dawnForest.organizationsTabs.familiesTitle") ||
-                      "Virtual Walking at Home")}
-                  {activeTab === "volunteer" &&
-                    (t("dawnForest.organizationsTabs.volunteerTitle") ||
-                      "Virtual Walking as a Volunteer")}
-                </div>
-                <div
-                  className={`w-full font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight ${
-                    activeTab === "Thuis" ? "text-[#381207]" : "text-white"
-                  }`}
-                >
-                  {activeTab === "organizations" &&
-                    (t("dawnForest.organizationsTabs.organizationsSubtitle") ||
-                      "Calm moments, shared together.")}
-                  {activeTab === "volunteer" &&
-                    (t("dawnForest.organizationsTabs.volunteerSubtitle") ||
-                      "Share walks, spread joy.")}
-                  {activeTab === "Thuis" &&
-                    (t("dawnForest.organizationsTabs.familiesSubtitle") ||
-                      "Nature's beauty, just a click away.")}
-                </div>
-              </div>
-
-              {/* Benefits List */}
-              <div className="flex flex-col items-start gap-4 self-stretch w-full">
-                {activeTab === "organizations" && (
-                  <>
+          {/* Left Content with Sliding Animation */}
+          <div className="flex flex-col items-start gap-6 sm:gap-8 lg:gap-10 w-full lg:w-1/2 relative overflow-hidden">
+            {/* Sliding Container */}
+            <div
+              className="flex transition-transform duration-700 ease-in-out w-[300%]"
+              style={{
+                transform: `translateX(-${
+                  activeTab === "organizations"
+                    ? 0
+                    : activeTab === "Thuis"
+                    ? 33.333
+                    : 66.666
+                }%)`,
+              }}
+            >
+              {/* Organizations Tab Content */}
+              <div className="w-1/3 flex-shrink-0 pr-8">
+                <div className="flex flex-col items-start gap-4 sm:gap-6 w-full">
+                  <div className="flex flex-col items-start gap-2 sm:gap-4 w-full">
+                    <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-tight">
+                      {t("dawnForest.organizationsTabs.organizationsTitle") ||
+                        "Virtual Walking for Organizations"}
+                    </div>
+                    <div className="w-full font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight text-white">
+                      {t(
+                        "dawnForest.organizationsTabs.organizationsSubtitle"
+                      ) || "Calm moments, shared together."}
+                    </div>
+                  </div>
+                  {/* Organizations Benefits */}
+                  <div className="flex flex-col items-start gap-4 self-stretch w-full">
                     {(Array.isArray(
                       t("dawnForest.organizationsTabs.organizationsBenefits", {
                         returnObjects: true,
@@ -989,11 +985,25 @@ const Aran = () => {
                         </div>
                       </div>
                     ))}
-                  </>
-                )}
+                  </div>
+                </div>
+              </div>
 
-                {activeTab === "Thuis" && (
-                  <>
+              {/* Families Tab Content */}
+              <div className="w-1/3 flex-shrink-0 pr-8">
+                <div className="flex flex-col items-start gap-4 sm:gap-6 w-full">
+                  <div className="flex flex-col items-start gap-2 sm:gap-4 w-full">
+                    <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-tight">
+                      {t("dawnForest.organizationsTabs.familiesTitle") ||
+                        "Virtual Walking at Home"}
+                    </div>
+                    <div className="w-full font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight text-[#381207]">
+                      {t("dawnForest.organizationsTabs.familiesSubtitle") ||
+                        "Nature's beauty, just a click away."}
+                    </div>
+                  </div>
+                  {/* Families Benefits */}
+                  <div className="flex flex-col items-start gap-4 self-stretch w-full">
                     {(Array.isArray(
                       t("dawnForest.organizationsTabs.familiesBenefits", {
                         returnObjects: true,
@@ -1057,11 +1067,25 @@ const Aran = () => {
                         </div>
                       </div>
                     ))}
-                  </>
-                )}
+                  </div>
+                </div>
+              </div>
 
-                {activeTab === "volunteer" && (
-                  <>
+              {/* Volunteer Tab Content */}
+              <div className="w-1/3 flex-shrink-0">
+                <div className="flex flex-col items-start gap-4 sm:gap-6 w-full">
+                  <div className="flex flex-col items-start gap-2 sm:gap-4 w-full">
+                    <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-tight">
+                      {t("dawnForest.organizationsTabs.volunteerTitle") ||
+                        "Virtual Walking as a Volunteer"}
+                    </div>
+                    <div className="w-full font-['Poppins'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight text-white">
+                      {t("dawnForest.organizationsTabs.volunteerSubtitle") ||
+                        "Share walks, spread joy."}
+                    </div>
+                  </div>
+                  {/* Volunteer Benefits */}
+                  <div className="flex flex-col items-start gap-4 self-stretch w-full">
                     {(Array.isArray(
                       t("dawnForest.organizationsTabs.volunteerBenefits", {
                         returnObjects: true,
@@ -1125,8 +1149,8 @@ const Aran = () => {
                         </div>
                       </div>
                     ))}
-                  </>
-                )}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1154,29 +1178,36 @@ const Aran = () => {
             </Link>
           </div>
 
-          {/* Right Image */}
-          <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[800px] rounded-lg overflow-hidden">
-            {activeTab === "organizations" && (
+          {/* Right Image with Sliding Animation */}
+          <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[800px] rounded-lg overflow-hidden relative">
+            <div
+              className="flex transition-transform duration-700 ease-in-out w-[300%] h-full"
+              style={{
+                transform: `translateX(-${
+                  activeTab === "organizations"
+                    ? 0
+                    : activeTab === "Thuis"
+                    ? 33.333
+                    : 66.666
+                }%)`,
+              }}
+            >
               <img
                 src={wheelchair}
                 alt="Virtual walking for organizations"
-                className="w-full h-full object-cover rounded-lg"
+                className="w-1/3 h-full object-cover rounded-lg flex-shrink-0"
               />
-            )}
-            {activeTab === "Thuis" && (
               <img
                 src={walking}
                 alt="Virtual Walking at Home"
-                className="w-full h-full object-cover rounded-lg"
+                className="w-1/3 h-full object-cover rounded-lg flex-shrink-0"
               />
-            )}
-            {activeTab === "volunteer" && (
               <img
                 src={camera}
                 alt="Virtual Walking as a Volunteer"
-                className="w-full h-full object-cover rounded-lg"
+                className="w-1/3 h-full object-cover rounded-lg flex-shrink-0"
               />
-            )}
+            </div>
           </div>
         </div>
       </div>

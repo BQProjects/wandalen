@@ -7,7 +7,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#2a341f] text-[#ede4dc] py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-6 md:px-8 lg:px-10">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
           {/* Company Info */}
           <div className="mb-4 sm:mb-0 text-center sm:text-left">
@@ -32,47 +32,30 @@ const Footer = () => {
                     />
                   </svg>
                 </div>
-                <p className="text-base sm:text-lg font-medium">
+                <p className="text-base sm:text-lg font-medium font-[Poppins]">
                   {t("footer.companyName")}
                 </p>
               </div>
-              <p className="text-xs sm:text-sm">{t("footer.copyright")}</p>
-              <div className="text-xs sm:text-sm opacity-75 flex flex-col sm:flex-row justify-center sm:justify-start gap-2 sm:gap-4">
-                <Link
-                  to="/terms"
-                  className="hover:text-[#a6a643] transition-colors"
-                >
-                  {t("footer.termsAndConditions")}
-                </Link>
-                <span className="hidden sm:inline">|</span>
-                <Link
-                  to="/agreement"
-                  className="hover:text-[#a6a643] transition-colors"
-                >
-                  {t("footer.privacyPolicy")}
-                </Link>
-              </div>
             </div>
           </div>
-
           {/* Menu */}
           <div className="mb-4 sm:mb-0 text-center sm:text-left">
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5">
+            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 font-[Poppins]">
               {t("footer.menu")}
             </h4>
             <ul className="space-y-2 sm:space-y-3 text-sm">
               <li>
                 <Link
                   to="/"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.home")}
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/ourapproach"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  to="/ourVission"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.ourVision")}
                 </Link>
@@ -80,7 +63,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/subscribe"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.subscriptions")}
                 </Link>
@@ -88,7 +71,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/become-volunteer"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.volunteer")}
                 </Link>
@@ -98,10 +81,10 @@ const Footer = () => {
 
           {/* Contact */}
           <div className="mb-4 sm:mb-0 text-center sm:text-left">
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5">
+            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 font-[Poppins]">
               {t("footer.contact")}
             </h4>
-            <div className="text-sm space-y-2 sm:space-y-3">
+            <div className="text-sm space-y-2 sm:space-y-3 font-[Poppins]">
               <p>{t("footer.address")}</p>
               <p>{t("footer.phone")}</p>
               <p>{t("footer.email")}</p>
@@ -110,7 +93,7 @@ const Footer = () => {
 
           {/* Socials */}
           <div className="text-center sm:text-left">
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5">
+            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 font-[Poppins]">
               Follow Us
             </h4>
             <div className="flex justify-center sm:justify-start gap-5 sm:gap-6">
@@ -213,7 +196,7 @@ const Footer = () => {
               <li className="hidden sm:block">
                 <a
                   href="#"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.facebook")}
                 </a>
@@ -221,7 +204,7 @@ const Footer = () => {
               <li className="hidden sm:block">
                 <a
                   href="#"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.instagram")}
                 </a>
@@ -229,12 +212,30 @@ const Footer = () => {
               <li className="hidden sm:block">
                 <a
                   href="#"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.linkedin")}
                 </a>
               </li>
             </ul>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs sm:text-sm">{t("footer.copyright")}</p>
+          <div className="text-xs sm:text-sm opacity-75 flex flex-col sm:flex-row justify-center sm:justify-start gap-2 sm:gap-4">
+            <Link
+              to="/terms"
+              className="hover:text-[#a6a643] transition-colors font-[Poppins]"
+            >
+              {t("footer.termsAndConditions")}
+            </Link>
+            <span className="hidden sm:inline">|</span>
+            <Link
+              to="/agreement"
+              className="hover:text-[#a6a643] transition-colors font-[Poppins]"
+            >
+              {t("footer.privacyPolicy")}
+            </Link>
           </div>
         </div>
       </div>

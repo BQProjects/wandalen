@@ -16,8 +16,8 @@ const OrganizationProfile = () => {
     address: "",
     accountEmail: "",
     password: "*************",
-    currentPlan: "Home Subscription (€12.99/month)",
-    validUntil: "Sept 21, 2025",
+    currentPlan: "",
+    planValidTo: "",
     profilePic: "",
   });
   const [originalData, setOriginalData] = useState({});
@@ -44,8 +44,16 @@ const OrganizationProfile = () => {
         address: org.address || "",
         accountEmail: org.email || "",
         password: "*************",
-        currentPlan: "Home Subscription (€12.99/month)",
-        validUntil: "Sept 21, 2025",
+        currentPlan: org.amountPaid
+          ? `Custom Plan (${org.amountPaid})`
+          : "Home Subscription (€12.99/month)",
+        planValidTo: org.planValidTo
+          ? new Date(org.planValidTo).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          : "Not set",
         profilePic: org.profilePic || "",
       };
       setProfileData(data);
@@ -83,6 +91,7 @@ const OrganizationProfile = () => {
       alert(t("organizationProfile.profileUpdatedSuccess"));
       setIsEditing(false);
       setOriginalData(profileData);
+      getOrgData();
     } catch (error) {
       console.error("Error updating profile:", error);
       alert(t("organizationProfile.profileUpdateFailed"));
@@ -483,7 +492,7 @@ const OrganizationProfile = () => {
                 {t("organizationProfile.validUntil")}
               </label>
               <div className="w-full p-3 border border-[#b3b1ac] bg-[#f7f6f4] rounded-lg text-[#381207] font-[Poppins]">
-                {profileData.validUntil}
+                {profileData.planValidTo}
               </div>
             </div>
           </div>

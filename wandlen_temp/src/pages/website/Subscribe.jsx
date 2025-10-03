@@ -66,7 +66,7 @@ const SubscriptionCard = ({
       </div>
       <div className="flex flex-col items-start gap-2 self-stretch">
         <button
-          className="flex justify-center items-center gap-2 self-stretch py-2 px-4 h-12 rounded-lg bg-[#a6a643] text-white font-['Poppins'] text-xl font-medium leading-[136%] border-none cursor-pointer"
+          className="flex justify-center items-center gap-2 self-stretch py-2 px-4 h-12 rounded-lg bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] text-xl font-medium leading-[136%] border-none cursor-pointer"
           onClick={onClick}
         >
           {buttonText}
@@ -102,7 +102,7 @@ const DiscountBadge = ({ discount, t }) => (
 
 // Hero Section Component
 const HeroSection = ({ t }) => (
-  <div className="flex flex-col items-start gap-2 w-[1136px]">
+  <div className="flex flex-col items-start gap-2 w-[1136px] pt-10">
     <div className="subscription_plans text-[#a6a643] font-['Poppins'] text-[2rem] font-semibold leading-[136%]">
       {t("subscribe.hero.title")}
     </div>

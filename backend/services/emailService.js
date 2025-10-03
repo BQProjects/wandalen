@@ -42,9 +42,9 @@ const emailTemplates = {
   // Volunteer signup templates
   volunteerSignupUser: (userData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Welcome to BrainQuest!</h2>
+      <h2 style="color: #381207;">Welcome to Virtueel Wandelen!</h2>
       <p>Dear ${userData.firstName} ${userData.lastName},</p>
-      <p>Thank you for signing up as a volunteer with BrainQuest. We have received your application and our support team will get back to you soon.</p>
+      <p>Thank you for signing up as a volunteer with Virtueel Wandelen. We have received your application and our support team will get back to you soon.</p>
       
       <h3 style="color: #5b6502;">Your submitted information:</h3>
       <ul>
@@ -60,7 +60,7 @@ const emailTemplates = {
       
       <p>Our team will review your application and contact you within 2-3 business days.</p>
       
-      <p>Best regards,<br>BrainQuest Support Team</p>
+      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
@@ -70,7 +70,7 @@ const emailTemplates = {
   volunteerSignupAdmin: (userData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #381207;">New Volunteer Registration</h2>
-      <p>A new volunteer has registered on BrainQuest.</p>
+      <p>A new volunteer has registered on Virtueel Wandelen.</p>
       
       <h3 style="color: #5b6502;">Volunteer Details:</h3>
       <ul>
@@ -96,7 +96,7 @@ const emailTemplates = {
       
       <p>Please review and contact the volunteer if needed.</p>
       
-      <p>BrainQuest System</p>
+      <p>Virtueel Wandelen System</p>
     </div>
   `,
 
@@ -105,7 +105,7 @@ const emailTemplates = {
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #381207;">Quote Request Received</h2>
       <p>Dear ${formData.fullName},</p>
-      <p>Thank you for requesting a quote from BrainQuest. We have received your request and our support team will get back to you soon with a detailed proposal.</p>
+      <p>Thank you for requesting a quote from Virtueel Wandelen. We have received your request and our support team will get back to you soon with a detailed proposal.</p>
       
       <h3 style="color: #5b6502;">Your Organization Details:</h3>
       <ul>
@@ -119,7 +119,7 @@ const emailTemplates = {
       
       <p>Our team will review your requirements and send you a customized quote within 1-2 business days.</p>
       
-      <p>Best regards,<br>BrainQuest Sales Team</p>
+      <p>Best regards,<br>Virtueel Wandelen Sales Team</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
@@ -172,16 +172,16 @@ const emailTemplates = {
       
       <p>Please follow up with the client within 24 hours.</p>
       
-      <p>BrainQuest System</p>
+      <p>Virtueel Wandelen System</p>
     </div>
   `,
 
   // Individual payment templates
   paymentUser: (userData, planData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Welcome to BrainQuest!</h2>
+      <h2 style="color: #381207;">Welcome to Virtueel Wandelen!</h2>
       <p>Dear ${userData.firstName} ${userData.lastName},</p>
-      <p>Thank you for subscribing to BrainQuest. Your account has been created and your 7-day free trial has started.</p>
+      <p>Thank you for subscribing to Virtueel Wandelen. Your account has been created and your 7-day free trial has started.</p>
       
       <h3 style="color: #5b6502;">Subscription Details:</h3>
       <ul>
@@ -195,7 +195,7 @@ const emailTemplates = {
       
       <p>Our support team will get back to you soon with login credentials and setup instructions.</p>
       
-      <p>Best regards,<br>BrainQuest Support Team</p>
+      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
@@ -227,7 +227,7 @@ const emailTemplates = {
       
       <p>Please set up the customer account and send login credentials.</p>
       
-      <p>BrainQuest System</p>
+      <p>Virtueel Wandelen System</p>
     </div>
   `,
 
@@ -237,16 +237,16 @@ const emailTemplates = {
       <h2 style="color: #381207;">
         ${
           isUpdate
-            ? "BrainQuest - Your Organization Account has been Updated!"
-            : "Welcome to BrainQuest - Your Organization Account is Ready!"
+            ? "Virtueel Wandelen - Your Organization Account has been Updated!"
+            : "Welcome to Virtueel Wandelen - Your Organization Account is Ready!"
         }
       </h2>
       <p>Dear ${orgData.contactPerson?.fullName || "Team"},</p>
       <p>
         ${
           isUpdate
-            ? "Your organization account with BrainQuest has been successfully updated."
-            : "Congratulations! Your organization account with BrainQuest has been approved and created successfully."
+            ? "Your organization account with Virtueel Wandelen has been successfully updated."
+            : "Congratulations! Your organization account with Virtueel Wandelen has been approved and created successfully."
         }
       </p>
       
@@ -294,7 +294,7 @@ const emailTemplates = {
       <ul>
         <li>Log in to your organization dashboard</li>
         <li>Add and manage your clients/patients</li>
-        <li>Access BrainQuest's virtual walking platform</li>
+        <li>Access Virtueel Wandelen's virtual walking platform</li>
         <li>Monitor usage and progress</li>
       </ul>
       `
@@ -306,7 +306,7 @@ const emailTemplates = {
       
       <p>If you have any questions or need assistance, our support team is here to help.</p>
       
-      <p>Best regards,<br>BrainQuest Support Team</p>
+      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated email. ${
@@ -408,20 +408,20 @@ const emailTemplates = {
       
       <p>Action Required: Monitor the customer's onboarding process and provide support as needed.</p>
       
-      <p>BrainQuest Admin System</p>
+      <p>Virtueel Wandelen Admin System</p>
     </div>
   `,
 
   // Quote request templates for organizations
   quoteRequestUser: (orgData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Quote Request Received - BrainQuest</h2>
+      <h2 style="color: #381207;">Quote Request Received - Virtueel Wandelen</h2>
       <p>Dear ${getDisplayValue(
         orgData.contactPerson?.fullName,
         "Valued Customer"
       )},</p>
       
-      <p>Thank you for your interest in BrainQuest! We've received your quote request and our team will review it shortly.</p>
+      <p>Thank you for your interest in Virtueel Wandelen! We've received your quote request and our team will review it shortly.</p>
       
       <h3 style="color: #5b6502;">Your Request Details:</h3>
       <ul>
@@ -454,11 +454,11 @@ const emailTemplates = {
         <li>Schedule a demo if requested</li>
       </ul>
       
-      <p>In the meantime, feel free to explore our website to learn more about BrainQuest's virtual walking platform and its benefits for cognitive health and wellness.</p>
+      <p>In the meantime, feel free to explore our website to learn more about Virtueel Wandelen's virtual walking platform and its benefits for cognitive health and wellness.</p>
       
       <p>If you have any urgent questions, please don't hesitate to contact us.</p>
       
-      <p>Best regards,<br>BrainQuest Sales Team</p>
+      <p>Best regards,<br>Virtueel Wandelen Sales Team</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated confirmation. Our team will be in touch with you soon.</p>
@@ -533,19 +533,19 @@ const emailTemplates = {
       
       <p><strong>Action Required:</strong> Please review the request and follow up with the organization within 24 hours.</p>
       
-      <p>BrainQuest Admin System</p>
+      <p>Virtueel Wandelen Admin System</p>
     </div>
   `,
 
   // Individual subscription templates
   individualSubscriptionUser: (clientData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Subscription Received - BrainQuest</h2>
+      <h2 style="color: #381207;">Subscription Received - Virtueel Wandelen</h2>
       <p>Dear ${getDisplayValue(clientData.firstName)} ${getDisplayValue(
     clientData.lastName
   )},</p>
       
-      <p>Thank you for subscribing to BrainQuest! We've received your subscription and our team will process it shortly.</p>
+      <p>Thank you for subscribing to Virtueel Wandelen! We've received your subscription and our team will process it shortly.</p>
       
       <h3 style="color: #5b6502;">Your Subscription Details:</h3>
       <ul>
@@ -579,7 +579,7 @@ const emailTemplates = {
       <ul>
         <li>Process your subscription within 24 hours</li>
         <li>Send you login credentials once approved</li>
-        <li>Provide access to BrainQuest's virtual walking platform</li>
+        <li>Provide access to Virtueel Wandelen's virtual walking platform</li>
         <li>Send you onboarding materials and tutorials</li>
       </ul>
       
@@ -587,7 +587,7 @@ const emailTemplates = {
       
       <p>If you have any questions, please don't hesitate to contact our support team.</p>
       
-      <p>Best regards,<br>BrainQuest Support Team</p>
+      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated confirmation. We'll be in touch soon with your account details.</p>
@@ -597,7 +597,7 @@ const emailTemplates = {
   individualSubscriptionAdmin: (clientData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #381207;">New Individual Subscription</h2>
-      <p>A new individual has subscribed to BrainQuest.</p>
+      <p>A new individual has subscribed to Virtueel Wandelen.</p>
       
       <h3 style="color: #5b6502;">Subscriber Information:</h3>
       <ul>
@@ -645,7 +645,7 @@ const emailTemplates = {
       
       <p><strong>Action Required:</strong> Please review and approve the subscription, then send login credentials to the subscriber.</p>
       
-      <p>BrainQuest Admin System</p>
+      <p>Virtueel Wandelen Admin System</p>
     </div>
   `,
 };

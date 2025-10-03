@@ -232,7 +232,9 @@ const PatientProfile = () => {
         address: res.data.client.address || "",
         accountEmail: res.data.client.email,
         password: "••••••••", // Always masked
-        currentPlan: res.data.client.subscriptionType || "",
+        currentPlan: res.data.client.plan
+          ? `${res.data.client.plan.title} - €${res.data.client.plan.price} / ${res.data.client.plan.period}`
+          : "",
         validUntil: res.data.client.endDate
           ? new Date(res.data.client.endDate).toLocaleDateString()
           : "",

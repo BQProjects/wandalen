@@ -58,7 +58,7 @@
         },
         "chat": {
             "title": "Chat with Virtueel Wandelen",
-            "greeting": "Hello! Welcome to BrainQuest. How can we assist you with virtual walking experiences today?",
+            "greeting": "Hello! Welcome to Virtueel Wandelen. How can we assist you with virtual walking experiences today?",
             "userMessage": "I'm interested in learning more about your services.",
             "response": "Great! We offer immersive virtual walks through beautiful landscapes. Would you like to schedule a demo or get a quote?",
             "placeholder": "Type your message...",
@@ -108,7 +108,7 @@
     },
     "testimonials": {
         "title": "Volunteers",
-        "subtitle": "why we participate",
+        "subtitle": "Why we participate",
         "readMore": "Read More",
         "readLess": "Read Less",
         "items": [
@@ -317,6 +317,7 @@
         "title": "Making Nature Accessible, Anywhere",
         "description1": "Virtual Walking opens the door to nature for everyone — regardless of physical limitations. Through authentic, real-life walking videos, we bring the beauty, peace, and familiarity of local landscapes to people who may no longer be able to experience them in person.",
         "description2": "From seniors with dementia to those with limited mobility, our videos bring calm, spark recognition, and support well-being — strengthening connections with the world and with oneself.",
+        "description3": "Virtual Walking brings the power of experiencing nature to people with limited mobility by showcasing real nature videos from the neighborhood. With authentic, carefully curated footage, we create relaxation, connection, and a positive impact on well-being and health. Our goal is to make nature accessible to everyone, strengthening their connection with themselves and potentially the outside world.",
         "ctaButton": "Start Your Journey"
     },
     "partnersSection": {

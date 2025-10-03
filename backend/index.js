@@ -9,6 +9,7 @@ const volunteerRouter = require("./routes/volunteerRoute");
 const utilRouter = require("./routes/utilsRoute");
 
 const app = express();
+app.set("trust proxy", true);
 
 app.use(express.json());
 app.use(

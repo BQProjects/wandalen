@@ -145,7 +145,7 @@ const VolunteerSignupForm = () => {
   return (
     <div className="min-h-screen bg-[#ede4dc]">
       <div className="min-h-screen bg-[#ede4dc]">
-        <div className="relative w-full pt-10 pb-10 px-4 sm:px-10 md:px-20 z-0">
+        <div className="relative w-full pt-20 pb-50 px-4 sm:px-10 md:px-20 z-0">
           {/* Background Image */}
           <img
             src={ForestDark}
@@ -165,7 +165,7 @@ const VolunteerSignupForm = () => {
             </div>
           </div>
         </div>
-        <div className="flex mx-auto -my-10 pb-10 z-10 relative px-4 sm:px-10 md:px-20">
+        <div className="flex mx-auto -my-40 pb-10 z-10 relative px-4 sm:px-10 md:px-20">
           <div className="bg-white p-10 rounded-2xl w-full">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">

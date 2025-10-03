@@ -58,7 +58,7 @@
         },
         "chat": {
             "title": "Chat met Virtueel Wandelen",
-            "greeting": "Hallo! Welkom bij BrainQuest. Hoe kunnen we u helpen met virtuele wandelervaringen vandaag?",
+            "greeting": "Hallo! Welkom bij Virtueel Wandelen. Hoe kunnen we u helpen met virtuele wandelervaringen vandaag?",
             "userMessage": "Ik ben geïnteresseerd in meer informatie over uw diensten.",
             "response": "Geweldig! We bieden immersieve virtuele wandelingen door prachtige landschappen. Wilt u een demo plannen of een offerte ontvangen?",
             "placeholder": "Typ uw bericht...",

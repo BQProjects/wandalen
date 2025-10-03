@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useNavigate, Link } from "react-router-dom";
+import ForestDark from "../../assets/ForestDark.png";
 
 const RequestAQuoteForm = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -211,436 +212,492 @@ const RequestAQuoteForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-secondary flex flex-col">
       {/* Header */}
-      <div className="relative bg-black bg-opacity-10 h-[438px] flex items-center justify-center">
-        <div className="absolute inset-0 bg-black bg-opacity-10"></div>
-        <div className="relative z-10 text-center text-[#ede4dc] px-6">
-          <h1 className="text-5xl font-medium mb-4">
+      <div className="relative w-full h-[400px] flex items-center px-4 z-10">
+        {/* Background Image */}
+        <img
+          src={ForestDark}
+          alt="Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Centered Content */}
+        <div className="relative text-left px-12">
+          <h1 className="text-5xl font-medium mb-4 text-[#ede4dc]">
             {t("requestQuoteForm.header.title")}
           </h1>
-          <p className="text-xl max-w-[754px] mx-auto">
+          <p className="text-xl max-w-[754px] mx-auto text-[#ede4dc]">
             {t("requestQuoteForm.header.subtitle")}
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <div className="flex flex-col items-center py-10 px-4">
-        <div className="w-full max-w-[1000px] space-y-8">
-          <h2 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.title")}
-          </h2>
+      <div className="relative flex flex-col items-center py-10 px-4 z-20 -mt-30">
+        <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-lg w-11/12 relative">
+          <div className="w-11/12 space-y-8">
+            <h2 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.title")}
+            </h2>
 
-          {/* Organization Details */}
-          <div className="space-y-6">
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.organizationName")}
-              </label>
-              <input
-                type="text"
-                name="organizationName"
-                value={formData.organizationName}
-                onChange={handleChange}
-                placeholder={t(
-                  "requestQuoteForm.form.placeholders.organizationName"
-                )}
-                className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                  errors.organizationName
-                    ? "border-red-500"
-                    : "border-[#cbcbcb]"
-                }`}
-              />
-              {errors.organizationName && (
-                <span className="text-red-500 text-sm">
-                  {errors.organizationName}
-                </span>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Organization Details */}
+            <div className="space-y-6">
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.contactEmail")}
+                  {t("requestQuoteForm.form.labels.organizationName")}
                 </label>
                 <input
-                  type="email"
-                  name="contactEmail"
-                  value={formData.contactEmail}
+                  type="text"
+                  name="organizationName"
+                  value={formData.organizationName}
                   onChange={handleChange}
                   placeholder={t(
-                    "requestQuoteForm.form.placeholders.contactEmail"
+                    "requestQuoteForm.form.placeholders.organizationName"
                   )}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.contactEmail ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.contactEmail && (
-                  <span className="text-red-500 text-sm">
-                    {errors.contactEmail}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.phoneNumber")}
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  onInput={handlePhoneInput}
-                  placeholder={t("requestQuoteForm.form.placeholders.phone")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.phone ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.phone && (
-                  <span className="text-red-500 text-sm">{errors.phone}</span>
-                )}
-              </div>
-            </div>
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.address")}
-              </label>
-              <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder={t("requestQuoteForm.form.placeholders.address")}
-                className={`w-full p-3 border rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                  errors.address ? "border-red-500" : "border-[#cbcbcb]"
-                }`}
-              />
-              {errors.address && (
-                <span className="text-red-500 text-sm">{errors.address}</span>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.street")}
-                </label>
-                <input
-                  type="text"
-                  name="street"
-                  value={formData.street}
-                  onChange={handleChange}
-                  placeholder={t("requestQuoteForm.form.placeholders.street")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.street ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.street && (
-                  <span className="text-red-500 text-sm">{errors.street}</span>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.postalCode")}
-                </label>
-                <input
-                  type="text"
-                  name="postalCode"
-                  value={formData.postalCode}
-                  onChange={handleChange}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.postalCode"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.postalCode ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.postalCode && (
-                  <span className="text-red-500 text-sm">
-                    {errors.postalCode}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.city")}
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  placeholder={t("requestQuoteForm.form.placeholders.city")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.city ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.city && (
-                  <span className="text-red-500 text-sm">{errors.city}</span>
-                )}
-              </div>
-            </div>
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.websiteLink")}
-              </label>
-              <input
-                type="url"
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                placeholder={t("requestQuoteForm.form.placeholders.website")}
-                className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                  errors.website ? "border-red-500" : "border-[#cbcbcb]"
-                }`}
-              />
-              {errors.website && (
-                <span className="text-red-500 text-sm">{errors.website}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Organization Details Section (renamed fields) */}
-          <h3 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.sections.organizationDetails")}
-          </h3>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.fullName")}
-                </label>
-                <input
-                  type="text"
-                  name="orgFullName"
-                  value={formData.orgFullName}
-                  onChange={handleChange}
-                  onInput={handleNameInput}
-                  placeholder={t("requestQuoteForm.form.placeholders.fullName")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.orgFullName ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.orgFullName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.orgFullName}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.jobTitle")}
-                </label>
-                <input
-                  type="text"
-                  name="orgJobTitle"
-                  value={formData.orgJobTitle}
-                  onChange={handleChange}
-                  placeholder={t("requestQuoteForm.form.placeholders.jobTitle")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.orgJobTitle ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.orgJobTitle && (
-                  <span className="text-red-500 text-sm">
-                    {errors.orgJobTitle}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.emailAddress")}
-                </label>
-                <input
-                  type="email"
-                  name="orgEmailAddress"
-                  value={formData.orgEmailAddress}
-                  onChange={handleChange}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.emailAddress"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.orgEmailAddress
+                    errors.organizationName
                       ? "border-red-500"
                       : "border-[#cbcbcb]"
                   }`}
                 />
-                {errors.orgEmailAddress && (
+                {errors.organizationName && (
                   <span className="text-red-500 text-sm">
-                    {errors.orgEmailAddress}
+                    {errors.organizationName}
                   </span>
                 )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.contactEmail")}
+                  </label>
+                  <input
+                    type="email"
+                    name="contactEmail"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.contactEmail"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.contactEmail
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.contactEmail && (
+                    <span className="text-red-500 text-sm">
+                      {errors.contactEmail}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.phoneNumber")}
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    onInput={handlePhoneInput}
+                    placeholder={t("requestQuoteForm.form.placeholders.phone")}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.phone ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.phone && (
+                    <span className="text-red-500 text-sm">{errors.phone}</span>
+                  )}
+                </div>
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.phoneNumber")}
+                  {t("requestQuoteForm.form.labels.address")}
                 </label>
-                <input
-                  type="tel"
-                  name="orgPhoneContact"
-                  value={formData.orgPhoneContact}
+                <textarea
+                  name="address"
+                  value={formData.address}
                   onChange={handleChange}
-                  onInput={handlePhoneInput}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.phoneContact"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.orgPhoneContact
-                      ? "border-red-500"
-                      : "border-[#cbcbcb]"
+                  placeholder={t("requestQuoteForm.form.placeholders.address")}
+                  className={`w-full p-3 border rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.address ? "border-red-500" : "border-[#cbcbcb]"
                   }`}
                 />
-                {errors.orgPhoneContact && (
-                  <span className="text-red-500 text-sm">
-                    {errors.orgPhoneContact}
-                  </span>
+                {errors.address && (
+                  <span className="text-red-500 text-sm">{errors.address}</span>
+                )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.street")}
+                  </label>
+                  <input
+                    type="text"
+                    name="street"
+                    value={formData.street}
+                    onChange={handleChange}
+                    placeholder={t("requestQuoteForm.form.placeholders.street")}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.street ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.street && (
+                    <span className="text-red-500 text-sm">
+                      {errors.street}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.postalCode")}
+                  </label>
+                  <input
+                    type="text"
+                    name="postalCode"
+                    value={formData.postalCode}
+                    onChange={handleChange}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.postalCode"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.postalCode ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.postalCode && (
+                    <span className="text-red-500 text-sm">
+                      {errors.postalCode}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.city")}
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder={t("requestQuoteForm.form.placeholders.city")}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.city ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.city && (
+                    <span className="text-red-500 text-sm">{errors.city}</span>
+                  )}
+                </div>
+              </div>
+              <div>
+                <label className="block text-[#381207] font-medium mb-2">
+                  {t("requestQuoteForm.form.labels.websiteLink")}
+                </label>
+                <input
+                  type="url"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  placeholder={t("requestQuoteForm.form.placeholders.website")}
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                    errors.website ? "border-red-500" : "border-[#cbcbcb]"
+                  }`}
+                />
+                {errors.website && (
+                  <span className="text-red-500 text-sm">{errors.website}</span>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Contact Person Section */}
-          <h3 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.sections.contactPerson")}
-          </h3>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.fullName")}
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  onInput={handleNameInput}
-                  placeholder={t("requestQuoteForm.form.placeholders.fullName")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.fullName ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.fullName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.fullName}
-                  </span>
-                )}
+            {/* Organization Details Section (renamed fields) */}
+            <h3 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.sections.organizationDetails")}
+            </h3>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.fullName")}
+                  </label>
+                  <input
+                    type="text"
+                    name="orgFullName"
+                    value={formData.orgFullName}
+                    onChange={handleChange}
+                    onInput={handleNameInput}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.fullName"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.orgFullName ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.orgFullName && (
+                    <span className="text-red-500 text-sm">
+                      {errors.orgFullName}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.jobTitle")}
+                  </label>
+                  <input
+                    type="text"
+                    name="orgJobTitle"
+                    value={formData.orgJobTitle}
+                    onChange={handleChange}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.jobTitle"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.orgJobTitle ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.orgJobTitle && (
+                    <span className="text-red-500 text-sm">
+                      {errors.orgJobTitle}
+                    </span>
+                  )}
+                </div>
               </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.jobTitle")}
-                </label>
-                <input
-                  type="text"
-                  name="jobTitle"
-                  value={formData.jobTitle}
-                  onChange={handleChange}
-                  placeholder={t("requestQuoteForm.form.placeholders.jobTitle")}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.jobTitle ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.jobTitle && (
-                  <span className="text-red-500 text-sm">
-                    {errors.jobTitle}
-                  </span>
-                )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.emailAddress")}
+                  </label>
+                  <input
+                    type="email"
+                    name="orgEmailAddress"
+                    value={formData.orgEmailAddress}
+                    onChange={handleChange}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.emailAddress"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.orgEmailAddress
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.orgEmailAddress && (
+                    <span className="text-red-500 text-sm">
+                      {errors.orgEmailAddress}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.phoneNumber")}
+                  </label>
+                  <input
+                    type="tel"
+                    name="orgPhoneContact"
+                    value={formData.orgPhoneContact}
+                    onChange={handleChange}
+                    onInput={handlePhoneInput}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.phoneContact"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.orgPhoneContact
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.orgPhoneContact && (
+                    <span className="text-red-500 text-sm">
+                      {errors.orgPhoneContact}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.emailAddress")}
-                </label>
-                <input
-                  type="email"
-                  name="emailAddress"
-                  value={formData.emailAddress}
-                  onChange={handleChange}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.emailAddress"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.emailAddress ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.emailAddress && (
-                  <span className="text-red-500 text-sm">
-                    {errors.emailAddress}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.phoneNumber")}
-                </label>
-                <input
-                  type="tel"
-                  name="phoneContact"
-                  value={formData.phoneContact}
-                  onChange={handleChange}
-                  onInput={handlePhoneInput}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.phoneContact"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.phoneContact ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.phoneContact && (
-                  <span className="text-red-500 text-sm">
-                    {errors.phoneContact}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
 
-          {/* Extra informatie */}
-          <h3 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.sections.extraInfo")}
-          </h3>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.numberLocations")}
-                </label>
-                <input
-                  type="text"
-                  name="numberLocations"
-                  value={formData.numberLocations}
-                  onChange={handleChange}
-                  onInput={handleNumberInput}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.numberLocations"
+            {/* Contact Person Section */}
+            <h3 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.sections.contactPerson")}
+            </h3>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.fullName")}
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    onInput={handleNameInput}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.fullName"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.fullName ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.fullName && (
+                    <span className="text-red-500 text-sm">
+                      {errors.fullName}
+                    </span>
                   )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.numberLocations
-                      ? "border-red-500"
-                      : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.numberLocations && (
-                  <span className="text-red-500 text-sm">
-                    {errors.numberLocations}
-                  </span>
-                )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.jobTitle")}
+                  </label>
+                  <input
+                    type="text"
+                    name="jobTitle"
+                    value={formData.jobTitle}
+                    onChange={handleChange}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.jobTitle"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.jobTitle ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.jobTitle && (
+                    <span className="text-red-500 text-sm">
+                      {errors.jobTitle}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.emailAddress")}
+                  </label>
+                  <input
+                    type="email"
+                    name="emailAddress"
+                    value={formData.emailAddress}
+                    onChange={handleChange}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.emailAddress"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.emailAddress
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.emailAddress && (
+                    <span className="text-red-500 text-sm">
+                      {errors.emailAddress}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.phoneNumber")}
+                  </label>
+                  <input
+                    type="tel"
+                    name="phoneContact"
+                    value={formData.phoneContact}
+                    onChange={handleChange}
+                    onInput={handlePhoneInput}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.phoneContact"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.phoneContact
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.phoneContact && (
+                    <span className="text-red-500 text-sm">
+                      {errors.phoneContact}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Extra informatie */}
+            <h3 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.sections.extraInfo")}
+            </h3>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.numberLocations")}
+                  </label>
+                  <input
+                    type="text"
+                    name="numberLocations"
+                    value={formData.numberLocations}
+                    onChange={handleChange}
+                    onInput={handleNumberInput}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.numberLocations"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.numberLocations
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.numberLocations && (
+                    <span className="text-red-500 text-sm">
+                      {errors.numberLocations}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.totalClients")}
+                  </label>
+                  <select
+                    name="totalClients"
+                    value={formData.totalClients}
+                    onChange={handleChange}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.totalClients
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  >
+                    <option value="">Selecteer een optie</option>
+                    {t("requestQuoteForm.form.options.totalClients", {
+                      returnObjects: true,
+                    }).map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.totalClients && (
+                    <span className="text-red-500 text-sm">
+                      {errors.totalClients}
+                    </span>
+                  )}
+                </div>
               </div>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.totalClients")}
+                  {t("requestQuoteForm.form.labels.soortZorgorganisatie")}
                 </label>
                 <select
-                  name="totalClients"
-                  value={formData.totalClients}
+                  name="soortZorgorganisatie"
+                  value={formData.soortZorgorganisatie}
                   onChange={handleChange}
                   className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.totalClients ? "border-red-500" : "border-[#cbcbcb]"
+                    errors.soortZorgorganisatie
+                      ? "border-red-500"
+                      : "border-[#cbcbcb]"
                   }`}
                 >
                   <option value="">Selecteer een optie</option>
-                  {t("requestQuoteForm.form.options.totalClients", {
+                  {t("requestQuoteForm.form.options.soortZorgorganisatie", {
                     returnObjects: true,
                   }).map((option) => (
                     <option key={option} value={option}>
@@ -648,223 +705,194 @@ const RequestAQuoteForm = () => {
                     </option>
                   ))}
                 </select>
-                {errors.totalClients && (
+                {errors.soortZorgorganisatie && (
                   <span className="text-red-500 text-sm">
-                    {errors.totalClients}
+                    {errors.soortZorgorganisatie}
                   </span>
                 )}
               </div>
             </div>
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.soortZorgorganisatie")}
-              </label>
-              <select
-                name="soortZorgorganisatie"
-                value={formData.soortZorgorganisatie}
-                onChange={handleChange}
-                className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                  errors.soortZorgorganisatie
-                    ? "border-red-500"
-                    : "border-[#cbcbcb]"
-                }`}
-              >
-                <option value="">Selecteer een optie</option>
-                {t("requestQuoteForm.form.options.soortZorgorganisatie", {
-                  returnObjects: true,
-                }).map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {errors.soortZorgorganisatie && (
-                <span className="text-red-500 text-sm">
-                  {errors.soortZorgorganisatie}
-                </span>
-              )}
-            </div>
-          </div>
 
-          {/* Organization & Target Group */}
-          <h3 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.sections.organizationTargetGroup")}
-          </h3>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.estimatedClients")}
-                </label>
-                <input
-                  type="text"
-                  name="estimatedClients"
-                  value={formData.estimatedClients}
-                  onChange={handleChange}
-                  onInput={handleNumberInput}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.estimatedClients"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.estimatedClients
-                      ? "border-red-500"
-                      : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.estimatedClients && (
-                  <span className="text-red-500 text-sm">
-                    {errors.estimatedClients}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block text-[#381207] font-medium mb-2">
-                  {t("requestQuoteForm.form.labels.startDate")}
-                </label>
-                <input
-                  type="date"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleChange}
-                  min={new Date().toISOString().split("T")[0]}
-                  placeholder={t(
-                    "requestQuoteForm.form.placeholders.startDate"
-                  )}
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                    errors.startDate ? "border-red-500" : "border-[#cbcbcb]"
-                  }`}
-                />
-                {errors.startDate && (
-                  <span className="text-red-500 text-sm">
-                    {errors.startDate}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Use of Virtual Walking */}
-          <h3 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.sections.virtualWalkingUse")}
-          </h3>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.onboardingSupport")}
-              </label>
-              <div className="flex gap-6 mt-2">
-                {t("requestQuoteForm.form.options.onboardingSupport", {
-                  returnObjects: true,
-                }).map((option) => (
-                  <label
-                    key={option}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <input
-                      type="radio"
-                      name="onboardingSupport"
-                      value={option}
-                      checked={formData.onboardingSupport === option}
-                      onChange={handleChange}
-                    />
-                    <span>{option}</span>
+            {/* Organization & Target Group */}
+            <h3 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.sections.organizationTargetGroup")}
+            </h3>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.estimatedClients")}
                   </label>
-                ))}
+                  <input
+                    type="text"
+                    name="estimatedClients"
+                    value={formData.estimatedClients}
+                    onChange={handleChange}
+                    onInput={handleNumberInput}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.estimatedClients"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.estimatedClients
+                        ? "border-red-500"
+                        : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.estimatedClients && (
+                    <span className="text-red-500 text-sm">
+                      {errors.estimatedClients}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[#381207] font-medium mb-2">
+                    {t("requestQuoteForm.form.labels.startDate")}
+                  </label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    value={formData.startDate}
+                    onChange={handleChange}
+                    min={new Date().toISOString().split("T")[0]}
+                    placeholder={t(
+                      "requestQuoteForm.form.placeholders.startDate"
+                    )}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
+                      errors.startDate ? "border-red-500" : "border-[#cbcbcb]"
+                    }`}
+                  />
+                  {errors.startDate && (
+                    <span className="text-red-500 text-sm">
+                      {errors.startDate}
+                    </span>
+                  )}
+                </div>
               </div>
-              {errors.onboardingSupport && (
+            </div>
+
+            {/* Use of Virtual Walking */}
+            <h3 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.sections.virtualWalkingUse")}
+            </h3>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-[#381207] font-medium mb-2">
+                  {t("requestQuoteForm.form.labels.onboardingSupport")}
+                </label>
+                <div className="flex gap-6 mt-2">
+                  {t("requestQuoteForm.form.options.onboardingSupport", {
+                    returnObjects: true,
+                  }).map((option) => (
+                    <label
+                      key={option}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="onboardingSupport"
+                        value={option}
+                        checked={formData.onboardingSupport === option}
+                        onChange={handleChange}
+                      />
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.onboardingSupport && (
+                  <span className="text-red-500 text-sm">
+                    {errors.onboardingSupport}
+                  </span>
+                )}
+                <textarea
+                  name="onboardingExplanation"
+                  value={formData.onboardingExplanation}
+                  onChange={handleChange}
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.onboardingExplanation"
+                  )}
+                  className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 mt-4 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#381207] font-medium mb-2">
+                  {t("requestQuoteForm.form.labels.additionalServices")}
+                </label>
+                <textarea
+                  name="additionalServices"
+                  value={formData.additionalServices}
+                  onChange={handleChange}
+                  placeholder={t(
+                    "requestQuoteForm.form.placeholders.additionalServices"
+                  )}
+                  className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#381207] font-medium mb-2">
+                  {t("requestQuoteForm.form.labels.notes")}
+                </label>
+                <textarea
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  placeholder={t("requestQuoteForm.form.placeholders.notes")}
+                  className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                />
+              </div>
+            </div>
+
+            {/* Quotation & set-up fee */}
+            <h3 className="text-2xl font-medium text-[#381207]">
+              {t("requestQuoteForm.form.sections.quotationSetup")}
+            </h3>
+            <div className="flex flex-col items-start gap-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="newsletter"
+                  checked={formData.newsletter}
+                  onChange={handleChange}
+                  className="w-4 h-4"
+                />
+                <span className="text-[#2a341f] text-sm">
+                  {t("requestQuoteForm.form.labels.newsletter")}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="agreeToTerms"
+                  checked={formData.agreeToTerms}
+                  onChange={handleChange}
+                  className="w-4 h-4"
+                />
+                <span className="text-[#2a341f] text-sm">
+                  {t("requestQuoteForm.form.labels.agreeToTerms")}{" "}
+                  <Link
+                    to="/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#5b6502] hover:text-[#4a5201] underline"
+                  >
+                    ({t("footer.termsAndConditions")})
+                  </Link>
+                </span>
+              </div>
+              {errors.agreeToTerms && (
                 <span className="text-red-500 text-sm">
-                  {errors.onboardingSupport}
+                  {errors.agreeToTerms}
                 </span>
               )}
-              <textarea
-                name="onboardingExplanation"
-                value={formData.onboardingExplanation}
-                onChange={handleChange}
-                placeholder={t(
-                  "requestQuoteForm.form.placeholders.onboardingExplanation"
-                )}
-                className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 mt-4 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-              />
             </div>
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.additionalServices")}
-              </label>
-              <textarea
-                name="additionalServices"
-                value={formData.additionalServices}
-                onChange={handleChange}
-                placeholder={t(
-                  "requestQuoteForm.form.placeholders.additionalServices"
-                )}
-                className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-              />
-            </div>
-            <div>
-              <label className="block text-[#381207] font-medium mb-2">
-                {t("requestQuoteForm.form.labels.notes")}
-              </label>
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                placeholder={t("requestQuoteForm.form.placeholders.notes")}
-                className="w-full p-3 border border-[#cbcbcb] rounded-lg h-20 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-              />
-            </div>
-          </div>
 
-          {/* Quotation & set-up fee */}
-          <h3 className="text-2xl font-medium text-[#381207]">
-            {t("requestQuoteForm.form.sections.quotationSetup")}
-          </h3>
-          <div className="flex flex-col items-start gap-2">
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                name="newsletter"
-                checked={formData.newsletter}
-                onChange={handleChange}
-                className="w-4 h-4"
-              />
-              <span className="text-[#2a341f] text-sm">
-                {t("requestQuoteForm.form.labels.newsletter")}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                name="agreeToTerms"
-                checked={formData.agreeToTerms}
-                onChange={handleChange}
-                className="w-4 h-4"
-              />
-              <span className="text-[#2a341f] text-sm">
-                {t("requestQuoteForm.form.labels.agreeToTerms")}{" "}
-                <Link
-                  to="/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#5b6502] hover:text-[#4a5201] underline"
-                >
-                  ({t("footer.termsAndConditions")})
-                </Link>
-              </span>
-            </div>
-            {errors.agreeToTerms && (
-              <span className="text-red-500 text-sm">
-                {errors.agreeToTerms}
-              </span>
-            )}
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="w-full py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5201] transition font-medium"
+            >
+              {t("requestQuoteForm.form.buttons.submit")}
+            </button>
           </div>
-
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="w-full py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5201] transition font-medium"
-          >
-            {t("requestQuoteForm.form.buttons.submit")}
-          </button>
         </div>
       </div>
     </div>

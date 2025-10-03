@@ -59,6 +59,29 @@ const Otp = () => {
         localStorage.setItem("sessionId", res.data.sessionId);
         localStorage.setItem("userId", res.data.userId);
 
+        // For clients, check if plan has expired
+        if (userType === "client") {
+          try {
+            const clientRes = await axios.get(
+              `${DATABASE_URL}/client/get-account/${res.data.userId}`,
+              {
+                headers: { Authorization: `Bearer ${res.data.sessionId}` },
+              }
+            );
+            if (
+              clientRes.data.client.endDate &&
+              new Date() > new Date(clientRes.data.client.endDate)
+            ) {
+              alert(
+                "Your plan has expired. Please contact the admin at admin@wandalen.com"
+              );
+              return;
+            }
+          } catch (error) {
+            console.error("Error fetching client data:", error);
+          }
+        }
+
         // Redirect to appropriate dashboard
         const from = location.state?.from?.pathname || `/${userType}`;
         navigate(from);

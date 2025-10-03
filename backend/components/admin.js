@@ -351,12 +351,40 @@ const approveOrg = async (req, res) => {
     // Set status to approved
     updates.requestStates = "approved";
 
+    if (updates.planValidFrom) {
+      updates.planValidFrom = new Date(updates.planValidFrom);
+    }
+    if (updates.planValidTo) {
+      updates.planValidTo = new Date(updates.planValidTo);
+    }
+
     const updatedOrg = await OrgModel.findByIdAndUpdate(orgId, updates, {
       new: true,
     }).select("-password");
 
     if (!updatedOrg) {
       return res.status(404).json({ message: "Organization not found" });
+    }
+
+    // If plan dates were set, update all clients' dates to match
+    if (updates.planValidFrom || updates.planValidTo) {
+      try {
+        const updateFields = {};
+        if (updates.planValidFrom) {
+          updateFields.startDate = updates.planValidFrom;
+        }
+        if (updates.planValidTo) {
+          updateFields.endDate = updates.planValidTo;
+        }
+
+        await ClientModel.updateMany({ orgId: orgId }, updateFields);
+
+        console.log(
+          `Updated dates for all clients of newly approved organization ${orgId}`
+        );
+      } catch (clientUpdateError) {
+        console.error("Error updating client dates:", clientUpdateError);
+      }
     }
 
     // Send emails after successful approval
@@ -403,12 +431,39 @@ const updateOrg = async (req, res) => {
     const { orgId } = req.params;
     const updates = req.body;
 
+    if (updates.planValidFrom) {
+      updates.planValidFrom = new Date(updates.planValidFrom);
+    }
+    if (updates.planValidTo) {
+      updates.planValidTo = new Date(updates.planValidTo);
+    }
+
     const updatedOrg = await OrgModel.findByIdAndUpdate(orgId, updates, {
       new: true,
     }).select("-password");
 
     if (!updatedOrg) {
       return res.status(404).json({ message: "Organization not found" });
+    }
+
+    // If plan dates were updated, update all clients' dates to match
+    if (updates.planValidFrom || updates.planValidTo) {
+      try {
+        const updateFields = {};
+        if (updates.planValidFrom) {
+          updateFields.startDate = updates.planValidFrom;
+        }
+        if (updates.planValidTo) {
+          updateFields.endDate = updates.planValidTo;
+        }
+
+        await ClientModel.updateMany({ orgId: orgId }, updateFields);
+
+        console.log(`Updated dates for all clients of organization ${orgId}`);
+      } catch (clientUpdateError) {
+        console.error("Error updating client dates:", clientUpdateError);
+        // Don't fail the request if client update fails
+      }
     }
     // Send emails after successful update
     try {

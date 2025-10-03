@@ -9,10 +9,17 @@ const AddCustomer = () => {
   const user = location.state?.user;
   const { DATABASE_URL } = useContext(DatabaseContext);
 
+  // Calculate default dates
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const oneYearFromToday = new Date(today);
+  oneYearFromToday.setFullYear(today.getFullYear() + 1);
+  const oneYearFromTodayStr = oneYearFromToday.toISOString().split("T")[0];
+
   // State for form fields
   const [amountPaid, setAmountPaid] = useState("€ 120,00");
-  const [planValidFrom, setPlanValidFrom] = useState("2025-07-01");
-  const [planValidTo, setPlanValidTo] = useState("2026-08-31");
+  const [planValidFrom, setPlanValidFrom] = useState(todayStr);
+  const [planValidTo, setPlanValidTo] = useState(oneYearFromTodayStr);
   const [noOfUsers, setNoOfUsers] = useState("10 users");
   const [orgName, setOrgName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -43,10 +50,25 @@ const AddCustomer = () => {
 
   useEffect(() => {
     if (user) {
+      // Calculate default dates
+      const today = new Date();
+      const todayStr = today.toISOString().split("T")[0];
+      const oneYearFromToday = new Date(today);
+      oneYearFromToday.setFullYear(today.getFullYear() + 1);
+      const oneYearFromTodayStr = oneYearFromToday.toISOString().split("T")[0];
+
       // Plan Details
       setAmountPaid(user.amountPaid || "€ 120,00");
-      setPlanValidFrom(user.planValidFrom || "2025-07-01");
-      setPlanValidTo(user.planValidTo || "2026-08-31");
+      setPlanValidFrom(
+        user.planValidFrom
+          ? new Date(user.planValidFrom).toISOString().split("T")[0]
+          : todayStr
+      );
+      setPlanValidTo(
+        user.planValidTo
+          ? new Date(user.planValidTo).toISOString().split("T")[0]
+          : oneYearFromTodayStr
+      );
       setClientLimit(user.clientLimit || "");
 
       // Organization Details

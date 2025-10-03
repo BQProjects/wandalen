@@ -69,7 +69,7 @@ const BecomeVolunteer = () => {
               </h2>
             </div>
             <button
-              className="bg-primary font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors hidden lg:block"
+              className="bg-[#a6a643] hover:bg-[#8f8f3d] font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium transition-colors hidden lg:block"
               onClick={() => (window.location.href = "/volunteer-signup")}
             >
               {t("becomeVolunteer.howItWorks.knowMore")}
@@ -137,13 +137,13 @@ const BecomeVolunteer = () => {
 
               <div className="flex flex-wrap gap-4 pt-4">
                 <button
-                  className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
+                  className="bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium transition-colors"
                   onClick={() => (window.location.href = "/volunteer-signup")}
                 >
                   {t("becomeVolunteer.benefits.joinVolunteer")}
                 </button>
                 <button
-                  className="bg-primary text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium hover:bg-dark-olive transition-colors"
+                  className="bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium transition-colors"
                   onClick={() => (window.location.href = "/login")}
                 >
                   {t("becomeVolunteer.benefits.alreadyVolunteer")}
@@ -195,7 +195,7 @@ const BecomeVolunteer = () => {
                     {training.description}
                   </p>
                   <Link to={getLinkForTitle(training)}>
-                    <button className="bg-primary font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium hover:bg-dark-olive transition-colors">
+                    <button className="bg-[#a6a643] hover:bg-[#8f8f3d] font-['Poppins'] text-white px-6 py-2 rounded-lg font-medium transition-colors">
                       {t("becomeVolunteer.events.moreInfo")}
                     </button>
                   </Link>

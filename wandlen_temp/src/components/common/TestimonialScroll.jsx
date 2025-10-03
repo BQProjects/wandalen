@@ -41,7 +41,7 @@ const Testimonial = () => {
       <div className="flex flex-col justify-center items-center gap-8 w-full max-w-[864px] mx-auto">
         {/* Heading */}
         <div className="flex flex-col items-center gap-2 text-center">
-          <h3 className="text-primary font-['Poppins'] text-lg md:text-2xl font-semibold tracking-wide uppercase">
+          <h3 className="text-primary font-['Poppins'] text-lg md:text-2xl font-semibold tracking-wide">
             {t("testimonials.title")}
           </h3>
           <h2 className="text-secondary font-['Poppins'] text-3xl md:text-5xl font-bold leading-snug">

@@ -73,6 +73,8 @@ const ManageClients = () => {
             lastName: newClient.lastName,
             email: newClient.email,
             phoneNo: newClient.phoneNo,
+            startDate: orgData.planValidFrom,
+            endDate: orgData.planValidTo,
           }
         );
         if (res.status === 200) {
@@ -103,6 +105,8 @@ const ManageClients = () => {
           password: randomPassword,
           orgId: sessionId,
           phoneNo: newClient.phoneNo,
+          startDate: orgData.planValidFrom,
+          endDate: orgData.planValidTo,
         });
 
         if (res.status === 201) {
