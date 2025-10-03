@@ -563,7 +563,20 @@
                 "year": "year"
             }
         },
-        "discountBadge": "20% discount"
+        "healthcare": {
+            "title": "Healthcare Organization License",
+            "price": "Price on request",
+            "features": [
+                "Bring recognizable nature into the living room or group space",
+                "New routes every month",
+                "Receive a customized proposal for your healthcare organization"
+            ],
+            "buttonText": "Contact us"
+        },
+        "discountBadge": "20% discount",
+        "launchBadge": "Launch Offer",
+        "discountCode": "Use code NATUUR01 for first month discount",
+        "discountInstead": "instead of"
     },
     "payment": {
         "header": {

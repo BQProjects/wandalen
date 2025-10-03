@@ -149,6 +149,13 @@ const VideoVolunteer = () => {
             {t("videoExperiences.title")}
           </div>
 
+          {/* Video Description */}
+          {video?.description && (
+            <div className="text-[#381207] font-['Poppins'] text-lg leading-relaxed mb-8 w-full">
+              {video.description}
+            </div>
+          )}
+
           {/* Reviews Section */}
           {reviews.length > 0 ? (
             <>

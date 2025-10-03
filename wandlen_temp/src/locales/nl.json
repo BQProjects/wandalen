@@ -48,7 +48,7 @@
             "viewPlans": "Bekijk abonnementen"
         },
         "secondHero": {
-            "subtitle": "Digitale transformaties in de Overijsselse natuur",
+            "subtitle": "Digitale wandelingen in de Nederlandse natuur",
             "description": "Stel je voor: een boswandeling over dat smalle paadje, het ruisen van bladeren door de bomen en zingende vogels. Voor veel mensen kan zo’n natuurervaring veel betekenen. Virtueel Wandelen brengt deze ervaring weer dichtbij, rechtstreeks vanuit huis of een zorgorganisatie. Het biedt rust, ontspanning èn herkenning.",
             "features": {
                 "exploreNature": "Ontdek Nederlandse natuur wandelingen",
@@ -348,16 +348,16 @@
             "moreInfo": "Meer Informatie"
         },
         "benefits": {
-            "title": "Positieve Voordelen",
+            "title": "Voordelen",
             "subtitle": "Waarom Virtueel Wandelen?",
             "benefits": [
                 "Brengt natuur veilig naar binnen - geeft mensen de kans om van natuur te genieten zonder risico's, vooral voor mensen die niet meer buiten kunnen lopen.",
                 "Stimuleert herinneringen - vertrouwde geluiden en beelden kunnen herkenning en vreugdevolle momenten oproepen.",
-                "Moedigt sociale verbinding aan - creëert gedeelde ervaringen met familie, verzorgers of medebewoners — en kan ook alleen worden genoten.",
+                "Moedigt sociale verbinding aan - creëert gedeelde ervaringen met familie, verzorgers of medebewoners — en er kan natuurlijk ook alleen van worden genoten.",
                 "Vermindert angst en stress - rustgevende natuurlijke beelden en geluiden helpen onrust te verminderen en brengen kalmte."
             ],
             "joinVolunteer": "Doe Mee als Vrijwilliger",
-            "alreadyVolunteer": "Al Vrijwilliger"
+            "alreadyVolunteer": "ik ben al vrijwilliger"
         },
         "howItWorks": {
             "title": "Hoe het werkt",
@@ -384,27 +384,27 @@
         },
         "whyVolunteers": {
             "title": "Wil je helpen?",
-            "subtitle": "Waarom Vrijwilligers Essentieel Zijn",
+            "subtitle": "Waarom vrijwilligerswerk voor Virtueel Wandelen leuk is",
             "volunteerItems": [
                 {
-                    "title": "Natuur & Film Passie",
-                    "description": "Hou je van de natuur en film je graag? Combineer beide om ontspannende virtuele wandelvideo's te maken."
+                    "title": "Natuur & film passie",
+                    "description": "Onze vrijwilligers houden van de natuur! De een wandelt graag, de ander heeft foto/videografie als hobby. En nu kan jij er ook een ander blij mee maken!"
                 },
                 {
-                    "title": "Begeleiding & Tips",
-                    "description": "Krijg een korte praktijk sessie met praktische tips & trucs voor het maken van kalmerende natuurvideo's."
+                    "title": "Eigen tijd",
+                    "description": "Deel zelf in wanneer je jouw video’s opneemt: alle vrijheid dus om dit naast je werk of andere activiteiten te doen! Het enige wat wij van je vragen is dat je minimaal 2 video’s per maand opneemt, om zo samen impact te maken."
                 },
                 {
-                    "title": "Gereedschap Verstrekt",
-                    "description": "Geniet van gratis gebruik van onze camera om je wandeling in hoge kwaliteit vast te leggen."
+                    "title": "Begeleiding & tips",
+                    "description": "Krijg een korte prakische sessie met praktische tips & trucs voor het maken van kalmerende natuurvideo's. Daarna kan je aan de slag: gewoon doen!"
                 },
                 {
-                    "title": "Constructieve Feedback",
-                    "description": "Ontvang nuttige feedback om je video's nog aantrekkelijker en rustgevender te maken."
+                    "title": "Goede ondersteuning",
+                    "description": "Geniet van gratis gebruik van de camera’s van Stichting The Society Documents Foundation om je wandeling in hoge kwaliteit vast te leggen. Ook verzorgen we geregeld bijeenkomsten speciaal voor vrijwilligers om van elkaar te leren èn de gezelligheid op te zoeken."
                 },
                 {
-                    "title": "Deel Je Werk",
-                    "description": "Je video wordt gedeeld op ons platform met een groot, waarderend publiek."
+                    "title": "Delen = geven",
+                    "description": "Je video’s worden gedeeld op ons platform met een groot, waarderend publiek. Zo zorg jij voor die glimlach!"
                 }
             ]
         }
@@ -563,7 +563,20 @@
                 "year": "jaar"
             }
         },
-        "discountBadge": "20% korting"
+        "healthcare": {
+            "title": "Zorg organisatie licentie",
+            "price": "Prijs op aanvraag",
+            "features": [
+                "Breng herkenbare natuur in de huiskamer of groepsruimte",
+                "Nieuwe routes elke maand",
+                "Ontvang een voorstel op maat voor uw zorgorganisatie"
+            ],
+            "buttonText": "Neem contact op"
+        },
+        "discountBadge": "20% korting",
+        "launchBadge": "Launch Aanbieding",
+        "discountCode": "Gebruik code NATUUR01 voor eerste maand korting",
+        "discountInstead": "i.p.v."
     },
     "payment": {
         "header": {
