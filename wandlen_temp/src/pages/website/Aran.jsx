@@ -190,89 +190,6 @@ const Aran = () => {
             </div>
           </div>
         </div>
-        {/* Center Content - Scroll Indicator */}
-        <div className="w-full flex justify-center items-center absolute bottom-6 sm:bottom-10 left-0">
-          <div className="flex flex-col items-center space-y-2 sm:space-y-4">
-            {/* Microphone Icon */}
-            <svg
-              width={24}
-              height={36}
-              viewBox="0 0 33 46"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="md:w-[33px] md:h-[46px]"
-            >
-              <path
-                d="M2 16.5833C2 12.7156 3.53645 9.00626 6.27136 6.27136C9.00626 3.53645 12.7156 2 16.5833 2C20.4511 2 24.1604 3.53645 26.8953 6.27136C29.6302 9.00626 31.1667 12.7156 31.1667 16.5833V29.0833C31.1667 30.9984 30.7895 32.8948 30.0566 34.6641C29.3237 36.4335 28.2495 38.0411 26.8953 39.3953C25.5411 40.7495 23.9335 41.8237 22.1641 42.5566C20.3948 43.2895 18.4984 43.6667 16.5833 43.6667C14.6682 43.6667 12.7719 43.2895 11.0025 42.5566C9.2332 41.8237 7.62555 40.7495 6.27136 39.3953C4.91717 38.0411 3.84297 36.4335 3.11009 34.6641C2.37721 32.8948 2 30.9984 2 29.0833V16.5833Z"
-                stroke="#EDE4DC"
-                strokeWidth="3.125"
-              />
-              <path
-                d="M13.4609 15.543C13.4609 14.7142 13.7902 13.9193 14.3762 13.3333C14.9623 12.7472 15.7571 12.418 16.5859 12.418C17.4147 12.418 18.2096 12.7472 18.7956 13.3333C19.3817 13.9193 19.7109 14.7142 19.7109 15.543V19.7096C19.7109 20.5384 19.3817 21.3333 18.7956 21.9193C18.2096 22.5054 17.4147 22.8346 16.5859 22.8346C15.7571 22.8346 14.9623 22.5054 14.3762 21.9193C13.7902 21.3333 13.4609 20.5384 13.4609 19.7096V15.543Z"
-                stroke="#EDE4DC"
-                strokeWidth="3.125"
-              />
-              <path
-                d="M16.5859 2V12.4167"
-                stroke="#EDE4DC"
-                strokeWidth="3.125"
-                strokeLinecap="round"
-              />
-            </svg>
-
-            {/* Scroll Arrows */}
-            <div className="flex flex-col space-y-1">
-              <svg
-                width={16}
-                height={9}
-                viewBox="0 0 19 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="opacity-100 md:w-[19px] md:h-[11px]"
-              >
-                <path
-                  d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
-                  fill="#381207"
-                  stroke="#EDE4DC"
-                  strokeWidth="2.08333"
-                  className="animate-pulse"
-                />
-              </svg>
-              <svg
-                width={16}
-                height={9}
-                viewBox="0 0 19 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="opacity-70 md:w-[19px] md:h-[11px]"
-              >
-                <path
-                  d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
-                  fill="#381207"
-                  stroke="#D9BBAA"
-                  strokeWidth="2.08333"
-                  className="animate-pulse"
-                />
-              </svg>
-              <svg
-                width={16}
-                height={9}
-                viewBox="0 0 19 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="opacity-40 md:w-[19px] md:h-[11px]"
-              >
-                <path
-                  d="M8.8457 9.00488L2.05762 2.14941L2.05176 2.15527L9.34375 9.52344L9.3457 9.52539L9.39844 9.56836C9.40219 9.57091 9.40631 9.57281 9.41016 9.5752L8.8457 9.00488ZM17.1152 2.15039L10.3262 9.00586L9.76855 9.56934C9.78748 9.55661 9.80588 9.54204 9.82227 9.52539L9.82422 9.52344L17.1201 2.15527L17.1152 2.15039Z"
-                  fill="#381207"
-                  stroke="#D9BBAA"
-                  strokeWidth="2.08333"
-                  className="animate-pulse"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Second Hero Section */}
@@ -671,6 +588,49 @@ const Aran = () => {
                 <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
                   {t("dawnForest.threeCards.sharingMemories.description")}
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Impact Counters Section */}
+      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
+        <div className="mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#381207] mb-8 font-[Poppins]">
+            {t("impactCounters.title")}
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div className="flex flex-col items-center">
+              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
+                90+
+              </div>
+              <div className="text-lg text-[#381207] font-[Poppins]">
+                {t("impactCounters.natureVideos")}
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
+                450+
+              </div>
+              <div className="text-lg text-[#381207] font-[Poppins]">
+                {t("impactCounters.virtualKm")}
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
+                20+
+              </div>
+              <div className="text-lg text-[#381207] font-[Poppins]">
+                {t("impactCounters.volunteerFilmmakers")}
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
+                50+
+              </div>
+              <div className="text-lg text-[#381207] font-[Poppins]">
+                {t("impactCounters.uniqueRoutes")}
               </div>
             </div>
           </div>
