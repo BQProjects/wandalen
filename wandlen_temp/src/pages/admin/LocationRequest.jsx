@@ -31,6 +31,18 @@ const LocationRequest = () => {
   useEffect(() => {
     getAllReqs();
   }, []);
+  const handleDelete = async (id) => {
+    if (
+      window.confirm("Are you sure you want to delete this location request?")
+    ) {
+      try {
+        await axios.delete(`${DATABASE_URL}/admin/video-req/${id}`);
+        getAllReqs(); // Refresh the list
+      } catch (error) {
+        console.error("Error deleting location request:", error);
+      }
+    }
+  };
 
   return (
     <div className="flex-1 bg-[#f7f6f4] p-6">
@@ -68,6 +80,11 @@ const LocationRequest = () => {
             <div className="flex items-center justify-center gap-2 p-2 w-[150px] flex-shrink-0">
               <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
                 Video Created
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-2 w-[100px] flex-shrink-0">
+              <div className="flex flex-col items-start gap-2 text-[#2a341f] font-['Poppins'] text-lg leading-[normal]">
+                Actions
               </div>
             </div>
           </div>
@@ -123,6 +140,23 @@ const LocationRequest = () => {
                       />
                     </svg>
                   )}
+                </div>
+                <div className="flex justify-center items-center pb-[0.5px] pt-px px-0 w-[100px] flex-shrink-0">
+                  <button onClick={() => handleDelete(user._id)}>
+                    <svg
+                      width={16}
+                      height={16}
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="cursor-pointer hover:scale-110 transition-transform"
+                    >
+                      <path
+                        d="M4.0026 12.6667C4.0026 13.0203 4.14308 13.3594 4.39313 13.6095C4.64318 13.8595 4.98232 14 5.33594 14H10.6693C11.0229 14 11.362 13.8595 11.6121 13.6095C11.8621 13.3594 12.0026 13.0203 12.0026 12.6667V4.66667H4.0026V12.6667ZM5.33594 6H10.6693V12.6667H5.33594V6ZM10.3359 2.66667L9.66927 2H6.33594L5.66927 2.66667H3.33594V4H12.6693V2.66667H10.3359Z"
+                        fill="#7A756E"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
             );

@@ -124,6 +124,17 @@ const getallVideoRequest = async (req, res) => {
   }
 };
 
+const deteleteVideoRequest = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await videoRequestModel.findByIdAndDelete(id);
+    res.status(200).json({ message: "Video request deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const getAllvideos = async (req, res) => {
   const {
     page = 1,
@@ -601,6 +612,7 @@ module.exports = {
   getAllVolunteerData,
   getVolunteerInfo,
   getallVideoRequest,
+  deteleteVideoRequest,
   getAllvideos,
   getAllBlogs,
   getBlog,

@@ -10,6 +10,7 @@ const {
   getAllVolunteerData,
   getVolunteerInfo,
   getallVideoRequest,
+  deteleteVideoRequest,
   getAllvideos,
   getAllBlogs,
   getBlog,
@@ -39,6 +40,7 @@ adminRouter.get("/org-requests/:orgId", getOrgRequest);
 adminRouter.get("/all-volunteers", getAllVolunteerData);
 adminRouter.get("/volunteer/:id", getVolunteerInfo);
 adminRouter.get("/video-req", getallVideoRequest);
+adminRouter.delete("/video-req/:id", deteleteVideoRequest);
 adminRouter.get("/all-videos", getAllvideos);
 adminRouter.get("/blogs", getAllBlogs);
 adminRouter.get("/blogs/:id", getBlog);
