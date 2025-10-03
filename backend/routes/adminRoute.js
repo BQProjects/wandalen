@@ -26,6 +26,8 @@ const {
   uploadVideo,
   getVideo,
   toggleVideoApproval,
+  uploadToVimeo,
+  upload,
 } = require("../components/admin");
 
 const adminRouter = express.Router();
@@ -56,5 +58,6 @@ adminRouter.put("/update-org/:orgId", updateOrg);
 adminRouter.post("/uploadVideo", uploadVideo);
 adminRouter.get("/get-video/:videoId", getVideo);
 adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);
+adminRouter.post("/upload-to-vimeo", upload.single("video"), uploadToVimeo);
 
 module.exports = adminRouter;

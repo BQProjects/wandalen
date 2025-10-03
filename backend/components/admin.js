@@ -7,6 +7,9 @@ const videoRequestModel = require("../models/videoRequestModel");
 const BlogModel = require("../models/blogModel");
 const TrainingModel = require("../models/trainingModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
+const vimeoService = require("../services/vimeoService");
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
 const adminLogin = (req, res) => {
   const { username, password } = req.body;
@@ -564,7 +567,7 @@ const getVideo = async (req, res) => {
     const { videoId } = req.params;
     const video = await VideoModel.findById(videoId)
       .populate("uploadedBy", "firstName lastName email")
-      .populate("comments");
+      .populate("reviews");
 
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
@@ -602,6 +605,38 @@ const toggleVideoApproval = async (req, res) => {
   }
 };
 
+const uploadToVimeo = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No video file provided" });
+    }
+
+    const videoBuffer = req.file.buffer;
+    const { title, description } = req.body;
+
+    // Upload to Vimeo
+    const result = await vimeoService.uploadVideo(videoBuffer, {
+      title: title || "Untitled Video",
+      description: description || "",
+    });
+
+    res.status(200).json({
+      message: "Video uploaded to Vimeo successfully",
+      videoUrl: result.videoUrl, // Changed from result.embedUrl to result.videoUrl
+      videoId: result.videoId,
+      link: result.link,
+      duration: result.duration,
+      playerUrl: result.videoUrl,
+    });
+  } catch (error) {
+    console.error("Error uploading to Vimeo:", error);
+    res.status(500).json({
+      message: "Failed to upload video to Vimeo",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -628,4 +663,6 @@ module.exports = {
   uploadVideo,
   getVideo,
   toggleVideoApproval,
+  uploadToVimeo,
+  upload,
 };

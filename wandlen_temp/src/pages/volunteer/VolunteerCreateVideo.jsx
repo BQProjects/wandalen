@@ -608,30 +608,37 @@ const VolunteerCreateVideo = () => {
     let imgUrl = formData.imgUrl; // Existing or new
 
     try {
-      // Upload video file only if new
+      // Upload video file to Vimeo only if new
       if (videoFile) {
         setCurrentStep(t("volunteerCreateVideo.uploadingVideo"));
         setUploadProgress(20);
 
-        const data1 = new FormData();
-        data1.append("file", videoFile);
-        data1.append("upload_preset", "wandelen");
-        data1.append("cloud_name", "dojwaepbj");
+        const videoFormData = new FormData();
+        videoFormData.append("video", videoFile);
+        videoFormData.append("title", formData.title || "Untitled Video");
+        videoFormData.append("description", formData.description || "");
 
-        const res1 = await fetch(
-          "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        const vimeoResponse = await axios.post(
+          `${DATABASE_URL}/volunteer/upload-to-vimeo`,
+          videoFormData,
           {
-            method: "POST",
-            body: data1,
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${sessionId}`,
+            },
           }
         );
-        const result1 = await res1.json();
-        if (!res1.ok) throw new Error("Video upload failed");
-        videoUrl = result1.secure_url; // Correct: video URL
+
+        if (vimeoResponse.status === 200) {
+          videoUrl = vimeoResponse.data.videoUrl; // Vimeo embed URL
+          console.log("Vimeo upload success:", vimeoResponse.data);
+        } else {
+          throw new Error("Video upload to Vimeo failed");
+        }
         setUploadProgress(50);
       }
 
-      // Upload cover image only if new
+      // Upload cover image (keep using Cloudinary or your preferred service)
       if (coverImage) {
         setCurrentStep(t("volunteerCreateVideo.uploadingCover"));
         setUploadProgress(60);
@@ -650,7 +657,7 @@ const VolunteerCreateVideo = () => {
         );
         const result2 = await res2.json();
         if (!res2.ok) throw new Error("Cover upload failed");
-        imgUrl = result2.secure_url; // Correct: cover URL
+        imgUrl = result2.secure_url; // Cover URL
         setUploadProgress(80);
       }
 
@@ -663,7 +670,7 @@ const VolunteerCreateVideo = () => {
 
       const payload = {
         title: formData.title,
-        url: videoUrl, // Fixed: video URL
+        url: videoUrl, // Vimeo video URL
         location: formData.location,
         province: formData.province,
         municipality: formData.municipality,
@@ -673,14 +680,13 @@ const VolunteerCreateVideo = () => {
         sound: formData.soundStimuli,
         animals: formData.animals,
         tags: formData.tags,
-        imgUrl: imgUrl, // Fixed: cover URL
+        imgUrl: imgUrl, // Cover URL
         duration: formData.duration,
         id: localStorage.getItem("userId"),
       };
 
       if (editMode) {
         const res = await axios.put(
-          // Changed from post to put
           `${DATABASE_URL}/volunteer/editVideoInfo/${videoId}`,
           payload,
           {
@@ -701,7 +707,6 @@ const VolunteerCreateVideo = () => {
           throw new Error(t("volunteerCreateVideo.videoUpdateFailed"));
         }
       } else {
-        // Create logic (unchanged, but ensure URLs are correct)
         const res = await axios.post(
           `${DATABASE_URL}/volunteer/uploadVideos`,
           payload,
@@ -751,7 +756,11 @@ const VolunteerCreateVideo = () => {
     } catch (error) {
       console.error("Error:", error);
       setCurrentStep(t("volunteerCreateVideo.errorOccurred"));
-      alert(t("volunteerCreateVideo.errorOccurred"));
+      alert(
+        `${t("volunteerCreateVideo.errorOccurred")}: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     } finally {
       setIsLoading(false);
       setUploadProgress(0);

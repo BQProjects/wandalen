@@ -109,20 +109,34 @@ const VideoAdmin = () => {
 
               {/* Video Player */}
               <div className="bg-black rounded-lg sm:rounded-2xl overflow-hidden mb-6 sm:mb-8">
-                <video
-                  src={video ? video.imgUrl : BgVideo}
-                  controls
-                  className="w-full h-auto object-cover"
-                  style={{ aspectRatio: "16/9" }}
-                  onError={(e) => {
-                    console.error("Video failed to load:", e);
-                    e.target.src = BgVideo;
-                  }}
-                  onLoadStart={() => console.log("Video loading started")}
-                  onCanPlay={() => console.log("Video can play")}
-                >
-                  Your browser does not support the video tag.
-                </video>
+                {video && video.url && video.url.includes("vimeo.com") ? (
+                  // Vimeo video player
+                  <iframe
+                    src={video.url}
+                    className="w-full h-auto"
+                    style={{ aspectRatio: "16/9" }}
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    title={video.title || "Video"}
+                  ></iframe>
+                ) : (
+                  // Regular video player for non-Vimeo videos
+                  <video
+                    src={video ? video.url : BgVideo}
+                    controls
+                    className="w-full h-auto object-cover"
+                    style={{ aspectRatio: "16/9" }}
+                    onError={(e) => {
+                      console.error("Video failed to load:", e);
+                      e.target.src = BgVideo;
+                    }}
+                    onLoadStart={() => console.log("Video loading started")}
+                    onCanPlay={() => console.log("Video can play")}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                )}
               </div>
             </div>
           </div>
@@ -132,7 +146,7 @@ const VideoAdmin = () => {
 
           {/* Dynamic Reviews Section with Navigation Arrows */}
           {reviews.length > 0 ? (
-            <div className="mt-10">
+            <div className="mt-10 pb-10">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-semibold text-brown">
                   Alle beoordelingen
@@ -233,103 +247,14 @@ const VideoAdmin = () => {
               </div>
             </div>
           ) : (
-            /* Fallback Static Testimonials when no reviews */
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 pb-8 sm:pb-16">
-              {/* Testimonial 1 */}
-              <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-                <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                  Naam
+            /* No Reviews Message */
+            <div className="flex justify-center items-center mt-10 pb-8 sm:pb-16">
+              <div className="text-center">
+                <div className="text-lg sm:text-xl text-brown font-medium">
+                  Nog geen beoordelingen
                 </div>
-                <div className="text-brown font-medium mb-4">-</div>
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(4)].map((_, i) => (
-                    <img
-                      key={i}
-                      src={StarFilled}
-                      alt="Star"
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                    />
-                  ))}
-                  <img
-                    src={StarEmpty}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                    <img
-                      src={Quote}
-                      alt="Quote"
-                      className="w-6 h-6 sm:w-8 sm:h-8"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Testimonial 2 */}
-              <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-                <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                  Sanne
-                </div>
-                <div className="text-brown font-medium mb-4 text-sm sm:text-base">
-                  Tijdens de boswandeling met herfstbladeren begon mevrouw De
-                  Vries spontaan te glimlachen. Ze wees naar het scherm.
-                </div>
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(4)].map((_, i) => (
-                    <img
-                      key={i}
-                      src={StarFilled}
-                      alt="Star"
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                    />
-                  ))}
-                  <img
-                    src={StarEmpty}
-                    alt="Star"
-                    className="w-4 h-4 sm:w-5 sm:h-5"
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                    <img
-                      src={Quote}
-                      alt="Quote"
-                      className="w-6 h-6 sm:w-8 sm:h-8"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Testimonial 3 */}
-              <div className="bg-border p-4 sm:p-6 rounded-lg shadow-lg">
-                <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
-                  Martijn
-                </div>
-                <div className="text-brown font-medium mb-4 text-sm sm:text-base">
-                  Mijn vader herkende meteen de dijk in de video. Hij begon te
-                  vertellen over fietstochten met zijn broer. Ik had hem in
-                  tijden niet zo enthousiast gehoord.
-                </div>
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <img
-                      key={i}
-                      src={StarFilled}
-                      alt="Star"
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                    />
-                  ))}
-                </div>
-                <div className="flex justify-center">
-                  <div className="bg-secondary p-2 sm:p-3 rounded-full">
-                    <img
-                      src={Quote}
-                      alt="Quote"
-                      className="w-6 h-6 sm:w-8 sm:h-8"
-                    />
-                  </div>
+                <div className="text-sm sm:text-base text-gray-600 mt-2">
+                  Wees de eerste om deze video te beoordelen!
                 </div>
               </div>
             </div>
