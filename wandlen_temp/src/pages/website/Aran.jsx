@@ -192,81 +192,6 @@ const Aran = () => {
         </div>
       </div>
 
-      {/* Second Hero Section */}
-      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 relative">
-        {/* Message Us Component - Top Right Corner */}
-        <div className="cursor-pointer absolute bottom-180 right-9 z-10">
-          <MessageUs />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-3">
-          {/* Subtitle */}
-          <h2 className="text-lg sm:text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#A6A643] mb-4 sm:mb-8 font-[Poppins]">
-            {t("aran.secondHero.subtitle")}
-          </h2>
-
-          {/* Main Description */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#381207] leading-relaxed mb-8 sm:mb-16 max-w-full mx-auto font-[Poppins] font-semibold">
-            {t("aran.secondHero.description")}
-          </p>
-
-          {/* Features Container */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-14 max-w-6xl mx-auto">
-            {/* Feature 1 */}
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
-                <img
-                  src={leaf}
-                  alt="Leaf"
-                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
-                />
-              </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
-                {t("aran.secondHero.features.exploreNature")}
-              </h3>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
-                <img
-                  src={click}
-                  alt="click"
-                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
-                />
-              </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: t("aran.secondHero.features.simpleViewing"),
-                  }}
-                />
-              </h3>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
-                <img
-                  src={human}
-                  alt="walk"
-                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
-                />
-              </div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: t("aran.secondHero.features.instantWatch"),
-                  }}
-                />
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-      <PreviewExperience />
-      <DawnForest />
-
       {/* Discover Nature Videos Section */}
       <div className="flex-shrink-0 w-full min-h-[600px] md:min-h-[800px] lg:min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-10 md:px-20">
         <div className="w-full mx-auto text-start">
@@ -489,6 +414,79 @@ const Aran = () => {
         </div>
       </div>
 
+      {/* Second Hero Section */}
+      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 relative">
+        {/* Message Us Component - Top Right Corner */}
+        <div className="cursor-pointer absolute bottom-180 right-9 z-10">
+          <MessageUs />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-3">
+          {/* Subtitle */}
+          <h2 className="text-lg sm:text-xl lg:text-3xl xl:text-[32px] font-semibold text-[#A6A643] mb-4 sm:mb-8 font-[Poppins]">
+            {t("aran.secondHero.subtitle")}
+          </h2>
+
+          {/* Main Description */}
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#381207] leading-relaxed mb-8 sm:mb-16 max-w-full mx-auto font-[Poppins] font-semibold">
+            {t("aran.secondHero.description")}
+          </p>
+
+          {/* Features Container */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-14 max-w-6xl mx-auto">
+            {/* Feature 1 */}
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
+                <img
+                  src={leaf}
+                  alt="Leaf"
+                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
+                />
+              </div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
+                {t("aran.secondHero.features.exploreNature")}
+              </h3>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
+                <img
+                  src={click}
+                  alt="click"
+                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
+                />
+              </div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("aran.secondHero.features.simpleViewing"),
+                  }}
+                />
+              </h3>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center bg-[#EDE4DC]">
+                <img
+                  src={human}
+                  alt="walk"
+                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
+                />
+              </div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-[#381207] font-[Poppins]">
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("aran.secondHero.features.instantWatch"),
+                  }}
+                />
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Positive Experiences Section */}
       <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
         <div className="mx-auto">
@@ -593,7 +591,6 @@ const Aran = () => {
           </div>
         </div>
       </div>
-
       {/* Impact Counters Section */}
       <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
         <div className="mx-auto text-center">
@@ -636,6 +633,8 @@ const Aran = () => {
           </div>
         </div>
       </div>
+
+      <RequestCard />
 
       {/* Discover Routes Near You Section */}
       <div
@@ -796,7 +795,6 @@ const Aran = () => {
           </div>
         </div>
       </div>
-      <RequestCard />
 
       {/* Organizations Section */}
       <div
@@ -1171,6 +1169,9 @@ const Aran = () => {
           </div>
         </div>
       </div>
+
+      <PreviewExperience />
+      <DawnForest />
 
       {/* Tina Section */}
       <div className="w-full bg-[#ede4dc] py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10">

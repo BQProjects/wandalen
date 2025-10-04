@@ -476,7 +476,6 @@ const CreateVideo = () => {
     title: "",
     description: "",
     duration: "",
-    location: "",
     province: "",
     municipality: "",
     season: "",
@@ -615,33 +614,83 @@ const CreateVideo = () => {
 
         if (vimeoResponse.status === 200) {
           videoUrl = vimeoResponse.data.videoUrl; // Vimeo embed URL
+          const vimeoVideoId = vimeoResponse.data.videoId; // Get Vimeo video ID
           console.log("Vimeo upload success:", vimeoResponse.data);
+
+          // Upload thumbnail to Vimeo if cover image exists
+          if (coverImage) {
+            setCurrentStep("Uploading thumbnail to Vimeo...");
+            setUploadProgress(60);
+
+            const thumbnailFormData = new FormData();
+            thumbnailFormData.append("thumbnail", coverImage);
+            thumbnailFormData.append("videoId", vimeoVideoId);
+
+            try {
+              const thumbnailResponse = await axios.post(
+                `${DATABASE_URL}/admin/upload-thumbnail-to-vimeo`,
+                thumbnailFormData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${sessionId}`,
+                  },
+                }
+              );
+
+              if (thumbnailResponse.status === 200) {
+                imgUrl = thumbnailResponse.data.thumbnailUrl; // Vimeo thumbnail URL
+                console.log(
+                  "Vimeo thumbnail upload success:",
+                  thumbnailResponse.data
+                );
+              }
+            } catch (thumbnailError) {
+              console.error("Thumbnail upload failed:", thumbnailError);
+              // Continue without thumbnail if it fails
+            }
+          }
         } else {
           throw new Error("Video upload to Vimeo failed");
         }
-        setUploadProgress(50);
-      }
-
-      // Upload cover image (keep using Cloudinary or your preferred service)
-      if (coverImage) {
-        setCurrentStep("Uploading cover image...");
+        setUploadProgress(80);
+      } else if (coverImage && !videoFile && editMode) {
+        // If only updating thumbnail in edit mode
+        setCurrentStep("Uploading thumbnail to Vimeo...");
         setUploadProgress(60);
 
-        const data2 = new FormData();
-        data2.append("file", coverImage);
-        data2.append("upload_preset", "wandelen");
-        data2.append("cloud_name", "dojwaepbj");
+        // Extract video ID from existing URL if available
+        const videoIdMatch = formData.url?.match(/vimeo\.com\/video\/(\d+)/);
+        if (videoIdMatch) {
+          const vimeoVideoId = videoIdMatch[1];
 
-        const res2 = await fetch(
-          "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
-          {
-            method: "POST",
-            body: data2,
+          const thumbnailFormData = new FormData();
+          thumbnailFormData.append("thumbnail", coverImage);
+          thumbnailFormData.append("videoId", vimeoVideoId);
+
+          try {
+            const thumbnailResponse = await axios.post(
+              `${DATABASE_URL}/admin/upload-thumbnail-to-vimeo`,
+              thumbnailFormData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `Bearer ${sessionId}`,
+                },
+              }
+            );
+
+            if (thumbnailResponse.status === 200) {
+              imgUrl = thumbnailResponse.data.thumbnailUrl;
+              console.log(
+                "Vimeo thumbnail upload success:",
+                thumbnailResponse.data
+              );
+            }
+          } catch (thumbnailError) {
+            console.error("Thumbnail upload failed:", thumbnailError);
           }
-        );
-        const result2 = await res2.json();
-        if (!res2.ok) throw new Error("Cover upload failed");
-        imgUrl = result2.secure_url; // Cover URL
+        }
         setUploadProgress(80);
       }
 
@@ -754,7 +803,6 @@ const CreateVideo = () => {
         title: res.data.title,
         description: res.data.description,
         duration: res.data.duration,
-        location: res.data.location,
         province: res.data.province || "",
         municipality: res.data.municipality || "",
         season: res.data.season,
@@ -992,42 +1040,20 @@ const CreateVideo = () => {
               />
             </div>
 
-            {/* Duration and Location */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                  Video duration
-                </label>
-                <select
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">-Select an option-</option>
-                  <option value="short">Short (0-5 min)</option>
-                  <option value="medium">Medium (5-15 min)</option>
-                  <option value="long">Long (15+ min)</option>
-                </select>
-              </div>
-              <div>
-                <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Location
-                </label>
-                <select
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">-Select an option-</option>
-                  <option value="forest">Forest</option>
-                  <option value="beach">Beach</option>
-                  <option value="mountain">Mountain</option>
-                  <option value="park">Park</option>
-                  <option value="garden">Garden</option>
-                </select>
-              </div>
+            {/* Video Duration */}
+            <div>
+              <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
+                Video duration (minutes)
+              </label>
+              <input
+                type="number"
+                name="duration"
+                value={formData.duration}
+                onChange={handleInputChange}
+                min="0"
+                className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                placeholder="Enter duration in minutes"
+              />
             </div>
 
             {/* Province and Municipality */}
@@ -1116,13 +1142,14 @@ const CreateVideo = () => {
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
                   <option value="">-Select an option-</option>
-                  <option value="woodland">Woodland</option>
-                  <option value="wetland">Wetland</option>
-                  <option value="grassland">Grassland</option>
-                  <option value="aquatic">Aquatic</option>
-                  <option value="meer">Meer</option>
-                  <option value="weide">Weide</option>
-                  <option value="moeras">Moeras</option>
+                  <option value="Bos">Bos</option>
+                  <option value="Heide">Heide</option>
+                  <option value="Duinen">Duinen</option>
+                  <option value="Grasland / weiland">Grasland / weiland</option>
+                  <option value="Water, moeras, rivier & meren">
+                    Water, moeras, rivier & meren
+                  </option>
+                  <option value="Stadsgroen & park">Stadsgroen & park</option>
                 </select>
               </div>
             </div>
@@ -1157,13 +1184,20 @@ const CreateVideo = () => {
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
                   <option value="">-Select an option-</option>
-                  <option value="birds">Birds</option>
-                  <option value="mammals">Mammals</option>
-                  <option value="insects">Insects</option>
-                  <option value="fish">Fish</option>
-                  <option value="konijnen/hazen">Konijnen/Hazen</option>
-                  <option value="herten">Herten</option>
-                  <option value="krekels">Krekels</option>
+                  <option value="Vogels">Vogels</option>
+                  <option value="Eenden">Eenden</option>
+                  <option value="Reeën">Reeën</option>
+                  <option value="Konijnen/hazen">Konijnen/hazen</option>
+                  <option value="Egels">Egels</option>
+                  <option value="Schapen">Schapen</option>
+                  <option value="Koeien">Koeien</option>
+                  <option value="Reptielen">Reptielen</option>
+                  <option value="Kikkers">Kikkers</option>
+                  <option value="Insecten">Insecten</option>
+                  <option value="Vlinders">Vlinders</option>
+                  <option value="Bijen">Bijen</option>
+                  <option value="Libellen">Libellen</option>
+                  <option value="Zwanen">Zwanen</option>
                 </select>
               </div>
             </div>

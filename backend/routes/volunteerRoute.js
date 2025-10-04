@@ -35,9 +35,9 @@ volunteerRouter.post(
   uploadToVimeo
 );
 volunteerRouter.post(
-  "/upload-cover-image",
+  "/upload-thumbnail-to-vimeo",
   validateActiveSession,
-  upload.single("image"),
+  upload.single("thumbnail"),
   uploadCoverImage
 );
 

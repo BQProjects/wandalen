@@ -152,7 +152,7 @@ const VideoCard = ({
       <div className="relative">
         <img className="w-full h-48 object-cover" src={thumbnail} alt={title} />
         <div className="absolute top-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
-          {duration || "N/A"} {/* Fallback if duration is null */}
+          {duration ? `${duration} min` : "N/A"}{" "}
         </div>
         {isClientView && (
           <div className="absolute top-2 left-2 bg-[#dd9219] text-white px-2 py-1 rounded text-sm font-medium">
@@ -337,42 +337,34 @@ const VideoGridWithFilters = ({
 
   // Updated to match database values (lowercase for consistency), and conditionally add "Uploaded By" for volunteers only
   const defaultFilterOptions = {
-    Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"], // Changed to match parent components
-    Provincie: [
-      "Drenthe",
-      "Flevoland",
-      "Friesland",
-      "Gelderland",
-      "Groningen",
-      "Limburg",
-      "Noord-Brabant",
-      "Noord-Holland",
-      "Overijssel",
-      "Utrecht",
-      "Zeeland",
-      "Zuid-Holland",
-    ],
-    Locatie: ["forest", "beach", "mountain", "park", "garden"], // Restored location options
+    Lengte: ["Gemiddeld (5-25 min)", "Lang (25+ min)"], // Removed short filter, only medium and long
+    Locatie: [], // Now using search input instead of dropdown (includes province and municipality search)
     Seizoen: ["spring", "summer", "autumn", "winter"], // Changed to lowercase
     Natuurtype: [
-      "woodland",
-      "wetland",
-      "grassland",
-      "aquatic",
-      "meer",
-      "weide",
-      "moeras",
-    ], // Added new options
+      "Bos",
+      "Heide",
+      "Duinen",
+      "Grasland / weiland",
+      "Water, moeras, rivier & meren",
+      "Stadsgroen & park",
+    ], // Updated nature types as requested
     Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Restored sound options
     Dieren: [
-      "birds",
-      "mammals",
-      "insects",
-      "fish",
-      "konijnen/hazen",
-      "herten",
-      "krekels",
-    ], // Added new options
+      "Vogels",
+      "Eenden",
+      "Reeën",
+      "Konijnen/hazen",
+      "Egels",
+      "Schapen",
+      "Koeien",
+      "Reptielen",
+      "Kikkers",
+      "Insecten",
+      "Vlinders",
+      "Bijen",
+      "Libellen",
+      "Zwanen",
+    ], // Expanded animal options as requested
   };
 
   // Dynamic municipality options based on selected province
@@ -752,15 +744,6 @@ const VideoGridWithFilters = ({
 
   const filterOptions = customFilterOptions || { ...defaultFilterOptions };
 
-  // Add municipality options to filter options if a province is selected
-  if (activeFilters["Provincie"]?.length > 0) {
-    const selectedProvince = activeFilters["Provincie"][0]; // Take the first selected province
-    const municipalities = getMunicipalityOptions(selectedProvince);
-    if (municipalities.length > 0) {
-      filterOptions["Gemeente"] = municipalities;
-    }
-  }
-
   const handleFilterClick = (filter) => {
     setOpenDropdown(openDropdown === filter ? null : filter);
   };
@@ -773,11 +756,6 @@ const VideoGridWithFilters = ({
         ? activeFilters[filter].filter((item) => item !== option)
         : [...(activeFilters[filter] || []), option],
     };
-
-    // Clear municipality filter if province changes
-    if (filter === "Provincie") {
-      delete updatedFilters["Gemeente"];
-    }
 
     onFilterChange(updatedFilters); // Call prop callback
     setOpenDropdown(null);
@@ -820,6 +798,33 @@ const VideoGridWithFilters = ({
         {showFilters && (
           <div className="filters flex flex-wrap items-center gap-4 mb-8">
             {Object.keys(filterOptions).map((filter) => {
+              // Render Locatie as a search input instead of dropdown
+              if (filter === "Locatie") {
+                return (
+                  <div key={filter} className="relative">
+                    <input
+                      type="text"
+                      placeholder="Zoek locatie, provincie of gemeente..."
+                      value={activeFilters[filter]?.[0] || ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value) {
+                          onFilterChange({
+                            ...activeFilters,
+                            [filter]: [value],
+                          });
+                        } else {
+                          const newFilters = { ...activeFilters };
+                          delete newFilters[filter];
+                          onFilterChange(newFilters);
+                        }
+                      }}
+                      className="pt-[0.6875rem] pb-[0.6875rem] px-5 h-[3.125rem] rounded-lg font-['Poppins'] font-medium transition-all duration-200 bg-[#f8f5f0] text-[#381207] hover:bg-[#e6d9cd] border border-[#d4c4b7] focus:outline-none focus:ring-2 focus:ring-[#dd9219]"
+                    />
+                  </div>
+                );
+              }
+
               // Check if this filter has active selections using frontend names
               return (
                 <FilterButton

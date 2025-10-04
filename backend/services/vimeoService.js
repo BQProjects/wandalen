@@ -199,6 +199,84 @@ class VimeoService {
       throw new Error(`Failed to get video from Vimeo: ${error.message}`);
     }
   }
+
+  /**
+   * Upload custom thumbnail to Vimeo video
+   * @param {String} videoId - Vimeo video ID
+   * @param {Buffer} thumbnailBuffer - Thumbnail image buffer
+   * @returns {Promise<Object>} - Upload result with thumbnail URL
+   */
+  async uploadThumbnail(videoId, thumbnailBuffer) {
+    try {
+      console.log(`Uploading thumbnail for video ${videoId}...`);
+
+      // Step 1: Create a picture resource
+      const createPictureResponse = await axios.post(
+        `${this.baseUrl}/videos/${videoId}/pictures`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/vnd.vimeo.*+json;version=3.4",
+          },
+        }
+      );
+
+      const pictureUri = createPictureResponse.data.uri;
+      const uploadLink = createPictureResponse.data.link;
+
+      console.log(`Picture resource created: ${pictureUri}`);
+
+      // Step 2: Upload the thumbnail image
+      await axios.put(uploadLink, thumbnailBuffer, {
+        headers: {
+          "Content-Type": "image/jpeg",
+        },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      });
+
+      console.log("Thumbnail uploaded successfully");
+
+      // Step 3: Set the uploaded picture as active thumbnail
+      await axios.patch(
+        `${this.baseUrl}${pictureUri}`,
+        { active: true },
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/vnd.vimeo.*+json;version=3.4",
+          },
+        }
+      );
+
+      console.log("Thumbnail set as active");
+
+      // Get the thumbnail URLs
+      const sizes = createPictureResponse.data.sizes || [];
+      const thumbnailUrl =
+        sizes.length > 0 ? sizes[sizes.length - 1].link : null;
+
+      return {
+        success: true,
+        thumbnailUrl,
+        pictureUri,
+        sizes,
+      };
+    } catch (error) {
+      console.error(
+        "Vimeo thumbnail upload error:",
+        error.response?.data || error
+      );
+      throw new Error(
+        `Failed to upload thumbnail to Vimeo: ${
+          error.response?.data?.error || error.message
+        }`
+      );
+    }
+  }
 }
 
 module.exports = new VimeoService();

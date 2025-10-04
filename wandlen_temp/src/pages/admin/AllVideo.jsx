@@ -122,9 +122,7 @@ const AllVideos = () => {
       // Map filters to backend fields (matching the backend query)
       const fieldMap = {
         Lengte: "duration",
-        Provincie: "province",
-        Gemeente: "municipality",
-        Locatie: "location",
+        Locatie: "location", // Now searches location, province, and municipality
         Seizoen: "season",
         Natuurtype: "nature",
         Dieren: "animals",

@@ -162,12 +162,20 @@ const getAllvideos = async (req, res) => {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
       const durationConditions = [];
       durationFilters.forEach((d) => {
-        if (d === "short" || d.includes("Short")) {
-          durationConditions.push({ duration: { $lte: 5 } });
-        } else if (d === "medium" || d.includes("Medium")) {
-          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
-        } else if (d === "long" || d.includes("Long")) {
-          durationConditions.push({ duration: { $gt: 15 } });
+        // Gemiddeld: 5-25 minutes, Lang: 25+ minutes
+        if (d === "medium" || d.includes("Medium") || d.includes("Gemiddeld")) {
+          durationConditions.push({
+            $expr: {
+              $and: [
+                { $gte: [{ $toInt: "$duration" }, 5] },
+                { $lt: [{ $toInt: "$duration" }, 25] },
+              ],
+            },
+          });
+        } else if (d === "long" || d.includes("Long") || d.includes("Lang")) {
+          durationConditions.push({
+            $expr: { $gte: [{ $toInt: "$duration" }, 25] },
+          });
         }
       });
       if (durationConditions.length > 0) {
@@ -176,7 +184,16 @@ const getAllvideos = async (req, res) => {
     }
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
-      query.location = { $in: locations };
+      // Search in location, province, and municipality fields
+      query.$or = query.$or || [];
+      locations.forEach((loc) => {
+        const searchPattern = { $regex: loc, $options: "i" };
+        query.$or.push(
+          { location: searchPattern },
+          { province: searchPattern },
+          { municipality: searchPattern }
+        );
+      });
     }
     if (province) {
       const provinces = Array.isArray(province) ? province : [province];
@@ -637,6 +654,41 @@ const uploadToVimeo = async (req, res) => {
   }
 };
 
+/**
+ * Upload thumbnail to Vimeo
+ * This endpoint uploads a thumbnail to a Vimeo video
+ */
+const uploadThumbnailToVimeo = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image file provided" });
+    }
+
+    const { videoId } = req.body;
+
+    if (!videoId) {
+      return res.status(400).json({ message: "Video ID is required" });
+    }
+
+    console.log(`Uploading thumbnail to Vimeo video ${videoId}...`);
+
+    // Upload thumbnail to Vimeo
+    const result = await vimeoService.uploadThumbnail(videoId, req.file.buffer);
+
+    res.status(200).json({
+      message: "Thumbnail uploaded successfully to Vimeo",
+      thumbnailUrl: result.thumbnailUrl,
+      pictureUri: result.pictureUri,
+    });
+  } catch (error) {
+    console.error("Error uploading thumbnail to Vimeo:", error);
+    res.status(500).json({
+      message: "Failed to upload thumbnail to Vimeo",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -664,5 +716,6 @@ module.exports = {
   getVideo,
   toggleVideoApproval,
   uploadToVimeo,
+  uploadThumbnailToVimeo,
   upload,
 };
