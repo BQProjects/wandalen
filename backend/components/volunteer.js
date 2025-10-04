@@ -175,12 +175,11 @@ const selfUploaded = async (req, res) => {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
       const durationConditions = [];
       durationFilters.forEach((d) => {
-        if (d.includes("Short")) {
-          durationConditions.push({ duration: { $lte: 5 } });
-        } else if (d.includes("Medium")) {
-          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
-        } else if (d.includes("Long")) {
-          durationConditions.push({ duration: { $gt: 15 } });
+        // Removed short/kort filter - only medium and long
+        if (d.includes("Gemiddeld") || d.includes("Medium")) {
+          durationConditions.push({ duration: { $gt: 5, $lte: 25 } });
+        } else if (d.includes("Lang") || d.includes("Long")) {
+          durationConditions.push({ duration: { $gt: 25 } });
         }
       });
       if (durationConditions.length > 0) {
@@ -193,7 +192,16 @@ const selfUploaded = async (req, res) => {
     // Add other filters
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
-      query.location = { $in: locations };
+      // Search in location, province, and municipality fields
+      query.$or = query.$or || [];
+      locations.forEach((loc) => {
+        const searchPattern = { $regex: loc, $options: "i" };
+        query.$or.push(
+          { location: searchPattern },
+          { province: searchPattern },
+          { municipality: searchPattern }
+        );
+      });
     }
     if (province) {
       const provinces = Array.isArray(province) ? province : [province];
@@ -463,8 +471,8 @@ const uploadToVimeo = async (req, res) => {
 };
 
 /**
- * Upload cover image to Vimeo (or keep using Cloudinary for images)
- * This endpoint can be used if you want to upload thumbnails
+ * Upload cover image to Vimeo
+ * This endpoint uploads a thumbnail to a Vimeo video
  */
 const uploadCoverImage = async (req, res) => {
   try {
@@ -472,16 +480,26 @@ const uploadCoverImage = async (req, res) => {
       return res.status(400).json({ message: "No image file provided" });
     }
 
-    // For images, you can continue using Cloudinary or implement your own solution
-    // This is just a placeholder
+    const { videoId } = req.body;
+
+    if (!videoId) {
+      return res.status(400).json({ message: "Video ID is required" });
+    }
+
+    console.log(`Uploading thumbnail to Vimeo video ${videoId}...`);
+
+    // Upload thumbnail to Vimeo
+    const result = await vimeoService.uploadThumbnail(videoId, req.file.buffer);
+
     res.status(200).json({
-      message: "Cover image upload endpoint",
-      note: "You can continue using Cloudinary for images or implement another solution",
+      message: "Thumbnail uploaded successfully to Vimeo",
+      thumbnailUrl: result.thumbnailUrl,
+      pictureUri: result.pictureUri,
     });
   } catch (error) {
-    console.error("Error uploading cover image:", error);
+    console.error("Error uploading thumbnail to Vimeo:", error);
     res.status(500).json({
-      message: "Failed to upload cover image",
+      message: "Failed to upload thumbnail to Vimeo",
       error: error.message,
     });
   }

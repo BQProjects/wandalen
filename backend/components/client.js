@@ -144,12 +144,11 @@ const getAllvideos = async (req, res) => {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
       const durationConditions = [];
       durationFilters.forEach((d) => {
-        if (d.includes("Short")) {
-          durationConditions.push({ duration: { $lte: 5 } });
-        } else if (d.includes("Medium")) {
-          durationConditions.push({ duration: { $gt: 5, $lte: 15 } });
-        } else if (d.includes("Long")) {
-          durationConditions.push({ duration: { $gt: 15 } });
+        // Updated to match new duration ranges (removed short, updated medium and long)
+        if (d.includes("Gemiddeld") || d.includes("Medium")) {
+          durationConditions.push({ duration: { $gt: 5, $lte: 25 } });
+        } else if (d.includes("Lang") || d.includes("Long")) {
+          durationConditions.push({ duration: { $gt: 25 } });
         }
       });
       if (durationConditions.length > 0) {
@@ -158,7 +157,16 @@ const getAllvideos = async (req, res) => {
     }
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
-      query.location = { $in: locations };
+      // Search in location, province, and municipality fields
+      query.$or = query.$or || [];
+      locations.forEach((loc) => {
+        const searchPattern = { $regex: loc, $options: "i" };
+        query.$or.push(
+          { location: searchPattern },
+          { province: searchPattern },
+          { municipality: searchPattern }
+        );
+      });
     }
     if (province) {
       const provinces = Array.isArray(province) ? province : [province];

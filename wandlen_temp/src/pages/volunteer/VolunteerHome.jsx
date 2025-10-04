@@ -127,9 +127,7 @@ const VolunteerHome = () => {
       // Map filters to backend fields (matching the backend query)
       const fieldMap = {
         Lengte: "duration",
-        Provincie: "province",
-        Gemeente: "municipality",
-        Locatie: "location",
+        Locatie: "location", // Now searches location, province, and municipality
         Seizoen: "season",
         Natuurtype: "nature",
         Dieren: "animals",
@@ -228,14 +226,6 @@ const VolunteerHome = () => {
           onFilterChange={setActiveFilters}
           totalPages={Math.ceil(total / itemsPerPage)}
           total={total} // Pass total matching videos
-          customFilterOptions={{
-            Lengte: ["Short (0-5 min)", "Medium (5-15 min)", "Long (15+ min)"],
-            Locatie: ["forest", "beach", "mountain", "park", "garden"],
-            Seizoen: ["spring", "summer", "autumn", "winter"],
-            Natuurtype: ["woodland", "wetland", "grassland", "aquatic"],
-            Dieren: ["birds", "mammals", "insects", "fish"],
-            Geluidsprikkels: ["birds", "water", "wind", "forest sounds"],
-          }}
         />
       </div>
       {/* Existing section remains unchanged */}
