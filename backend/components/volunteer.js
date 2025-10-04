@@ -175,17 +175,24 @@ const selfUploaded = async (req, res) => {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
       const durationConditions = [];
       durationFilters.forEach((d) => {
-        // Removed short/kort filter - only medium and long
+        // Gemiddeld: 5-25 minutes, Lang: 25+ minutes
         if (d.includes("Gemiddeld") || d.includes("Medium")) {
-          durationConditions.push({ duration: { $gt: 5, $lte: 25 } });
+          durationConditions.push({
+            $expr: {
+              $and: [
+                { $gte: [{ $toInt: "$duration" }, 5] },
+                { $lt: [{ $toInt: "$duration" }, 25] },
+              ],
+            },
+          });
         } else if (d.includes("Lang") || d.includes("Long")) {
-          durationConditions.push({ duration: { $gt: 25 } });
+          durationConditions.push({
+            $expr: { $gte: [{ $toInt: "$duration" }, 25] },
+          });
         }
       });
       if (durationConditions.length > 0) {
-        // Combine with existing query using $and
-        query.$and = query.$and || [];
-        query.$and.push({ $or: durationConditions });
+        query.$or = durationConditions; // Use $or for multiple duration ranges
       }
     }
 

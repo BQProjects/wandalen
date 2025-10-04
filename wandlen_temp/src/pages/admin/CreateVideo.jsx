@@ -476,7 +476,6 @@ const CreateVideo = () => {
     title: "",
     description: "",
     duration: "",
-    location: "",
     province: "",
     municipality: "",
     season: "",
@@ -804,7 +803,6 @@ const CreateVideo = () => {
         title: res.data.title,
         description: res.data.description,
         duration: res.data.duration,
-        location: res.data.location,
         province: res.data.province || "",
         municipality: res.data.municipality || "",
         season: res.data.season,
@@ -1042,42 +1040,20 @@ const CreateVideo = () => {
               />
             </div>
 
-            {/* Duration and Location */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                  Video duration
-                </label>
-                <select
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">-Select an option-</option>
-                  <option value="short">Short (0-5 min)</option>
-                  <option value="medium">Medium (5-15 min)</option>
-                  <option value="long">Long (15+ min)</option>
-                </select>
-              </div>
-              <div>
-                <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Location
-                </label>
-                <select
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">-Select an option-</option>
-                  <option value="forest">Forest</option>
-                  <option value="beach">Beach</option>
-                  <option value="mountain">Mountain</option>
-                  <option value="park">Park</option>
-                  <option value="garden">Garden</option>
-                </select>
-              </div>
+            {/* Video Duration */}
+            <div>
+              <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
+                Video duration (minutes)
+              </label>
+              <input
+                type="number"
+                name="duration"
+                value={formData.duration}
+                onChange={handleInputChange}
+                min="0"
+                className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                placeholder="Enter duration in minutes"
+              />
             </div>
 
             {/* Province and Municipality */}

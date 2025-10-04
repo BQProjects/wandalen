@@ -162,11 +162,20 @@ const getAllvideos = async (req, res) => {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
       const durationConditions = [];
       durationFilters.forEach((d) => {
-        // Removed short/kort filter - only medium and long
+        // Gemiddeld: 5-25 minutes, Lang: 25+ minutes
         if (d === "medium" || d.includes("Medium") || d.includes("Gemiddeld")) {
-          durationConditions.push({ duration: { $gt: 5, $lte: 25 } });
+          durationConditions.push({
+            $expr: {
+              $and: [
+                { $gte: [{ $toInt: "$duration" }, 5] },
+                { $lt: [{ $toInt: "$duration" }, 25] },
+              ],
+            },
+          });
         } else if (d === "long" || d.includes("Long") || d.includes("Lang")) {
-          durationConditions.push({ duration: { $gt: 25 } });
+          durationConditions.push({
+            $expr: { $gte: [{ $toInt: "$duration" }, 25] },
+          });
         }
       });
       if (durationConditions.length > 0) {

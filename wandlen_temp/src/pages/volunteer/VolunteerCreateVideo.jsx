@@ -482,7 +482,6 @@ const VolunteerCreateVideo = () => {
     title: "",
     description: "",
     duration: "",
-    location: "",
     province: "",
     municipality: "",
     season: "",
@@ -828,7 +827,6 @@ const VolunteerCreateVideo = () => {
         title: "",
         description: "",
         duration: "",
-        location: "",
         season: "",
         natureType: "",
         soundStimuli: "",
@@ -852,7 +850,6 @@ const VolunteerCreateVideo = () => {
         title: res.data.title,
         description: res.data.description,
         duration: res.data.duration,
-        location: res.data.location,
         province: res.data.province || "",
         municipality: res.data.municipality || "",
         season: res.data.season,
@@ -1094,62 +1091,20 @@ const VolunteerCreateVideo = () => {
               />
             </div>
 
-            {/* Duration and Location */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                  {t("volunteerCreateVideo.videoDuration")}
-                </label>
-                <select
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">
-                    {t("volunteerCreateVideo.selectOption")}
-                  </option>
-                  <option value="short">
-                    {t("volunteerCreateVideo.durationShort")}
-                  </option>
-                  <option value="medium">
-                    {t("volunteerCreateVideo.durationMedium")}
-                  </option>
-                  <option value="long">
-                    {t("volunteerCreateVideo.durationLong")}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  {t("volunteerCreateVideo.location")}
-                </label>
-                <select
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">
-                    {t("volunteerCreateVideo.selectOption")}
-                  </option>
-                  <option value="forest">
-                    {t("volunteerCreateVideo.locationForest")}
-                  </option>
-                  <option value="beach">
-                    {t("volunteerCreateVideo.locationBeach")}
-                  </option>
-                  <option value="mountain">
-                    {t("volunteerCreateVideo.locationMountain")}
-                  </option>
-                  <option value="park">
-                    {t("volunteerCreateVideo.locationPark")}
-                  </option>
-                  <option value="garden">
-                    {t("volunteerCreateVideo.locationGarden")}
-                  </option>
-                </select>
-              </div>
+            {/* Video Duration */}
+            <div>
+              <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
+                {t("volunteerCreateVideo.videoDuration")} (minutes)
+              </label>
+              <input
+                type="number"
+                name="duration"
+                value={formData.duration}
+                onChange={handleInputChange}
+                min="0"
+                className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                placeholder={t("volunteerCreateVideo.durationPlaceholder")}
+              />
             </div>
 
             {/* Province and Municipality */}

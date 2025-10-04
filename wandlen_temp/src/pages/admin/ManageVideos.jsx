@@ -39,12 +39,19 @@ const ManageVideos = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [videosPerPage] = useState(10);
+  const [isApproving, setIsApproving] = useState(false);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
 
   const getVideos = async () => {
     try {
-      const res = await axios.get(`${DATABASE_URL}/admin/all-videos`);
+      const res = await axios.get(`${DATABASE_URL}/admin/all-videos`, {
+        params: {
+          limit: 1000,
+        },
+      });
       setUsers(res.data.videos); // Changed to res.data.videos to get the array
       console.log(res.data);
     } catch (error) {
@@ -85,6 +92,58 @@ const ManageVideos = () => {
     }
   };
 
+  // Function to approve all videos
+  const approveAllVideos = async () => {
+    if (
+      !window.confirm(
+        `Are you sure you want to approve all ${users.length} videos?`
+      )
+    ) {
+      return;
+    }
+
+    setIsApproving(true);
+    try {
+      let successCount = 0;
+      let errorCount = 0;
+
+      for (const video of users) {
+        if (!video.isApproved) {
+          try {
+            await axios.put(
+              `${DATABASE_URL}/admin/toggle-video-approval/${video._id}`,
+              { isApproved: true },
+              {
+                headers: {
+                  Authorization: `Bearer ${sessionId}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            successCount++;
+          } catch (error) {
+            console.error(`Error approving video ${video._id}:`, error);
+            errorCount++;
+          }
+        }
+      }
+
+      // Update all videos in state
+      setUsers((prevVideos) =>
+        prevVideos.map((video) => ({ ...video, isApproved: true }))
+      );
+
+      alert(
+        `Approval complete!\nApproved: ${successCount}\nErrors: ${errorCount}`
+      );
+    } catch (error) {
+      console.error("Error approving all videos:", error);
+      alert("Error approving videos");
+    } finally {
+      setIsApproving(false);
+    }
+  };
+
   // Function to download video
   const downloadVideo = (videoUrl, videoTitle) => {
     if (videoUrl) {
@@ -114,6 +173,12 @@ const ManageVideos = () => {
     let sortableItems = [...users];
     if (sortConfig.key !== null) {
       sortableItems.sort((a, b) => {
+        // First, sort by approval status: unapproved first
+        if (a.isApproved !== b.isApproved) {
+          return a.isApproved ? 1 : -1;
+        }
+
+        // Then, sort by the selected key
         let aValue = a[sortConfig.key];
         let bValue = b[sortConfig.key];
 
@@ -145,9 +210,25 @@ const ManageVideos = () => {
         }
         return 0;
       });
+    } else {
+      sortableItems.sort((a, b) => (a.isApproved ? 1 : -1));
     }
     return sortableItems;
   }, [users, sortConfig]);
+
+  // Pagination logic
+  const indexOfLastVideo = currentPage * videosPerPage;
+  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+  const currentVideos = sortedVideos.slice(indexOfFirstVideo, indexOfLastVideo);
+  const totalPages = Math.ceil(sortedVideos.length / videosPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   useEffect(() => {
     getVideos();
@@ -164,18 +245,31 @@ const ManageVideos = () => {
           View, download, and keep track of all videos submitted by your
           volunteers.
         </p>
-        <button
-          onClick={() => navigate("/admin/all-videos")} // Adjust the path if different
-          className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors"
-        >
-          Go to All Videos
-        </button>
-        <button
-          className="mb-4 px-6 py-2 ml-6 font-[Poppins] bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
-          onClick={() => navigate("/admin/create-video")}
-        >
-          Create Video
-        </button>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={() => navigate("/admin/all-videos")}
+            className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors"
+          >
+            Go to All Videos
+          </button>
+          <button
+            className="px-6 py-2 font-[Poppins] bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
+            onClick={() => navigate("/admin/create-video")}
+          >
+            Create Video
+          </button>
+          <button
+            className="px-6 py-2 font-[Poppins] bg-[#d97706] text-white rounded-lg hover:bg-[#b45309] transition font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+            onClick={approveAllVideos}
+            disabled={isApproving || users.length === 0}
+          >
+            {isApproving ? "Approving..." : `Approve All (${users.length})`}
+          </button>
+        </div>
+        <div className="mt-4 text-[#381207] font-['Poppins']">
+          Total Videos: {sortedVideos.length} | Showing {indexOfFirstVideo + 1}-
+          {Math.min(indexOfLastVideo, sortedVideos.length)}
+        </div>
       </div>
 
       {/* New Layout Section */}
@@ -235,7 +329,7 @@ const ManageVideos = () => {
         </div>
 
         {/* Data Rows */}
-        {sortedVideos.map((video, index) => (
+        {currentVideos.map((video, index) => (
           <div
             key={index}
             className={`flex items-center w-full py-3 px-6 min-h-[60px] border-b border-b-[#d9bbaa] ${
@@ -310,6 +404,83 @@ const ManageVideos = () => {
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-center gap-2">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+
+          <div className="flex gap-1">
+            {/* First page */}
+            {currentPage > 3 && (
+              <>
+                <button
+                  onClick={() => paginate(1)}
+                  className="px-3 py-2 bg-white border border-[#a6a643] text-[#381207] rounded-md hover:bg-[#a6a643] hover:text-white transition-colors"
+                >
+                  1
+                </button>
+                {currentPage > 4 && (
+                  <span className="px-3 py-2 text-[#381207]">...</span>
+                )}
+              </>
+            )}
+
+            {/* Page numbers around current page */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter(
+                (page) =>
+                  page === currentPage ||
+                  page === currentPage - 1 ||
+                  page === currentPage + 1 ||
+                  page === currentPage - 2 ||
+                  page === currentPage + 2
+              )
+              .map((page) => (
+                <button
+                  key={page}
+                  onClick={() => paginate(page)}
+                  className={`px-3 py-2 rounded-md transition-colors ${
+                    currentPage === page
+                      ? "bg-[#a6a643] text-white"
+                      : "bg-white border border-[#a6a643] text-[#381207] hover:bg-[#a6a643] hover:text-white"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+
+            {/* Last page */}
+            {currentPage < totalPages - 2 && (
+              <>
+                {currentPage < totalPages - 3 && (
+                  <span className="px-3 py-2 text-[#381207]">...</span>
+                )}
+                <button
+                  onClick={() => paginate(totalPages)}
+                  className="px-3 py-2 bg-white border border-[#a6a643] text-[#381207] rounded-md hover:bg-[#a6a643] hover:text-white transition-colors"
+                >
+                  {totalPages}
+                </button>
+              </>
+            )}
+          </div>
+
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
