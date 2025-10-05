@@ -14,8 +14,8 @@
     "footer": {
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
-        "termsAndConditions": "Terms and Conditions",
-        "privacyPolicy": "Agreement",
+        "termsAndConditions": "Terms and Conditions & User Agreement",
+        "privacyPolicy": "User Agreement",
         "menu": "Menu",
         "home": "Home",
         "ourVision": "Our Vision",
@@ -44,7 +44,7 @@
         "natureVideos": "nature videos",
         "virtualKm": "kilometers virtually walked",
         "volunteerFilmmakers": "volunteer filmmakers",
-        "uniqueRoutes": "unique routes"
+        "uniqueRoutes": "virtual walkers per day"
     },
     "aran": {
         "hero": {
@@ -817,7 +817,7 @@
                 "agreeToTerms": "I agree that my details will be used to prepare a quotation."
             },
             "placeholders": {
-                "organizationName": "E.g., Sunrise Wellness Center, City Care Home, Local Daycare",
+                "organizationName": "For example, De Linde care center",
                 "contactEmail": "E.g. info@wellnesscenter.nl",
                 "phone": "+31",
                 "address": "Street, building number",
@@ -828,7 +828,7 @@
                 "fullName": "E.g., Anna Jansen",
                 "jobTitle": "E.g., Activities Coordinator, Care Manager",
                 "emailAddress": "Your direct work email",
-                "phoneContact": "+31 | Direct line for quick contact",
+                "phoneContact": "+31 | Mobile number",
                 "numberLocations": "E.g., 1 care home, 3 daycare centers",
                 "targetGroups": "",
                 "totalClients": "Select the total number of clients",

@@ -14,8 +14,8 @@
     "footer": {
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
-        "termsAndConditions": "Algemene Voorwaarden",
-        "privacyPolicy": "overeenkomst",
+        "termsAndConditions": "Algemene voorwaarden & Gebruikersovereenkomst",
+        "privacyPolicy": "Gebruikersovereenkomst",
         "menu": "Menu",
         "home": "Home",
         "ourVision": "Onze Visie",
@@ -43,8 +43,8 @@
         "title": "Onze Impact",
         "natureVideos": "natuurvideo's",
         "virtualKm": "kilometer virtueel gewandeld",
-        "volunteerFilmmakers": "vrije willige filmers",
-        "uniqueRoutes": "unieke routes"
+        "volunteerFilmmakers": "vrijwillige filmers",
+        "uniqueRoutes": "virtuele wandelaars per dag"
     },
     "aran": {
         "hero": {
@@ -815,7 +815,7 @@
                 "newsletter": "Ja, ik wil mij ook aanmelden voor de nieuwsbrief van Virtueel Wandelen met updates en inspiratie."
             },
             "placeholders": {
-                "organizationName": "Bijv., Sunrise Wellness Center, City Care Home, Lokale Kinderopvang",
+                "organizationName": "Bijv. Zorgcentrum de Linde",
                 "contactEmail": "Bijv. info@wellnesscenter.nl",
                 "phone": "+31",
                 "address": "Straat, huisnummer",
@@ -826,7 +826,7 @@
                 "fullName": "Bijv., Anna Jansen",
                 "jobTitle": "Bijv., Activiteiten Coördinator, Zorgmanager",
                 "emailAddress": "Uw directe werk-e-mail",
-                "phoneContact": "+31 | Directe lijn voor snel contact",
+                "phoneContact": "+31 | Mobiele telefoonnummer",
                 "totalClients": "Kies uit: 2–30, 31–60, 61–90, >90",
                 "numberLocations": "Bijv., 1 zorginstelling, 3 kinderopvangcentra",
                 "estimatedClients": "Bijv., 20 cliënten per week",
@@ -920,7 +920,7 @@
                 "notes": "Deel eventuele vaardigheden, beschikbaarheid of speciale interesses"
             },
             "checkboxes": {
-                "firstTime": "ik heb interesse om vrijwilliger te wordenr",
+                "firstTime": "ik heb interesse om vrijwilliger te worden",
                 "updateInfo": "Ik ben al vrijwilliger en wil mijn informatie bijwerken"
             },
             "buttons": {

@@ -98,7 +98,7 @@ const Footer = () => {
             </h4>
             <div className="flex justify-center sm:justify-start gap-5 sm:gap-6">
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61575691716922"
                 className="hover:text-[#a6a643] transition-colors"
                 aria-label="Facebook"
               >
@@ -120,7 +120,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/virtueelwandelen/"
                 className="hover:text-[#a6a643] transition-colors"
                 aria-label="Instagram"
               >
@@ -156,7 +156,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/106807275/"
                 className="hover:text-[#a6a643] transition-colors"
                 aria-label="LinkedIn"
               >
@@ -195,7 +195,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-3 text-sm mt-4 sm:mt-6">
               <li className="hidden sm:block">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/profile.php?id=61575691716922"
                   className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.facebook")}
@@ -203,7 +203,7 @@ const Footer = () => {
               </li>
               <li className="hidden sm:block">
                 <a
-                  href="#"
+                  href="https://www.instagram.com/virtueelwandelen/"
                   className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.instagram")}
@@ -211,7 +211,7 @@ const Footer = () => {
               </li>
               <li className="hidden sm:block">
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/106807275/"
                   className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
                 >
                   {t("footer.linkedin")}
@@ -229,13 +229,13 @@ const Footer = () => {
             >
               {t("footer.termsAndConditions")}
             </Link>
-            <span className="hidden sm:inline">|</span>
+            {/* <span className="hidden sm:inline">&</span>
             <Link
               to="/agreement"
               className="hover:text-[#a6a643] transition-colors font-[Poppins]"
             >
               {t("footer.privacyPolicy")}
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

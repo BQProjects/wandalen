@@ -43,7 +43,7 @@ const Blog = () => {
 
   return (
     <>
-      <div className="flex-shrink-0 w-full min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-16 px-4 sm:px-10 md:px-20">
+      <div className="flex-shrink-0 w-full min-h-[941px] bg-secondary flex flex-col items-center justify-center py-16 px-4 sm:px-10 md:px-20">
         <div className="w-full mx-auto text-start">
           {/* Header Section */}
           <div className="mb-16 text-left">
