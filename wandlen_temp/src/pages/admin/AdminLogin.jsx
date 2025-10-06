@@ -1,26 +1,41 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { DATABASE_URL } = useContext(DatabaseContext);
   const navigate = useNavigate();
   const { setUserType } = useContext(AuthContext);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     console.log("Logging in with:", email, password);
-    if (email === "admin@test.com" && password === "admin123") {
-      localStorage.setItem("userType", "admin");
-      localStorage.setItem("user", JSON.stringify({ email: email }));
-      localStorage.setItem("sessionId", "dummy-session-id-for-admin");
-      localStorage.setItem("userId", "admin-user-id");
-      setUserType("admin");
-      console.log("Login successful, navigating to /admin");
-     window.location.href = "/admin";
-    } else {
-      alert("Invalid credentials");
+    try {
+      const response = await fetch(`${DATABASE_URL}/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("userType", "admin");
+        localStorage.setItem("user", JSON.stringify({ email: data.email }));
+        localStorage.setItem("sessionId", "dummy-session-id-for-admin");
+        localStorage.setItem("userId", data.id);
+        setUserType("admin");
+        console.log("Login successful, navigating to /admin");
+        window.location.href = "/admin";
+      } else {
+        alert(data.message || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed");
     }
   };
 

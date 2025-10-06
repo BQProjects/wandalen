@@ -209,6 +209,7 @@ const VideoClient = () => {
                     frameBorder="0"
                     allow="autoplay; fullscreen; picture-in-picture"
                     allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
                     title={formData.name || "Video"}
                   ></iframe>
                 ) : (

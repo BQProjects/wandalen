@@ -624,7 +624,7 @@ const Aran = () => {
             </div>
             <div className="flex flex-col items-center">
               <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
-                50+
+                240+
               </div>
               <div className="text-lg text-[#381207] font-[Poppins]">
                 {t("impactCounters.uniqueRoutes")}

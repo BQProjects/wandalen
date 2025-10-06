@@ -12,11 +12,10 @@ function ReadMoreAboutTina() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-start gap-2 mb-12">
             <div className="text-[#a6a643] font-['Poppins'] text-[2rem] font-semibold leading-[136%]">
-              Tina Rozendal
+              Tina Rozendal – van der Meer
             </div>
             <div className="max-w-4xl text-[#381207] font-['Poppins'] text-3xl lg:text-5xl font-semibold leading-[136%]">
-              – van der Meer, founder of Virtual Walking and owner of 10
-              Natuurlijk.
+              founder of Virtueel Wandelen.
             </div>
           </div>
 

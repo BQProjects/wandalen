@@ -1,3 +1,4 @@
+const AdminModel = require("../models/adminModel");
 const OrgModel = require("../models/orgModel");
 const bcrypt = require("bcrypt");
 const ClientModel = require("../models/clientModel");
@@ -11,17 +12,25 @@ const vimeoService = require("../services/vimeoService");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
-const adminLogin = (req, res) => {
-  const { username, password } = req.body;
-  const adminUsername = process.env.ADMIN_USERNAME;
-  const adminPassword = process.env.ADMIN_PASSWORD;
-
-  if (username === adminUsername && password === adminPassword) {
-    res
-      .status(200)
-      .json({ message: "Admin login successful", username: adminUsername });
-  } else {
-    res.status(401).json({ message: "Invalid admin credentials" });
+const adminLogin = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const admin = await AdminModel.findOne({ email }).select("+password");
+    if (!admin) {
+      return res.status(401).json({ message: "Invalid admin credentials" });
+    }
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid admin credentials" });
+    }
+    res.status(200).json({
+      message: "Admin login successful",
+      email: admin.email,
+      id: admin._id,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -689,6 +698,103 @@ const uploadThumbnailToVimeo = async (req, res) => {
   }
 };
 
+const createAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if admin already exists
+    const existingAdmin = await AdminModel.findOne({ email });
+    if (existingAdmin) {
+      return res
+        .status(400)
+        .json({ message: "Admin with this email already exists" });
+    }
+
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newAdmin = new AdminModel({
+      email,
+      password: hashedPassword,
+    });
+
+    await newAdmin.save();
+    res.status(201).json({
+      message: "Admin created successfully",
+      admin: { email: newAdmin.email, id: newAdmin._id },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getAllAdmins = async (req, res) => {
+  try {
+    const admins = await AdminModel.find().select("-password");
+    res.status(200).json(admins);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateAdmin = async (req, res) => {
+  const { id } = req.params;
+  const { currentPassword, email, password } = req.body;
+
+  try {
+    const admin = await AdminModel.findById(id).select("+password");
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, admin.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    // Prepare updates
+    const updates = {};
+    if (email) {
+      updates.email = email;
+    }
+    if (password) {
+      const saltRounds = 10;
+      updates.password = await bcrypt.hash(password, saltRounds);
+    }
+
+    const updatedAdmin = await AdminModel.findByIdAndUpdate(id, updates, {
+      new: true,
+    }).select("-password");
+    res
+      .status(200)
+      .json({ message: "Admin updated successfully", admin: updatedAdmin });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteAdmin = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const admin = await AdminModel.findById(id);
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    await AdminModel.findByIdAndDelete(id);
+    res.status(200).json({ message: "Admin deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -718,4 +824,8 @@ module.exports = {
   uploadToVimeo,
   uploadThumbnailToVimeo,
   upload,
+  createAdmin,
+  getAllAdmins,
+  updateAdmin,
+  deleteAdmin,
 };

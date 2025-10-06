@@ -21,20 +21,23 @@ const SubscriptionCard = ({
   icon,
   t,
 }) => (
-  <div className="relative flex-shrink-0 w-full h-full min-h-[500px]">
+  <div className="relative flex-shrink-0 w-full h-full min-h-[530px]">
+    {/* Icon */}
     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       {icon}
     </div>
-    <div className="inline-flex flex-col items-center gap-5 pb-10 px-10 rounded-2xl bg-[#f7f6f4] pt-16 h-full">
+
+    {/* Card Body */}
+    <div className="inline-flex flex-col items-center gap-5 pb-10 px-4 sm:px-10 rounded-2xl bg-[#f7f6f4] pt-16 h-full flex-grow">
       <div className="flex flex-col items-center gap-2">
-        <div className="text-[#381207] text-center font-['Poppins'] text-[2rem] font-medium leading-[normal]">
+        <div className="text-[#381207] text-center font-['Poppins'] text-xl md:text-2xl font-medium leading-[normal]">
           {title}
         </div>
         <div className="flex items-start gap-2.5">
           <div className="text-[#381207] text-center font-['Poppins'] text-2xl font-medium leading-[normal]">
             €
           </div>
-          <div className="text-[#381207] text-center font-['Poppins'] text-5xl font-normal leading-[normal]">
+          <div className="text-[#381207] text-center font-['Poppins'] text-3xl md:text-5xl font-normal leading-[normal]">
             {price} <span className="text-sm font-normal">/ {period}</span>
           </div>
         </div>
@@ -49,6 +52,7 @@ const SubscriptionCard = ({
           </div>
         )}
       </div>
+
       <div className="flex flex-col items-center gap-4 flex-grow">
         <div className="flex flex-col items-start gap-2">
           {features.map((feature, index) => (
@@ -75,9 +79,13 @@ const SubscriptionCard = ({
           {description}
         </div>
       </div>
+
+      {/* Spacer to push button down */}
+      <div className="flex-grow"></div>
+
       <div className="flex flex-col items-start gap-2 self-stretch">
         <button
-          className="flex justify-center items-center gap-2 self-stretch py-2 px-4 h-12 rounded-lg bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] text-xl font-medium leading-[136%] border-none cursor-pointer"
+          className="flex justify-center items-center gap-2 self-stretch py-2 px-4 h-12 rounded-lg bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] text-lg md:text-xl font-medium leading-[136%] border-none cursor-pointer"
           onClick={onClick}
         >
           {buttonText}
@@ -92,7 +100,8 @@ const SubscriptionCard = ({
 
 // Healthcare Organization Card Component
 const HealthcareCard = ({ t, onClick }) => (
-  <div className="relative flex-shrink-0 w-[385px]">
+  <div className="relative flex-shrink-0 w-full h-full min-h-[530px]">
+    {/* Icon */}
     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <svg
         width={96}
@@ -103,14 +112,20 @@ const HealthcareCard = ({ t, onClick }) => (
       >
         <rect width={96} height={96} rx={48} fill="#F7F6F4" />
         <path
-          d="M48 16C37.6 16 29 24.6 29 35V45H35V35C35 28.4 40.4 23 47 23S59 28.4 59 35V45H65V35C65 24.6 56.4 16 46 16H48ZM35 51V75H41V57H53V75H59V51H35Z"
+          d="M29.3133 92.999C38.0078 90.9819 46.9693 90.0855 55.5001 87.4564C66.6331 84.0257 78.0247 76.7764 79.7739 64.45C81.4542 52.5804 78.0678 40.7367 78.2229 28.8672L73.0096 31.1514C59.0158 38.7886 60.3428 44.2192 60.3428 44.2192C60.5582 46.3827 62.3333 48.5291 64.1687 50.7616C65.6163 52.5287 68.2789 53.9424 65.668 56.0456C64.9184 56.649 63.7465 56.8904 63.2381 57.3127C62.1782 58.2006 63.4018 59.4849 63.6344 60.2262C64.0653 61.6313 63.5827 62.5019 62.385 63.1742C63.1347 63.8638 63.531 64.088 63.3587 65.2172C63.2553 65.9326 62.4108 66.1481 62.0317 66.7773C61.2217 68.122 61.9111 68.9065 62.0489 70.1994C62.8503 77.9401 52.4497 73.8456 48.2705 74.2852L43.9017 73.9577C39.7742 73.9318 34.7937 74.8024 33.3374 79.1296L29.3047 92.9903L29.3133 92.999Z"
+          fill="#381207"
+        />
+        <path
+          d="M40.1584 58.1327C43.0106 51.8143 46.2075 45.4701 46.9744 38.5828C47.6982 32.0834 46.1989 25.5409 44.217 19.3088C42.528 13.9989 40.4428 8.49085 41.4423 3C37.1339 8.35294 31.8689 12.8439 27.1038 17.7917C22.3386 22.7395 17.9699 28.3596 16.0914 34.9711C13.3167 44.7115 16.2896 55.1071 19.9001 64.5717C23.3296 73.5536 27.707 82.8199 27.8362 92.6207C31.395 80.8805 35.083 69.3385 40.1498 58.1327H40.1584Z"
           fill="#381207"
         />
       </svg>
     </div>
-    <div className="inline-flex flex-col items-center gap-5 pb-10 px-10 rounded-2xl bg-[#f7f6f4] pt-16">
+
+    {/* Card Body */}
+    <div className="inline-flex flex-col items-center gap-5 pb-10 px-4 sm:px-10 rounded-2xl bg-[#f7f6f4] pt-16 h-full flex-grow">
       <div className="flex flex-col items-center gap-2">
-        <div className="text-[#381207] text-center font-['Poppins'] text-[2rem] font-medium leading-[normal]">
+        <div className="text-[#381207] text-center font-['Poppins'] text-xl md:text-2xl font-medium leading-[normal]">
           {t("subscribe.healthcare.title", "Zorg organisatie licentie")}
         </div>
         <div className="flex items-start gap-2.5">
@@ -119,7 +134,8 @@ const HealthcareCard = ({ t, onClick }) => (
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-4">
+
+      <div className="flex flex-col items-center gap-4 flex-grow">
         <div className="flex flex-col items-start gap-2">
           {(
             t("subscribe.healthcare.features", { returnObjects: true }) || [
@@ -148,9 +164,13 @@ const HealthcareCard = ({ t, onClick }) => (
           ))}
         </div>
       </div>
+
+      {/* Spacer to push button down */}
+      <div className="flex-grow"></div>
+
       <div className="flex flex-col items-start gap-2 self-stretch">
         <button
-          className="flex justify-center items-center gap-2 self-stretch py-2 px-4 h-12 rounded-lg bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] text-xl font-medium leading-[136%] border-none cursor-pointer"
+          className="flex justify-center items-center gap-2 self-stretch py-2 px-4 h-12 rounded-lg bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] text-lg md:text-xl font-medium leading-[136%] border-none cursor-pointer"
           onClick={onClick}
         >
           {t("subscribe.healthcare.buttonText", "Neem contact op")}
@@ -162,11 +182,11 @@ const HealthcareCard = ({ t, onClick }) => (
 
 // Hero Section Component
 const HeroSection = ({ t }) => (
-  <div className="flex flex-col items-start gap-2 w-[1136px] pt-10">
-    <div className="subscription_plans text-[#a6a643] font-['Poppins'] text-[2rem] font-semibold leading-[136%]">
+  <div className="flex flex-col items-start gap-2 w-full pt-10">
+    <div className=" text-[#a6a643] font-['Poppins'] text-xl md:text-2xl font-semibold leading-[136%]">
       {t("subscribe.hero.title")}
     </div>
-    <div className="unlimited_walks__new_routes_every_month_ w-[835px] text-[#381207] font-['Poppins'] text-5xl font-semibold leading-[136%]">
+    <div className=" w-full max-w-[835px] text-[#381207] font-['Poppins'] text-3xl md:text-5xl font-semibold leading-[136%]">
       {t("subscribe.hero.subtitle")}
     </div>
   </div>
@@ -218,22 +238,22 @@ const Subscribe = () => {
 
   const yearlyPlan = {
     ...basePlan,
-    price: "119.88", // Regular yearly price
+    price: "119.88",
     period: t("subscribe.plan.periods.year"),
-    originalPrice: "95.90", // Show what it would be with discount
+    originalPrice: "95.90",
   };
 
   const handleHealthcareClick = () => {
-    navigate("/request-quote"); // Navigate to request form
+    navigate("/request-quote");
   };
 
   return (
     <div className="flex-shrink-0 bg-[#ede4dc]">
       <div className="px-4 sm:px-10 md:px-20">
         <HeroSection t={t} />
-        <div className="flex justify-center gap-8 mt-20 mb-10 items-stretch">
-          {/* Monthly Card Wrapper */}
-          <div className="flex flex-col items-center flex-1 h-[530px]">
+        <div className="flex flex-col md:flex-row justify-center gap-8 mt-20 mb-10 items-stretch">
+          {/* Monthly Card */}
+          <div className="flex flex-col items-center flex-1 min-h-[530px]">
             <SubscriptionCard
               {...monthlyPlan}
               onClick={() => handleCardClick(monthlyPlan)}
@@ -241,8 +261,8 @@ const Subscribe = () => {
             />
           </div>
 
-          {/* Yearly Card Wrapper with Launch Offer */}
-          <div className="flex flex-col items-center flex-1 h-[530px]">
+          {/* Yearly Card */}
+          <div className="flex flex-col items-center flex-1 min-h-[530px]">
             <SubscriptionCard
               {...yearlyPlan}
               onClick={() => handleCardClick(yearlyPlan)}
@@ -250,12 +270,13 @@ const Subscribe = () => {
             />
           </div>
 
-          {/* Healthcare Organization Card */}
-          <div className="flex flex-col items-center flex-1 h-[530px]">
+          {/* Healthcare Card */}
+          <div className="flex flex-col items-center flex-1 min-h-[530px]">
             <HealthcareCard t={t} onClick={handleHealthcareClick} />
           </div>
         </div>
       </div>
+
       <Testimonial />
       <FaqQuestions />
       <SubscribeCard />
