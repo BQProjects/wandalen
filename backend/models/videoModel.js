@@ -15,40 +15,50 @@ const VideoSchema = new Schema(
     },
     uploaderModel: {
       type: String,
-      enum: ["Volunteer", "Admin"], // Can expand if Org can upload too
+      enum: ["Volunteer", "Admin"],
     },
     location: {
       type: String,
+      index: true,
     },
     province: {
       type: String,
+      index: true,
     },
     municipality: {
       type: String,
+      index: true,
     },
     description: {
       type: String,
+      index: true,
     },
     season: {
       type: String,
+      index: true,
     },
     nature: {
       type: String,
+      index: true,
     },
     sound: {
       type: String,
+      index: true,
     },
     animals: {
       type: String,
+      index: true,
     },
     tags: {
       type: [String],
+      index: true,
     },
     imgUrl: {
       type: String,
     },
     duration: {
       type: String,
+      index: true,
     },
     reviews: [
       {
@@ -59,10 +69,12 @@ const VideoSchema = new Schema(
     views: {
       type: Number,
       default: 0,
+      index: true,
     },
     likes: {
       type: Number,
       default: 0,
+      index: true,
     },
     isApproved: {
       type: Boolean,

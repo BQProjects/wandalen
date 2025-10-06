@@ -9,6 +9,7 @@ const ClientSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
+      index: true,
     },
     password: {
       type: String,
@@ -64,12 +65,15 @@ const ClientSchema = new Schema(
     },
     subscriptionType: {
       type: String,
+      index: true,
     },
     startDate: {
       type: Date,
+      index: true,
     },
     endDate: {
       type: Date,
+      index: true,
     },
     profilePic: {
       type: String,

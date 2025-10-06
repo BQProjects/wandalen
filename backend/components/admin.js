@@ -434,7 +434,7 @@ const approveOrg = async (req, res) => {
 
       // Create password setup link
       const passwordLink = `${
-        process.env.FRONTEND_URL || "https://wandalen-nw69.vercel.app/"
+       "https://wandalen-nw69.vercel.app/"
       }/generate-pass/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = false for new approvals)

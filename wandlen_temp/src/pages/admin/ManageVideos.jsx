@@ -42,6 +42,7 @@ const ManageVideos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [videosPerPage] = useState(10);
   const [isApproving, setIsApproving] = useState(false);
+  const [showVolunteerOnly, setShowVolunteerOnly] = useState(false);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
 
@@ -96,7 +97,9 @@ const ManageVideos = () => {
   const approveAllVideos = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to approve all ${users.length} videos?`
+        `Are you sure you want to approve all ${
+          sortedVideos.filter((v) => !v.isApproved).length
+        } videos?`
       )
     ) {
       return;
@@ -107,7 +110,7 @@ const ManageVideos = () => {
       let successCount = 0;
       let errorCount = 0;
 
-      for (const video of users) {
+      for (const video of sortedVideos) {
         if (!video.isApproved) {
           try {
             await axios.put(
@@ -171,6 +174,11 @@ const ManageVideos = () => {
   // Sort the videos based on current sort config
   const sortedVideos = React.useMemo(() => {
     let sortableItems = [...users];
+
+    if (showVolunteerOnly) {
+      sortableItems = sortableItems.filter((video) => video.uploadedBy);
+    }
+
     if (sortConfig.key !== null) {
       sortableItems.sort((a, b) => {
         // First, sort by approval status: unapproved first
@@ -214,7 +222,7 @@ const ManageVideos = () => {
       sortableItems.sort((a, b) => (a.isApproved ? 1 : -1));
     }
     return sortableItems;
-  }, [users, sortConfig]);
+  }, [users, sortConfig, showVolunteerOnly]);
 
   // Pagination logic
   const indexOfLastVideo = currentPage * videosPerPage;
@@ -259,16 +267,31 @@ const ManageVideos = () => {
             Create Video
           </button>
           <button
+            className={`px-6 py-2 font-[Poppins] rounded-lg transition font-medium ${
+              showVolunteerOnly
+                ? "bg-[#a6a643] text-white hover:bg-[#8b8b3a]"
+                : "bg-[#e5e7eb] text-[#381207] hover:bg-[#d1d5db]"
+            }`}
+            onClick={() => setShowVolunteerOnly(!showVolunteerOnly)}
+          >
+            {showVolunteerOnly ? "Show All Videos" : "Show Volunteer Videos"}
+          </button>
+          <button
             className="px-6 py-2 font-[Poppins] bg-[#d97706] text-white rounded-lg hover:bg-[#b45309] transition font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
             onClick={approveAllVideos}
-            disabled={isApproving || users.length === 0}
+            disabled={isApproving || sortedVideos.length === 0}
           >
-            {isApproving ? "Approving..." : `Approve All (${users.length})`}
+            {isApproving
+              ? "Approving..."
+              : `Approve All (${
+                  sortedVideos.filter((v) => !v.isApproved).length
+                })`}
           </button>
         </div>
         <div className="mt-4 text-[#381207] font-['Poppins']">
           Total Videos: {sortedVideos.length} | Showing {indexOfFirstVideo + 1}-
           {Math.min(indexOfLastVideo, sortedVideos.length)}
+          {showVolunteerOnly && " (Volunteer Videos Only)"}
         </div>
       </div>
 

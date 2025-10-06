@@ -649,11 +649,10 @@ const VolunteerCreateVideo = () => {
                 {
                   headers: {
                     "Content-Type": "multipart/form-data",
-                    "session-id": sessionId,
+                    Authorization: `Bearer ${sessionId}`,
                   },
                 }
               );
-
               if (thumbnailResponse.status === 200) {
                 imgUrl = thumbnailResponse.data.thumbnailUrl; // Vimeo thumbnail URL
                 console.log(
@@ -691,7 +690,7 @@ const VolunteerCreateVideo = () => {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  "session-id": sessionId,
+                  Authorization: `Bearer ${sessionId}`,
                 },
               }
             );

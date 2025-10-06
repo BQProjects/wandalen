@@ -648,6 +648,29 @@ const emailTemplates = {
       <p>Virtueel Wandelen Admin System</p>
     </div>
   `,
+
+  // OTP email template
+  otpEmail: (otp) => `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #381207;">Your OTP for Virtual Wandlen</h2>
+      <p>Dear User,</p>
+      <p>You have requested to log in to your Virtual Wandlen account. Please use the following One-Time Password (OTP) to complete your login:</p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <div style="display: inline-block; padding: 15px 30px; background-color: #5b6502; color: white; font-size: 24px; font-weight: bold; border-radius: 8px; letter-spacing: 2px;">
+          ${otp}
+        </div>
+      </div>
+      
+      <p><strong>Important:</strong> This OTP is valid for 5 minutes only. Please do not share this code with anyone.</p>
+      <p>If you did not request this login, please ignore this email.</p>
+      
+      <p>Best regards,<br>Virtual Wandlen Support Team</p>
+      
+      <hr style="margin: 20px 0;">
+      <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
+    </div>
+  `,
 };
 
 module.exports = {
