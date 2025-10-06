@@ -30,10 +30,18 @@ const volunteerLogin = async (req, res) => {
 
     await store.save();
 
-    // TODO: Send OTP via email/SMS (use org.contactPersonEmail or org.email)
-    console.log(`OTP for ${email}: ${otp}, IP: ${req.ip}`);
+    try {
+      await sendEmail(
+        email,
+        "Your OTP for Virtual Wandlen",
+        emailTemplates.otpEmail(otp)
+      );
+      console.log(`OTP sent to ${email}: ${otp}`);
+    } catch (emailError) {
+      console.error("Error sending OTP email:", emailError);
+    }
 
-    res.json({ message: "OTP sent to your email", ip: req.ip, otp }); // Send OTP in response for testing (remove in production)
+    res.json({ message: "OTP sent to your email", ip: req.ip });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

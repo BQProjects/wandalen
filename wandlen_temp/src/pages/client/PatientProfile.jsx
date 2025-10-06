@@ -168,7 +168,7 @@ const PatientProfile = () => {
         { newPassword: passwordData.newPassword },
         {
           headers: {
-            "x-session-id": sessionId,
+            Authorization: `Bearer ${sessionId}`,
           },
         }
       );
@@ -196,7 +196,7 @@ const PatientProfile = () => {
         {
           data: { clientId },
           headers: {
-            "x-session-id": sessionId,
+            Authorization: `Bearer ${sessionId}`,
           },
         }
       );
@@ -226,7 +226,10 @@ const PatientProfile = () => {
         fullName: `${res.data.client.firstName || ""} ${
           res.data.client.lastName || ""
         }`.trim(),
-        organizationName: res.data.client.company || "",
+        organizationName:
+          res.data.client.subscriptionType === "org"
+            ? res.data.client.orgId?.orgName || ""
+            : res.data.client.company || "",
         contactEmail: res.data.client.email,
         phone: res.data.client.phoneNo || "",
         address: res.data.client.address || "",

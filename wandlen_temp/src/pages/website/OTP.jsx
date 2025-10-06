@@ -31,6 +31,23 @@ const Otp = () => {
     );
   }
 
+  const handleResendOtp = async () => {
+    try {
+      const res = await axios.post(`${DATABASE_URL}/utils/resend-otp`, {
+        email,
+        type: userType,
+      });
+      if (res.status === 200) {
+        alert("OTP resent to your email!");
+      } else {
+        alert("Failed to resend OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      alert("An error occurred while resending OTP. Please try again.");
+    }
+  };
+
   const handleVerify = async () => {
     try {
       const res = await axios.post(`${DATABASE_URL}/utils/verify-otp`, {
@@ -159,12 +176,12 @@ const Otp = () => {
               Verify
             </button>
 
-            {/* Resend OTP Link (Optional) */}
+            {/* Resend OTP Link */}
             <div className="text-center w-full">
               <button
                 type="button"
                 className="text-[#5b6502] font-['Poppins'] text-sm sm:text-base font-medium hover:underline"
-                onClick={() => alert("OTP resend functionality would go here")}
+                onClick={handleResendOtp}
               >
                 Resend OTP
               </button>

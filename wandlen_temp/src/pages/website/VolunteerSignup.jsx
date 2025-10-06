@@ -75,10 +75,24 @@ const VolunteerSignupForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+
+    if (
+      type === "checkbox" &&
+      (name === "isFirstTime" || name === "isUpdate")
+    ) {
+      // Make checkboxes mutually exclusive
+      setFormData({
+        ...formData,
+        isFirstTime: name === "isFirstTime" ? checked : false,
+        isUpdate: name === "isUpdate" ? checked : false,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }

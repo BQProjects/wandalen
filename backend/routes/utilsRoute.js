@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const {
   verifyOtp,
+  resendOtp,
   subscribe,
   getAllSubscriptions,
   unsubscribe,
@@ -13,6 +14,7 @@ const utilRouter = express.Router();
 utilRouter.use(cors());
 
 utilRouter.post("/verify-otp", verifyOtp);
+utilRouter.post("/resend-otp", resendOtp);
 utilRouter.post("/subscribe", subscribe);
 utilRouter.get("/subscriptions", validateActiveSession, getAllSubscriptions);
 utilRouter.post("/unsubscribe", unsubscribe);

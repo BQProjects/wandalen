@@ -10,6 +10,7 @@ const VolunteerSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      index: true,
     },
     firstName: {
       type: String,

@@ -40,7 +40,10 @@ const ManageSubscription = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
   const [subscriptions, setSubscriptions] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [sortConfig, setSortConfig] = useState({
+    key: "startDate",
+    direction: "desc",
+  });
 
   const fetchSubscriptions = async () => {
     try {
@@ -91,8 +94,8 @@ const ManageSubscription = () => {
 
         // Handle date sorting
         if (sortConfig.key === "startDate" || sortConfig.key === "endDate") {
-          aValue = new Date(aValue);
-          bValue = new Date(bValue);
+          aValue = aValue !== "N/A" ? new Date(aValue) : new Date(0);
+          bValue = bValue !== "N/A" ? new Date(bValue) : new Date(0);
         }
 
         if (aValue < bValue) {

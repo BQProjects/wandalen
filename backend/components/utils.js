@@ -1,8 +1,11 @@
 const smsStoreModel = require("../models/smsStoreModel");
 const SessionStoreModel = require("../models/sessionStoreModel.js");
 const SubscriptionModel = require("../models/subscriptionModel");
+const ClientModel = require("../models/clientModel");
+const VolunteerModel = require("../models/volunteerModel");
 const crypto = require("crypto");
 const axios = require("axios");
+const { sendEmail, emailTemplates } = require("../services/emailService");
 
 const verifyOtp = async (req, res) => {
   const { email, otp, type } = req.body;
@@ -39,6 +42,59 @@ const verifyOtp = async (req, res) => {
     expires: Date.now() + 24 * 60 * 60 * 1000,
     userId: record.who,
   });
+};
+
+const resendOtp = async (req, res) => {
+  const { email, type } = req.body;
+
+  try {
+    // Determine the model based on type
+    let UserModel;
+    if (type === "client") {
+      UserModel = ClientModel;
+    } else if (type === "volunteer") {
+      UserModel = VolunteerModel;
+    } else {
+      return res.status(400).json({ message: "Invalid user type" });
+    }
+
+    // Check if user exists
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Delete any existing OTP records for this email
+    await smsStoreModel.deleteMany({ email });
+
+    // Generate new OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store new OTP
+    const store = new smsStoreModel({
+      email,
+      otp,
+      who: user._id,
+    });
+    await store.save();
+
+    // Send OTP via email
+    try {
+      await sendEmail(
+        email,
+        "Your OTP for Virtual Wandlen",
+        emailTemplates.otpEmail(otp)
+      );
+      console.log(`OTP resent to ${email}: ${otp}`);
+    } catch (emailError) {
+      console.error("Error sending OTP email:", emailError);
+    }
+
+    res.json({ message: "OTP resent to your email" });
+  } catch (error) {
+    console.error("Error resending OTP:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 const subscribe = async (req, res) => {
@@ -164,6 +220,7 @@ const unsubscribe = async (req, res) => {
 
 module.exports = {
   verifyOtp,
+  resendOtp,
   subscribe,
   getAllSubscriptions,
   unsubscribe,
