@@ -62,6 +62,7 @@ import ManageVideos from "../pages/admin/ManageVideos";
 import ManageVolunteer from "../pages/admin/ManageVolunteer";
 import OrganizationCreated from "../pages/admin/OrganizationCreated";
 import SubscriptionOverview from "../pages/admin/SubscriptionOverview";
+import UpdateCredentials from "../pages/admin/UpdateCredentail";
 import VolunteerDetail from "../pages/admin/VolunteerDetail";
 import TrainingDetails from "../pages/admin/VolunteerTrainingDetails";
 
@@ -318,6 +319,10 @@ export const router = createBrowserRouter([
       {
         path: "training-details",
         element: <TrainingDetails />,
+      },
+      {
+        path: "update-credentials",
+        element: <UpdateCredentials />,
       },
     ],
   },

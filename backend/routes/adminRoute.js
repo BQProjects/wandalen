@@ -28,6 +28,10 @@ const {
   toggleVideoApproval,
   uploadToVimeo,
   uploadThumbnailToVimeo,
+  createAdmin,
+  getAllAdmins,
+  updateAdmin,
+  deleteAdmin,
   upload,
 } = require("../components/admin");
 
@@ -65,5 +69,9 @@ adminRouter.post(
   upload.single("thumbnail"),
   uploadThumbnailToVimeo
 );
+adminRouter.get("/admins", getAllAdmins);
+adminRouter.post("/adminscreate", createAdmin);
+adminRouter.put("/admins/:id", updateAdmin);
+adminRouter.delete("/admins/:id", deleteAdmin);
 
 module.exports = adminRouter;
