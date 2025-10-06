@@ -118,6 +118,7 @@ const VideoAdmin = () => {
                     frameBorder="0"
                     allow="autoplay; fullscreen; picture-in-picture"
                     allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
                     title={video.title || "Video"}
                   ></iframe>
                 ) : (
