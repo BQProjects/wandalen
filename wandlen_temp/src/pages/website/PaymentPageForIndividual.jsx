@@ -398,16 +398,6 @@ const PaymentPageForIndividual = () => {
 
                 <div className="space-y-5 mt-6">
                   <FormInput
-                    label={t("payment.form.labels.companyName")}
-                    placeholder={t("payment.form.placeholders.companyName")}
-                    value={formData.companyName}
-                    onChange={(value) =>
-                      handleInputChange("companyName", value)
-                    }
-                    error={errors.companyName}
-                  />
-
-                  <FormInput
                     label={t("payment.form.labels.firstName")}
                     placeholder={t("payment.form.placeholders.firstName")}
                     value={formData.firstName}

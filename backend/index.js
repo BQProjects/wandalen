@@ -7,6 +7,7 @@ const orgRouter = require("./routes/orgRoute");
 const clientRouter = require("./routes/clientRoutes");
 const volunteerRouter = require("./routes/volunteerRoute");
 const utilRouter = require("./routes/utilsRoute");
+const locationRouter = require("./routes/locationRoutes");
 
 const app = express();
 app.set("trust proxy", true);
@@ -46,6 +47,7 @@ app.use("/org", orgRouter);
 app.use("/client", clientRouter);
 app.use("/volunteer", volunteerRouter);
 app.use("/utils", utilRouter);
+app.use("/api", locationRouter);
 
 app.listen(9090, () => console.log("Server is started"));
 
