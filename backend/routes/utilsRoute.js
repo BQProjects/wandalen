@@ -6,6 +6,7 @@ const {
   subscribe,
   getAllSubscriptions,
   unsubscribe,
+  striperSubscribe,
 } = require("../components/utils");
 const validateActiveSession = require("../utils/middleware");
 
@@ -18,5 +19,7 @@ utilRouter.post("/resend-otp", resendOtp);
 utilRouter.post("/subscribe", subscribe);
 utilRouter.get("/subscriptions", validateActiveSession, getAllSubscriptions);
 utilRouter.post("/unsubscribe", unsubscribe);
+utilRouter.post("/stripe-subscribe", striperSubscribe);
+utilRouter.get("/verify-session/:id", striperSubscribe);
 
 module.exports = utilRouter;

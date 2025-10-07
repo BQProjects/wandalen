@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useTranslation } from "react-i18next";
@@ -141,6 +142,8 @@ const OrderSummary = ({ plan, t }) => (
 const PaymentPageForIndividual = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const sessionId = params.get("session_id");
   const { DATABASE_URL } = useContext(DatabaseContext);
   const { t } = useTranslation();
   const selectedPlan = location.state?.plan;
@@ -204,34 +207,65 @@ const PaymentPageForIndividual = () => {
 
   const validateStep1 = () => {
     const newErrors = {};
-    if (!formData.companyName.trim())
-      newErrors.companyName = t("payment.errors.companyNameRequired");
-    if (!formData.firstName.trim())
+
+    if (!formData.firstName.trim()) {
       newErrors.firstName = t("payment.errors.firstNameRequired");
-    if (!formData.surname.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.surname.trim()) {
       newErrors.surname = t("payment.errors.surnameRequired");
-    if (!formData.function.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.function.trim()) {
       newErrors.function = t("payment.errors.functionRequired");
-    if (!formData.email2.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.email2.trim()) {
       newErrors.email2 = t("payment.errors.emailRequired");
-    else if (!validateEmail(formData.email2))
+      console.log("Validating Step 1...");
+    } else if (!validateEmail(formData.email2)) {
       newErrors.email2 = t("payment.errors.emailInvalid");
-    if (!formData.telephone.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.telephone.trim()) {
       newErrors.telephone = t("payment.errors.telephoneRequired");
-    else if (!validatePhone(formData.telephone))
+      console.log("Validating Step 1...");
+    } else if (!validatePhone(formData.telephone)) {
       newErrors.telephone = t("payment.errors.telephoneInvalid");
-    if (!formData.password.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.password.trim()) {
       newErrors.password = t("payment.errors.passwordRequired");
-    else if (formData.password.length < 6)
+      console.log("Validating Step 1...");
+    } else if (formData.password.length < 6) {
       newErrors.password = t("payment.errors.passwordTooShort");
-    if (!formData.country.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.country.trim()) {
       newErrors.country = t("payment.errors.countryRequired");
-    if (!formData.address.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.address.trim()) {
       newErrors.address = t("payment.errors.addressRequired");
-    if (!formData.city.trim())
+      console.log("Validating Step 1...");
+    }
+
+    if (!formData.city.trim()) {
       newErrors.city = t("payment.errors.cityRequired");
-    if (!formData.postalCode.trim())
+      console.log("Validating Step 1...");
+    }
+    if (!formData.postalCode.trim()) {
       newErrors.postalCode = t("payment.errors.postalCodeRequired");
+      console.log("Validating Step 1...");
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -326,6 +360,7 @@ const PaymentPageForIndividual = () => {
 
   const handleContinue = () => {
     if (currentStep === 1) {
+      console.log("Validating Step 1...");
       if (validateStep1()) {
         setCurrentStep(2);
       }
@@ -336,6 +371,43 @@ const PaymentPageForIndividual = () => {
       }
     }
   };
+
+  const handlePaymentSubscription = async () => {
+    try {
+      if (validateStep1()) {
+        // Step 1: Create a checkout session on the backend
+        const res = await axios.post(`${DATABASE_URL}/utils/stripe-subscribe`, {
+          email: formData.email2,
+          planId: "planId",
+        });
+
+        if (res.data.url) {
+          // Step 2: Redirect user to Stripe payment page
+          window.location.href = res.data.url;
+        } else {
+          alert(t("payment.messages.subscriptionFailed"));
+        }
+      }
+    } catch (error) {
+      console.error("Error during payment subscription:", error);
+      alert(t("payment.messages.subscriptionFailed"));
+    }
+  };
+
+  useEffect(() => {
+    const verifyPayment = async () => {
+      const res = await axios.get(
+        `${DATABASE_URL}/utils/verify-session/${sessionId}`
+      );
+      if (res.data.status === "paid") {
+        handleSignUp();
+      } else {
+        alert("Payment not successful. Please try again.");
+      }
+    };
+
+    if (sessionId) verifyPayment();
+  }, [sessionId]);
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -483,7 +555,7 @@ const PaymentPageForIndividual = () => {
                 </div>
 
                 <button
-                  onClick={handleContinue}
+                  onClick={handlePaymentSubscription}
                   className="w-full mt-6 py-3 bg-[#5b6502] text-white font-medium rounded-lg hover:bg-[#4a5502] transition-colors"
                 >
                   {t("payment.buttons.continue")}
@@ -590,7 +662,7 @@ const PaymentPageForIndividual = () => {
                 </div>
 
                 <button
-                  onClick={handleContinue}
+                  onClick={handlePaymentSubscription}
                   className="w-full mt-6 py-3 bg-[#5b6502] text-white font-medium rounded-lg hover:bg-[#4a5502] transition-colors"
                 >
                   {t("payment.buttons.completeSubscription")}

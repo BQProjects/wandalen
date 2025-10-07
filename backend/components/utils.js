@@ -6,6 +6,7 @@ const VolunteerModel = require("../models/volunteerModel");
 const crypto = require("crypto");
 const axios = require("axios");
 const { sendEmail, emailTemplates } = require("../services/emailService");
+const Stripe = require("stripe");
 
 const verifyOtp = async (req, res) => {
   const { email, otp, type } = req.body;
@@ -218,10 +219,54 @@ const unsubscribe = async (req, res) => {
   }
 };
 
+/// Todo
+///
+///
+///
+///
+///
+
+// const stripe = new Stripe("secret key here");
+
+const stripe = "";
+
+const striperSubscribe = async (req, res) => {
+  const { email, planId } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      customer_email: email,
+      line_items: [{ price: planId, quantity: 1 }],
+      mode: "subscription",
+      success_url:
+        "http://localhost:5173/payment?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "http://localhost:5173/payment",
+    });
+
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create Stripe session" });
+  }
+};
+
+const verifySession = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const session = await stripe.checkout.sessions.retrieve(id);
+    res.json({ status: session.payment_status });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to verify session" });
+  }
+};
+
 module.exports = {
   verifyOtp,
   resendOtp,
   subscribe,
   getAllSubscriptions,
   unsubscribe,
+  striperSubscribe,
+  verifySession,
 };
