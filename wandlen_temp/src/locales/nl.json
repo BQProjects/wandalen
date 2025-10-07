@@ -604,6 +604,7 @@
                 "email": "E-mail",
                 "telephone": "Telefoon",
                 "password": "Wachtwoord",
+                "confirmPassword": "Bevestig Wachtwoord",
                 "country": "Land/regio",
                 "address": "Adres",
                 "city": "Woonplaats",
@@ -621,6 +622,7 @@
                 "email": "uw@email.nl",
                 "telephone": "+31 6 12345678",
                 "password": "Voer uw wachtwoord in",
+                "confirmPassword": "Bevestig uw wachtwoord",
                 "country": "Nederland",
                 "address": "Uw adres",
                 "city": "Amsterdam",
@@ -642,6 +644,8 @@
             "telephoneInvalid": "Ongeldig telefoonnummer",
             "passwordRequired": "Wachtwoord is verplicht",
             "passwordTooShort": "Wachtwoord moet minimaal 6 tekens bevatten",
+            "confirmPasswordRequired": "Bevestig uw wachtwoord",
+            "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
             "countryRequired": "Land is verplicht",
             "addressRequired": "Adres is verplicht",
             "cityRequired": "Plaats is verplicht",
@@ -679,13 +683,29 @@
         "buttons": {
             "continue": "Doorgaan",
             "completeSubscription": "Abonnement Voltooien",
-            "choosePlan": "Kies een Plan"
+            "choosePlan": "Kies een Plan",
+            "tryAgain": "Probeer Opnieuw"
         },
         "messages": {
             "noPlanSelected": "Geen Plan Geselecteerd",
             "trialEnds": "U wordt vandaag niet belast. Uw proefperiode eindigt over 7 dagen.",
             "signupSuccess": "Aanmelden succesvol!",
-            "signupFailed": "Aanmelden mislukt. Probeer het opnieuw."
+            "signupFailed": "Aanmelden mislukt. Probeer het opnieuw.",
+            "noDataFound": "Geen aanmeldgegevens gevonden. Probeer het opnieuw.",
+            "accountCreated": "Account succesvol aangemaakt!",
+            "paymentSessionNotFound": "Betalingssessie niet gevonden. Neem contact op met ondersteuning.",
+            "paymentVerificationFailed": "Betaling verificatie mislukt. Neem contact op met ondersteuning."
+        },
+        "processing": {
+            "title": "Betaling Verwerken",
+            "message": "Even geduld terwijl we uw betaling verifiëren en uw account aanmaken..."
+        },
+        "success": {
+            "title": "Betaling Geslaagd!",
+            "redirecting": "U wordt doorgestuurd naar inloggen..."
+        },
+        "error": {
+            "title": "Betaling Mislukt"
         }
     },
     "blog": {
@@ -1077,7 +1097,14 @@
         "deleteAccount": "Account Verwijderen",
         "closeAccountConfirmError": "Typ 'sluit mijn account' exact zoals weergegeven",
         "accountClosedSuccess": "Uw account is succesvol gesloten",
-        "accountCloseError": "Kan account niet sluiten. Probeer het opnieuw."
+        "accountCloseError": "Kan account niet sluiten. Probeer het opnieuw.",
+        "cancelTrialWarning": "Waarschuwing: U bent in de proefperiode. Annuleren zal uw account onmiddellijk verwijderen. Wilt u doorgaan?",
+        "cancelPaidWarning": "Uw abonnement wordt geannuleerd, maar uw account blijft actief tot het einde van uw huidige factureringsperiode. Wilt u doorgaan?",
+        "accountDeletedDuringTrial": "Uw account is succesvol verwijderd.",
+        "subscriptionCancelled": "Abonnement succesvol geannuleerd.",
+        "cancelSubscriptionError": "Kon abonnement niet annuleren. Probeer het opnieuw.",
+        "subscriptionCancelledNotice": "Uw abonnement is geannuleerd. Uw account blijft actief tot:",
+        "trialPeriodNotice": "U bent momenteel in uw gratis proefperiode tot:"
     },
     "volunteerHome": {
         "welcome": "Welkom bij Virtual Wandelen!",

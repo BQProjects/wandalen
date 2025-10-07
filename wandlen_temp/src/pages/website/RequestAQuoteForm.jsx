@@ -236,7 +236,7 @@ const RequestAQuoteForm = () => {
       {/* Form */}
       <div className="relative flex flex-col items-center py-10 px-4 z-20 -mt-30">
         <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-lg w-11/12 relative">
-          <div className="w-11/12 space-y-8">
+          <div className=" space-y-8">
             <h2 className="text-2xl font-medium text-[#381207]">
               {t("requestQuoteForm.form.title")}
             </h2>
@@ -888,7 +888,7 @@ const RequestAQuoteForm = () => {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="w-full py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5201] transition font-medium"
+              className=" px-4 py-2 text-md bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5201] transition font-medium"
             >
               {t("requestQuoteForm.form.buttons.submit")}
             </button>

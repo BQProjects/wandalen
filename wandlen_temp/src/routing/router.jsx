@@ -19,6 +19,7 @@ import ChooseYourExperience from "../pages/website/ChoseYourExperience";
 import HowItWorks from "../pages/volunteer/HowItWorks";
 import OurApproach from "../pages/website/OurApproach";
 import PaymentPageForIndividual from "../pages/website/PaymentPageForIndividual";
+import PaymentSuccess from "../pages/website/PaymentSuccess";
 import RequestAQuoteForm from "../pages/website/RequestAQuoteForm";
 import Subscribe from "../pages/website/Subscribe";
 import Training from "../pages/website/Traning";
@@ -103,6 +104,10 @@ export const router = createBrowserRouter([
       {
         path: "payment",
         element: <PaymentPageForIndividual />,
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccess />,
       },
       {
         path: "training/:id",

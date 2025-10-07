@@ -75,6 +75,44 @@ const ClientSchema = new Schema(
       type: Date,
       index: true,
     },
+    trialEndDate: {
+      type: Date,
+      index: true,
+    },
+    subscriptionDays: {
+      type: Number,
+      default: 0,
+    },
+    stripeCustomerId: {
+      type: String,
+      index: true,
+    },
+    stripeSubscriptionId: {
+      type: String,
+      index: true,
+    },
+    stripeSessionId: {
+      type: String,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "completed", "cancelled", "expired"],
+      default: "pending",
+      index: true,
+    },
+    paymentVerified: {
+      type: Boolean,
+      default: false,
+    },
+    subscriptionStatus: {
+      type: String,
+      enum: ["trial", "active", "cancelled", "expired"],
+      default: "trial",
+      index: true,
+    },
+    cancelledAt: {
+      type: Date,
+    },
     profilePic: {
       type: String,
       default: "",

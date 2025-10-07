@@ -16,6 +16,7 @@ const {
   checkLikeStatus,
   uploadProfilePicture,
   updatePassword,
+  cancelSubscription,
 } = require("../components/client");
 
 const clientRouter = express.Router();
@@ -36,5 +37,6 @@ clientRouter.get("/check-like/:videoId", checkLikeStatus);
 clientRouter.put("/update-account/:clientId", updateAccountInfo);
 clientRouter.put("/upload-profile-picture/:clientId", uploadProfilePicture);
 clientRouter.put("/update-password/:clientId", updatePassword);
+clientRouter.post("/cancel-subscription", cancelSubscription);
 
 module.exports = clientRouter;
