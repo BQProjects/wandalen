@@ -228,6 +228,63 @@ const VolunteerHome = () => {
           total={total} // Pass total matching videos
         />
       </div>
+
+      {/* Future Videos Card */}
+      <div className="mb-12 w-11/12 mx-auto">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-[#d9bbaa]">
+          <div className="bg-gradient-to-r from-[#a6a643]/[.2] to-[#dd9219]/[.2] p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="bg-[#a6a643] rounded-full p-3">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-white"
+                  >
+                    <path
+                      d="M9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17ZM19 19H5V5H19V19.1ZM19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-[#2a341f] font-['Poppins'] text-2xl font-semibold">
+                    📊 Future Videos Planning
+                  </h3>
+                  <p className="text-[#381207] font-['Poppins'] text-base mt-1">
+                    Manage and track upcoming video locations in real-time
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate("future-videos")}
+                className="bg-[#dd9219] hover:bg-[#c47a15] text-white font-['Poppins'] text-base font-medium px-6 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2"
+              >
+                <span>View Planning</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.5 15L12.5 10L7.5 5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Existing section remains unchanged */}
       <section className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-4">

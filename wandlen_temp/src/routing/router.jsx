@@ -69,6 +69,7 @@ import TrainingDetails from "../pages/admin/VolunteerTrainingDetails";
 // Component imports
 import ProtectedRoute from "../components/ProtectedRoute";
 import Otp from "../pages/website/OTP";
+import FutureVideos from "../pages/volunteer/FutureVideos";
 
 export const router = createBrowserRouter([
   {
@@ -233,6 +234,10 @@ export const router = createBrowserRouter([
         path: "video/:id",
         element: <VideoVolunteer />,
       },
+      {
+        path: "future-videos",
+        element: <FutureVideos />,
+      }
     ],
   },
   // Admin routes can be added here when needed
