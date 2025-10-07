@@ -604,6 +604,7 @@
                 "email": "E-mail",
                 "telephone": "Telephone",
                 "password": "Password",
+                "confirmPassword": "Confirm Password",
                 "country": "Country/region",
                 "address": "Address",
                 "city": "Place of residence",
@@ -621,6 +622,7 @@
                 "email": "your@email.com",
                 "telephone": "+31 6 12345678",
                 "password": "Enter your password",
+                "confirmPassword": "Confirm your password",
                 "country": "Netherlands",
                 "address": "Your address",
                 "city": "Amsterdam",
@@ -642,6 +644,8 @@
             "telephoneInvalid": "Invalid phone format",
             "passwordRequired": "Password is required",
             "passwordTooShort": "Password must be at least 6 characters",
+            "confirmPasswordRequired": "Please confirm your password",
+            "passwordsDoNotMatch": "Passwords do not match",
             "countryRequired": "Country is required",
             "addressRequired": "Address is required",
             "cityRequired": "City is required",
@@ -679,13 +683,29 @@
         "buttons": {
             "continue": "Continue",
             "completeSubscription": "Complete Subscription",
-            "choosePlan": "Choose a Plan"
+            "choosePlan": "Choose a Plan",
+            "tryAgain": "Try Again"
         },
         "messages": {
             "noPlanSelected": "No Plan Selected",
             "trialEnds": "You will not be charged today. Your trial ends in 7 days.",
             "signupSuccess": "Sign up successful!",
-            "signupFailed": "Sign up failed. Please try again."
+            "signupFailed": "Sign up failed. Please try again.",
+            "noDataFound": "No signup data found. Please try again.",
+            "accountCreated": "Account created successfully!",
+            "paymentSessionNotFound": "Payment session not found. Please contact support.",
+            "paymentVerificationFailed": "Payment verification failed. Please contact support."
+        },
+        "processing": {
+            "title": "Processing Payment",
+            "message": "Please wait while we verify your payment and create your account..."
+        },
+        "success": {
+            "title": "Payment Successful!",
+            "redirecting": "Redirecting you to login..."
+        },
+        "error": {
+            "title": "Payment Failed"
         }
     },
     "blog": {
@@ -1033,7 +1053,14 @@
         "closeAccountConfirmError": "Please type 'close my account' exactly as shown",
         "accountClosedSuccess": "Your account has been closed successfully",
         "accountCloseError": "Failed to close account. Please try again.",
-        "confirmCloseAccount": "Confirm Close Account"
+        "confirmCloseAccount": "Confirm Close Account",
+        "cancelTrialWarning": "Warning: You are in the trial period. Cancelling will delete your account immediately. Do you want to continue?",
+        "cancelPaidWarning": "Your subscription will be cancelled, but your account will remain active until the end of your current billing period. Do you want to continue?",
+        "accountDeletedDuringTrial": "Your account has been deleted successfully.",
+        "subscriptionCancelled": "Subscription cancelled successfully.",
+        "cancelSubscriptionError": "Failed to cancel subscription. Please try again.",
+        "subscriptionCancelledNotice": "Your subscription has been cancelled. Your account will remain active until:",
+        "trialPeriodNotice": "You are currently in your free trial period until:"
     },
     "manageClients": {
         "organization": "Organization",

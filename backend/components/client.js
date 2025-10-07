@@ -71,8 +71,27 @@ const clientSignUp = async (req, res) => {
     postalCode,
     plan,
     endDate,
+    trialEndDate,
+    subscriptionDays,
+    stripeCustomerId,
+    stripeSubscriptionId,
+    stripeSessionId,
+    paymentStatus,
+    paymentVerified,
+    subscriptionStatus,
   } = req.body;
   try {
+    // Check if email already exists
+    const existingClient = await ClientModel.findOne({ email });
+    if (existingClient) {
+      console.log(`Duplicate signup attempt for email: ${email}`);
+      return res.status(409).json({
+        message:
+          "An account with this email already exists. Please login instead.",
+        error: "DUPLICATE_EMAIL",
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newClient = new ClientModel({
@@ -91,6 +110,14 @@ const clientSignUp = async (req, res) => {
       subscriptionType: "self",
       startDate: new Date(),
       endDate: new Date(endDate),
+      trialEndDate: trialEndDate ? new Date(trialEndDate) : null,
+      subscriptionDays: subscriptionDays || 0,
+      stripeCustomerId: stripeCustomerId || null,
+      stripeSubscriptionId: stripeSubscriptionId || null,
+      stripeSessionId: stripeSessionId || null,
+      paymentStatus: paymentStatus || "pending",
+      paymentVerified: paymentVerified || false,
+      subscriptionStatus: subscriptionStatus || "trial",
     });
     await newClient.save();
     // Send emails after successful client registration
@@ -535,6 +562,115 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const cancelSubscription = async (req, res) => {
+  try {
+    const clientId = req.body.clientId || req.params.clientId;
+
+    if (!clientId) {
+      return res.status(400).json({
+        success: false,
+        message: "Client ID is required",
+      });
+    }
+
+    const client = await ClientModel.findById(clientId);
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        message: "Client not found",
+      });
+    }
+
+    const now = new Date();
+    const trialEndDate = client.trialEndDate;
+    const startDate = client.startDate || client.createdAt;
+
+    // Calculate if in trial period
+    // Option 1: If trialEndDate exists, use it
+    // Option 2: If no trialEndDate but has startDate, check if within 7 days
+    // Option 3: Check subscription status
+    let isInTrialPeriod = false;
+
+    if (trialEndDate) {
+      isInTrialPeriod = now < new Date(trialEndDate);
+    } else if (startDate) {
+      // Calculate 7 days from start
+      const sevenDaysFromStart = new Date(startDate);
+      sevenDaysFromStart.setDate(sevenDaysFromStart.getDate() + 7);
+      isInTrialPeriod = now < sevenDaysFromStart;
+    }
+
+    // Also consider subscription status
+    if (client.subscriptionStatus === "trial") {
+      isInTrialPeriod = true;
+    }
+
+    console.log("Cancel Subscription Debug:", {
+      clientId,
+      now: now.toISOString(),
+      trialEndDate: trialEndDate?.toISOString(),
+      startDate: startDate?.toISOString(),
+      subscriptionStatus: client.subscriptionStatus,
+      isInTrialPeriod,
+      hasStripeSubId: !!client.stripeSubscriptionId,
+    });
+
+    // Cancel subscription in Stripe if exists
+    if (client.stripeSubscriptionId) {
+      const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+      try {
+        await stripe.subscriptions.cancel(client.stripeSubscriptionId);
+        console.log(
+          "Stripe subscription cancelled:",
+          client.stripeSubscriptionId
+        );
+      } catch (stripeError) {
+        console.error("Error cancelling Stripe subscription:", stripeError);
+        // Continue even if Stripe cancellation fails
+      }
+    } else {
+      console.log(
+        "No Stripe subscription ID found, skipping Stripe cancellation"
+      );
+    }
+
+    if (isInTrialPeriod) {
+      // During trial period: Delete the account completely
+      await ClientModel.findByIdAndDelete(clientId);
+
+      console.log("Account deleted during trial period:", clientId);
+
+      return res.json({
+        success: true,
+        message: "Account deleted successfully during trial period",
+        action: "deleted",
+      });
+    } else {
+      // After trial period: Mark as cancelled but keep account active until expiry
+      client.subscriptionStatus = "cancelled";
+      client.cancelledAt = now;
+      await client.save();
+
+      return res.json({
+        success: true,
+        message:
+          "Subscription cancelled. Your account will remain active until the end of your billing period.",
+        action: "cancelled",
+        activeUntil: client.endDate,
+      });
+    }
+  } catch (error) {
+    console.error("Error cancelling subscription:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to cancel subscription",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -552,4 +688,5 @@ module.exports = {
   checkLikeStatus,
   uploadProfilePicture,
   updatePassword,
+  cancelSubscription,
 };

@@ -32,6 +32,13 @@ const PatientProfile = () => {
   });
   const [showCloseAccountModal, setShowCloseAccountModal] = useState(false);
   const [closeAccountConfirmText, setCloseAccountConfirmText] = useState("");
+  const [showCancelSubscriptionModal, setShowCancelSubscriptionModal] =
+    useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState({
+    status: "",
+    trialEndDate: null,
+    isInTrial: false,
+  });
 
   const handleInputChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
@@ -212,6 +219,61 @@ const PatientProfile = () => {
     }
   };
 
+  const handleCancelSubscription = async () => {
+    if (!clientId) {
+      alert(t("patientProfile.loginRequired"));
+      return;
+    }
+
+    const confirmMessage = subscriptionStatus.isInTrial
+      ? t("patientProfile.cancelTrialWarning") ||
+        "Warning: You are in the trial period. Cancelling will delete your account immediately. Do you want to continue?"
+      : t("patientProfile.cancelPaidWarning") ||
+        "Your subscription will be cancelled, but your account will remain active until the end of your current billing period. Do you want to continue?";
+
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${DATABASE_URL}/client/cancel-subscription`,
+        { clientId },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        if (response.data.action === "deleted") {
+          alert(
+            t("patientProfile.accountDeletedDuringTrial") ||
+              "Your account has been deleted successfully."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+        } else {
+          alert(
+            t("patientProfile.subscriptionCancelled") ||
+              `Subscription cancelled successfully. Your account will remain active until ${new Date(
+                response.data.activeUntil
+              ).toLocaleDateString()}`
+          );
+          setShowCancelSubscriptionModal(false);
+          getProfileData(); // Refresh profile data
+        }
+      }
+    } catch (error) {
+      console.error("Error cancelling subscription:", error);
+      alert(
+        t("patientProfile.cancelSubscriptionError") ||
+          "Failed to cancel subscription. Please try again."
+      );
+    }
+  };
+
   const getProfileData = async () => {
     if (!clientId) {
       alert(t("patientProfile.loginRequired"));
@@ -243,6 +305,17 @@ const PatientProfile = () => {
           : "",
         profilePic: res.data.client.profilePic || UserIcon,
       };
+
+      const now = new Date();
+      const trialEnd = res.data.client.trialEndDate
+        ? new Date(res.data.client.trialEndDate)
+        : null;
+      setSubscriptionStatus({
+        status: res.data.client.subscriptionStatus || "active",
+        trialEndDate: trialEnd,
+        isInTrial: trialEnd && now < trialEnd,
+      });
+
       setProfileData(data);
       setOriginalData(data);
     } catch (error) {
@@ -508,13 +581,34 @@ const PatientProfile = () => {
               </div>
             </div>
           </div>
+          {subscriptionStatus.status === "cancelled" && (
+            <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-yellow-800 font-[Poppins]">
+                {t("patientProfile.subscriptionCancelledNotice")}{" "}
+                {profileData.validUntil}
+              </p>
+            </div>
+          )}
+          {subscriptionStatus.isInTrial && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-blue-800 font-[Poppins]">
+                {t("patientProfile.trialPeriodNotice")}{" "}
+                {subscriptionStatus.trialEndDate?.toLocaleDateString()}
+              </p>
+            </div>
+          )}
           <div className="flex justify-end gap-4">
-            <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]">
+            <button className="px-4 py-2 border border-green-400 text-green-600 rounded-lg hover:bg-green-50 transition font-[Poppins]">
               {t("patientProfile.upgradePlan")}
             </button>
-            <button className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]">
-              {t("patientProfile.cancelSubscription")}
-            </button>
+            {subscriptionStatus.status !== "cancelled" && (
+              <button
+                onClick={handleCancelSubscription}
+                className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]"
+              >
+                {t("patientProfile.cancelSubscription")}
+              </button>
+            )}
           </div>
         </div>
 

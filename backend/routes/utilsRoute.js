@@ -6,8 +6,8 @@ const {
   subscribe,
   getAllSubscriptions,
   unsubscribe,
-  striperSubscribe,
 } = require("../components/utils");
+const { verifyStripePayment } = require("../components/stripeVerification");
 const validateActiveSession = require("../utils/middleware");
 
 const utilRouter = express.Router();
@@ -19,7 +19,6 @@ utilRouter.post("/resend-otp", resendOtp);
 utilRouter.post("/subscribe", subscribe);
 utilRouter.get("/subscriptions", validateActiveSession, getAllSubscriptions);
 utilRouter.post("/unsubscribe", unsubscribe);
-utilRouter.post("/stripe-subscribe", striperSubscribe);
-utilRouter.get("/verify-session/:id", striperSubscribe);
+utilRouter.post("/verify-stripe-payment", verifyStripePayment);
 
 module.exports = utilRouter;
