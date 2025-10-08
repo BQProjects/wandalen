@@ -41,10 +41,10 @@
     },
     "impactCounters": {
         "title": "Our Impact",
-        "natureVideos": "nature videos",
-        "virtualKm": "kilometers virtually walked",
-        "volunteerFilmmakers": "volunteer filmmakers",
-        "uniqueRoutes": "virtual walkers per day"
+        "natureVideos": "Nature videos",
+        "virtualKm": "Kilometers virtually walked",
+        "volunteerFilmmakers": "Volunteer filmmakers",
+        "uniqueRoutes": "Virtual walkers per day"
     },
     "aran": {
         "hero": {
@@ -126,7 +126,7 @@
             "I am a nurse and come into contact with people with dementia at work. I also walk a lot in my spare time.",
             "Nice combination of walking, doing useful work that makes people happy.",
             "My hobbies are photography/video and walking. In addition, I think it is important to do volunteer work that... really makes sense.",
-            "Making beautiful images makes me very happy. Furthermore, walking is fun and good for your health...",
+            "Making beautiful images makes me very happy. Furthermore, walking is fun and good for your health.",
             "A smile on someone else's face is enough.",
             "I love walking and photography/filming and I like to share that with others",
             "I already like to walk and this is a nice combination between being physically active and doing something useful",
@@ -203,7 +203,7 @@
         "threeCards": {
             "familyConnection": {
                 "title": "Family Connection",
-                "description": "Loved ones feel happier and more alert when watching together."
+                "description": "Loved ones feel happier & more alert when watching together."
             },
             "calmComfort": {
                 "title": "Calm & Comfort",

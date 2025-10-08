@@ -69,12 +69,12 @@ const OurApproach = () => {
               className="cursor-pointer w-8 h-8 md:w-auto md:h-auto"
             />
           </div>
-          <div className="flex justify-center md:justify-end">
-            <img
-              src={PlantSvg}
-              className="w-12 h-12 sm:w-14 sm:h-14 md:w-auto md:h-auto"
-            />
-          </div>
+        </div>
+        <div className="flex justify-center md:justify-end">
+          <img
+            src={PlantSvg}
+            className="w-full h-12  md:w-auto md:h-auto"
+          />
         </div>
       </div>
 

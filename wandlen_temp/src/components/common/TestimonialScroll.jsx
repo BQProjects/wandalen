@@ -52,7 +52,7 @@ const Testimonial = () => {
         {/* Testimonial Card */}
         <div
           key={currentIndex}
-          className="rounded-2xl p-6 md:p-10 text-justify text-secondary font-['Poppins'] text-base md:text-xl leading-relaxed max-w-3xl transition-opacity duration-500 ease-in-out"
+          className="rounded-2xl p-6 md:p-10 text-center text-secondary font-['Poppins'] text-base md:text-xl leading-relaxed max-w-3xl transition-opacity duration-500 ease-in-out"
         >
           {testimonials.length > 0 ? (
             (() => {

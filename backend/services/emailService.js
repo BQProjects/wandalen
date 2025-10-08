@@ -1,6 +1,6 @@
 const { Resend } = require("resend");
 
-const resend = new Resend("re_1VrBC8gD_6Hu8PNqsAxMnBczNmUXSpPbS");
+const resend = new Resend("re_Fe4pwmbH_E1KvQv2MGo1QZj9fZvfYAH6V");
 
 // Helper function to handle empty strings, null, and undefined values
 const getDisplayValue = (value, defaultText = "Not provided") => {
@@ -18,7 +18,7 @@ const getDisplayValue = (value, defaultText = "Not provided") => {
 const sendEmail = async (to, subject, html) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: "noreply@updates.jashkumar.dev", // Replace with your verified domain
+      from: "send@virtueelwandelen.nl",
       to: to,
       subject: subject,
       html: html,

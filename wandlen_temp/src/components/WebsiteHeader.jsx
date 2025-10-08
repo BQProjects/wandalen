@@ -41,7 +41,7 @@ const WebsiteHeader = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-4 md:px-18 py-4 bg-secondary relative">
+    <div className="flex justify-between items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-18 py-4 bg-secondary relative">
       <Link
         to="/"
         className="flex flex-col flex-shrink-0 justify-center items-center w-16 h-20 cursor-pointer"
@@ -52,7 +52,7 @@ const WebsiteHeader = () => {
           viewBox="0 0 65 90"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="text-brown"
+          className="text-brown w-12 h-16 sm:w-14 sm:h-18 md:w-16 md:h-20 lg:w-18 lg:h-24 xl:w-20 xl:h-28"
         >
           <path
             d="M14.2586 89.999C22.9212 87.9819 31.8499 87.0855 40.3494 84.4564C51.4417 81.0257 62.7915 73.7764 64.5343 61.45C66.2084 49.5804 62.8344 37.7367 62.9889 25.8672L57.7948 28.1514C43.8522 35.7886 45.1744 41.2192 45.1744 41.2192C45.389 43.3827 47.1576 45.5291 48.9863 47.7616C50.4286 49.5287 53.0815 50.9424 50.4801 53.0456C49.7332 53.649 48.5656 53.8904 48.059 54.3127C47.003 55.2006 48.2222 56.4849 48.454 57.2262C48.8832 58.6313 48.4025 59.5019 47.2091 60.1742C47.956 60.8638 48.3509 61.088 48.1792 62.2172C48.0762 62.9326 47.2348 63.1481 46.8571 63.7773C46.0501 65.122 46.7369 65.9065 46.8743 67.1994C47.6727 74.9401 37.3102 70.8456 33.1463 71.2852L28.7936 70.9577C24.6812 70.9318 19.7189 71.8024 18.2679 76.1296L14.25 89.9903L14.2586 89.999Z"
@@ -98,7 +98,7 @@ const WebsiteHeader = () => {
             onMouseLeave={() => setHoveredItem(null)}
             onClick={() => setActiveItem("welcome")}
           >
-            <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
+            <div className="body text-[#381207] font-poppins font-medium text-lg md:text-xl leading-[136%]">
               {t("header.welcome")}
             </div>
             {(hoveredItem === "welcome" || activeItem === "welcome") && (
@@ -113,7 +113,7 @@ const WebsiteHeader = () => {
             onMouseLeave={() => setHoveredItem(null)}
             onClick={() => setActiveItem("ourVission")}
           >
-            <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
+            <div className="body text-[#381207] font-poppins font-medium text-lg md:text-xl leading-[136%]">
               {t("header.ourVision")}
             </div>
             {(hoveredItem === "ourVission" || activeItem === "ourVission") && (
@@ -125,12 +125,12 @@ const WebsiteHeader = () => {
             <>
               <Link
                 to={getDashboardLink()}
-                className="flex flex-col justify-center items-start gap-2.5 text-brown font-poppins text-xl font-medium leading-[136%] hover:text-dark-olive transition-colors"
+                className="flex flex-col justify-center items-start gap-2.5 text-brown font-poppins text-lg md:text-xl font-medium leading-[136%] hover:text-dark-olive transition-colors"
                 onMouseEnter={() => setHoveredItem("dashboard")}
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => setActiveItem("dashboard")}
               >
-                <div className="body text-[#381207] font-poppins font-medium  text-xl leading-[136%]">
+                <div className="body text-[#381207] font-poppins font-medium text-lg md:text-xl leading-[136%]">
                   {t("header.dashboard")}
                 </div>
                 {(hoveredItem === "dashboard" ||
@@ -142,7 +142,7 @@ const WebsiteHeader = () => {
               {/* Logout button */}
               <button
                 onClick={handleLogout}
-                className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-brown text-white text-center font-poppins text-xl font-medium leading-[136%] hover:bg-brown-hover transition-colors"
+                className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-brown text-white text-center font-poppins text-lg md:text-xl font-medium leading-[136%] hover:bg-brown-hover transition-colors"
               >
                 {t("header.logout")}
               </button>
@@ -156,7 +156,7 @@ const WebsiteHeader = () => {
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => setActiveItem("volunteer")}
               >
-                <div className="body text-[#381207] font-poppins text-xl font-medium leading-[136%]">
+                <div className="body text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
                   {t("header.becomeVolunteer")}
                 </div>
                 {(hoveredItem === "volunteer" ||
@@ -172,7 +172,7 @@ const WebsiteHeader = () => {
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => setActiveItem("subscribe")}
               >
-                <div className="body text-[#381207] font-poppins text-xl font-medium leading-[136%]">
+                <div className="body text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
                   {t("header.subscribe")}
                 </div>
                 {(hoveredItem === "subscribe" ||
@@ -188,7 +188,7 @@ const WebsiteHeader = () => {
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => setActiveItem("blog")}
               >
-                <div className="body text-[#381207] font-poppins text-xl font-medium leading-[136%]">
+                <div className="body text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
                   {t("header.blog")}
                 </div>
                 {(hoveredItem === "blog" || activeItem === "blog") && (
@@ -214,7 +214,7 @@ const WebsiteHeader = () => {
                       fill="#4B4741"
                     />
                   </svg>
-                  <div className="body-5 text-[#381207] font-poppins text-xl font-medium leading-[136%]">
+                  <div className="body-5 text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
                     {i18n.language === "en"
                       ? t("header.english")
                       : "Nederlands"}
@@ -239,13 +239,13 @@ const WebsiteHeader = () => {
                   <div className="absolute top-full mt-2 bg-secondary border border-[#381207] rounded-lg shadow-lg z-50">
                     <button
                       onClick={() => changeLanguage("en")}
-                      className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-xl font-medium"
+                      className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
                     >
                       {t("header.english")}
                     </button>
                     <button
                       onClick={() => changeLanguage("nl")}
-                      className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-xl font-medium"
+                      className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
                     >
                       Nederlands
                     </button>
@@ -257,7 +257,7 @@ const WebsiteHeader = () => {
               <div className="relative group">
                 <button
                   onClick={() => navigate("/login")}
-                  className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-brown text-white text-center font-['Poppins'] text-xl font-medium leading-[136%] hover:bg-brown-hover transition-colors"
+                  className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-brown text-white text-center font-['Poppins'] text-lg md:text-xl font-medium leading-[136%] hover:bg-brown-hover transition-colors"
                 >
                   {t("header.login")}
                 </button>
@@ -269,8 +269,8 @@ const WebsiteHeader = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-secondary shadow-lg z-40">
-          <div className="flex flex-col items-center gap-4 py-4">
+        <div className="md:hidden absolute top-full left-0 right-0 w-full bg-secondary shadow-lg z-50 border-t border-brown/20">
+          <div className="flex flex-col items-center gap-6 py-6 px-4 max-h-96 overflow-y-auto">
             {/* Public Navigation */}
             <Link
               to="/"
@@ -382,16 +382,16 @@ const WebsiteHeader = () => {
                 </svg>
               </button>
               {isMobileLanguageMenuOpen && (
-                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px]">
+                <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-secondary border border-[#381207] rounded-lg shadow-lg z-50 min-w-[150px]">
                   <button
                     onClick={() => changeLanguage("en")}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#381207] font-poppins text-lg font-medium"
+                    className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg font-medium"
                   >
                     {t("header.english")}
                   </button>
                   <button
                     onClick={() => changeLanguage("nl")}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#381207] font-poppins text-lg font-medium"
+                    className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg font-medium"
                   >
                     Nederlands
                   </button>

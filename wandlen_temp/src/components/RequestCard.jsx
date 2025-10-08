@@ -21,7 +21,7 @@ const RequestCard = () => {
         {/* Main Content - Side by Side on larger screens, stacked on mobile */}
         <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center lg:items-start">
           {/* Left Card - Care Institutions */}
-          <div className="w-full lg:flex-1 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 px-4 sm:px-6 md:px-8 rounded-2xl bg-[#454c36]">
+          <div className="w-full lg:flex-1 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 px-4 sm:px-6 md:px-8 rounded-2xl bg-[#454c36] min-h-[700px]">
             <div className="flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 w-full max-w-[424px]">
               <div className="flex flex-col items-center gap-3 sm:gap-4 md:gap-5 w-full">
                 {/* Care Institutions Icon */}
@@ -167,7 +167,7 @@ const RequestCard = () => {
           </div>
 
           {/* Right Card - Subscribe Now Section */}
-          <div className="w-full lg:flex-1 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 px-4 sm:px-6 md:px-8 rounded-2xl bg-[#454c36]">
+          <div className="w-full lg:flex-1 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 px-4 sm:px-6 md:px-8 rounded-2xl bg-[#454c36] min-h-[700px]">
             <div className="flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 w-full max-w-[424px]">
               <div className="flex flex-col items-center gap-3 sm:gap-4 md:gap-5 w-full">
                 {/* Home Users Icon */}

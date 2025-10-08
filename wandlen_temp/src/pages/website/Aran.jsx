@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import DawnForest from "../../../src/components/DawnForest";
 import Background2 from "../../assets/Background2.png";
 import Testimonial from "../../components/common/TestimonialScroll";
@@ -192,228 +192,6 @@ const Aran = () => {
         </div>
       </div>
 
-      {/* Discover Nature Videos Section */}
-      <div className="flex-shrink-0 w-full min-h-[600px] md:min-h-[800px] lg:min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-10 md:px-20">
-        <div className="w-full mx-auto text-start">
-          {/* Header Section */}
-          <div className="mb-8 sm:mb-12 md:mb-16">
-            <div
-              className="text-[#5b6502] font-['Poppins'] text-xl sm:text-2xl md:text-[32px] font-semibold leading-[136%] mb-2"
-              style={{ letterSpacing: "-0.32px" }}
-            >
-              {t("discoverVideos.title")}
-            </div>
-            <div
-              className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-5xl font-semibold leading-[136%]"
-              style={{ letterSpacing: "-0.48px" }}
-            >
-              {t("discoverVideos.subtitle")}
-            </div>
-          </div>
-
-          {/* Video Grid - Responsive layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mx-auto">
-            {/* Video 1 - Mountain/Forest Scene */}
-            <div
-              className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-200 via-green-200 to-gray-300 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #87CEEB 0%, #98FB98 50%, #D3D3D3 100%)",
-              }}
-            >
-              {/* Play Button */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] lg:w-[81px] lg:h-[81px] rounded-full bg-[#DD9219] bg-opacity-80 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-opacity-90 transition-all">
-                  <svg
-                    width={24}
-                    height={24}
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
-                  >
-                    <path
-                      d="M26 14.268C27.3333 15.0378 27.3333 16.9623 26 17.7321L10.5 26.9186C9.1667 27.6884 7.5 26.7261 7.5 25.1865V6.8135C7.5 5.2739 9.1667 4.3116 10.5 5.0814L26 14.268Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Volume Control */}
-              <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 lg:bottom-4 lg:left-4 flex items-center justify-center p-1 sm:p-2 h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 rounded bg-white bg-opacity-50 backdrop-blur-sm">
-                <svg
-                  width={12}
-                  height={8}
-                  viewBox="0 0 16 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 h-2 sm:w-3.5 sm:h-2.5 lg:w-4 lg:h-3"
-                >
-                  <path
-                    d="M8 1V11M4 3.5V8.5M12 2V10M0 4.5V7.5"
-                    stroke="#381207"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Video 2 - Purple Lavender Scene */}
-            <div
-              className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden bg-gradient-to-br from-purple-200 via-pink-200 to-orange-200 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #DDA0DD 0%, #FFB6C1 50%, #FFDAB9 100%)",
-              }}
-            >
-              {/* Play Button */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] lg:w-[81px] lg:h-[81px] rounded-full bg-[#DD9219] bg-opacity-80 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-opacity-90 transition-all">
-                  <svg
-                    width={24}
-                    height={24}
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
-                  >
-                    <path
-                      d="M26 14.268C27.3333 15.0378 27.3333 16.9623 26 17.7321L10.5 26.9186C9.1667 27.6884 7.5 26.7261 7.5 25.1865V6.8135C7.5 5.2739 9.1667 4.3116 10.5 5.0814L26 14.268Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Volume Control */}
-              <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 lg:bottom-4 lg:left-4 flex items-center justify-center p-1 sm:p-2 h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 rounded bg-white bg-opacity-50 backdrop-blur-sm">
-                <svg
-                  width={12}
-                  height={8}
-                  viewBox="0 0 16 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 h-2 sm:w-3.5 sm:h-2.5 lg:w-4 lg:h-3"
-                >
-                  <path
-                    d="M8 1V11M4 3.5V8.5M12 2V10M0 4.5V7.5"
-                    stroke="#381207"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Video 3 - Ocean Sunset Scene */}
-            <div
-              className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-300 via-purple-200 to-pink-200 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #87CEFA 0%, #DDA0DD 50%, #FFB6C1 100%)",
-              }}
-            >
-              {/* Play Button */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] lg:w-[81px] lg:h-[81px] rounded-full bg-[#DD9219] bg-opacity-80 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-opacity-90 transition-all">
-                  <svg
-                    width={24}
-                    height={24}
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
-                  >
-                    <path
-                      d="M26 14.268C27.3333 15.0378 27.3333 16.9623 26 17.7321L10.5 26.9186C9.1667 27.6884 7.5 26.7261 7.5 25.1865V6.8135C7.5 5.2739 9.1667 4.3116 10.5 5.0814L26 14.268Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Volume Control */}
-              <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 lg:bottom-4 lg:left-4 flex items-center justify-center p-1 sm:p-2 h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 rounded bg-white bg-opacity-50 backdrop-blur-sm">
-                <svg
-                  width={12}
-                  height={8}
-                  viewBox="0 0 16 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 h-2 sm:w-3.5 sm:h-2.5 lg:w-4 lg:h-3"
-                >
-                  <path
-                    d="M8 1V11M4 3.5V8.5M12 2V10M0 4.5V7.5"
-                    stroke="#381207"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Video 4 - Winter Forest Scene */}
-            <div
-              className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden bg-gradient-to-br from-green-400 via-gray-200 to-white bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #228B22 0%, #D3D3D3 50%, #FFFFFF 100%)",
-              }}
-            >
-              {/* Play Button */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] lg:w-[81px] lg:h-[81px] rounded-full bg-[#DD9219] bg-opacity-80 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-opacity-90 transition-all">
-                  <svg
-                    width={24}
-                    height={24}
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
-                  >
-                    <path
-                      d="M26 14.268C27.3333 15.0378 27.3333 16.9623 26 17.7321L10.5 26.9186C9.1667 27.6884 7.5 26.7261 7.5 25.1865V6.8135C7.5 5.2739 9.1667 4.3116 10.5 5.0814L26 14.268Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Volume Control */}
-              <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 lg:bottom-4 lg:left-4 flex items-center justify-center p-1 sm:p-2 h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 rounded bg-white bg-opacity-50 backdrop-blur-sm">
-                <svg
-                  width={12}
-                  height={8}
-                  viewBox="0 0 16 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-3 h-2 sm:w-3.5 sm:h-2.5 lg:w-4 lg:h-3"
-                >
-                  <path
-                    d="M8 1V11M4 3.5V8.5M12 2V10M0 4.5V7.5"
-                    stroke="#381207"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Watch Now Button */}
-          <div className="mt-8 sm:mt-12 text-center">
-            <button
-              className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
-              onClick={() => (window.location.href = "/subscribe")}
-            >
-              {t("positiveExperiences.watchNow")}
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Second Hero Section */}
       <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 relative">
         {/* Message Us Component - Top Right Corner */}
@@ -487,17 +265,75 @@ const Aran = () => {
         </div>
       </div>
 
-      {/* Positive Experiences Section */}
-      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
-        <div className="mx-auto">
+      {/* Discover Nature Videos Section */}
+      <div className="flex-shrink-0 w-full min-h-[600px] md:min-h-[800px] lg:min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-10 md:px-20">
+        <div className="w-full mx-auto text-start">
           {/* Header Section */}
-          <div className="text-left mb-8 sm:mb-12 md:mb-16">
-            <div className="text-[#A6A643] font-['Poppins'] text-lg sm:text-xl lg:text-[32px] font-semibold mb-2 sm:mb-4">
-              {t("positiveExperiences.title")}
+          <div className="mb-8 sm:mb-12 md:mb-16">
+            <div
+              className="text-[#5b6502] font-['Poppins'] text-xl sm:text-2xl md:text-[32px] font-semibold leading-[136%] mb-2"
+              style={{ letterSpacing: "-0.32px" }}
+            >
+              {t("discoverVideos.title")}
             </div>
-            <h2 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight mb-4 sm:mb-8 text-left mx-auto">
-              {t("positiveExperiences.subtitle")}
-            </h2>
+            <div
+              className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-5xl font-semibold leading-[136%]"
+              style={{ letterSpacing: "-0.48px" }}
+            >
+              {t("discoverVideos.subtitle")}
+            </div>
+          </div>
+
+          {/* Video Grid - Responsive layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mx-auto">
+            {/* Video 1 - Mountain/Forest Scene */}
+            <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+              <iframe
+                src="https://player.vimeo.com/video/1123134607?h=ab295a6d9e&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                frameborder="0"
+                className="w-full h-full absolute inset-0 rounded-2xl"
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="Hellendoorn: Eelerberg rode route zomer"
+              ></iframe>
+            </div>
+
+            {/* Video 2 - Purple Lavender Scene */}
+            <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+              <iframe
+                src="https://player.vimeo.com/video/1123837047?h=5766de89d0&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                className="w-full h-full absolute inset-0 rounded-2xl"
+                frameborder="0"
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="Landgoed Twickel Lente"
+              ></iframe>
+            </div>
+
+            {/* Video 3 - Ocean Sunset Scene */}
+            <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+              <iframe
+                src="https://player.vimeo.com/video/1123135340?h=d7d9750a5d&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                className="w-full h-full absolute inset-0 rounded-2xl"
+                frameborder="0"
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="Hellendoorn: Landgoed Eelerberg rondje pinetum zomer"
+              ></iframe>
+            </div>
+
+            {/* Video 4 - Winter Forest Scene */}
+            <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+              <iframe
+                src="https://player.vimeo.com/video/1123842137?h=6758297932&title=0&byline=0&portrait=0&controls=1&muted=0&pip=0&keyboard=0&loop=0"
+                className="w-full h-full absolute inset-0 rounded-2xl"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="Dalfsen Park Bellingeweer"
+              />
+            </div>
+          </div>
+
+          {/* Watch Now Button */}
+          <div className="mt-8 sm:mt-12 text-center">
             <button
               className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
               onClick={() => (window.location.href = "/subscribe")}
@@ -505,296 +341,12 @@ const Aran = () => {
               {t("positiveExperiences.watchNow")}
             </button>
           </div>
-
-          {/* Three Cards Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-8xl mx-auto">
-            {/* Card 1 - Family Connection */}
-            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-16 md:space-y-20 justify-end">
-              <div className="">
-                <svg
-                  width={48}
-                  height={48}
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="items-left md:w-16 md:h-16"
-                >
-                  <path
-                    d="M53.3359 31.9987C53.3359 26.3407 51.0883 20.9145 47.0875 16.9138C43.0868 12.913 37.6606 10.6654 32.0026 10.6654C26.3447 10.6654 20.9184 12.913 16.9177 16.9138C12.9169 20.9145 10.6693 26.3407 10.6693 31.9987C10.6693 37.6566 12.9169 43.0829 16.9177 47.0836C20.9184 51.0844 26.3447 53.332 32.0026 53.332C37.6606 53.332 43.0868 51.0844 47.0875 47.0836C51.0883 43.0829 53.3359 37.6566 53.3359 31.9987ZM58.6693 31.9987C58.6693 39.0711 55.8598 45.8539 50.8588 50.8549C45.8578 55.8558 39.075 58.6654 32.0026 58.6654C28.5007 58.6654 25.0331 57.9756 21.7977 56.6355C18.5624 55.2954 15.6227 53.3311 13.1464 50.8549C8.14545 45.8539 5.33594 39.0711 5.33594 31.9987C5.33594 24.9263 8.14545 18.1435 13.1464 13.1425C18.1474 8.14155 24.9302 5.33203 32.0026 5.33203C35.5045 5.33203 38.9721 6.02179 42.2075 7.36191C45.4428 8.70204 48.3826 10.6663 50.8588 13.1425C53.335 15.6187 55.2993 18.5585 56.6394 21.7938C57.9795 25.0292 58.6693 28.4968 58.6693 31.9987ZM26.6693 25.332C26.6693 27.4654 24.8026 29.332 22.6693 29.332C20.5359 29.332 18.6693 27.4654 18.6693 25.332C18.6693 23.1987 20.5359 21.332 22.6693 21.332C24.8026 21.332 26.6693 23.1987 26.6693 25.332ZM45.3359 25.332C45.3359 27.4654 43.4693 29.332 41.3359 29.332C39.2026 29.332 37.3359 27.4654 37.3359 25.332C37.3359 23.1987 39.2026 21.332 41.3359 21.332C43.4693 21.332 45.3359 23.1987 45.3359 25.332ZM32.0026 45.9454C27.3359 45.9454 23.2293 43.9987 20.8293 41.1187L24.6159 37.332C25.8159 39.252 28.6693 40.612 32.0026 40.612C35.3359 40.612 38.1893 39.252 39.3893 37.332L43.1759 41.1187C40.7759 43.9987 36.6693 45.9454 32.0026 45.9454Z"
-                    fill="#381207"
-                  />
-                </svg>
-              </div>
-              <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
-                <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
-                  {t("dawnForest.threeCards.familyConnection.title")}
-                </h3>
-                <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
-                  {t("dawnForest.threeCards.familyConnection.description")}
-                </p>
-              </div>
-            </div>
-
-            {/* Card 2 - Calm & Comfort */}
-            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 justify-end">
-              <div className="flex-shrink-0">
-                <svg
-                  width={48}
-                  height={48}
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="items-left md:w-16 md:h-16"
-                >
-                  <path
-                    d="M61.4571 30.4075C61.202 29.9593 60.8601 29.5664 60.4515 29.2518C60.0429 28.9371 59.5756 28.7071 59.0771 28.575C57.2686 28.1094 55.3996 27.9223 53.5346 28.02C54.5346 23.0575 53.7846 19.1325 53.0196 16.805C52.7147 15.8489 52.0646 15.0406 51.1962 14.5378C50.3277 14.0349 49.3031 13.8735 48.3221 14.085C45.7781 14.6514 43.3592 15.6783 41.1846 17.115C39.5918 13.8617 37.2731 11.0177 34.4071 8.8025C33.7126 8.28159 32.8678 8 31.9996 8C31.1314 8 30.2867 8.28159 29.5921 8.8025C26.7256 11.0171 24.4066 13.8612 22.8146 17.115C20.6401 15.6783 18.2211 14.6514 15.6771 14.085C14.6961 13.8735 13.6715 14.0349 12.8031 14.5378C11.9346 15.0406 11.2845 15.8489 10.9796 16.805C10.2296 19.1325 9.47962 23.055 10.4646 28.02C8.59965 27.9223 6.73068 28.1094 4.92212 28.575C4.42359 28.7071 3.95636 28.9371 3.54772 29.2518C3.13909 29.5664 2.79723 29.9593 2.54212 30.4075C2.27513 30.8666 2.10226 31.3744 2.03358 31.901C1.9649 32.4277 2.0018 32.9627 2.14212 33.475C2.98962 36.6175 5.59212 42.595 13.4746 47.305C21.3571 52.015 28.2821 52 32.0121 52C35.7421 52 42.6796 52 50.5121 47.305C58.3946 42.595 60.9971 36.6175 61.8446 33.475C61.9868 32.9636 62.0258 32.4289 61.9592 31.9023C61.8927 31.3756 61.722 30.8675 61.4571 30.4075ZM14.7846 18.035C14.7876 18.0226 14.7952 18.0118 14.8059 18.0048C14.8166 17.9979 14.8296 17.9952 14.8421 17.9975C17.1684 18.5228 19.3637 19.5154 21.2946 20.915C20.4155 23.7914 19.9789 26.7848 19.9996 29.7925C19.9996 34.4775 20.9421 38.2925 22.2771 41.3625C20.3793 39.4629 18.7371 37.3241 17.3921 35C12.8871 27.155 13.8246 21 14.7846 18.035ZM15.5346 43.8725C8.86712 39.8925 6.70462 35.0125 5.99962 32.425C7.83915 31.972 9.74802 31.8727 11.6246 32.1325C12.251 33.8107 13.0162 35.4338 13.9121 36.985C16.1119 40.7773 18.9936 44.1302 22.4121 46.875C19.9948 46.1798 17.6792 45.1703 15.5246 43.8725H15.5346ZM31.9996 47.6C29.6671 45.865 23.9996 40.5425 23.9996 29.7925C23.9996 19.175 29.5946 13.81 31.9996 12C34.4046 13.815 39.9996 19.18 39.9996 29.7975C39.9996 40.5425 34.3321 45.865 31.9996 47.6ZM42.7046 20.915C44.6358 19.5163 46.831 18.5245 49.1571 18C49.1697 17.9977 49.1826 18.0003 49.1933 18.0073C49.204 18.0143 49.2116 18.0251 49.2146 18.0375C50.1746 21 51.1121 27.155 46.6071 35C45.2634 37.3272 43.6212 39.4687 41.7221 41.37C43.0571 38.305 43.9996 34.485 43.9996 29.8C44.0211 26.7898 43.5844 23.7938 42.7046 20.915ZM57.9996 32.43C57.3071 34.9925 55.1496 39.8825 48.4771 43.8725C46.3224 45.1694 44.0068 46.1781 41.5896 46.8725C45.0081 44.1277 47.8899 40.7747 50.0896 36.9825C50.9856 35.4313 51.7507 33.8082 52.3771 32.13C54.2532 31.8716 56.1613 31.9725 57.9996 32.4275V32.43Z"
-                    fill="#381207"
-                  />
-                </svg>
-              </div>
-              <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
-                <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
-                  {t("dawnForest.threeCards.calmComfort.title")}
-                </h3>
-                <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
-                  {t("dawnForest.threeCards.calmComfort.description")}
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3 - Sharing Memories */}
-            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 md:space-y-17 justify-end">
-              <div className="flex-shrink-0">
-                <svg
-                  width={48}
-                  height={48}
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="items-left md:w-16 md:h-16"
-                >
-                  <path
-                    d="M24.0026 58.6654C23.2954 58.6654 22.6171 58.3844 22.117 57.8843C21.6169 57.3842 21.3359 56.7059 21.3359 55.9987V47.9987H10.6693C9.25478 47.9987 7.89823 47.4368 6.89803 46.4366C5.89784 45.4364 5.33594 44.0798 5.33594 42.6654V10.6654C5.33594 9.25088 5.89784 7.89432 6.89803 6.89413C7.89823 5.89393 9.25478 5.33203 10.6693 5.33203H53.3359C54.7504 5.33203 56.107 5.89393 57.1072 6.89413C58.1074 7.89432 58.6693 9.25088 58.6693 10.6654V42.6654C58.6693 44.0798 58.1074 45.4364 57.1072 46.4366C56.107 47.4368 54.7504 47.9987 53.3359 47.9987H37.0693L27.2026 57.892C26.6693 58.3987 26.0026 58.6654 25.3359 58.6654H24.0026ZM26.6693 42.6654V50.8787L34.8826 42.6654H53.3359V10.6654H10.6693V42.6654H26.6693Z"
-                    fill="#381207"
-                  />
-                </svg>
-              </div>
-              <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
-                <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
-                  {t("dawnForest.threeCards.sharingMemories.title")}
-                </h3>
-                <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
-                  {t("dawnForest.threeCards.sharingMemories.description")}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      {/* Impact Counters Section */}
-      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
-        <div className="mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#381207] mb-8 font-[Poppins]">
-            {t("impactCounters.title")}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
-                90+
-              </div>
-              <div className="text-lg text-[#381207] font-[Poppins]">
-                {t("impactCounters.natureVideos")}
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
-                450+
-              </div>
-              <div className="text-lg text-[#381207] font-[Poppins]">
-                {t("impactCounters.virtualKm")}
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
-                20+
-              </div>
-              <div className="text-lg text-[#381207] font-[Poppins]">
-                {t("impactCounters.volunteerFilmmakers")}
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl sm:text-4xl font-bold text-[#A6A643] mb-2">
-                240+
-              </div>
-              <div className="text-lg text-[#381207] font-[Poppins]">
-                {t("impactCounters.uniqueRoutes")}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <DawnForest />
 
       <RequestCard />
-
-      {/* Discover Routes Near You Section */}
-      <div
-        className="relative w-full min-h-screen bg-cover bg-center bg-no-repeat px-4 sm:px-10 md:px-20"
-        // style={{ backgroundImage: `url(${Background2})` }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-[#2A341F] bg-opacity-40"></div>
-
-        {/* Content */}
-        <div className="relative z-10 w-full h-full py-16">
-          <div className=" mx-auto">
-            {/* Header Section */}
-            <div>
-              <div className="relative mb-32">
-                <img
-                  src={Background2}
-                  alt="background2"
-                  className="absolute inset-0 w-[140%] h-[140%] -top-[10%] object-cover opacity-90 items-center rounded-3xl"
-                />
-                <div className="relative items-center text-[#a6a643] font-[Poppins] text-[32px] font-semibold mb-4 tracking-tight pl-12">
-                  {t("dawnForest.discoverRoutes.title")}
-                </div>
-                <div className="relative items-center text-white font-[Poppins] text-4xl lg:text-5xl font-semibold leading-tight max-w-[800px] pl-12">
-                  {t("dawnForest.discoverRoutes.subtitle")}
-                </div>
-              </div>
-            </div>
-            {/* Location Buttons */}
-            <div className="flex items-center gap-4 mb-16">
-              {/* Left Arrow */}
-              <button
-                onClick={() =>
-                  scrollRef.current?.scrollBy({
-                    left: -200,
-                    behavior: "smooth",
-                  })
-                }
-                className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all"
-              >
-                <svg
-                  width={20}
-                  height={20}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15 18L9 12L15 6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-
-              {/* Location Buttons */}
-              <div
-                ref={scrollRef}
-                className="scroll-container flex gap-4 overflow-x-auto whitespace-nowrap flex-1"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                onClick={() => (window.location.href = "/subscribe")}
-              >
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Dalfsen
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Deventer
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Haaksbergen
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Hellendoorn
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Hof van Twente
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Olst-Wijhe
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Ommen
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Raalte
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Rijssen-Holten
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Steenwijkerland
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Twenterand
-                </button>
-                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
-                  Wierden
-                </button>
-              </div>
-
-              {/* Right Arrow */}
-              <button
-                onClick={() =>
-                  scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" })
-                }
-                className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all"
-              >
-                <svg
-                  width={20}
-                  height={20}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9 18L15 12L9 6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {/* Bottom Section */}
-            <div className="space-y-8">
-              <div className="text-white font-['Poppins'] text-2xl font-medium">
-                {t("dawnForest.discoverRoutes.inspireTitle")}
-              </div>
-
-              <div className="space-y-4 max-w-[600px]">
-                <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
-                  {t("dawnForest.discoverRoutes.inspireDescription1")}
-                </div>
-                <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
-                  {t("dawnForest.discoverRoutes.inspireDescription2")}
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                <button
-                  className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                  onClick={() => (window.location.href = "/subscribe")}
-                >
-                  {t("dawnForest.discoverRoutes.exploreFeature")}
-                </button>
-
-                <button
-                  className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                  onClick={() => (window.location.href = "/become-volunteer")}
-                >
-                  {t("dawnForest.discoverRoutes.moreAboutVolunteering")}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Organizations Section */}
       <div
@@ -1170,8 +722,314 @@ const Aran = () => {
         </div>
       </div>
 
+      {/* Positive Experiences Section */}
+      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
+        <div className="mx-auto">
+          {/* Header Section */}
+          <div className="text-left mb-8 sm:mb-12 md:mb-16">
+            <div className="text-[#A6A643] font-['Poppins'] text-lg sm:text-xl lg:text-[32px] font-semibold mb-2 sm:mb-4">
+              {t("positiveExperiences.title")}
+            </div>
+            <h2 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight mb-4 sm:mb-8 text-left mx-auto">
+              {t("positiveExperiences.subtitle")}
+            </h2>
+            <button
+              className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
+              onClick={() => (window.location.href = "/subscribe")}
+            >
+              {t("positiveExperiences.watchNow")}
+            </button>
+          </div>
+
+          {/* Three Cards Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-8xl mx-auto">
+            {/* Card 1 - Family Connection */}
+            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-16 md:space-y-20 justify-end">
+              <div className="">
+                <svg
+                  width={48}
+                  height={48}
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="items-left md:w-16 md:h-16"
+                >
+                  <path
+                    d="M53.3359 31.9987C53.3359 26.3407 51.0883 20.9145 47.0875 16.9138C43.0868 12.913 37.6606 10.6654 32.0026 10.6654C26.3447 10.6654 20.9184 12.913 16.9177 16.9138C12.9169 20.9145 10.6693 26.3407 10.6693 31.9987C10.6693 37.6566 12.9169 43.0829 16.9177 47.0836C20.9184 51.0844 26.3447 53.332 32.0026 53.332C37.6606 53.332 43.0868 51.0844 47.0875 47.0836C51.0883 43.0829 53.3359 37.6566 53.3359 31.9987ZM58.6693 31.9987C58.6693 39.0711 55.8598 45.8539 50.8588 50.8549C45.8578 55.8558 39.075 58.6654 32.0026 58.6654C28.5007 58.6654 25.0331 57.9756 21.7977 56.6355C18.5624 55.2954 15.6227 53.3311 13.1464 50.8549C8.14545 45.8539 5.33594 39.0711 5.33594 31.9987C5.33594 24.9263 8.14545 18.1435 13.1464 13.1425C18.1474 8.14155 24.9302 5.33203 32.0026 5.33203C35.5045 5.33203 38.9721 6.02179 42.2075 7.36191C45.4428 8.70204 48.3826 10.6663 50.8588 13.1425C53.335 15.6187 55.2993 18.5585 56.6394 21.7938C57.9795 25.0292 58.6693 28.4968 58.6693 31.9987ZM26.6693 25.332C26.6693 27.4654 24.8026 29.332 22.6693 29.332C20.5359 29.332 18.6693 27.4654 18.6693 25.332C18.6693 23.1987 20.5359 21.332 22.6693 21.332C24.8026 21.332 26.6693 23.1987 26.6693 25.332ZM45.3359 25.332C45.3359 27.4654 43.4693 29.332 41.3359 29.332C39.2026 29.332 37.3359 27.4654 37.3359 25.332C37.3359 23.1987 39.2026 21.332 41.3359 21.332C43.4693 21.332 45.3359 23.1987 45.3359 25.332ZM32.0026 45.9454C27.3359 45.9454 23.2293 43.9987 20.8293 41.1187L24.6159 37.332C25.8159 39.252 28.6693 40.612 32.0026 40.612C35.3359 40.612 38.1893 39.252 39.3893 37.332L43.1759 41.1187C40.7759 43.9987 36.6693 45.9454 32.0026 45.9454Z"
+                    fill="#381207"
+                  />
+                </svg>
+              </div>
+              <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
+                <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
+                  {t("dawnForest.threeCards.familyConnection.title")}
+                </h3>
+                <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
+                  {t("dawnForest.threeCards.familyConnection.description")}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 - Calm & Comfort */}
+            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 justify-end">
+              <div className="flex-shrink-0">
+                <svg
+                  width={48}
+                  height={48}
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="items-left md:w-16 md:h-16"
+                >
+                  <path
+                    d="M61.4571 30.4075C61.202 29.9593 60.8601 29.5664 60.4515 29.2518C60.0429 28.9371 59.5756 28.7071 59.0771 28.575C57.2686 28.1094 55.3996 27.9223 53.5346 28.02C54.5346 23.0575 53.7846 19.1325 53.0196 16.805C52.7147 15.8489 52.0646 15.0406 51.1962 14.5378C50.3277 14.0349 49.3031 13.8735 48.3221 14.085C45.7781 14.6514 43.3592 15.6783 41.1846 17.115C39.5918 13.8617 37.2731 11.0177 34.4071 8.8025C33.7126 8.28159 32.8678 8 31.9996 8C31.1314 8 30.2867 8.28159 29.5921 8.8025C26.7256 11.0171 24.4066 13.8612 22.8146 17.115C20.6401 15.6783 18.2211 14.6514 15.6771 14.085C14.6961 13.8735 13.6715 14.0349 12.8031 14.5378C11.9346 15.0406 11.2845 15.8489 10.9796 16.805C10.2296 19.1325 9.47962 23.055 10.4646 28.02C8.59965 27.9223 6.73068 28.1094 4.92212 28.575C4.42359 28.7071 3.95636 28.9371 3.54772 29.2518C3.13909 29.5664 2.79723 29.9593 2.54212 30.4075C2.27513 30.8666 2.10226 31.3744 2.03358 31.901C1.9649 32.4277 2.0018 32.9627 2.14212 33.475C2.98962 36.6175 5.59212 42.595 13.4746 47.305C21.3571 52.015 28.2821 52 32.0121 52C35.7421 52 42.6796 52 50.5121 47.305C58.3946 42.595 60.9971 36.6175 61.8446 33.475C61.9868 32.9636 62.0258 32.4289 61.9592 31.9023C61.8927 31.3756 61.722 30.8675 61.4571 30.4075ZM14.7846 18.035C14.7876 18.0226 14.7952 18.0118 14.8059 18.0048C14.8166 17.9979 14.8296 17.9952 14.8421 17.9975C17.1684 18.5228 19.3637 19.5154 21.2946 20.915C20.4155 23.7914 19.9789 26.7848 19.9996 29.7925C19.9996 34.4775 20.9421 38.2925 22.2771 41.3625C20.3793 39.4629 18.7371 37.3241 17.3921 35C12.8871 27.155 13.8246 21 14.7846 18.035ZM15.5346 43.8725C8.86712 39.8925 6.70462 35.0125 5.99962 32.425C7.83915 31.972 9.74802 31.8727 11.6246 32.1325C12.251 33.8107 13.0162 35.4338 13.9121 36.985C16.1119 40.7773 18.9936 44.1302 22.4121 46.875C19.9948 46.1798 17.6792 45.1703 15.5246 43.8725H15.5346ZM31.9996 47.6C29.6671 45.865 23.9996 40.5425 23.9996 29.7925C23.9996 19.175 29.5946 13.81 31.9996 12C34.4046 13.815 39.9996 19.18 39.9996 29.7975C39.9996 40.5425 34.3321 45.865 31.9996 47.6ZM42.7046 20.915C44.6358 19.5163 46.831 18.5245 49.1571 18C49.1697 17.9977 49.1826 18.0003 49.1933 18.0073C49.204 18.0143 49.2116 18.0251 49.2146 18.0375C50.1746 21 51.1121 27.155 46.6071 35C45.2634 37.3272 43.6212 39.4687 41.7221 41.37C43.0571 38.305 43.9996 34.485 43.9996 29.8C44.0211 26.7898 43.5844 23.7938 42.7046 20.915ZM57.9996 32.43C57.3071 34.9925 55.1496 39.8825 48.4771 43.8725C46.3224 45.1694 44.0068 46.1781 41.5896 46.8725C45.0081 44.1277 47.8899 40.7747 50.0896 36.9825C50.9856 35.4313 51.7507 33.8082 52.3771 32.13C54.2532 31.8716 56.1613 31.9725 57.9996 32.4275V32.43Z"
+                    fill="#381207"
+                  />
+                </svg>
+              </div>
+              <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
+                <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
+                  {t("dawnForest.threeCards.calmComfort.title")}
+                </h3>
+                <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
+                  {t("dawnForest.threeCards.calmComfort.description")}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3 - Sharing Memories */}
+            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 md:space-y-17 justify-end">
+              <div className="flex-shrink-0">
+                <svg
+                  width={48}
+                  height={48}
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="items-left md:w-16 md:h-16"
+                >
+                  <path
+                    d="M24.0026 58.6654C23.2954 58.6654 22.6171 58.3844 22.117 57.8843C21.6169 57.3842 21.3359 56.7059 21.3359 55.9987V47.9987H10.6693C9.25478 47.9987 7.89823 47.4368 6.89803 46.4366C5.89784 45.4364 5.33594 44.0798 5.33594 42.6654V10.6654C5.33594 9.25088 5.89784 7.89432 6.89803 6.89413C7.89823 5.89393 9.25478 5.33203 10.6693 5.33203H53.3359C54.7504 5.33203 56.107 5.89393 57.1072 6.89413C58.1074 7.89432 58.6693 9.25088 58.6693 10.6654V42.6654C58.6693 44.0798 58.1074 45.4364 57.1072 46.4366C56.107 47.4368 54.7504 47.9987 53.3359 47.9987H37.0693L27.2026 57.892C26.6693 58.3987 26.0026 58.6654 25.3359 58.6654H24.0026ZM26.6693 42.6654V50.8787L34.8826 42.6654H53.3359V10.6654H10.6693V42.6654H26.6693Z"
+                    fill="#381207"
+                  />
+                </svg>
+              </div>
+              <div className="flex-grow flex flex-col justify-center space-y-2 sm:space-y-4">
+                <h3 className="text-[#381207] font-['Poppins'] text-xl sm:text-2xl font-semibold">
+                  {t("dawnForest.threeCards.sharingMemories.title")}
+                </h3>
+                <p className="text-[#381207] font-['Poppins'] text-base sm:text-lg leading-relaxed">
+                  {t("dawnForest.threeCards.sharingMemories.description")}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Impact Counters Section */}
+      <div className="flex flex-shrink-0 justify-center items-center w-full min-h-[564px] bg-[#1f1915] py-10 sm:py-12 md:py-16 lg:py-24">
+        <div className="flex flex-col items-center gap-8">
+          <div className="text-white text-center font-['Poppins'] text-3xl sm:text-4xl lg:text-5xl font-medium leading-[160%] mb-8">
+            {t("impactCounters.title")}
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-6 max-w-7xl">
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#ede4dc]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                90+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.natureVideos")}
+              </div>
+            </div>
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#ede4dc]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                450+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.virtualKm")}
+              </div>
+            </div>
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#ede4dc]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                20+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.volunteerFilmmakers")}
+              </div>
+            </div>
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#ede4dc]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                240+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.uniqueRoutes")}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Discover Routes Near You Section */}
+      <div
+        className="relative w-full min-h-screen bg-cover bg-center bg-no-repeat px-4 sm:px-10 md:px-20"
+        // style={{ backgroundImage: `url(${Background2})` }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-[#2A341F] bg-opacity-40"></div>
+
+        {/* Content */}
+        <div className="relative z-10 w-full h-full py-16">
+          <div className=" mx-auto">
+            {/* Header Section */}
+            <div>
+              <div className="relative mb-32">
+                <img
+                  src={Background2}
+                  alt="background2"
+                  className="absolute inset-0 w-[140%] h-[140%] -top-[10%] object-cover opacity-90 items-center rounded-3xl"
+                />
+                <div className="relative items-center text-[#a6a643] font-[Poppins] text-[32px] font-semibold mb-4 tracking-tight pl-12">
+                  {t("dawnForest.discoverRoutes.title")}
+                </div>
+                <div className="relative items-center text-white font-[Poppins] text-4xl lg:text-5xl font-semibold leading-tight max-w-[800px] pl-12">
+                  {t("dawnForest.discoverRoutes.subtitle")}
+                </div>
+              </div>
+            </div>
+            {/* Location Buttons */}
+            <div className="flex items-center gap-4 mb-16">
+              {/* Left Arrow */}
+              <button
+                onClick={() =>
+                  scrollRef.current?.scrollBy({
+                    left: -200,
+                    behavior: "smooth",
+                  })
+                }
+                className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all"
+              >
+                <svg
+                  width={20}
+                  height={20}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 18L9 12L15 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              {/* Location Buttons */}
+              <div
+                ref={scrollRef}
+                className="scroll-container flex gap-4 overflow-x-auto whitespace-nowrap flex-1"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                onClick={() => (window.location.href = "/subscribe")}
+              >
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Dalfsen
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Deventer
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Haaksbergen
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Hellendoorn
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Hof van Twente
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Olst-Wijhe
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Ommen
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Raalte
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Rijssen-Holten
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Steenwijkerland
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Twenterand
+                </button>
+                <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
+                  Wierden
+                </button>
+              </div>
+
+              {/* Right Arrow */}
+              <button
+                onClick={() =>
+                  scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" })
+                }
+                className="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all"
+              >
+                <svg
+                  width={20}
+                  height={20}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 18L15 12L9 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Bottom Section */}
+            <div className="space-y-8">
+              <div className="text-white font-['Poppins'] text-2xl font-medium">
+                {t("dawnForest.discoverRoutes.inspireTitle")}
+              </div>
+
+              <div className="space-y-4 max-w-[600px]">
+                <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
+                  {t("dawnForest.discoverRoutes.inspireDescription1")}
+                </div>
+                <div className="text-white/90 text-base font-['Poppins'] leading-relaxed">
+                  {t("dawnForest.discoverRoutes.inspireDescription2")}
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <button
+                  className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
+                  onClick={() => (window.location.href = "/subscribe")}
+                >
+                  {t("dawnForest.discoverRoutes.exploreFeature")}
+                </button>
+
+                <button
+                  className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
+                  onClick={() => (window.location.href = "/become-volunteer")}
+                >
+                  {t("dawnForest.discoverRoutes.moreAboutVolunteering")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <PreviewExperience />
-      <DawnForest />
 
       {/* Tina Section */}
       <div className="w-full bg-[#ede4dc] py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10">

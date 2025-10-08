@@ -96,7 +96,7 @@ const Footer = () => {
             <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 font-[Poppins]">
               Follow Us
             </h4>
-            <div className="flex justify-center sm:justify-start gap-5 sm:gap-6">
+            {/* <div className="flex justify-center sm:justify-start gap-5 sm:gap-6">
               <a
                 href="https://www.facebook.com/profile.php?id=61575691716922"
                 className="hover:text-[#a6a643] transition-colors"
@@ -191,7 +191,7 @@ const Footer = () => {
                   />
                 </svg>
               </a>
-            </div>
+            </div> */}
             <ul className="space-y-2 sm:space-y-3 text-sm mt-4 sm:mt-6">
               <li className="hidden sm:block">
                 <a
