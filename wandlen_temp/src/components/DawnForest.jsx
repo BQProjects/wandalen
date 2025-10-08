@@ -74,7 +74,7 @@ const DawnForest = () => {
   return (
     <div className="flex flex-col md:flex-row w-full min-h-screen bg-accent">
       {/* Image - Full width on mobile, half width on md+ */}
-      <div className="w-full md:w-1/2 h-[40vh] md:h-screen">
+      <div className="w-full md:w-1/2">
         <img
           src={OrangeWood}
           className="w-full h-full object-cover"
