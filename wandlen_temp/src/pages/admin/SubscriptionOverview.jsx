@@ -1,20 +1,86 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const SubscriptionOverview = () => {
-  // Sample subscription data
-  const subscription = {
-    firstName: "John",
-    lastName: "Lee",
-    planType: "Free",
-    status: "Trial",
-    startDate: "Jul 03, 2025",
-    endDate: "Jul 09, 2025",
-    paymentStatus: "Paid",
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+
+  // Get subscription data from navigation state or initialize empty
+  const [clientData, setClientData] = useState(
+    location.state?.subscription || null
+  );
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch full payment details from Stripe
+  const fetchPaymentDetails = async (clientId) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${DATABASE_URL}/admin/client-payment-details/${clientId}`,
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
+      );
+      setPaymentDetails(res.data);
+    } catch (error) {
+      console.error("Error fetching payment details:", error);
+      toast.error("Failed to fetch payment details from Stripe");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // If we have basic subscription data from the list, we might want to fetch full details
+  useEffect(() => {
+    // If we only have basic data, we could fetch full client details here
+    // For now, we'll use the data passed from ManageSubscription
+    if (!clientData) {
+      toast.error("No subscription data available");
+      navigate("/admin/manage-subscription");
+    } else if (clientData.clientId) {
+      // Fetch Stripe payment details
+      fetchPaymentDetails(clientData.clientId);
+    }
+  }, [clientData, navigate]);
+
   const handleBack = () => {
-    window.history.back();
+    navigate("/admin/manage-subscription");
   };
+
+  const handleCancelSubscription = async () => {
+    if (!window.confirm("Are you sure you want to cancel this subscription?")) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      // You'll need to implement the cancel endpoint or get clientId to call the existing one
+      toast.success("Subscription cancelled successfully");
+      navigate("/admin/manage-subscription");
+    } catch (error) {
+      console.error("Error cancelling subscription:", error);
+      toast.error("Failed to cancel subscription");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!clientData) {
+    return (
+      <div className="min-h-screen bg-[#ede4dc] p-6 flex items-center justify-center">
+        <p className="text-[#381207] font-['Poppins'] text-xl">Loading...</p>
+      </div>
+    );
+  }
+
+  // Use the data from ManageSubscription
+  const subscription = clientData;
 
   return (
     <div className="min-h-screen bg-[#ede4dc] p-6">
@@ -57,29 +123,56 @@ const SubscriptionOverview = () => {
                       {subscription.firstName} {subscription.lastName}
                     </h2>
                     <div className="flex items-center gap-2">
-                      <div
-                        className={`w-2.5 h-2.5 rounded-full ${
-                          subscription.status === "Active"
-                            ? "bg-green-500"
-                            : subscription.status === "Trial"
-                            ? "bg-yellow-500"
-                            : "bg-red-500"
-                        }`}
-                      />
+                      <svg
+                        width={10}
+                        height={10}
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx={5}
+                          cy={5}
+                          r={4}
+                          fill={
+                            subscription.status === "Active"
+                              ? "#12B76A"
+                              : subscription.status === "Trial"
+                              ? "#FFBE41"
+                              : subscription.status === "Cancelled"
+                              ? "#FF8C42"
+                              : subscription.status === "Expired"
+                              ? "#FF674F"
+                              : "#9CA3AF"
+                          }
+                        />
+                      </svg>
                       <span className="text-[#381207] font-['Poppins'] text-lg">
                         {subscription.status === "Trial"
                           ? "7 day Trial"
+                          : subscription.status === "Active"
+                          ? "Active Subscription"
+                          : subscription.status === "Cancelled"
+                          ? "Cancelled"
+                          : subscription.status === "Expired"
+                          ? "Expired"
                           : subscription.status}
                       </span>
                     </div>
                   </div>
                   <p className="text-[#381207] font-['Poppins'] text-lg font-medium">
-                    {subscription.firstName.toLowerCase()}
-                    {subscription.lastName.toLowerCase()}@gmail.com
+                    {subscription.email ||
+                      `${subscription.firstName?.toLowerCase()}${subscription.lastName?.toLowerCase()}@example.com`}
                   </p>
                 </div>
-                <button className="px-4 py-2 border border-[#2a341f] rounded-md text-[#2a341f] font-['Poppins'] hover:bg-[#2a341f] hover:text-white transition-colors">
-                  Cancel Subscription
+                <button
+                  onClick={handleCancelSubscription}
+                  disabled={loading || subscription.status === "Cancelled"}
+                  className="px-4 py-2 border border-[#2a341f] rounded-md text-[#2a341f] font-['Poppins'] hover:bg-[#2a341f] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {subscription.status === "Cancelled"
+                    ? "Cancelled"
+                    : "Cancel Subscription"}
                 </button>
               </div>
             </div>
@@ -100,9 +193,7 @@ const SubscriptionOverview = () => {
                     Last payment
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
-                    {subscription.status === "Trial"
-                      ? "7 day Trial"
-                      : subscription.paymentStatus}
+                    {subscription.paymentStatus || "N/A"}
                   </p>
                 </div>
               </div>
@@ -140,59 +231,105 @@ const SubscriptionOverview = () => {
 
             {/* Payment Summary */}
             <div className="p-6 border-b border-[#e5e3df]">
-              <div className="grid grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                      Amount
-                    </label>
-                    <p className="text-[#381207] font-['Poppins']">€ 12,00</p>
+              {loading && !paymentDetails ? (
+                <div className="flex justify-center items-center py-8">
+                  <p className="text-[#4b4741] font-['Poppins']">
+                    Loading payment details...
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-[#4b4741] font-['Poppins'] block mb-1">
+                        Amount
+                      </label>
+                      <p className="text-[#381207] font-['Poppins']">
+                        {paymentDetails?.stripe?.latestInvoice?.amount
+                          ? `€ ${paymentDetails.stripe.latestInvoice.amount.toFixed(
+                              2
+                            )}`
+                          : subscription.status === "Trial" ||
+                            subscription.planType === "Free"
+                          ? "€ 0,00"
+                          : subscription.planPrice || "€ 12,00"}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-[#4b4741] font-['Poppins'] block mb-1">
+                        Status
+                      </label>
+                      <p className="text-[#381207] font-['Poppins']">
+                        {paymentDetails?.stripe?.latestInvoice?.status
+                          ? paymentDetails.stripe.latestInvoice.status
+                              .charAt(0)
+                              .toUpperCase() +
+                            paymentDetails.stripe.latestInvoice.status.slice(1)
+                          : subscription.paymentStatus || "Pending"}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-[#4b4741] font-['Poppins'] block mb-1">
+                        Payment Type
+                      </label>
+                      <p className="text-[#381207] font-['Poppins']">
+                        {"Subscription"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                      Status
-                    </label>
-                    <p className="text-[#381207] font-['Poppins']">Paid</p>
-                  </div>
-                  <div>
-                    <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                      Payment Type
-                    </label>
-                    <p className="text-[#381207] font-['Poppins']">One-time</p>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-[#4b4741] font-['Poppins'] block mb-1">
+                        Payment provider
+                      </label>
+                      <p className="text-[#381207] font-['Poppins']">
+                        {paymentDetails?.stripe ? "Stripe" : "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-[#4b4741] font-['Poppins'] block mb-1">
+                        Method
+                      </label>
+                      <p className="text-[#381207] font-['Poppins']">
+                        {paymentDetails?.stripe?.paymentMethod
+                          ? `${
+                              paymentDetails.stripe.paymentMethod.brand
+                                ?.charAt(0)
+                                .toUpperCase() +
+                              paymentDetails.stripe.paymentMethod.brand?.slice(
+                                1
+                              )
+                            }***${paymentDetails.stripe.paymentMethod.last4}`
+                          : "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-[#4b4741] font-['Poppins'] block mb-1">
+                        Cardholder name
+                      </label>
+                      <p className="text-[#381207] font-['Poppins']">
+                        {paymentDetails?.stripe?.paymentMethod
+                          ?.cardholderName ||
+                          `${subscription.firstName} ${subscription.lastName}`}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                      Payment provider
-                    </label>
-                    <p className="text-[#381207] font-['Poppins']">Stripe</p>
-                  </div>
-                  <div>
-                    <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                      Method
-                    </label>
-                    <p className="text-[#381207] font-['Poppins']">
-                      Mastercard***1234
-                    </p>
-                  </div>
-                  <div>
-                    <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                      Cardholder name
-                    </label>
-                    <p className="text-[#381207] font-['Poppins']">
-                      {subscription.firstName} {subscription.lastName}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              )}
               <div className="mt-6 pt-4 border-t border-[#e5e3df]">
                 <div className="flex justify-between items-center">
                   <label className="text-[#4b4741] font-['Poppins'] font-medium">
                     Total amount
                   </label>
                   <p className="text-[#381207] font-['Poppins'] font-medium text-lg">
-                    € {subscription.planType === "Free" ? "00,00" : "12,00"}
+                    €{" "}
+                    {paymentDetails?.stripe?.latestInvoice?.amount
+                      ? paymentDetails.stripe.latestInvoice.amount.toFixed(2)
+                      : subscription.status === "Trial" ||
+                        subscription.planType === "Free"
+                      ? "0,00"
+                      : subscription.planPrice?.replace("€", "").trim() ||
+                        "12,00"}
                   </p>
                 </div>
               </div>
@@ -290,40 +427,89 @@ const SubscriptionOverview = () => {
                   </div>
                 </div>
 
-                {/* Table Rows */}
-                <div className="bg-[#ede4dc] border-b border-[#d9bbaa] px-4 py-3">
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      {subscription.planType}
+                {/* Table Rows - Display Payment History from Stripe */}
+                {paymentDetails?.stripe?.paymentHistory &&
+                paymentDetails.stripe.paymentHistory.length > 0 ? (
+                  paymentDetails.stripe.paymentHistory.map((payment, index) => (
+                    <div
+                      key={payment.id}
+                      className={`px-4 py-3 ${
+                        index % 2 === 0 ? "bg-[#ede4dc]" : ""
+                      } border-b border-[#d9bbaa]`}
+                    >
+                      <div className="grid grid-cols-4 gap-4">
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {subscription.planType}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {new Date(payment.created).toLocaleDateString()}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {payment.paymentMethodDetails?.brand
+                            ? `${
+                                payment.paymentMethodDetails.brand
+                                  .charAt(0)
+                                  .toUpperCase() +
+                                payment.paymentMethodDetails.brand.slice(1)
+                              }***${
+                                payment.paymentMethodDetails.last4
+                              } (via Stripe)`
+                            : "Credit/Debit Cards (via Stripe)"}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          € {payment.amount.toFixed(2)}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      {subscription.startDate}
+                  ))
+                ) : (
+                  // Fallback to basic data if no Stripe history
+                  <>
+                    <div className="bg-[#ede4dc] border-b border-[#d9bbaa] px-4 py-3">
+                      <div className="grid grid-cols-4 gap-4">
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {subscription.planType}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {subscription.startDate}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          Credit/Debit Cards (via Stripe)
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          €{" "}
+                          {subscription.status === "Trial" ||
+                          subscription.planType === "Free"
+                            ? "0,00"
+                            : subscription.planPrice?.replace("€", "").trim() ||
+                              "12,00"}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      Credit/Debit Cards (via Stripe)
-                    </div>
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      € {subscription.planType === "Free" ? "00,00" : "12,00"}
-                    </div>
-                  </div>
-                </div>
 
-                <div className="px-4 py-3">
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      {subscription.planType}
+                    <div className="px-4 py-3">
+                      <div className="grid grid-cols-4 gap-4">
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {subscription.planType}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          {subscription.endDate}
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          Credit/Debit Cards (via Stripe)
+                        </div>
+                        <div className="text-[#381207] font-['Poppins'] text-sm">
+                          €{" "}
+                          {subscription.status === "Trial" ||
+                          subscription.planType === "Free"
+                            ? "0,00"
+                            : subscription.planPrice?.replace("€", "").trim() ||
+                              "12,00"}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      {subscription.endDate}
-                    </div>
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      Credit/Debit Cards (via Stripe)
-                    </div>
-                    <div className="text-[#381207] font-['Poppins'] text-sm">
-                      € {subscription.planType === "Free" ? "00,00" : "12,00"}
-                    </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </div>
 
               {/* Payment Details & Method Sections */}
@@ -420,32 +606,68 @@ const SubscriptionOverview = () => {
                   <div className="flex flex-col flex-shrink-0 items-start gap-2 w-[12.25rem]">
                     <div className="flex flex-col items-start gap-0.5 self-stretch">
                       <div className="flex items-center gap-2.5 rounded-lg w-16 text-[#381207] font-['Poppins'] leading-[normal]">
-                        Stripe
+                        {paymentDetails?.stripe ? "Stripe" : "N/A"}
                       </div>
                     </div>
                     <div className="flex flex-col items-start gap-0.5 self-stretch">
                       <div className="flex items-center gap-2.5 rounded-lg text-[#381207] font-['Poppins'] leading-[normal]">
-                        gmail.com
+                        {paymentDetails?.stripe?.email ||
+                          subscription.email ||
+                          "N/A"}
                       </div>
                     </div>
                     <div className="flex flex-col items-start gap-0.5 self-stretch">
                       <div className="flex items-center gap-2.5 rounded-lg text-[#381207] font-['Poppins'] leading-[normal]">
-                        Mastercard***1234
+                        {paymentDetails?.stripe?.paymentMethod
+                          ? `${
+                              paymentDetails.stripe.paymentMethod.brand
+                                ?.charAt(0)
+                                .toUpperCase() +
+                              paymentDetails.stripe.paymentMethod.brand?.slice(
+                                1
+                              )
+                            }***${paymentDetails.stripe.paymentMethod.last4}`
+                          : "N/A"}
                       </div>
                     </div>
                     <div className="flex flex-col items-start gap-0.5 self-stretch">
                       <div className="flex items-center gap-2.5 rounded-lg w-[7.1875rem] text-[#381207] font-['Poppins'] leading-[normal]">
-                        John Lee
+                        {paymentDetails?.stripe?.paymentMethod
+                          ?.cardholderName ||
+                          `${subscription.firstName} ${subscription.lastName}`}
                       </div>
                     </div>
                     <div className="flex flex-col items-start gap-0.5 self-stretch">
                       <div className="flex items-center gap-2.5 rounded-lg w-[7.1875rem] text-[#381207] font-['Poppins'] leading-[normal]">
-                        Id link
+                        {paymentDetails?.stripe?.latestInvoice?.id ? (
+                          <a
+                            href={
+                              paymentDetails.stripe.latestInvoice
+                                .hostedInvoiceUrl
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#5B6502] hover:underline"
+                          >
+                            View Invoice
+                          </a>
+                        ) : (
+                          "N/A"
+                        )}
                       </div>
                     </div>
                     <div className="flex flex-col justify-end items-start gap-0.5 self-stretch py-2 px-0">
-                      <div className="flex items-center gap-2.5 rounded-lg __12_00 w-[7.1875rem] text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                        € 12,00
+                      <div className="flex items-center gap-2.5 rounded-lg w-[7.1875rem] text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+                        €{" "}
+                        {paymentDetails?.stripe?.latestInvoice?.amount
+                          ? paymentDetails.stripe.latestInvoice.amount.toFixed(
+                              2
+                            )
+                          : subscription.status === "Trial" ||
+                            subscription.planType === "Free"
+                          ? "0,00"
+                          : subscription.planPrice?.replace("€", "").trim() ||
+                            "12,00"}
                       </div>
                     </div>
                   </div>
@@ -468,39 +690,112 @@ const SubscriptionOverview = () => {
               <div className="flex gap-4">
                 {/* Timeline */}
                 <div className="flex flex-col items-center gap-1 pt-1">
-                  <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
-                  <div className="w-px h-16 bg-[#a6a643]" />
-                  <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
-                  <div className="w-px h-16 bg-[#a6a643]" />
-                  <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
+                  {/* Generate dynamic timeline dots based on events */}
+                  {paymentDetails?.stripe?.paymentHistory &&
+                  paymentDetails.stripe.paymentHistory.length > 0 ? (
+                    paymentDetails.stripe.paymentHistory
+                      .slice(0, 5)
+                      .map((payment, index) => (
+                        <React.Fragment key={payment.id}>
+                          <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
+                          {index <
+                            Math.min(
+                              paymentDetails.stripe.paymentHistory.length - 1,
+                              4
+                            ) && <div className="w-px h-16 bg-[#a6a643]" />}
+                        </React.Fragment>
+                      ))
+                  ) : (
+                    // Default timeline if no Stripe history
+                    <>
+                      <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
+                      <div className="w-px h-16 bg-[#a6a643]" />
+                      <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
+                      {subscription.status !== "Trial" && (
+                        <>
+                          <div className="w-px h-16 bg-[#a6a643]" />
+                          <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
 
                 {/* Timeline Content */}
                 <div className="flex-1 space-y-12">
-                  <div>
-                    <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                      Subscription activated
-                    </h4>
-                    <p className="text-[#4b4741] font-['Poppins']">
-                      {subscription.startDate}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                      Payment processed
-                    </h4>
-                    <p className="text-[#4b4741] font-['Poppins']">
-                      {subscription.startDate}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                      Trial started
-                    </h4>
-                    <p className="text-[#4b4741] font-['Poppins']">
-                      {subscription.startDate}
-                    </p>
-                  </div>
+                  {paymentDetails?.stripe?.paymentHistory &&
+                  paymentDetails.stripe.paymentHistory.length > 0 ? (
+                    // Display payment history from Stripe
+                    paymentDetails.stripe.paymentHistory
+                      .slice(0, 5)
+                      .map((payment, index) => (
+                        <div key={payment.id}>
+                          <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
+                            {payment.status === "succeeded"
+                              ? "Payment Successful"
+                              : "Payment " + payment.status}
+                          </h4>
+                          <p className="text-[#4b4741] font-['Poppins'] mb-1">
+                            {new Date(payment.created).toLocaleDateString()}
+                          </p>
+                          <p className="text-[#4b4741] font-['Poppins'] text-sm">
+                            € {payment.amount.toFixed(2)} -{" "}
+                            {payment.paymentMethodDetails?.brand || "Card"}
+                          </p>
+                        </div>
+                      ))
+                  ) : (
+                    // Default timeline events if no Stripe history
+                    <>
+                      {subscription.status === "Cancelled" &&
+                        paymentDetails?.stripe?.canceledAt && (
+                          <div>
+                            <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
+                              Subscription Cancelled
+                            </h4>
+                            <p className="text-[#4b4741] font-['Poppins']">
+                              {new Date(
+                                paymentDetails.stripe.canceledAt
+                              ).toLocaleDateString()}
+                            </p>
+                          </div>
+                        )}
+
+                      {subscription.status === "Active" && (
+                        <div>
+                          <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
+                            Subscription Active
+                          </h4>
+                          <p className="text-[#4b4741] font-['Poppins']">
+                            {subscription.startDate}
+                          </p>
+                        </div>
+                      )}
+
+                      {subscription.status !== "Trial" &&
+                        subscription.paymentStatus === "Paid" && (
+                          <div>
+                            <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
+                              Payment Processed
+                            </h4>
+                            <p className="text-[#4b4741] font-['Poppins']">
+                              {subscription.startDate}
+                            </p>
+                          </div>
+                        )}
+
+                      <div>
+                        <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
+                          {subscription.status === "Trial"
+                            ? "Trial Started"
+                            : "Subscription Created"}
+                        </h4>
+                        <p className="text-[#4b4741] font-['Poppins']">
+                          {subscription.startDate}
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

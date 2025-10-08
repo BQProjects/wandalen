@@ -671,6 +671,17 @@ const emailTemplates = {
       <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
     </div>
   `,
+
+  // Subscription renewal template
+  subscriptionRenewed: (firstName, newEndDate) => ({
+    subject: 'Your Subscription Has Been Renewed',
+    html: `
+      <h2>Hi ${firstName},</h2>
+      <p>Your subscription has been automatically renewed!</p>
+      <p><strong>New expiration date:</strong> ${newEndDate.toLocaleDateString()}</p>
+      <p>You can continue enjoying all premium features.</p>
+    `
+  }),
 };
 
 module.exports = {

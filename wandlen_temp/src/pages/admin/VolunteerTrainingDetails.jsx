@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import toast from "react-hot-toast";
 
 const VolunteerTrainingDetails = () => {
   const [trainings, setTrainings] = useState([]);
@@ -35,20 +36,20 @@ const VolunteerTrainingDetails = () => {
           dataToSend
         );
         fetchTrainings();
-        alert("Training updated successfully");
+        toast.success("Training updated successfully");
       } catch (error) {
         console.error("Error updating training:", error);
-        alert("Error updating training");
+        toast.error("Error updating training");
       }
     } else {
       // create
       try {
         await axios.post(`${DATABASE_URL}/admin/trainings`, dataToSend);
         fetchTrainings();
-        alert("Training created successfully");
+        toast.success("Training created successfully");
       } catch (error) {
         console.error("Error creating training:", error);
-        alert("Error creating training");
+        toast.error("Error creating training");
       }
     }
   };
@@ -58,10 +59,10 @@ const VolunteerTrainingDetails = () => {
       try {
         await axios.delete(`${DATABASE_URL}/admin/trainings/${training._id}`);
         fetchTrainings();
-        alert("Training deleted successfully");
+        toast.success("Training deleted successfully");
       } catch (error) {
         console.error("Error deleting training:", error);
-        alert("Error deleting training");
+        toast.error("Error deleting training");
       }
     }
   };

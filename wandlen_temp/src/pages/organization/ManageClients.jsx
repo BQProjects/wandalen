@@ -4,6 +4,7 @@ import axios from "axios";
 import Footer from "../../components/Footer";
 import { useTranslation } from "react-i18next";
 import RoutesNearYou from "../../components/common/RoutesNearYou";
+import toast from "react-hot-toast";
 
 const ManageClients = () => {
   const [clients, setClients] = useState([]);
@@ -60,7 +61,7 @@ const ManageClients = () => {
   const handleAddClient = async () => {
     // Check if client limit is reached before attempting to add
     if (orgData && clients.length >= orgData.clientLimit && !editingClientId) {
-      alert(t("manageClients.cannotAddMoreClients"));
+      toast.error(t("manageClients.cannotAddMoreClients"));
       return;
     }
     try {
@@ -78,7 +79,7 @@ const ManageClients = () => {
           }
         );
         if (res.status === 200) {
-          alert(t("manageClients.clientUpdatedSuccess"));
+          toast.success(t("manageClients.clientUpdatedSuccess"));
           setClients(
             clients.map((client) =>
               client._id === editingClientId
@@ -110,7 +111,7 @@ const ManageClients = () => {
         });
 
         if (res.status === 201) {
-          alert(t("manageClients.clientAddedSuccess"));
+          toast.success(t("manageClients.clientAddedSuccess"));
           setNewClient({
             firstName: "",
             lastName: "",
@@ -130,10 +131,10 @@ const ManageClients = () => {
     try {
       await axios.delete(`${DATABASE_URL}/org/deleteClient/${id}`);
       setClients(clients.filter((client) => client._id !== id)); // Remove from local state after successful delete
-      alert(t("manageClients.clientDeletedSuccess"));
+      toast.success(t("manageClients.clientDeletedSuccess"));
     } catch (error) {
       console.error("Error deleting client:", error);
-      alert(t("manageClients.clientDeleteError"));
+      toast.error(t("manageClients.clientDeleteError"));
     }
   };
 

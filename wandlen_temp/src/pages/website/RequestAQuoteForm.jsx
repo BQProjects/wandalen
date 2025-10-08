@@ -4,6 +4,7 @@ import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useNavigate, Link } from "react-router-dom";
 import ForestDark from "../../assets/ForestDark.png";
+import toast from "react-hot-toast";
 
 const RequestAQuoteForm = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -200,14 +201,14 @@ const RequestAQuoteForm = () => {
         }
       }
 
-      alert(
+      toast.success(
         t("requestQuoteForm.form.messages.success") +
           " A confirmation email has been sent to your email address. Our support team will get back to you soon."
       );
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert(t("requestQuoteForm.form.messages.error"));
+      toast.error(t("requestQuoteForm.form.messages.error"));
     }
   };
 

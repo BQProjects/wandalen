@@ -4,6 +4,7 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import LoginImg from "../../assets/LoginImg.png";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -46,7 +47,7 @@ const Login = () => {
         redirectPath = "/organization"; // Direct navigation for org
         break;
       default:
-        alert("Please select a role");
+        toast.error("Please select a role");
         return;
     }
 
@@ -56,11 +57,11 @@ const Login = () => {
       const successStatus = selectedRole === "organization" ? 201 : 200;
 
       if (res.status === successStatus) {
-        alert("Login successful!");
+        toast.success("Login successful!");
         if (selectedRole === "organization") {
           // Check if plan has expired
           if (res.data.endDate && new Date() > new Date(res.data.endDate)) {
-            alert(
+            toast.error(
               "Your plan has expired. Please contact the admin at admin@wandalen.com"
             );
             return;
@@ -86,20 +87,22 @@ const Login = () => {
           });
         }
       } else {
-        alert("Login failed. Please check your credentials and try again.");
+        toast.error(
+          "Login failed. Please check your credentials and try again."
+        );
       }
     } catch (error) {
       console.error("Error during login:", error);
 
       if (error.response?.status === 403 && error.response?.data?.expired) {
-        alert(
+        toast.error(
           error.response.data.message ||
             "Your subscription has expired. Please sign up again."
         );
         return;
       }
 
-      alert("An error occurred during login. Please try again.");
+      toast.error("An error occurred during login. Please try again.");
     }
   };
 

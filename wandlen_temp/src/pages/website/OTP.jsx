@@ -4,6 +4,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import LoginImg from "../../assets/LoginImg.png";
+import toast from "react-hot-toast";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -38,13 +39,13 @@ const Otp = () => {
         type: userType,
       });
       if (res.status === 200) {
-        alert("OTP resent to your email!");
+        toast.success("OTP resent to your email!");
       } else {
-        alert("Failed to resend OTP. Please try again.");
+        toast.error("Failed to resend OTP. Please try again.");
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
-      alert("An error occurred while resending OTP. Please try again.");
+      toast.error("An error occurred while resending OTP. Please try again.");
     }
   };
 
@@ -58,13 +59,13 @@ const Otp = () => {
       if (res.status === 200) {
         // Check if userId is valid (not undefined or null)
         if (!res.data.userId || res.data.userId === "undefined") {
-          alert(
+          toast.error(
             "OTP verification failed: Invalid user ID. Please try logging in again."
           );
           return;
         }
 
-        alert("OTP verification successful!");
+        toast.success("OTP verification successful!");
 
         // Set authentication context
         login({ email: email }, userType);
@@ -89,7 +90,7 @@ const Otp = () => {
               clientRes.data.client.endDate &&
               new Date() > new Date(clientRes.data.client.endDate)
             ) {
-              alert(
+              toast.error(
                 "Your plan has expired. Please contact the admin at admin@wandalen.com"
               );
               return;
@@ -103,11 +104,13 @@ const Otp = () => {
         const from = location.state?.from?.pathname || `/${userType}`;
         navigate(from);
       } else {
-        alert("OTP verification failed. Please try again.");
+        toast.error("OTP verification failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during OTP verification:", error);
-      alert("An error occurred during OTP verification. Please try again.");
+      toast.error(
+        "An error occurred during OTP verification. Please try again."
+      );
     }
   };
 

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const AllVideos = () => {
@@ -101,14 +102,14 @@ const AllVideos = () => {
           }
         );
         if (res.status === 200) {
-          alert("Video deleted successfully");
+          toast.success("Video deleted successfully");
           fetchVideos(currentPage, activeFilters); // Refresh the list with current page/filters
         } else {
-          alert("Failed to delete video");
+          toast.error("Failed to delete video");
         }
       } catch (error) {
         console.error("Error deleting video:", error);
-        alert("An error occurred while deleting the video");
+        toast.error("An error occurred while deleting the video");
       }
     }
   };

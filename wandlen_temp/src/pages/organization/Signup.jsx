@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import WebsiteHeader from "../../components/WebsiteHeader";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -33,7 +34,7 @@ const Signup = () => {
         contactPersonEmail: formData.contactEmail,
       });
       if (res.status === 201) {
-        alert("Signup successful! Please log in.");
+        toast.success("Signup successful! Please log in.");
         console.log(res.data);
         setFormData({
           organizationName: "",
@@ -46,11 +47,11 @@ const Signup = () => {
           totalClients: "",
         });
       } else {
-        alert("Signup failed. Please try again.");
+        toast.error("Signup failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An error occurred during signup. Please try again.");
+      toast.error("An error occurred during signup. Please try again.");
     }
   };
 

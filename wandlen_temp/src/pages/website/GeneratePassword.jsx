@@ -3,6 +3,7 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import LoginImg from "../../assets/LoginImg.png";
+import toast from "react-hot-toast";
 
 const GeneratePassword = () => {
   const [password, setPassword] = useState("");
@@ -15,12 +16,12 @@ const GeneratePassword = () => {
     e.preventDefault();
 
     if (!password || !confirmPassword) {
-      alert("Please fill in both fields");
+      toast.error("Please fill in both fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -29,14 +30,16 @@ const GeneratePassword = () => {
         password,
       });
       console.log("Server response:", res.data);
-      alert("Password set successfully! You can now log in to your account.");
+      toast.success(
+        "Password set successfully! You can now log in to your account."
+      );
       navigate("/login");
     } catch (error) {
       console.error(
         "Error setting password:",
         error.response?.data || error.message
       );
-      alert("Failed to set password");
+      toast.error("Failed to set password");
     }
   };
 

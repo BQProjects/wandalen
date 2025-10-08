@@ -4,6 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useContext } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
 
 const AdminSidebar = () => {
@@ -207,10 +208,10 @@ const AdminSidebar = () => {
       document.getElementById("downloadBtn").innerText = originalText;
       document.getElementById("downloadBtn").disabled = false;
 
-      alert("Data downloaded successfully!");
+        toast.success("Data downloaded successfully!");
     } catch (error) {
       console.error("Error downloading data:", error);
-      alert("Error downloading data. Please try again.");
+      toast.error("Error downloading data. Please try again.");
 
       // Reset button state on error
       document.getElementById("downloadBtn").innerText = "Download All Data";

@@ -9,6 +9,125 @@ const LikeModel = require("../models/likeModel");
 const mongoose = require("mongoose");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 
+// Improved checkAndExtendSubscription with comprehensive error handling
+const checkAndExtendSubscription = async (client) => {
+  try {
+    // Validate input
+    if (!client || !client._id) {
+      throw new Error("Invalid client data provided");
+    }
+
+    // Skip if no Stripe subscription ID
+    if (!client.stripeSubscriptionId) {
+      console.log(`⏭️ Skipping ${client.email} - no Stripe subscription ID`);
+      return { renewed: false, reason: "No Stripe subscription" };
+    }
+
+    // Check if already processed recently (prevent duplicate processing)
+    const now = new Date();
+    const lastChecked = client.lastRenewalCheck || new Date(0);
+    const hoursSinceLastCheck = (now - lastChecked) / (1000 * 60 * 60);
+
+    if (hoursSinceLastCheck < 1) {
+      // Only check once per hour
+      return { renewed: false, reason: "Recently checked" };
+    }
+
+    console.log(`🔍 Checking subscription for ${client.email}...`);
+
+    // Fetch fresh subscription data from Stripe
+    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+    const subscription = await stripe.subscriptions.retrieve(
+      client.stripeSubscriptionId
+    );
+
+    if (!subscription) {
+      throw new Error("Subscription not found in Stripe");
+    }
+
+    // Update last check timestamp
+    await ClientModel.findByIdAndUpdate(client._id, {
+      lastRenewalCheck: now,
+    });
+
+    // Check if subscription is cancelled
+    if (
+      subscription.cancel_at_period_end ||
+      subscription.status === "canceled"
+    ) {
+      await ClientModel.findByIdAndUpdate(client._id, {
+        subscriptionStatus: "cancelled",
+        cancelledAt: new Date(),
+      });
+      console.log(`🚫 Subscription cancelled for ${client.email}`);
+      return { renewed: false, reason: "Subscription cancelled" };
+    }
+
+    // Check if subscription is active
+    if (subscription.status !== "active") {
+      console.log(
+        `⏸️ Subscription not active for ${client.email} (status: ${subscription.status})`
+      );
+      return {
+        renewed: false,
+        reason: `Subscription status: ${subscription.status}`,
+      };
+    }
+
+    // Get current period end from Stripe (this is the auto-renewal date)
+    const stripeEndDate = new Date(subscription.current_period_end * 1000);
+    const currentEndDate = client.endDate
+      ? new Date(client.endDate)
+      : new Date(0);
+
+    // Check if Stripe end date is different from our local end date
+    const dateDifference =
+      Math.abs(stripeEndDate - currentEndDate) / (1000 * 60 * 60 * 24); // days
+
+    if (dateDifference > 1) {
+      // More than 1 day difference
+      console.log(
+        `🔄 Syncing end date for ${
+          client.email
+        }: ${currentEndDate.toISOString()} → ${stripeEndDate.toISOString()}`
+      );
+
+      await ClientModel.findByIdAndUpdate(client._id, {
+        endDate: stripeEndDate,
+        subscriptionStatus: "active",
+      });
+
+      // Send renewal notification email
+      try {
+        await sendEmail(
+          client.email,
+          "Subscription Renewed",
+          emailTemplates.subscriptionRenewed(client.firstName, stripeEndDate)
+        );
+      } catch (emailError) {
+        console.warn(
+          `⚠️ Failed to send renewal email to ${client.email}:`,
+          emailError.message
+        );
+        // Don't fail the renewal because of email issues
+      }
+
+      return { renewed: true, newEndDate: stripeEndDate };
+    }
+
+    console.log(`✅ Subscription up to date for ${client.email}`);
+    return { renewed: false, reason: "Already up to date" };
+  } catch (error) {
+    console.error(
+      `💥 Error checking subscription for ${client.email}:`,
+      error.message
+    );
+
+    // Don't update the database on errors - let it retry later
+    throw error;
+  }
+};
+
 const clientLogin = async (req, res) => {
   const { email, password } = req.body;
   // Get IP address (supports proxies)
@@ -27,8 +146,15 @@ const clientLogin = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials password" });
 
-    // CHECK IF SUBSCRIPTION HAS COMPLETELY EXPIRED FIRST (before any updates)
+    // CHECK AND EXTEND SUBSCRIPTION IF ACTIVE (before expiration check)
     const now = new Date();
+    if (client.endDate && client.subscriptionStatus === "active") {
+      await checkAndExtendSubscription(client);
+      // Refresh client data after potential update
+      await client.reload();
+    }
+
+    // CHECK IF SUBSCRIPTION HAS COMPLETELY EXPIRED FIRST (before any updates)
     if (client.endDate) {
       const subEnd = new Date(client.endDate);
       console.log(`Checking expiration for ${email}:`, {
@@ -711,6 +837,101 @@ const cancelSubscription = async (req, res) => {
   }
 };
 
+// Scheduled function to check and renew all subscriptions
+// This should be called by a cron job (e.g., daily)
+const checkAllSubscriptionsForRenewal = async () => {
+  try {
+    console.log("🔄 Starting scheduled subscription renewal check...");
+
+    const now = new Date();
+    const sevenDaysFromNow = new Date(now);
+    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+
+    // Find all active subscriptions that are approaching expiry or recently expired
+    const clientsToCheck = await ClientModel.find({
+      subscriptionStatus: "active",
+      endDate: {
+        $lte: sevenDaysFromNow, // End date is within next 7 days
+        $gte: new Date(now.getTime() - 24 * 60 * 60 * 1000), // Not expired more than 1 day ago
+      },
+    });
+
+    console.log(
+      `Found ${clientsToCheck.length} subscriptions to check for renewal`
+    );
+
+    let renewed = 0;
+    let failed = 0;
+
+    for (const client of clientsToCheck) {
+      try {
+        const wasRenewed = await checkAndExtendSubscription(client);
+        if (wasRenewed) {
+          renewed++;
+        }
+      } catch (error) {
+        console.error(
+          `Failed to renew subscription for ${client.email}:`,
+          error
+        );
+        failed++;
+      }
+    }
+
+    console.log(`✅ Subscription renewal check completed:`, {
+      checked: clientsToCheck.length,
+      renewed,
+      failed,
+    });
+
+    return { checked: clientsToCheck.length, renewed, failed };
+  } catch (error) {
+    console.error("Error in checkAllSubscriptionsForRenewal:", error);
+    throw error;
+  }
+};
+
+// Function to sync a specific client's subscription with Stripe
+const syncSubscriptionWithStripe = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const client = await ClientModel.findById(clientId);
+
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    if (!client.stripeSubscriptionId) {
+      return res.status(400).json({
+        message: "No Stripe subscription found for this client",
+      });
+    }
+
+    const wasUpdated = await checkAndExtendSubscription(client);
+
+    // Reload client to get updated data
+    const updatedClient = await ClientModel.findById(clientId);
+
+    return res.json({
+      success: true,
+      message: wasUpdated
+        ? "Subscription synced and updated with Stripe"
+        : "Subscription already in sync with Stripe",
+      subscription: {
+        status: updatedClient.subscriptionStatus,
+        endDate: updatedClient.endDate,
+      },
+    });
+  } catch (error) {
+    console.error("Error syncing subscription with Stripe:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to sync subscription",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -729,4 +950,7 @@ module.exports = {
   uploadProfilePicture,
   updatePassword,
   cancelSubscription,
+  checkAllSubscriptionsForRenewal,
+  syncSubscriptionWithStripe,
+  checkAndExtendSubscription,
 };

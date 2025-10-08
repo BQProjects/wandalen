@@ -4,6 +4,7 @@ import axios from "axios";
 import UserIcon from "../../assets/UserIcon.svg";
 import HandHold from "../../assets/HandHold.png";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const OrganizationProfile = () => {
   const { t } = useTranslation();
@@ -88,13 +89,13 @@ const OrganizationProfile = () => {
         `${DATABASE_URL}/org/updateOrg/${sessionId}`,
         updatedData
       );
-      alert(t("organizationProfile.profileUpdatedSuccess"));
+      toast.success(t("organizationProfile.profileUpdatedSuccess"));
       setIsEditing(false);
       setOriginalData(profileData);
       getOrgData();
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert(t("organizationProfile.profileUpdateFailed"));
+      toast.error(t("organizationProfile.profileUpdateFailed"));
     }
   };
 
@@ -112,12 +113,12 @@ const OrganizationProfile = () => {
 
   const handlePasswordSubmit = async () => {
     if (!passwordData.newPassword || !passwordData.confirmPassword) {
-      alert(t("organizationProfile.passwordRequired"));
+      toast.error(t("organizationProfile.passwordRequired"));
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert(t("organizationProfile.passwordMismatch"));
+      toast.error(t("organizationProfile.passwordMismatch"));
       return;
     }
 
@@ -134,19 +135,19 @@ const OrganizationProfile = () => {
       );
 
       if (response.status === 200) {
-        alert(t("organizationProfile.passwordUpdateSuccess"));
+        toast.success(t("organizationProfile.passwordUpdateSuccess"));
         setPasswordData({ newPassword: "", confirmPassword: "" });
         setShowPasswordChange(false);
       }
     } catch (error) {
       console.error("Error updating password:", error);
-      alert(t("organizationProfile.passwordUpdateError"));
+      toast.error(t("organizationProfile.passwordUpdateError"));
     }
   };
 
   const handleCloseAccount = async () => {
     if (closeAccountConfirmText.toLowerCase() !== "close my account") {
-      alert(t("organizationProfile.closeAccountConfirmError"));
+      toast.error(t("organizationProfile.closeAccountConfirmError"));
       return;
     }
 
@@ -162,13 +163,13 @@ const OrganizationProfile = () => {
       );
 
       if (response.status === 200) {
-        alert(t("organizationProfile.accountClosedSuccess"));
+        toast.success(t("organizationProfile.accountClosedSuccess"));
         localStorage.clear();
         window.location.href = "/";
       }
     } catch (error) {
       console.error("Error closing account:", error);
-      alert(t("organizationProfile.accountCloseError"));
+      toast.error(t("organizationProfile.accountCloseError"));
     }
   };
 
@@ -178,13 +179,13 @@ const OrganizationProfile = () => {
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      alert(t("organizationProfile.invalidFileType"));
+      toast.error(t("organizationProfile.invalidFileType"));
       return;
     }
 
     // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
-      alert(t("organizationProfile.fileTooLarge"));
+      toast.error(t("organizationProfile.fileTooLarge"));
       return;
     }
 
@@ -215,10 +216,10 @@ const OrganizationProfile = () => {
       setProfileData((prev) => ({ ...prev, profilePic: imageUrl }));
       setOriginalData((prev) => ({ ...prev, profilePic: imageUrl }));
 
-      alert(t("organizationProfile.profilePicUpdateSuccess"));
+      toast.success(t("organizationProfile.profilePicUpdateSuccess"));
     } catch (error) {
       console.error("Error uploading profile picture:", error);
-      alert(t("organizationProfile.profilePicUpdateError"));
+      toast.error(t("organizationProfile.profilePicUpdateError"));
     } finally {
       setUploadingImage(false);
     }
@@ -235,10 +236,10 @@ const OrganizationProfile = () => {
       setProfileData((prev) => ({ ...prev, profilePic: "" }));
       setOriginalData((prev) => ({ ...prev, profilePic: "" }));
 
-      alert(t("organizationProfile.profilePicRemoveSuccess"));
+      toast.success(t("organizationProfile.profilePicRemoveSuccess"));
     } catch (error) {
       console.error("Error removing profile picture:", error);
-      alert(t("organizationProfile.profilePicRemoveError"));
+      toast.error(t("organizationProfile.profilePicRemoveError"));
     }
   };
 

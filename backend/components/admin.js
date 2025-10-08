@@ -433,9 +433,9 @@ const approveOrg = async (req, res) => {
       const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
 
       // Create password setup link
-      const passwordLink = `${
-       "https://wandalen-nw69.vercel.app/"
-      }/generate-pass/${updatedOrg._id}`;
+      const passwordLink = `${"https://wandalen-nw69.vercel.app/"}/generate-pass/${
+        updatedOrg._id
+      }`;
 
       // Send email to customer (isUpdate = false for new approvals)
       await sendEmail(
@@ -795,6 +795,148 @@ const deleteAdmin = async (req, res) => {
   }
 };
 
+const getClientPaymentDetails = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const client = await ClientModel.findById(clientId);
+
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    // Initialize response with basic data
+    const paymentDetails = {
+      client: {
+        firstName: client.firstName,
+        lastName: client.lastName,
+        email: client.email,
+        company: client.company,
+      },
+      subscription: {
+        status: client.subscriptionStatus,
+        startDate: client.startDate,
+        endDate: client.endDate,
+        trialEndDate: client.trialEndDate,
+        planTitle: client.plan?.title,
+        planPrice: client.plan?.price,
+        planPeriod: client.plan?.period,
+      },
+      payment: {
+        status: client.paymentStatus,
+        verified: client.paymentVerified,
+      },
+      stripe: null,
+    };
+
+    // If client has Stripe information, fetch from Stripe API
+    if (client.stripeCustomerId || client.stripeSubscriptionId) {
+      const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+      try {
+        // Fetch Stripe customer details
+        if (client.stripeCustomerId) {
+          const customer = await stripe.customers.retrieve(
+            client.stripeCustomerId
+          );
+          paymentDetails.stripe = {
+            customerId: customer.id,
+            email: customer.email,
+            name: customer.name,
+          };
+        }
+
+        // Fetch Stripe subscription details
+        if (client.stripeSubscriptionId) {
+          const subscription = await stripe.subscriptions.retrieve(
+            client.stripeSubscriptionId
+          );
+
+          paymentDetails.stripe = {
+            ...paymentDetails.stripe,
+            subscriptionId: subscription.id,
+            subscriptionStatus: subscription.status,
+            currentPeriodStart: new Date(
+              subscription.current_period_start * 1000
+            ),
+            currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+            canceledAt: subscription.canceled_at
+              ? new Date(subscription.canceled_at * 1000)
+              : null,
+          };
+
+          // Fetch payment method if available
+          if (subscription.default_payment_method) {
+            const paymentMethod = await stripe.paymentMethods.retrieve(
+              subscription.default_payment_method
+            );
+
+            paymentDetails.stripe.paymentMethod = {
+              type: paymentMethod.type,
+              brand: paymentMethod.card?.brand,
+              last4: paymentMethod.card?.last4,
+              expMonth: paymentMethod.card?.exp_month,
+              expYear: paymentMethod.card?.exp_year,
+              cardholderName: paymentMethod.billing_details?.name,
+            };
+          }
+
+          // Fetch latest invoice
+          if (subscription.latest_invoice) {
+            const invoice = await stripe.invoices.retrieve(
+              subscription.latest_invoice
+            );
+
+            paymentDetails.stripe.latestInvoice = {
+              id: invoice.id,
+              amount: invoice.amount_paid / 100, // Convert from cents
+              currency: invoice.currency,
+              status: invoice.status,
+              created: new Date(invoice.created * 1000),
+              hostedInvoiceUrl: invoice.hosted_invoice_url,
+              invoicePdf: invoice.invoice_pdf,
+            };
+          }
+        }
+
+        // Fetch payment history (charges)
+        if (client.stripeCustomerId) {
+          const charges = await stripe.charges.list({
+            customer: client.stripeCustomerId,
+            limit: 10,
+          });
+
+          paymentDetails.stripe.paymentHistory = charges.data.map((charge) => ({
+            id: charge.id,
+            amount: charge.amount / 100,
+            currency: charge.currency,
+            status: charge.status,
+            created: new Date(charge.created * 1000),
+            description: charge.description,
+            receiptUrl: charge.receipt_url,
+            paymentMethodDetails: {
+              type: charge.payment_method_details?.type,
+              brand: charge.payment_method_details?.card?.brand,
+              last4: charge.payment_method_details?.card?.last4,
+            },
+          }));
+        }
+      } catch (stripeError) {
+        console.error("Error fetching Stripe details:", stripeError);
+        paymentDetails.stripe = {
+          error: "Failed to fetch Stripe details",
+          message: stripeError.message,
+        };
+      }
+    }
+
+    res.status(200).json(paymentDetails);
+  } catch (error) {
+    console.error("Error fetching payment details:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -828,4 +970,5 @@ module.exports = {
   getAllAdmins,
   updateAdmin,
   deleteAdmin,
+  getClientPaymentDetails,
 };

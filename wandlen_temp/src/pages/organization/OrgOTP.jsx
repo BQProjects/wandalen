@@ -4,6 +4,7 @@ import axios from "axios";
 import { data, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import toast from "react-hot-toast";
 
 const OrgOTP = () => {
   const [otp, setOtp] = useState("");
@@ -19,7 +20,7 @@ const OrgOTP = () => {
         type: "client",
       });
       if (res.status === 200) {
-        alert("OTP verification successful!");
+        toast.success("OTP verification successful!");
         setUserType("client");
         // Redirect or perform further actions
         setSessionId(res.data.sessionId);
@@ -30,11 +31,13 @@ const OrgOTP = () => {
 
         navigate("/client");
       } else {
-        alert("OTP verification failed. Please try again.");
+        toast.error("OTP verification failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during OTP verification:", error);
-      alert("An error occurred during OTP verification. Please try again.");
+      toast.error(
+        "An error occurred during OTP verification. Please try again."
+      );
     }
   };
   return (

@@ -7,6 +7,7 @@ import { router } from "../../routing/router";
 import { Link, useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const VolunteerLogin = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -26,15 +27,17 @@ const VolunteerLogin = () => {
     try {
       const res = await axios.post(`${DATABASE_URL}/volunteer/login`, formData);
       if (res.status === 200) {
-        alert("Login successful!");
+        toast.success("Login successful!");
         console.log(res.data);
         navigate(`/volunteer/otp-verify/${formData.email}`);
       } else {
-        alert("Login failed. Please check your credentials and try again.");
+        toast.error(
+          "Login failed. Please check your credentials and try again."
+        );
       }
     } catch (error) {
       console.error("Error during login:", error);
-      alert("An error occurred during login. Please try again.");
+      toast.error("An error occurred during login. Please try again.");
     }
   };
 

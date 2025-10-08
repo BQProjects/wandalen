@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { AuthContext } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -36,11 +37,11 @@ const Login = () => {
         setIsLoggedIn(true);
         navigate("/organization");
       } else {
-        alert("Login failed. Please check your credentials.");
+        toast.error("Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Login failed. Please check your credentials.");
+      toast.error("Login failed. Please check your credentials.");
     }
   };
 

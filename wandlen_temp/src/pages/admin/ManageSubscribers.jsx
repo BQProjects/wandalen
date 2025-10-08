@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Sort Icon Component
 const SortIcon = ({ column, sortConfig, onSort }) => {
@@ -272,11 +273,11 @@ const ManageSubscribers = () => {
         const res = await axios.post(`${DATABASE_URL}/utils/unsubscribe`, {
           email,
         });
-        alert("User unsubscribed successfully");
+        toast.success("User unsubscribed successfully");
         fetchSubscriptions(); // Refresh the list
       } catch (error) {
         console.error("Error unsubscribing user:", error);
-        alert("Error unsubscribing user. Please try again.");
+        toast.error("Error unsubscribing user. Please try again.");
       }
     }
   };
@@ -291,12 +292,14 @@ const ManageSubscribers = () => {
         const subscription = subscriptions.find((sub) => sub.email === email);
         if (subscription) {
           // You might want to create a specific reactivate endpoint in the backend
-          alert("Reactivation feature needs to be implemented in backend");
+          toast.error(
+            "Reactivation feature needs to be implemented in backend"
+          );
           // fetchSubscriptions(); // Refresh the list
         }
       } catch (error) {
         console.error("Error reactivating subscription:", error);
-        alert("Error reactivating subscription. Please try again.");
+        toast.error("Error reactivating subscription. Please try again.");
       }
     }
   };

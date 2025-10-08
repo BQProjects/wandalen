@@ -6,6 +6,7 @@ import LinkIcon from "../../assets/LinkIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 // Helper function to get tag icon based on tag content
 const getTagIcon = (tag) => {
@@ -748,7 +749,7 @@ const VolunteerCreateVideo = () => {
           setUploadProgress(100);
           setCurrentStep(t("volunteerCreateVideo.videoUpdatedSuccess"));
           setTimeout(() => {
-            alert(t("volunteerCreateVideo.videoUpdatedSuccess"));
+            toast.success(t("volunteerCreateVideo.videoUpdatedSuccess"));
             navigate("/volunteer");
           }, 1000);
         } else {
@@ -794,7 +795,7 @@ const VolunteerCreateVideo = () => {
           }
 
           setTimeout(() => {
-            alert(t("volunteerCreateVideo.videoUploadedSuccess"));
+            toast.success(t("volunteerCreateVideo.videoUploadedSuccess"));
             navigate("/volunteer");
           }, 1000);
         } else {
@@ -804,7 +805,7 @@ const VolunteerCreateVideo = () => {
     } catch (error) {
       console.error("Error:", error);
       setCurrentStep(t("volunteerCreateVideo.errorOccurred"));
-      alert(
+      toast.error(
         `${t("volunteerCreateVideo.errorOccurred")}: ${
           error.response?.data?.message || error.message
         }`
