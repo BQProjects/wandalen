@@ -90,6 +90,15 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Error during login:", error);
+
+      if (error.response?.status === 403 && error.response?.data?.expired) {
+        alert(
+          error.response.data.message ||
+            "Your subscription has expired. Please sign up again."
+        );
+        return;
+      }
+
       alert("An error occurred during login. Please try again.");
     }
   };

@@ -39,6 +39,7 @@ const PatientProfile = () => {
     trialEndDate: null,
     isInTrial: false,
   });
+  const [isOrg, setIsOrg] = useState(false);
 
   const handleInputChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
@@ -298,11 +299,23 @@ const PatientProfile = () => {
         accountEmail: res.data.client.email,
         password: "••••••••", // Always masked
         currentPlan: res.data.client.plan
-          ? `${res.data.client.plan.title} - €${res.data.client.plan.price} / ${res.data.client.plan.period}`
+          ? res.data.client.subscriptionType === "org"
+            ? `${res.data.client.orgId?.orgName || ""} - ${
+                res.data.client.plan.title
+              } - €${res.data.client.plan.price} / ${
+                res.data.client.plan.period
+              }`
+            : `${res.data.client.plan.title} - €${res.data.client.plan.price} / ${res.data.client.plan.period}`
+          : res.data.client.subscriptionType === "org"
+          ? res.data.client.orgId?.orgName || ""
           : "",
-        validUntil: res.data.client.endDate
-          ? new Date(res.data.client.endDate).toLocaleDateString()
-          : "",
+        validUntil:
+          res.data.client.subscriptionType === "org" &&
+          res.data.client.orgId?.planValidTo
+            ? new Date(res.data.client.orgId.planValidTo).toLocaleDateString()
+            : res.data.client.endDate
+            ? new Date(res.data.client.endDate).toLocaleDateString()
+            : "",
         profilePic: res.data.client.profilePic || UserIcon,
       };
 
@@ -315,6 +328,8 @@ const PatientProfile = () => {
         trialEndDate: trialEnd,
         isInTrial: trialEnd && now < trialEnd,
       });
+
+      setIsOrg(res.data.client.subscriptionType === "org");
 
       setProfileData(data);
       setOriginalData(data);
@@ -598,10 +613,12 @@ const PatientProfile = () => {
             </div>
           )}
           <div className="flex justify-end gap-4">
-            <button className="px-4 py-2 border border-green-400 text-green-600 rounded-lg hover:bg-green-50 transition font-[Poppins]">
-              {t("patientProfile.upgradePlan")}
-            </button>
-            {subscriptionStatus.status !== "cancelled" && (
+            {/* {!isOrg && (
+              <button className="px-4 py-2 border border-green-400 text-green-600 rounded-lg hover:bg-green-50 transition font-[Poppins]">
+                {t("patientProfile.upgradePlan")}
+              </button>
+            )} */}
+            {subscriptionStatus.status !== "cancelled" && !isOrg && (
               <button
                 onClick={handleCancelSubscription}
                 className="px-4 py-2 border border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition font-[Poppins]"
@@ -613,22 +630,24 @@ const PatientProfile = () => {
         </div>
 
         {/* Close Account Section */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg">
-          <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
-            {t("patientProfile.closeAccount")}
-          </h2>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <p className="text-[#7a756e] flex-1 font-[Poppins]">
-              {t("patientProfile.closeAccountDescription")}
-            </p>
-            <button
-              onClick={() => setShowCloseAccountModal(true)}
-              className="px-4 py-2 border font-[Poppins] border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition whitespace-nowrap"
-            >
-              {t("patientProfile.closeAccountButton")}
-            </button>
+        {!isOrg && (
+          <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
+              {t("patientProfile.closeAccount")}
+            </h2>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <p className="text-[#7a756e] flex-1 font-[Poppins]">
+                {t("patientProfile.closeAccountDescription")}
+              </p>
+              <button
+                onClick={() => setShowCloseAccountModal(true)}
+                className="px-4 py-2 border font-[Poppins] border-red-400 text-red-500 rounded-lg hover:bg-red-50 transition whitespace-nowrap"
+              >
+                {t("patientProfile.closeAccountButton")}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Action Buttons */}
         <div className="flex justify-center gap-4">
@@ -713,7 +732,7 @@ const PatientProfile = () => {
       )}
 
       {/* Close Account Modal */}
-      {showCloseAccountModal && (
+      {!isOrg && showCloseAccountModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
             <h3 className="text-xl font-semibold text-[#381207] mb-4 font-[Poppins]">
