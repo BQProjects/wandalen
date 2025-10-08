@@ -13,7 +13,7 @@ const clientLogin = async (req, res) => {
   const { email, password } = req.body;
   // Get IP address (supports proxies)
   const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] || // If behind proxy
+    req.headers["x-forwarded-for"]?.split(",")[0] ||
     req.connection?.remoteAddress ||
     req.socket?.remoteAddress ||
     req.connection?.socket?.remoteAddress;
@@ -26,6 +26,46 @@ const clientLogin = async (req, res) => {
     const isMatch = await bcrypt.compare(password, client.password);
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials password" });
+
+    // CHECK IF SUBSCRIPTION HAS COMPLETELY EXPIRED FIRST (before any updates)
+    const now = new Date();
+    if (client.endDate) {
+      const subEnd = new Date(client.endDate);
+      console.log(`Checking expiration for ${email}:`, {
+        now: now.toISOString(),
+        endDate: subEnd.toISOString(),
+        isExpired: now > subEnd,
+        subscriptionStatus: client.subscriptionStatus,
+      });
+
+      if (now > subEnd) {
+        // Subscription has expired - DELETE THE ACCOUNT
+        console.log(`🗑️ Attempting to delete account for ${email}...`);
+        const deletedClient = await ClientModel.findByIdAndDelete(client._id);
+        console.log(
+          `🗑️ Account deleted:`,
+          deletedClient ? "Success" : "Failed"
+        );
+        return res.status(403).json({
+          message:
+            "Your subscription has expired. Your account has been deleted. Please sign up again to continue.",
+          expired: true,
+        });
+      }
+    }
+
+    // CHECK AND UPDATE TRIAL STATUS IF EXPIRED
+    if (client.trialEndDate && client.subscriptionStatus === "trial") {
+      const trialEnd = new Date(client.trialEndDate);
+      if (now > trialEnd) {
+        // Trial has expired, update to active subscription
+        client.subscriptionStatus = "active";
+        await client.save();
+        console.log(
+          `✅ Trial expired for ${email}. Status updated to 'active'.`
+        );
+      }
+    }
 
     // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();

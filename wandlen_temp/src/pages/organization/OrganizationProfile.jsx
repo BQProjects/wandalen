@@ -473,7 +473,7 @@ const OrganizationProfile = () => {
           </div>
         </div>
 
-        {/* Subscription Info Section */}
+        {/* Subscription Info Section
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <h2 className="text-2xl font-medium text-[#381207] mb-6 font-[Poppins]">
             {t("organizationProfile.subscriptionInfo")}
@@ -504,7 +504,7 @@ const OrganizationProfile = () => {
               {t("organizationProfile.cancelSubscription")}
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Close Account Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
