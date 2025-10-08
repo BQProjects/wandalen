@@ -7,6 +7,7 @@ import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import Background from "../../assets/background.png";
 import Footer from "../../components/Footer";
+import toast from "react-hot-toast";
 
 const VolunteerHome = () => {
   const navigate = useNavigate();
@@ -106,14 +107,14 @@ const VolunteerHome = () => {
           }
         );
         if (res.status === 200) {
-          alert(t("volunteerHome.deleteSuccess"));
+          toast.success(t("volunteerHome.deleteSuccess"));
           fetchVideos(currentPage, activeFilters); // Refresh the list with current page/filters
         } else {
-          alert(t("volunteerHome.deleteFailed"));
+          toast.error(t("volunteerHome.deleteFailed"));
         }
       } catch (error) {
         console.error("Error deleting video:", error);
-        alert(t("volunteerHome.deleteError"));
+        toast.error(t("volunteerHome.deleteError"));
       }
     }
   };

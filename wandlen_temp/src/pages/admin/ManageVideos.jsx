@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Sort Icon Component
 const SortIcon = ({ column, sortConfig, onSort }) => {
@@ -83,13 +84,13 @@ const ManageVideos = () => {
               : video
           )
         );
-        alert(
+        toast.success(
           `Video ${!currentStatus ? "approved" : "unapproved"} successfully`
         );
       }
     } catch (error) {
       console.error("Error toggling video approval:", error);
-      alert("Error updating video approval status");
+      toast.error("Error updating video approval status");
     }
   };
 
@@ -136,12 +137,12 @@ const ManageVideos = () => {
         prevVideos.map((video) => ({ ...video, isApproved: true }))
       );
 
-      alert(
+      toast.success(
         `Approval complete!\nApproved: ${successCount}\nErrors: ${errorCount}`
       );
     } catch (error) {
       console.error("Error approving all videos:", error);
-      alert("Error approving videos");
+      toast.error("Error approving videos");
     } finally {
       setIsApproving(false);
     }
@@ -158,7 +159,7 @@ const ManageVideos = () => {
       link.click();
       document.body.removeChild(link);
     } else {
-      alert("Video URL not available");
+      toast.error("Video URL not available");
     }
   };
 

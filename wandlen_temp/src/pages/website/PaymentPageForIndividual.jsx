@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 // Back Arrow Component
 const BackArrow = () => (
@@ -276,7 +277,7 @@ const PaymentPageForIndividual = () => {
       }
     } catch (error) {
       console.error("Error during payment subscription:", error);
-      alert(t("payment.messages.subscriptionFailed"));
+      toast.error(t("payment.messages.subscriptionFailed"));
     }
   };
 

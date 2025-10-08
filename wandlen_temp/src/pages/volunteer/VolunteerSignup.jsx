@@ -7,6 +7,7 @@ import { LineChart } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import toast from "react-hot-toast";
 
 const VolunteerSignup = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -38,7 +39,7 @@ const VolunteerSignup = () => {
         address: formData.address,
       });
       if (res.status === 201) {
-        alert("Signup successful! Please log in.");
+        toast.success("Signup successful! Please log in.");
         console.log(res.data);
         setFormData({
           fullName: "",
@@ -50,11 +51,11 @@ const VolunteerSignup = () => {
           confirmPassword: "",
         });
       } else {
-        alert("Signup failed. Please try again.");
+        toast.error("Signup failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An error occurred during signup. Please try again.");
+      toast.error("An error occurred during signup. Please try again.");
     }
   };
 

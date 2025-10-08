@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import ForestDark from "../../assets/ForestDark.png";
+import toast from "react-hot-toast";
 
 const VolunteerSignupForm = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
@@ -127,7 +128,7 @@ const VolunteerSignupForm = () => {
         address: `${formData.street}, ${formData.city}`,
       });
       if (res.status === 201) {
-        alert(
+        toast.success(
           t("volunteerSignup.form.messages.signupSuccess") +
             " A confirmation email has been sent to your email address."
         );
@@ -148,11 +149,11 @@ const VolunteerSignupForm = () => {
         });
         navigate("/login");
       } else {
-        alert(t("volunteerSignup.form.messages.signupFailed"));
+        toast.error(t("volunteerSignup.form.messages.signupFailed"));
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert(t("volunteerSignup.form.messages.errorOccurred"));
+      toast.error(t("volunteerSignup.form.messages.errorOccurred"));
     }
   };
 

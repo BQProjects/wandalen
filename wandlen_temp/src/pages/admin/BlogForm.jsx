@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const BlogForm = () => {
@@ -148,15 +149,15 @@ const BlogForm = () => {
 
       if (isEdit) {
         await axios.put(`${DATABASE_URL}/admin/blogs/${id}`, body);
-        alert("Blog updated successfully");
+        toast.success("Blog updated successfully");
       } else {
         await axios.post(`${DATABASE_URL}/admin/blogs`, body);
-        alert("Blog created successfully");
+        toast.success("Blog created successfully");
       }
       navigate("/admin/all-blog");
     } catch (error) {
       console.error(`Error ${isEdit ? "updating" : "creating"} blog:`, error);
-      alert(`Error ${isEdit ? "updating" : "creating"} blog`);
+      toast.error(`Error ${isEdit ? "updating" : "creating"} blog`);
     }
   };
 

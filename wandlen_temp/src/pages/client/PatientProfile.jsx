@@ -4,6 +4,7 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 import HandHold from "../../assets/HandHold.png";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const PatientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -47,7 +48,7 @@ const PatientProfile = () => {
 
   const handleSave = async () => {
     if (!clientId) {
-      alert(t("patientProfile.loginRequired"));
+      toast.error(t("patientProfile.loginRequired"));
       return;
     }
     try {
@@ -63,12 +64,12 @@ const PatientProfile = () => {
         updatePayload,
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
-      alert(t("patientProfile.profileUpdateSuccess"));
+      toast.success(t("patientProfile.profileUpdateSuccess"));
       setOriginalData({ ...profileData });
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert(t("patientProfile.profileUpdateError"));
+      toast.error(t("patientProfile.profileUpdateError"));
     }
   };
 
@@ -83,13 +84,13 @@ const PatientProfile = () => {
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      alert(t("patientProfile.invalidFileType"));
+      toast.error(t("patientProfile.invalidFileType"));
       return;
     }
 
     // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
-      alert(t("patientProfile.fileTooLarge"));
+      toast.error(t("patientProfile.fileTooLarge"));
       return;
     }
 
@@ -120,10 +121,10 @@ const PatientProfile = () => {
       setProfileData((prev) => ({ ...prev, profilePic: imageUrl }));
       setOriginalData((prev) => ({ ...prev, profilePic: imageUrl }));
 
-      alert(t("patientProfile.profilePicUpdateSuccess"));
+      toast.success(t("patientProfile.profilePicUpdateSuccess"));
     } catch (error) {
       console.error("Error uploading profile picture:", error);
-      alert(t("patientProfile.profilePicUpdateError"));
+      toast.error(t("patientProfile.profilePicUpdateError"));
     } finally {
       setUploadingImage(false);
     }
@@ -131,7 +132,7 @@ const PatientProfile = () => {
 
   const handleRemoveProfilePic = async () => {
     if (!clientId) {
-      alert(t("patientProfile.loginRequired"));
+      toast.error(t("patientProfile.loginRequired"));
       return;
     }
 
@@ -145,10 +146,10 @@ const PatientProfile = () => {
       setProfileData((prev) => ({ ...prev, profilePic: "" }));
       setOriginalData((prev) => ({ ...prev, profilePic: "" }));
 
-      alert(t("patientProfile.profilePicRemoveSuccess"));
+      toast.success(t("patientProfile.profilePicRemoveSuccess"));
     } catch (error) {
       console.error("Error removing profile picture:", error);
-      alert(t("patientProfile.profilePicRemoveError"));
+      toast.error(t("patientProfile.profilePicRemoveError"));
     }
   };
 
@@ -161,12 +162,12 @@ const PatientProfile = () => {
 
   const handlePasswordSubmit = async () => {
     if (!passwordData.newPassword || !passwordData.confirmPassword) {
-      alert(t("patientProfile.passwordRequired"));
+      toast.error(t("patientProfile.passwordRequired"));
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert(t("patientProfile.passwordMismatch"));
+      toast.error(t("patientProfile.passwordMismatch"));
       return;
     }
 
@@ -182,19 +183,19 @@ const PatientProfile = () => {
       );
 
       if (response.status === 200) {
-        alert(t("patientProfile.passwordUpdateSuccess"));
+        toast.success(t("patientProfile.passwordUpdateSuccess"));
         setPasswordData({ newPassword: "", confirmPassword: "" });
         setShowPasswordChange(false);
       }
     } catch (error) {
       console.error("Error updating password:", error);
-      alert(t("patientProfile.passwordUpdateError"));
+      toast.error(t("patientProfile.passwordUpdateError"));
     }
   };
 
   const handleCloseAccount = async () => {
     if (closeAccountConfirmText.toLowerCase() !== "close my account") {
-      alert(t("patientProfile.closeAccountConfirmError"));
+      toast.error(t("patientProfile.closeAccountConfirmError"));
       return;
     }
 
@@ -210,19 +211,19 @@ const PatientProfile = () => {
       );
 
       if (response.status === 200) {
-        alert(t("patientProfile.accountClosedSuccess"));
+        toast.success(t("patientProfile.accountClosedSuccess"));
         localStorage.clear();
         window.location.href = "/";
       }
     } catch (error) {
       console.error("Error closing account:", error);
-      alert(t("patientProfile.accountCloseError"));
+      toast.error(t("patientProfile.accountCloseError"));
     }
   };
 
   const handleCancelSubscription = async () => {
     if (!clientId) {
-      alert(t("patientProfile.loginRequired"));
+      toast.error(t("patientProfile.loginRequired"));
       return;
     }
 
@@ -249,14 +250,14 @@ const PatientProfile = () => {
 
       if (response.data.success) {
         if (response.data.action === "deleted") {
-          alert(
+          toast.success(
             t("patientProfile.accountDeletedDuringTrial") ||
               "Your account has been deleted successfully."
           );
           localStorage.clear();
           window.location.href = "/";
         } else {
-          alert(
+          toast.success(
             t("patientProfile.subscriptionCancelled") ||
               `Subscription cancelled successfully. Your account will remain active until ${new Date(
                 response.data.activeUntil
@@ -268,7 +269,7 @@ const PatientProfile = () => {
       }
     } catch (error) {
       console.error("Error cancelling subscription:", error);
-      alert(
+      toast.error(
         t("patientProfile.cancelSubscriptionError") ||
           "Failed to cancel subscription. Please try again."
       );
@@ -277,7 +278,7 @@ const PatientProfile = () => {
 
   const getProfileData = async () => {
     if (!clientId) {
-      alert(t("patientProfile.loginRequired"));
+      toast.error(t("patientProfile.loginRequired"));
       return;
     }
     try {

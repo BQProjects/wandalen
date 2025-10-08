@@ -10,6 +10,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const VideoClient = () => {
   const { id } = useParams();
@@ -93,7 +94,7 @@ const VideoClient = () => {
   const addLike = async () => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      alert(t("videoClient.loginToLike"));
+      toast.error(t("videoClient.loginToLike"));
       return;
     }
 
@@ -135,7 +136,7 @@ const VideoClient = () => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      alert(t("videoClient.loginToReview"));
+      toast.error(t("videoClient.loginToReview"));
       return;
     }
 
@@ -160,10 +161,10 @@ const VideoClient = () => {
 
       // Fetch reviews again
       fetchReviews();
-      alert(t("videoClient.reviewSuccess"));
+      toast.success(t("videoClient.reviewSuccess"));
     } catch (error) {
       console.error("Error submitting review:", error);
-      alert(t("videoClient.reviewError"));
+      toast.error(t("videoClient.reviewError"));
     }
   };
 

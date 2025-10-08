@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import toast from "react-hot-toast";
 
 const VolunteerDetail = () => {
   const navigate = useNavigate();
@@ -41,10 +42,10 @@ const VolunteerDetail = () => {
       await axios.put(`${DATABASE_URL}/volunteer/${id}/confirm`, {
         status: "confirmed",
       });
-      alert("Volunteer confirmed successfully!");
+      toast.success("Volunteer confirmed successfully!");
     } catch (err) {
       console.error("Error confirming volunteer:", err);
-      alert("Failed to confirm volunteer");
+      toast.error("Failed to confirm volunteer");
     }
   };
 
@@ -175,7 +176,9 @@ const VolunteerDetail = () => {
                 />
               </svg>
               <div>
-                <p className="text-2xl font-semibold font-['Poppins']">Postal Code</p>
+                <p className="text-2xl font-semibold font-['Poppins']">
+                  Postal Code
+                </p>
                 <p className="text-xl font-medium font-['Poppins']">
                   {volunteer.postal || "Postal code not specified"}
                 </p>

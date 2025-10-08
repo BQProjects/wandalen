@@ -17,6 +17,7 @@ const {
   uploadProfilePicture,
   updatePassword,
   cancelSubscription,
+  syncSubscriptionWithStripe,
 } = require("../components/client");
 
 const clientRouter = express.Router();
@@ -38,5 +39,6 @@ clientRouter.put("/update-account/:clientId", updateAccountInfo);
 clientRouter.put("/upload-profile-picture/:clientId", uploadProfilePicture);
 clientRouter.put("/update-password/:clientId", updatePassword);
 clientRouter.post("/cancel-subscription", cancelSubscription);
+clientRouter.post("/sync-subscription/:clientId", syncSubscriptionWithStripe);
 
 module.exports = clientRouter;

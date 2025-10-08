@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Sort Icon Component
 const SortIcon = ({ column, sortConfig, onSort }) => {
@@ -53,12 +54,63 @@ const ManageSubscription = () => {
       // Assuming res.data is an array of client objects
       const mappedSubscriptions = res.data.map((client) => {
         const now = new Date();
-        const endDate = new Date(client.endDate);
-        const status = endDate > now ? "Active" : "Inactive";
+        const endDate = client.endDate ? new Date(client.endDate) : null;
+        const trialEndDate = client.trialEndDate
+          ? new Date(client.trialEndDate)
+          : null;
+
+        // Determine status based on subscriptionStatus field and dates
+        let status = "Inactive";
+        let paymentStatus = "Pending";
+
+        if (client.subscriptionStatus === "cancelled") {
+          status = "Cancelled";
+          paymentStatus =
+            client.paymentStatus === "completed" || client.paymentVerified
+              ? "Paid"
+              : "Pending";
+        } else if (client.subscriptionStatus === "trial") {
+          // Check if trial is still active
+          if (trialEndDate && now <= trialEndDate) {
+            status = "Trial";
+            paymentStatus = "Pending"; // During trial, payment is pending
+          } else if (endDate && now <= endDate) {
+            status = "Active";
+            paymentStatus = "Paid"; // Trial ended, subscription continued = Paid
+          } else {
+            status = "Expired";
+            paymentStatus =
+              client.paymentStatus === "completed" || client.paymentVerified
+                ? "Paid"
+                : "Pending";
+          }
+        } else if (client.subscriptionStatus === "active") {
+          if (endDate && now <= endDate) {
+            status = "Active";
+            paymentStatus = "Paid"; // Active subscription = Paid
+          } else {
+            status = "Expired";
+            paymentStatus =
+              client.paymentStatus === "completed" || client.paymentVerified
+                ? "Paid"
+                : "Pending";
+          }
+        } else if (client.subscriptionStatus === "expired") {
+          status = "Expired";
+          paymentStatus =
+            client.paymentStatus === "completed" || client.paymentVerified
+              ? "Paid"
+              : "Pending";
+        }
+
         return {
+          clientId: client._id,
+          email: client.email,
           firstName: client.firstName || "N/A",
           lastName: client.lastName || "N/A",
           planType: client.plan?.title || client.subscriptionType || "N/A",
+          planPrice: client.plan?.price || "€ 12,00",
+          planPeriod: client.plan?.period || "month",
           status,
           startDate: client.startDate
             ? new Date(client.startDate).toLocaleDateString()
@@ -66,12 +118,18 @@ const ManageSubscription = () => {
           endDate: client.endDate
             ? new Date(client.endDate).toLocaleDateString()
             : "N/A",
-          paymentStatus: "Paid", // Assuming paid if in DB; adjust if backend provides
+          paymentStatus,
+          stripeCustomerId: client.stripeCustomerId,
+          stripeSubscriptionId: client.stripeSubscriptionId,
+          company: client.company,
+          phoneNo: client.phoneNo,
+          country: client.country,
         };
       });
       setSubscriptions(mappedSubscriptions);
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
+      toast.error("Failed to fetch subscriptions");
     }
   };
 
@@ -254,7 +312,11 @@ const ManageSubscription = () => {
                         ? "#12B76A"
                         : sub.status === "Trial"
                         ? "#FFBE41"
-                        : "#FF674F"
+                        : sub.status === "Cancelled"
+                        ? "#FF8C42"
+                        : sub.status === "Expired"
+                        ? "#FF674F"
+                        : "#9CA3AF"
                     }
                   />
                 </svg>
@@ -282,7 +344,12 @@ const ManageSubscription = () => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <circle cx={5} cy={5} r={4} fill="#12B76A" />
+                  <circle
+                    cx={5}
+                    cy={5}
+                    r={4}
+                    fill={sub.paymentStatus === "Paid" ? "#12B76A" : "#FFBE41"}
+                  />
                 </svg>
                 <div className="text-[#381207] font-['Poppins'] text-sm truncate">
                   {sub.paymentStatus}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 const AddCustomer = () => {
@@ -196,12 +197,12 @@ const AddCustomer = () => {
       const action = isUpdate ? "updated" : "created";
 
       if (isUpdate) {
-        alert(
+        toast.success(
           `Organization ${action} successfully! ` +
             `Confirmation emails have been sent to the customer and admin team.`
         );
       } else {
-        alert(
+        toast.success(
           `Organization ${action} successfully! ` +
             `Confirmation emails have been sent to the customer and admin team. ` +
             `The customer will receive a password setup link to complete their account activation.`
@@ -218,7 +219,7 @@ const AddCustomer = () => {
         "Error details:",
         error.response?.data || "No response data"
       );
-      alert(
+      toast.error(
         `Error creating/updating organization: ${error.message}. Please try again.`
       );
     }

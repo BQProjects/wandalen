@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 
@@ -31,11 +32,11 @@ const AdminLogin = () => {
         console.log("Login successful, navigating to /admin");
         window.location.href = "/admin";
       } else {
-        alert(data.message || "Invalid credentials");
+        toast.error(data.message || "Invalid credentials");
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Login failed");
+      toast.error("Login failed");
     }
   };
 

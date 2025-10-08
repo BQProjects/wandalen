@@ -33,6 +33,7 @@ const {
   updateAdmin,
   deleteAdmin,
   upload,
+  getClientPaymentDetails,
 } = require("../components/admin");
 
 const adminRouter = express.Router();
@@ -73,5 +74,6 @@ adminRouter.get("/admins", getAllAdmins);
 adminRouter.post("/adminscreate", createAdmin);
 adminRouter.put("/admins/:id", updateAdmin);
 adminRouter.delete("/admins/:id", deleteAdmin);
+adminRouter.get("/client-payment-details/:clientId", getClientPaymentDetails);
 
 module.exports = adminRouter;
