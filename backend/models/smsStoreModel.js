@@ -17,6 +17,10 @@ const otpSchema = new mongoose.Schema({
   who: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  type: {
+    type: String,
+    default: "login",
+  },
 });
 
 module.exports = mongoose.model("Otp", otpSchema);

@@ -238,16 +238,16 @@ const WebsiteHeader = () => {
                 {isLanguageMenuOpen && (
                   <div className="absolute top-full mt-2 bg-secondary border border-[#381207] rounded-lg shadow-lg z-50">
                     <button
-                      onClick={() => changeLanguage("en")}
-                      className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
-                    >
-                      {t("header.english")}
-                    </button>
-                    <button
                       onClick={() => changeLanguage("nl")}
                       className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
                     >
                       Nederlands
+                    </button>
+                    <button
+                      onClick={() => changeLanguage("en")}
+                      className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
+                    >
+                      {t("header.english")}
                     </button>
                   </div>
                 )}

@@ -76,8 +76,8 @@ const RequestAQuoteForm = () => {
       newErrors.phone = t("requestQuoteForm.validation.phone");
     else if (!validatePhone(formData.phone))
       newErrors.phone = t("requestQuoteForm.validation.phoneInvalid");
-    if (!formData.address.trim())
-      newErrors.address = t("requestQuoteForm.validation.address");
+    // if (!formData.address.trim())
+    //   newErrors.address = t("requestQuoteForm.validation.address");
     if (!formData.street.trim())
       newErrors.street = t("requestQuoteForm.validation.street");
     if (!formData.postalCode.trim())
@@ -313,7 +313,7 @@ const RequestAQuoteForm = () => {
                   )}
                 </div>
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-[#381207] font-medium mb-2">
                   {t("requestQuoteForm.form.labels.address")}
                 </label>
@@ -329,7 +329,7 @@ const RequestAQuoteForm = () => {
                 {errors.address && (
                   <span className="text-red-500 text-sm">{errors.address}</span>
                 )}
-              </div>
+              </div> */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-[#381207] font-medium mb-2">

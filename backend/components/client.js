@@ -247,7 +247,6 @@ const clientSignUp = async (req, res) => {
     subscriptionStatus,
   } = req.body;
   try {
-    // Check if email already exists
     const existingClient = await ClientModel.findOne({ email });
     if (existingClient) {
       console.log(`Duplicate signup attempt for email: ${email}`);
@@ -285,39 +284,63 @@ const clientSignUp = async (req, res) => {
       paymentVerified: paymentVerified || false,
       subscriptionStatus: subscriptionStatus || "trial",
     });
+
     await newClient.save();
-    // Send emails after successful client registration
-    try {
-      const adminEmail = "crc6892@gmail.com";
 
-      // Send email to user
-      await sendEmail(
-        newClient.email,
-        "Subscription Received - Virtual Wandlen",
-        emailTemplates.individualSubscriptionUser(newClient)
-      );
-
-      // Send email to admin
-      if (adminEmail) {
-        await sendEmail(
-          adminEmail,
-          "New Individual Subscription - Virtual Wandlen",
-          emailTemplates.individualSubscriptionAdmin(newClient)
-        );
-      }
-
-      console.log("Client signup emails sent successfully");
-    } catch (emailError) {
+    sendSignupEmails(newClient).catch((emailError) => {
       console.error("Error sending client signup emails:", emailError);
-      // Don't fail the request if email sending fails
+    });
+
+    res.status(201).json({
+      message: "Client registered successfully",
+      clientId: newClient._id,
+    });
+  } catch (error) {
+    console.error("Error in clientSignUp:", error);
+
+    if (error.code === 11000) {
+      return res.status(409).json({
+        message:
+          "An account with this email already exists. Please login instead.",
+        error: "DUPLICATE_EMAIL",
+        code: 11000,
+      });
     }
 
-    res.status(201).json({ message: "Client registered successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      message: "Server error during signup",
+      error: error.message,
+    });
   }
 };
+
+// Separate function for sending signup emails (non-blocking)
+async function sendSignupEmails(client) {
+  try {
+    const adminEmail = "tina@10natuurlijk.nl";
+
+    // Send email to user
+    await sendEmail(
+      client.email,
+      "Subscription Received - Virtual Wandlen",
+      emailTemplates.individualSubscriptionUser(client)
+    );
+
+    // Send email to admin
+    if (adminEmail) {
+      await sendEmail(
+        adminEmail,
+        "New Individual Subscription - Virtual Wandlen",
+        emailTemplates.individualSubscriptionAdmin(client)
+      );
+    }
+
+    console.log("Client signup emails sent successfully");
+  } catch (emailError) {
+    console.error("Error sending client signup emails:", emailError);
+    throw emailError;
+  }
+}
 
 const getAllvideos = async (req, res) => {
   const {

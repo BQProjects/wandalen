@@ -116,11 +116,18 @@ const PaymentSuccess = () => {
         console.error("Error creating account:", error);
 
         // Handle duplicate email error specifically
-        if (error.response?.status === 409) {
+        if (
+          error.response?.status === 409 ||
+          error.response?.data?.error === "DUPLICATE_EMAIL" ||
+          error.response?.data?.code === 11000
+        ) {
           console.log("Account already exists, redirecting to login...");
           if (isMounted) {
             setStatus("success");
-            setMessage("Account already exists. Redirecting to login...");
+            setMessage(
+              t("payment.messages.accountExists") ||
+                "Account already exists. Redirecting to login..."
+            );
           }
 
           // Clear the stored data
@@ -132,14 +139,15 @@ const PaymentSuccess = () => {
               navigate("/login");
             }
           }, 2000);
-        } else {
-          if (isMounted) {
-            setStatus("error");
-            setMessage(
-              error.response?.data?.message ||
-                t("payment.messages.signupFailed")
-            );
-          }
+          return; // Important: exit after handling
+        }
+
+        // Handle other errors
+        if (isMounted) {
+          setStatus("error");
+          setMessage(
+            error.response?.data?.message || t("payment.messages.signupFailed")
+          );
         }
       } finally {
         isCreating = false;
@@ -217,12 +225,12 @@ const PaymentSuccess = () => {
               {t("payment.error.title")}
             </h2>
             <p className="text-[#7a756e] mb-6">{message}</p>
-            <button
+            {/* <button
               onClick={() => navigate("/client/subscribe")}
               className="px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors"
             >
               {t("payment.buttons.tryAgain")}
-            </button>
+            </button> */}
           </div>
         )}
       </div>
