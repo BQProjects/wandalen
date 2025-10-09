@@ -3,6 +3,7 @@ const SessionStoreModel = require("../models/sessionStoreModel.js");
 const SubscriptionModel = require("../models/subscriptionModel");
 const ClientModel = require("../models/clientModel");
 const VolunteerModel = require("../models/volunteerModel");
+const OrgModel = require("../models/orgModel");
 const crypto = require("crypto");
 const axios = require("axios");
 const { sendEmail, emailTemplates } = require("../services/emailService");
@@ -218,10 +219,113 @@ const unsubscribe = async (req, res) => {
   }
 };
 
+const sendForgotPasswordOtp = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if user exists in any model
+    let user = await ClientModel.findOne({ email });
+    let userType = "client";
+    if (!user) {
+      user = await VolunteerModel.findOne({ email });
+      userType = "volunteer";
+    }
+    if (!user) {
+      user = await OrgModel.findOne({ email });
+      userType = "org";
+    }
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Delete any existing OTP records for this email
+    await smsStoreModel.deleteMany({ email });
+
+    // Generate new OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store new OTP with type for forgot password
+    const store = new smsStoreModel({
+      email,
+      otp,
+      who: user._id,
+      type: "forgot-password",
+    });
+    await store.save();
+
+    // Send OTP via email
+    try {
+      await sendEmail(
+        email,
+        "Password Reset OTP - Virtual Wandlen",
+        emailTemplates.forgotPasswordOtpEmail(otp)
+      );
+      console.log(`Forgot password OTP sent to ${email}: ${otp}`);
+    } catch (emailError) {
+      console.error("Error sending forgot password OTP email:", emailError);
+    }
+
+    res.json({ message: "OTP sent to your email for password reset" });
+  } catch (error) {
+    console.error("Error sending forgot password OTP:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  try {
+    // Find the OTP record
+    const record = await smsStoreModel
+      .findOne({ email, type: "forgot-password" })
+      .sort({ createdAt: -1 });
+    if (
+      !record ||
+      record.otp !== otp ||
+      Date.now() > record.createdAt.getTime() + 5 * 60 * 1000
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    // Find user in any model
+    let user = await ClientModel.findOne({ email });
+    let UserModel = ClientModel;
+    if (!user) {
+      user = await VolunteerModel.findOne({ email });
+      UserModel = VolunteerModel;
+    }
+    if (!user) {
+      user = await OrgModel.findOne({ email });
+      UserModel = OrgModel;
+    }
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Hash the new password
+    const bcrypt = require("bcrypt");
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password
+    await UserModel.findByIdAndUpdate(user._id, { password: hashedPassword });
+
+    // Delete the OTP record
+    await smsStoreModel.findByIdAndDelete(record._id);
+
+    res.json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   verifyOtp,
   resendOtp,
   subscribe,
   getAllSubscriptions,
   unsubscribe,
+  sendForgotPasswordOtp,
+  resetPassword,
 };

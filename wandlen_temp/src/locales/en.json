@@ -65,11 +65,88 @@
         },
         "chat": {
             "title": "Chat with Virtueel Wandelen",
-            "greeting": "Hello! Welcome to Virtueel Wandelen. How can we assist you with virtual walking experiences today?",
-            "userMessage": "I'm interested in learning more about your services.",
-            "response": "Great! We offer immersive virtual walks through beautiful landscapes. Would you like to schedule a demo or get a quote?",
-            "placeholder": "Type your message...",
-            "send": "Send"
+            "greeting": "Hello! I'm Vw, your virtual assistant for Virtueel Wandelen. 👋\n\nI'm happy to help with all your questions. How can I assist you?",
+            "typing": "Vw is typing...",
+            "menu": {
+                "aboutVW": "📖 Tell me about Virtueel Wandelen",
+                "login": "🔐 Login & Account",
+                "usage": "🎯 Usage & Features",
+                "pricing": "💰 Prices & Subscriptions",
+                "support": "🛠️ Technical support",
+                "backToMenu": "↩️ Back to main menu",
+                "moreOptions": "More options →",
+                "back": "← Back"
+            },
+            "aboutVW": {
+                "message": "Virtueel Wandelen is a unique platform that brings the beauty of nature indoors! 🌿\n\nWith recognizable nature videos from the area, we let residents, clients and participants enjoy peace, recognition and wonder — right from their chair or bed.\n\nWant to know more?",
+                "forWhom": "Who is this for?",
+                "newVideos": "How often are there new videos?",
+                "whatsDifferent": "What makes you different?"
+            },
+            "login": {
+                "message": "I'm happy to help you with logging in! 🔐\n\nWhat would you like to know?",
+                "howToLogin": "How do I log in?",
+                "forgotPassword": "I forgot my password",
+                "loginSteps": "Great, let me explain! 📱\n\n1. Go to virtueelwandelen.nl\n2. Click 'Login' at the top right\n3. Enter your username and password (received by email)\n\nWe use 2FA (two-factor authentication) for extra security. When logging in on a new device, you'll receive a verification code by email.\n\nAny other questions?",
+                "forgotPasswordSteps": "No problem, that can happen to anyone! ✉️\n\nFollow these steps:\n1. Go to the login page\n2. Click 'Forgot password'\n3. You'll receive an email with a link\n4. Create a new password through that link\n\nDoesn't work? Contact your organization or our support team."
+            },
+            "usage": {
+                "message": "I'm happy to help with using Virtueel Wandelen! 🎯\n\nChoose a topic:",
+                "message2": "More information about usage:",
+                "whatsDifferent": "What makes you different?",
+                "worksOnTV": "Does it work on TV?",
+                "homeUse": "Can I use it at home?",
+                "beleefbox": "What is the Beleefbox?",
+                "howToUseBeleefbox": "How do I use the Beleefbox?",
+                "requestWalk": "Request walks?",
+                "activities": "Use during activities",
+                "dementiaTips": "Tips for people with dementia",
+                "videoLength": "How long are the videos?",
+                "multipleViewers": "Can multiple people watch?",
+                "differentMessage": "Great question! Here's why Virtueel Wandelen is unique: 🌟\n\n✓ Recognizable Dutch locations\n✓ Calm videos without ads or stimuli\n✓ Specially designed for people with dementia\n✓ Residents can submit walk requests\n✓ Personal approach\n\nThat makes us different from other platforms!",
+                "tvMessage": "Yes, absolutely! 📺\n\nVirtueel Wandelen works on:\n• Smart TVs\n• Laptops\n• Tablets\n• Smartphones\n\nAs long as you have internet and can open a browser, you can enjoy our nature walks!",
+                "homeUseMessage": "Certainly! 🏠\n\nYou can purchase a personal subscription for home use. You have the choice of:\n• Monthly subscription\n• Annual subscription (with discount)\n\nWould you like to know more about pricing?",
+                "beleefboxMessage": "The Beleefbox is truly special! 📦✨\n\nIt's a sensory nature experience box with:\n• Scent sachets\n• Pine cones\n• Nature photo cards\n• Herbs\n• Other natural elements\n\nThese make the nature walk even more vivid and bring back beautiful memories!",
+                "howToUseBeleefboxMessage": "Good question! Here are some tips for the Beleefbox: 🌿\n\n• Use during or after watching a walk\n• Let people smell, feel and experience\n• Share memories that come up\n• Perfect conversation starter\n\nIt often creates beautiful, relaxed moments!",
+                "requestWalkMessage": "Yes, you can! 🗺️\n\nThrough the platform, caregivers and family members can submit a request for a specific environment or natural place that is meaningful.\n\nWe do our best to fulfill as many requests as possible. That's how we make it truly personal!",
+                "activitiesMessage": "Virtueel Wandelen is super versatile! 🎨\n\nUse it as:\n• Starting point for activities\n• Watch together and share memories\n• Inspiration for crafts or movement\n• Quiet moment during/after meals\n• Relaxation during unrest\n\nThe possibilities are endless!",
+                "dementiaTipsMessage": "Of course! Here are our tips: 💚\n\n✓ Choose recognizable places\n✓ Let people tell what they see\n✓ Use shorter videos (approx. 22 minutes)\n✓ Repetition works well\n✓ Watching the same walk multiple times provides calm\n\nRecognition and repetition are very valuable!",
+                "videoLengthMessage": "Good question! ⏱️\n\nWe usually make 2 versions of each route:\n• Short version: ±20 minutes\n• Long version: ±45 minutes\n\nSo you can choose what fits best!",
+                "multipleViewersMessage": "Absolutely! 👥\n\nYou can use it in multiple ways:\n• Together on a large screen in the living room\n• Group activity at day care\n• Individually on own tablet\n\nExperience together or enjoy alone - both work!"
+            },
+            "pricing": {
+                "message": "Let's talk about pricing! 💰\n\nWhat would you like to know?",
+                "organizations": "What does it cost for organizations?",
+                "requestQuote": "Request a quote",
+                "homeSubscription": "Home subscription?",
+                "organizationsMessage": "Good question! 📊\n\nThe price depends on:\n• The number of residents at your location\n• We use tiered pricing\n• More users means better rates!\n\nWant a custom quote? Fill out the quote form on our website and we'll quickly provide you with a suitable proposal!",
+                "requestQuoteMessage": "Perfect! 📝\n\nFill out the quote form on our website and we'll contact you as soon as possible for a personal proposal.\n\nAny other questions?"
+            },
+            "support": {
+                "message": "I'm happy to help with technical questions! 🛠️\n\nWhat are you experiencing?",
+                "videoNotStarting": "Video won't start",
+                "needInternet": "Internet needed?",
+                "browsers": "Which browsers work?",
+                "videoNotStartingMessage": "Sorry the video won't start! Let's fix that: 🔧\n\n1. Check your internet connection\n2. Refresh the page (F5)\n3. Still not working? Try Chrome or Edge\n4. Clearing cache can also help\n\nStill not working? Contact our support!",
+                "needInternetMessage": "Yes, internet is necessary! 🌐\n\nVirtueel Wandelen is an online streaming platform, so you need an internet connection to watch the videos.\n\nEnsure a stable connection for the best experience!",
+                "browsersMessage": "For the best experience we recommend: 💻\n\n✓ Google Chrome (best option)\n✓ Microsoft Edge (also great)\n✓ Safari (Mac/iOS)\n✓ Firefox\n\nChrome and Edge work smoothest with all features!",
+                "technicalProblems": "Technical problems?"
+            },
+            "target": {
+                "message": "Virtueel Wandelen is specially developed for: 💚\n\n• People with limited mobility\n• Residents of care facilities\n• People with dementia\n• Anyone who needs recognizable nature experiences\n\nSo basically for everyone who wants to enjoy nature, but can't always go there!",
+                "dementiaTips": "Tips for dementia?",
+                "aboutVW": "What is Virtueel Wandelen?"
+            },
+            "newVideos": {
+                "message": "We keep growing! 🌲\n\nEvery month we add new nature walks. These are filmed at recognizable places in the Netherlands.\n\nWe started in Overijssel and are now expanding to other provinces. So the offer keeps growing and stays current!\n\nDo you have a special location request?",
+                "requestWalk": "Yes, request a walk",
+                "videoLength": "How long are the videos?"
+            },
+            "actions": {
+                "moreUsageQuestions": "More usage questions",
+                "aboutPricing": "Yes, tell me about pricing",
+                "howToUseBox": "How do I use the box?"
+            }
         }
     },
     "subscribeCard": {
@@ -809,7 +886,7 @@
                 "organizationTargetGroup": "Organization & Target Group",
                 "virtualWalkingUse": "Use of Virtual Walking",
                 "extraInfo": "Extra information",
-                "quotationSetup": "Quotation & set-up fee"
+                "quotationSetup": "Quotation & Newsletter"
             },
             "labels": {
                 "organizationName": "Organization Name",
@@ -1025,7 +1102,7 @@
         "upgradePlan": "Upgrade Plan",
         "cancelSubscription": "Cancel Subscription",
         "closeAccount": "Close Your Account",
-        "closeAccountDescription": "To close your account, first move any remaining sites to Trash. If your site has any Premium Plans or domains connected, you'll need to cancel or transfer them first.",
+        "closeAccountDescription": "To close your account, you must first cancel your subscription.",
         "closeAccountButton": "Close Your Account",
         "saveChanges": "Save Changes",
         "cancel": "Cancel",
@@ -1147,8 +1224,17 @@
         "accountClosedSuccess": "Your account has been closed successfully",
         "accountCloseError": "Failed to close account. Please try again."
     },
+    "otp": {
+        "title": "Verify your code",
+        "subtitle": "We have sent a security code to your email address. Enter the code below to continue.",
+        "testOtp": "Test OTP:",
+        "otpLabel": "OTP",
+        "otpPlaceholder": "enter security code",
+        "verifyButton": "Verify",
+        "resendButton": "resend security code"
+    },
     "volunteerHome": {
-        "welcome": "Welcome to Virtual Wandelen!",
+        "welcome": "Welkom bij Virtueel Wandelen!",
         "heroTitle": "Bring Nature to Those Who Can't Walk",
         "heroDescription": "Capture, share, and upload calming nature videos to brighten the day of seniors and people with dementia.",
         "recentlyCreated": "Recently Created by You",

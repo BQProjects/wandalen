@@ -22,6 +22,246 @@ import { useTranslation } from "react-i18next";
 const MessageUs = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      type: "bot",
+      text: t("aran.chat.greeting"),
+    },
+  ]);
+  const [currentNode, setCurrentNode] = useState("start");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const chatFlow = {
+    start: {
+      message: t("aran.chat.greeting"),
+      options: [
+        { label: t("aran.chat.menu.aboutVW"), next: "q1" },
+        { label: t("aran.chat.menu.login"), next: "login" },
+        { label: t("aran.chat.menu.usage"), next: "usage" },
+        { label: t("aran.chat.menu.pricing"), next: "pricing" },
+        { label: t("aran.chat.menu.support"), next: "support" },
+      ],
+    },
+    q1: {
+      message: t("aran.chat.aboutVW.message"),
+      options: [
+        { label: t("aran.chat.aboutVW.forWhom"), next: "q4" },
+        { label: t("aran.chat.aboutVW.newVideos"), next: "q5" },
+        { label: t("aran.chat.aboutVW.whatsDifferent"), next: "q3_diff" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    login: {
+      message: t("aran.chat.login.message"),
+      options: [
+        { label: t("aran.chat.login.howToLogin"), next: "q2" },
+        { label: t("aran.chat.login.forgotPassword"), next: "q6" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q2: {
+      message: t("aran.chat.login.loginSteps"),
+      options: [
+        { label: t("aran.chat.login.forgotPassword") + "?", next: "q6" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q6: {
+      message: t("aran.chat.login.forgotPasswordSteps"),
+      options: [
+        { label: t("aran.chat.login.howToLogin") + "?", next: "q2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    usage: {
+      message: t("aran.chat.usage.message"),
+      options: [
+        { label: t("aran.chat.usage.whatsDifferent"), next: "q3_diff" },
+        { label: t("aran.chat.usage.worksOnTV"), next: "q7" },
+        { label: t("aran.chat.usage.homeUse"), next: "q8" },
+        { label: t("aran.chat.usage.beleefbox"), next: "q9" },
+        { label: t("aran.chat.menu.moreOptions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    usage2: {
+      message: t("aran.chat.usage.message2"),
+      options: [
+        { label: t("aran.chat.usage.howToUseBeleefbox"), next: "q10" },
+        { label: t("aran.chat.usage.requestWalk"), next: "q11" },
+        { label: t("aran.chat.usage.activities"), next: "q12" },
+        { label: t("aran.chat.usage.dementiaTips"), next: "q13" },
+        { label: t("aran.chat.usage.videoLength"), next: "q14" },
+        { label: t("aran.chat.usage.multipleViewers"), next: "q15" },
+        { label: t("aran.chat.menu.back"), next: "usage" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q3_diff: {
+      message: t("aran.chat.usage.differentMessage"),
+      options: [
+        { label: t("aran.chat.aboutVW.forWhom"), next: "q4" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q7: {
+      message: t("aran.chat.usage.tvMessage"),
+      options: [
+        { label: t("aran.chat.support.browsers"), next: "q18" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q8: {
+      message: t("aran.chat.usage.homeUseMessage"),
+      options: [
+        { label: t("aran.chat.actions.aboutPricing"), next: "pricing" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q9: {
+      message: t("aran.chat.usage.beleefboxMessage"),
+      options: [
+        { label: t("aran.chat.actions.howToUseBox"), next: "q10" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q10: {
+      message: t("aran.chat.usage.howToUseBeleefboxMessage"),
+      options: [
+        { label: t("aran.chat.usage.beleefbox") + "?", next: "q9" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q11: {
+      message: t("aran.chat.usage.requestWalkMessage"),
+      options: [
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q12: {
+      message: t("aran.chat.usage.activitiesMessage"),
+      options: [
+        { label: t("aran.chat.usage.dementiaTips") + "?", next: "q13" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q13: {
+      message: t("aran.chat.usage.dementiaTipsMessage"),
+      options: [
+        { label: t("aran.chat.target.aboutVW") + "?", next: "q4" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q14: {
+      message: t("aran.chat.usage.videoLengthMessage"),
+      options: [
+        { label: t("aran.chat.aboutVW.newVideos") + "?", next: "q5" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q15: {
+      message: t("aran.chat.usage.multipleViewersMessage"),
+      options: [
+        { label: t("aran.chat.usage.worksOnTV") + "?", next: "q7" },
+        { label: t("aran.chat.actions.moreUsageQuestions"), next: "usage2" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    pricing: {
+      message: t("aran.chat.pricing.message"),
+      options: [
+        { label: t("aran.chat.pricing.organizations"), next: "q19" },
+        { label: t("aran.chat.pricing.requestQuote"), next: "offer" },
+        { label: t("aran.chat.pricing.homeSubscription"), next: "q8" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q19: {
+      message: t("aran.chat.pricing.organizationsMessage"),
+      options: [
+        { label: t("aran.chat.pricing.requestQuote"), next: "offer" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    offer: {
+      message: t("aran.chat.pricing.requestQuoteMessage"),
+      options: [
+        { label: t("aran.chat.pricing.organizations") + "?", next: "q19" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    support: {
+      message: t("aran.chat.support.message"),
+      options: [
+        { label: t("aran.chat.support.videoNotStarting"), next: "q16" },
+        { label: t("aran.chat.support.needInternet"), next: "q17" },
+        { label: t("aran.chat.support.browsers"), next: "q18" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q16: {
+      message: t("aran.chat.support.videoNotStartingMessage"),
+      options: [
+        { label: t("aran.chat.support.browsers") + "?", next: "q18" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q17: {
+      message: t("aran.chat.support.needInternetMessage"),
+      options: [
+        { label: t("aran.chat.support.technicalProblems"), next: "support" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q18: {
+      message: t("aran.chat.support.browsersMessage"),
+      options: [
+        { label: t("aran.chat.support.videoNotStarting") + "?", next: "q16" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q4: {
+      message: t("aran.chat.target.message"),
+      options: [
+        { label: t("aran.chat.target.dementiaTips"), next: "q13" },
+        { label: t("aran.chat.target.aboutVW"), next: "q1" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+    q5: {
+      message: t("aran.chat.newVideos.message"),
+      options: [
+        { label: t("aran.chat.newVideos.requestWalk"), next: "q11" },
+        { label: t("aran.chat.newVideos.videoLength"), next: "q14" },
+        { label: t("aran.chat.menu.backToMenu"), next: "start" },
+      ],
+    },
+  };
+
+  // Scroll chat to bottom automatically
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleOptionClick = (option) => {
+    const next = chatFlow[option.next];
+    setMessages((prev) => [...prev, { type: "user", text: option.label }]);
+    setIsTyping(true);
+
+    setTimeout(() => {
+      setMessages((prev) => [...prev, { type: "bot", text: next.message }]);
+      setCurrentNode(option.next);
+      setIsTyping(false);
+    }, 1000);
+  };
 
   return (
     <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
@@ -60,43 +300,55 @@ const MessageUs = () => {
               </button>
             </div>
             <div className="flex-1 p-3 sm:p-4 overflow-y-auto bg-gray-50">
-              <div className="mb-3 sm:mb-4">
-                <div className="flex items-start">
-                  <div className="bg-[#5b6502] text-white p-2 sm:p-3 rounded-lg max-w-xs">
-                    <p className="text-xs sm:text-sm">
-                      {t("aran.chat.greeting")}
-                    </p>
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`mb-3 sm:mb-4 ${
+                    msg.type === "user" ? "text-right" : ""
+                  }`}
+                >
+                  <div
+                    className={`flex items-start ${
+                      msg.type === "user" ? "justify-end" : ""
+                    }`}
+                  >
+                    <div
+                      className={`p-2 sm:p-3 rounded-lg max-w-xs ${
+                        msg.type === "bot"
+                          ? "bg-[#5b6502] text-white"
+                          : "bg-gray-200 text-gray-800"
+                      }`}
+                    >
+                      <p className="text-xs sm:text-sm whitespace-pre-line">
+                        {msg.text}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="mb-3 sm:mb-4 text-right">
-                <div className="bg-gray-200 text-gray-800 p-2 sm:p-3 rounded-lg max-w-xs inline-block">
-                  <p className="text-xs sm:text-sm">
-                    {t("aran.chat.userMessage")}
-                  </p>
-                </div>
-              </div>
-              <div className="mb-3 sm:mb-4">
-                <div className="flex items-start">
-                  <div className="bg-[#5b6502] text-white p-2 sm:p-3 rounded-lg max-w-xs">
-                    <p className="text-xs sm:text-sm">
-                      {t("aran.chat.response")}
-                    </p>
+              ))}
+              {isTyping && (
+                <div className="mb-3 sm:mb-4">
+                  <div className="flex items-start">
+                    <div className="bg-[#5b6502] text-white p-2 sm:p-3 rounded-lg max-w-xs">
+                      <p className="text-xs sm:text-sm animate-pulse">
+                        {t("aran.chat.typing")}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
-            <div className="p-3 sm:p-4 border-t bg-white">
-              <div className="flex">
-                <input
-                  type="text"
-                  placeholder={t("aran.chat.placeholder")}
-                  className="flex-1 p-2 text-sm border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
-                />
-                <button className="bg-[#5b6502] text-white px-3 py-2 text-sm rounded-r-lg hover:bg-[#4a5501] transition-colors">
-                  {t("aran.chat.send")}
+            <div className="p-3 sm:p-4 border-t bg-white flex flex-wrap gap-2">
+              {chatFlow[currentNode].options.map((opt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleOptionClick(opt)}
+                  className="bg-[#5b6502] text-white text-xs px-2 py-1 rounded-lg hover:bg-[#4a5501] transition"
+                >
+                  {opt.label}
                 </button>
-              </div>
+              ))}
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ import TermnCondition from "../pages/website/TermnCondition";
 import Aran from "../pages/website/Aran";
 import BecomeVolunteer from "../pages/website/BecomeVolunteer";
 import ChooseYourExperience from "../pages/website/ChoseYourExperience";
+import ForgotPassword from "../pages/website/ForgotPassword";
 import HowItWorks from "../pages/volunteer/HowItWorks";
 import OurApproach from "../pages/website/OurApproach";
 import PaymentPageForIndividual from "../pages/website/PaymentPageForIndividual";
@@ -147,6 +148,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
   {
     path: "/organization/signup",

@@ -25,23 +25,86 @@ const FormInput = ({
   error,
   onInput,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <div className="flex flex-col items-start gap-2">
       <label className="text-[#381207] font-medium">
         {label}
         {required && "*"}
       </label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onInput={onInput}
-        className={`w-full h-11 px-4 rounded-lg border bg-white text-[#381207] placeholder-[#7a756e] focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:border-transparent ${
-          error ? "border-red-500" : "border-[#e5e3df]"
-        }`}
-        required={required}
-      />
+      <div className="relative w-full">
+        <input
+          type={
+            type === "password" ? (showPassword ? "text" : "password") : type
+          }
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onInput={onInput}
+          className={`w-full h-11 px-4 rounded-lg border bg-white text-[#381207] placeholder-[#7a756e] focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:border-transparent ${
+            type === "password" ? "pr-10" : ""
+          } ${error ? "border-red-500" : "border-[#e5e3df]"}`}
+          required={required}
+        />
+        {type === "password" && (
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#7a756e] hover:text-[#5b6502] transition-colors"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? (
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 3l18 18"
+                />
+              </svg>
+            )}
+          </button>
+        )}
+      </div>
       {error && <span className="text-red-500 text-sm">{error}</span>}
     </div>
   );
@@ -150,7 +213,6 @@ const PaymentPageForIndividual = () => {
     confirmPassword: "",
     firstName: "",
     surname: "",
-    function: "",
     email2: "",
     telephone: "",
     country: "",
@@ -180,10 +242,6 @@ const PaymentPageForIndividual = () => {
 
     if (!formData.surname.trim()) {
       newErrors.surname = t("payment.errors.surnameRequired");
-    }
-
-    if (!formData.function.trim()) {
-      newErrors.function = t("payment.errors.functionRequired");
     }
 
     if (!formData.email2.trim()) {
@@ -350,14 +408,6 @@ const PaymentPageForIndividual = () => {
                   value={formData.surname}
                   onChange={(value) => handleInputChange("surname", value)}
                   error={errors.surname}
-                />
-
-                <FormInput
-                  label={t("payment.form.labels.function")}
-                  placeholder={t("payment.form.placeholders.function")}
-                  value={formData.function}
-                  onChange={(value) => handleInputChange("function", value)}
-                  error={errors.function}
                 />
 
                 <FormInput

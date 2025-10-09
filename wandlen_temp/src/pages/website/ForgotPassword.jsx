@@ -1,0 +1,213 @@
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import LoginImg from "../../assets/LoginImg.png";
+import toast from "react-hot-toast";
+
+function ForgotPassword() {
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const navigate = useNavigate();
+  const { DATABASE_URL } = useContext(DatabaseContext);
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${DATABASE_URL}/utils/forgot-password-send-otp`,
+        {
+          email,
+        }
+      );
+      if (res.status === 200) {
+        toast.success("OTP sent to your email!");
+        setOtpSent(true);
+      } else {
+        toast.error("Failed to send OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      toast.error("An error occurred while sending OTP. Please try again.");
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${DATABASE_URL}/utils/forgot-password-reset`,
+        {
+          email,
+          otp,
+          newPassword,
+        }
+      );
+      if (res.status === 200) {
+        toast.success(
+          "Password reset successful! Please log in with your new password."
+        );
+        navigate("/login");
+      } else {
+        toast.error("Password reset failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast.error("An error occurred during password reset. Please try again.");
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      const res = await axios.post(
+        `${DATABASE_URL}/utils/forgot-password-send-otp`,
+        {
+          email,
+        }
+      );
+      if (res.status === 200) {
+        toast.success("OTP resent to your email!");
+      } else {
+        toast.error("Failed to resend OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      toast.error("An error occurred while resending OTP. Please try again.");
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#ede4dc]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+        {/* Image Section - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:flex justify-center items-center order-2 lg:order-1">
+          <img
+            src={LoginImg}
+            alt="Login Image"
+            className="w-full h-[100vh] object-cover"
+          />
+        </div>
+
+        {/* Form Section */}
+        <div className="flex justify-center items-center py-8 px-4 sm:px-6 md:px-8 lg:px-12 order-1 lg:order-2">
+          <form
+            onSubmit={otpSent ? handleResetPassword : handleSendOtp}
+            className="w-full max-w-md mx-auto flex flex-col justify-center items-center gap-6 sm:gap-8"
+          >
+            <div className="flex flex-col items-start gap-6 sm:gap-8 w-full">
+              {/* Header */}
+              <div className="flex flex-col items-start w-full text-center sm:text-left">
+                <h1 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2 sm:mb-3">
+                  {otpSent ? "Reset Password" : "Forgot Password"}
+                </h1>
+                <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base md:text-lg">
+                  {otpSent
+                    ? "Enter the OTP and your new password."
+                    : "Enter your email to receive a reset code."}
+                </p>
+              </div>
+
+              {/* Email Input - Always shown */}
+              <div className="flex flex-col items-start gap-2 sm:gap-3 w-full">
+                <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={otpSent}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-lg sm:text-xl focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              {/* OTP Input - Shown after OTP sent */}
+              {otpSent && (
+                <div className="flex flex-col items-start gap-2 sm:gap-3 w-full">
+                  <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
+                    OTP
+                  </label>
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-lg sm:text-xl text-center focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
+                    placeholder="Enter OTP"
+                    maxLength={6}
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                  />
+                </div>
+              )}
+
+              {/* New Password Input - Shown after OTP sent */}
+              {otpSent && (
+                <div className="flex flex-col items-start gap-2 sm:gap-3 w-full">
+                  <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
+                    placeholder="Enter new password"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full py-2.5 sm:py-3 px-4 rounded-lg bg-[#5b6502] text-white text-center font-['Poppins'] text-sm sm:text-base md:text-lg font-medium hover:bg-[#4a5201] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-offset-2"
+            >
+              {otpSent ? "Reset Password" : "Send OTP"}
+            </button>
+
+            {/* Resend OTP Link - Shown after OTP sent */}
+            {otpSent && (
+              <div className="text-center w-full">
+                <button
+                  type="button"
+                  className="text-[#5b6502] font-['Poppins'] text-sm sm:text-base font-medium hover:underline"
+                  onClick={handleResendOtp}
+                >
+                  Resend OTP
+                </button>
+              </div>
+            )}
+
+            {/* Back to Login Link */}
+            <div className="text-center w-full">
+              <button
+                type="button"
+                className="text-[#381207] font-['Poppins'] text-sm sm:text-base font-medium hover:underline"
+                onClick={() => navigate("/login")}
+              >
+                Back to Login
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Small Image for Mobile - Hidden on desktop */}
+        <div className="h-[30vh] lg:hidden order-0">
+          <img
+            src={LoginImg}
+            alt="Login"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ForgotPassword;

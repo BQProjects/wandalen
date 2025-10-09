@@ -85,7 +85,7 @@ const DawnForest = () => {
       {/* Content - Full width on mobile, half width on md+ */}
       <div className="w-full md:w-1/2 flex flex-col justify-center p-4 sm:p-6 md:p-8 py-8 md:py-16">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 md:mb-12">
+        <div className="mb-6 sm:mb-8 md:mb-28">
           <div className="text-primary font-poppins text-lg sm:text-xl md:text-2xl lg:text-[2rem] font-semibold mb-2 sm:mb-3 md:mb-4 pl-4 sm:pl-8 md:pl-14">
             {t("dawnForest.header")}
           </div>

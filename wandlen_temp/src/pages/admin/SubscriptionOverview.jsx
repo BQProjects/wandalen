@@ -60,12 +60,28 @@ const SubscriptionOverview = () => {
 
     try {
       setLoading(true);
-      // You'll need to implement the cancel endpoint or get clientId to call the existing one
-      toast.success("Subscription cancelled successfully");
-      navigate("/admin/manage-subscription");
+      const response = await axios.post(
+        `${DATABASE_URL}/client/cancel-subscription`,
+        { clientId: subscription.clientId },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Subscription cancelled successfully");
+        // Refresh the page to show updated status
+        window.location.reload();
+      } else {
+        toast.error(response.data.message || "Failed to cancel subscription");
+      }
     } catch (error) {
       console.error("Error cancelling subscription:", error);
-      toast.error("Failed to cancel subscription");
+      toast.error(
+        error.response?.data?.message || "Failed to cancel subscription"
+      );
     } finally {
       setLoading(false);
     }
@@ -160,20 +176,22 @@ const SubscriptionOverview = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="text-[#381207] font-['Poppins'] text-lg font-medium">
-                    {subscription.email ||
-                      `${subscription.firstName?.toLowerCase()}${subscription.lastName?.toLowerCase()}@example.com`}
-                  </p>
+                  <div className="flex justify-between items-center w-full">
+                    <p className="text-[#381207] font-['Poppins'] text-lg font-medium">
+                      {subscription.email ||
+                        `${subscription.firstName?.toLowerCase()}${subscription.lastName?.toLowerCase()}@example.com`}
+                    </p>
+                    <button
+                      onClick={handleCancelSubscription}
+                      disabled={loading || subscription.status === "Cancelled"}
+                      className="px-4 py-2 border border-[#2a341f] rounded-md text-[#2a341f] font-['Poppins'] hover:bg-[#2a341f] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ml-auto"
+                    >
+                      {subscription.status === "Cancelled"
+                        ? "Cancelled"
+                        : "Cancel Subscription"}
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={handleCancelSubscription}
-                  disabled={loading || subscription.status === "Cancelled"}
-                  className="px-4 py-2 border border-[#2a341f] rounded-md text-[#2a341f] font-['Poppins'] hover:bg-[#2a341f] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {subscription.status === "Cancelled"
-                    ? "Cancelled"
-                    : "Cancel Subscription"}
-                </button>
               </div>
             </div>
 

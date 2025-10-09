@@ -42,25 +42,25 @@ const emailTemplates = {
   // Volunteer signup templates
   volunteerSignupUser: (userData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Welcome to Virtueel Wandelen!</h2>
-      <p>Dear ${userData.firstName} ${userData.lastName},</p>
-      <p>Thank you for signing up as a volunteer with Virtueel Wandelen. We have received your application and our support team will get back to you soon.</p>
+      <h2 style="color: #381207;">Welkom bij Virtueel Wandelen!</h2>
+      <p>Beste ${userData.firstName} ${userData.lastName},</p>
+      <p>Bedankt voor je aanmelding als vrijwilliger bij Virtueel Wandelen. We hebben je aanmelding ontvangen en ons neemt binnenkort contact met je op.</p>
       
-      <h3 style="color: #5b6502;">Your submitted information:</h3>
+      <h3 style="color: #5b6502;">Je opgegeven gegevens:</h3>
       <ul>
-        <li><strong>Name:</strong> ${userData.firstName} ${
+        <li><strong>Naam:</strong> ${userData.firstName} ${
     userData.lastName
   }</li>
         <li><strong>Email:</strong> ${userData.email}</li>
-        <li><strong>Phone:</strong> ${
+        <li><strong>Telefoon:</strong> ${
           userData.phoneNumber || "Not provided"
         }</li>
-        <li><strong>Address:</strong> ${userData.address || "Not provided"}</li>
+        <li><strong>Adres:</strong> ${userData.address || "Not provided"}</li>
       </ul>
       
-      <p>Our team will review your application and contact you within 2-3 business days.</p>
+      <p>Ons team zal je aanmelding bekijken en binnen 2-3 werkdagen contact met je opnemen.</p>
       
-      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
+      <p>Met vriendelijke groet,<br>Tina van Virtueel Wandelen</p>
       
       <hr style="margin: 20px 0;">
       <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
@@ -540,57 +540,52 @@ const emailTemplates = {
   // Individual subscription templates
   individualSubscriptionUser: (clientData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Subscription Received - Virtueel Wandelen</h2>
-      <p>Dear ${getDisplayValue(clientData.firstName)} ${getDisplayValue(
+      <h2 style="color: #381207;">Abonnement ontvangen - Virtueel Wandelen</h2>
+      <p>Beste ${getDisplayValue(clientData.firstName)} ${getDisplayValue(
     clientData.lastName
   )},</p>
       
-      <p>Thank you for subscribing to Virtueel Wandelen! We've received your subscription and our team will process it shortly.</p>
+      <p>Bedankt voor jouw aanmelding bij Virtueel Wandelen! We hebben jouw aanmelding in goede orde ontvangen.</p>
       
-      <h3 style="color: #5b6502;">Your Subscription Details:</h3>
+      <h3 style="color: #5b6502;">Jouw abonnementsgegevens:</h3>
       <ul>
-        <li><strong>Name:</strong> ${getDisplayValue(
+        <li><strong>Naam:</strong> ${getDisplayValue(
           clientData.firstName
         )} ${getDisplayValue(clientData.lastName)}</li>
         <li><strong>Email:</strong> ${clientData.email}</li>
-        <li><strong>Company:</strong> ${getDisplayValue(
-          clientData.company
+        <li><strong>Telefoon:</strong> ${getDisplayValue(
+          clientData.phoneNo
         )}</li>
-        <li><strong>Function:</strong> ${getDisplayValue(
-          clientData.function
+        <li><strong>Abonnement:</strong> ${getDisplayValue(
+          clientData.plan
         )}</li>
-        <li><strong>Phone:</strong> ${getDisplayValue(clientData.phoneNo)}</li>
-        <li><strong>Plan:</strong> ${getDisplayValue(clientData.plan)}</li>
-        <li><strong>Subscription Type:</strong> Individual</li>
-        <li><strong>Start Date:</strong> ${
+        <li><strong>Abonnementtype:</strong> Individual</li>
+        <li><strong>Startdatum:</strong> ${
           clientData.startDate
             ? new Date(clientData.startDate).toLocaleDateString()
             : "Today"
         }</li>
-        <li><strong>End Date:</strong> ${
+        <li><strong>Einddatum:</strong> ${
           clientData.endDate
             ? new Date(clientData.endDate).toLocaleDateString()
             : "Not specified"
         }</li>
       </ul>
       
-      <h3 style="color: #5b6502;">What's Next?</h3>
-      <p>Our team will:</p>
+      <h3 style="color: #5b6502;">Wat nu?</h3>
+      <p>Je ontvangt van ons:</p>
       <ul>
-        <li>Process your subscription within 24 hours</li>
-        <li>Send you login credentials once approved</li>
-        <li>Provide access to Virtueel Wandelen's virtual walking platform</li>
-        <li>Send you onboarding materials and tutorials</li>
+        <li>Verander je wachtwoord in jouw profiel. </li>
+        <li>Directe toegang tot àlle wandelvideo’s van Virtueel Wandelen</li>
+        <li>3 mails de komende week over het gebruik en ervaren van het platform. </li>
       </ul>
       
-      <p>You'll soon be able to enjoy our immersive virtual walking experiences designed to support cognitive health and wellness.</p>
+      <p>Heeft u vragen? Neem dan gerust contact op met ons supportteam via de chat.</p>
       
-      <p>If you have any questions, please don't hesitate to contact our support team.</p>
-      
-      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Supportteam</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated confirmation. We'll be in touch soon with your account details.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische bevestiging. Je ontvangt zo direct een mail met jouw  accountgegevens.</p>
     </div>
   `,
 
@@ -652,9 +647,32 @@ const emailTemplates = {
   // OTP email template
   otpEmail: (otp) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Your OTP for Virtual Wandlen</h2>
+      <h2 style="color: #381207;">Uw eenmalig wachtwoord voor Virtueel Wandelen</h2>
+      <p>Beste gebruiker,</p>
+      <p>Je hebt een verzoek ingediend om in te loggen op jouw Virtueel Wandelen account. Gebruik het volgende eenmalige wachtwoord (verificatiecode) om jouw login te voltooien:</p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <div style="display: inline-block; padding: 15px 30px; background-color: #5b6502; color: white; font-size: 24px; font-weight: bold; border-radius: 8px; letter-spacing: 2px;">
+          ${otp}
+        </div>
+      </div>
+      
+      <p><strong>Belangrijk:</strong>Deze code is slechts 5 minuten geldig. Deel deze code met niemand.</p>
+      <p>Als je deze login niet hebt aangevraagd, dan kan je deze e-mail negeren.</p>
+      
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Support Team</p>
+      
+      <hr style="margin: 20px 0;">
+      <p style="font-size: 12px; color: #666;">Dit is een automatisch gegenereerde e-mail. Beantwoord deze e-mail niet.</p>
+    </div>
+  `,
+
+  // Forgot password OTP email template
+  forgotPasswordOtpEmail: (otp) => `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #381207;">Password Reset OTP - Virtual Wandlen</h2>
       <p>Dear User,</p>
-      <p>You have requested to log in to your Virtual Wandlen account. Please use the following One-Time Password (OTP) to complete your login:</p>
+      <p>You have requested to reset your password for your Virtual Wandlen account. Please use the following One-Time Password (OTP) to complete the password reset:</p>
       
       <div style="text-align: center; margin: 30px 0;">
         <div style="display: inline-block; padding: 15px 30px; background-color: #5b6502; color: white; font-size: 24px; font-weight: bold; border-radius: 8px; letter-spacing: 2px;">
@@ -663,7 +681,7 @@ const emailTemplates = {
       </div>
       
       <p><strong>Important:</strong> This OTP is valid for 5 minutes only. Please do not share this code with anyone.</p>
-      <p>If you did not request this login, please ignore this email.</p>
+      <p>If you did not request this password reset, please ignore this email.</p>
       
       <p>Best regards,<br>Virtual Wandlen Support Team</p>
       
@@ -674,13 +692,13 @@ const emailTemplates = {
 
   // Subscription renewal template
   subscriptionRenewed: (firstName, newEndDate) => ({
-    subject: 'Your Subscription Has Been Renewed',
+    subject: "Your Subscription Has Been Renewed",
     html: `
       <h2>Hi ${firstName},</h2>
       <p>Your subscription has been automatically renewed!</p>
       <p><strong>New expiration date:</strong> ${newEndDate.toLocaleDateString()}</p>
       <p>You can continue enjoying all premium features.</p>
-    `
+    `,
   }),
 };
 

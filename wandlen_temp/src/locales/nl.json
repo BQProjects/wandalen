@@ -65,11 +65,88 @@
         },
         "chat": {
             "title": "Chat met Virtueel Wandelen",
-            "greeting": "Hallo! Welkom bij Virtueel Wandelen. Hoe kunnen we u helpen met virtuele wandelervaringen vandaag?",
-            "userMessage": "Ik ben geïnteresseerd in meer informatie over uw diensten.",
-            "response": "Geweldig! We bieden immersieve virtuele wandelingen door prachtige landschappen. Wilt u een demo plannen of een offerte ontvangen?",
-            "placeholder": "Typ uw bericht...",
-            "send": "Verstuur"
+            "greeting": "Hallo! Ik ben Vw, jouw virtuele assistent voor Virtueel Wandelen. 👋\n\nIk help je graag met al je vragen. Waar kan ik je mee helpen?",
+            "typing": "Vw is aan het typen...",
+            "menu": {
+                "aboutVW": "📖 Vertel me over Virtueel Wandelen",
+                "login": "🔐 Inloggen & Account",
+                "usage": "🎯 Gebruik & Functies",
+                "pricing": "💰 Prijzen & Abonnementen",
+                "support": "🛠️ Technische hulp",
+                "backToMenu": "↩️ Terug naar hoofdmenu",
+                "moreOptions": "Meer opties →",
+                "back": "← Terug"
+            },
+            "aboutVW": {
+                "message": "Virtueel Wandelen is een uniek platform dat de schoonheid van de natuur naar binnen brengt! 🌿\n\nMet herkenbare natuurvideo's uit de omgeving laten we bewoners, cliënten en deelnemers genieten van rust, herkenning en verwondering — gewoon vanaf hun stoel of bed.\n\nWil je meer weten?",
+                "forWhom": "Voor wie is dit bedoeld?",
+                "newVideos": "Hoe vaak zijn er nieuwe video's?",
+                "whatsDifferent": "Wat maakt jullie anders?"
+            },
+            "login": {
+                "message": "Ik help je graag met inloggen! 🔐\n\nWat wil je weten?",
+                "howToLogin": "Hoe log ik in?",
+                "forgotPassword": "Ik ben mijn wachtwoord vergeten",
+                "loginSteps": "Super, ik leg het even uit! 📱\n\n1. Ga naar virtueelwandelen.nl\n2. Klik rechtsboven op 'Inloggen'\n3. Vul je gebruikersnaam en wachtwoord in (deze heb je per mail ontvangen)\n\nWe werken met 2FA (tweefactorauthenticatie) voor extra beveiliging. Bij inloggen op een nieuw apparaat ontvang je een verificatiecode per mail.\n\nHeb je nog andere vragen?",
+                "forgotPasswordSteps": "Geen probleem, dat kan iedereen overkomen! ✉️\n\nVolg deze stappen:\n1. Ga naar de inlogpagina\n2. Klik op 'Wachtwoord vergeten'\n3. Je ontvangt een e-mail met een link\n4. Maak via die link een nieuw wachtwoord aan\n\nLukt het niet? Neem dan contact op met je organisatie of met ons supportteam."
+            },
+            "usage": {
+                "message": "Ik help je graag met het gebruik van Virtueel Wandelen! 🎯\n\nKies een onderwerp:",
+                "message2": "Nog meer informatie over gebruik:",
+                "whatsDifferent": "Wat maakt jullie anders?",
+                "worksOnTV": "Werkt het op TV?",
+                "homeUse": "Kan ik het thuis gebruiken?",
+                "beleefbox": "Wat is de Beleefbox?",
+                "howToUseBeleefbox": "Hoe gebruik ik de Beleefbox?",
+                "requestWalk": "Wandelingen aanvragen?",
+                "activities": "Gebruik tijdens activiteiten",
+                "dementiaTips": "Tips voor mensen met dementie",
+                "videoLength": "Hoe lang zijn de video's?",
+                "multipleViewers": "Kunnen meerdere mensen kijken?",
+                "differentMessage": "Geweldige vraag! Hier is waarom Virtueel Wandelen uniek is: 🌟\n\n✓ Herkenbare Nederlandse locaties\n✓ Rustige video's zonder reclame of prikkels\n✓ Speciaal ontworpen voor mensen met dementie\n✓ Bewoners kunnen zelf wandelverzoeken indienen\n✓ Persoonlijke benadering\n\nDat maakt ons anders dan andere platforms!",
+                "tvMessage": "Ja, absoluut! 📺\n\nVirtueel Wandelen werkt op:\n• Smart TV's\n• Laptops\n• Tablets\n• Smartphones\n\nZolang je internet hebt en een browser kunt openen, kun je genieten van onze natuurwandelingen!",
+                "homeUseMessage": "Jazeker! 🏠\n\nJe kunt een persoonlijk abonnement aanschaffen voor thuisgebruik. Je hebt de keuze uit:\n• Maandabonnement\n• Jaarabonnement (met korting)\n\nWil je meer weten over de prijzen?",
+                "beleefboxMessage": "De Beleefbox is echt iets bijzonders! 📦✨\n\nHet is een zintuigelijke natuurbelevingsbox met:\n• Geurzakjes\n• Dennenappels\n• Natuurfotokaartjes\n• Kruiden\n• Andere natuurelementen\n\nDeze maken de natuurwandeling nóg levendiger en brengen mooie herinneringen naar boven!",
+                "howToUseBeleefboxMessage": "Goed dat je het vraagt! Hier zijn wat tips voor de Beleefbox: 🌿\n\n• Gebruik tijdens of na het kijken van een wandeling\n• Laat mensen ruiken, voelen en ervaren\n• Deel herinneringen die opkomen\n• Perfecte start voor een gesprek\n\nHet zorgt vaak voor mooie, ontspannen momenten!",
+                "requestWalkMessage": "Ja, dat kan! 🗺️\n\nVia het platform kunnen begeleiders en familieleden een verzoek indienen voor een specifieke omgeving of natuurplek die betekenisvol is.\n\nWe doen ons best om zoveel mogelijk verzoeken te vervullen. Zo maken we het echt persoonlijk!",
+                "activitiesMessage": "Virtueel Wandelen is super veelzijdig! 🎨\n\nGebruik het als:\n• Startpunt voor activiteiten\n• Samen kijken en herinneringen delen\n• Aanleiding voor knutselen of bewegen\n• Rustig moment tijdens/na het eten\n• Ontspanning bij onrust\n\nDe mogelijkheden zijn eindeloos!",
+                "dementiaTipsMessage": "Natuurlijk! Hier zijn onze tips: 💚\n\n✓ Kies herkenbare plekken\n✓ Laat mensen vertellen wat ze zien\n✓ Gebruik kortere video's (ca. 22 minuten)\n✓ Herhaling werkt goed\n✓ Dezelfde wandeling meerdere keren kijken geeft rust\n\nHerkenning en herhaling zijn heel waardevol!",
+                "videoLengthMessage": "Goede vraag! ⏱️\n\nVan elke route maken we meestal 2 versies:\n• Korte versie: ±20 minuten\n• Lange versie: ±45 minuten\n\nZo kun je zelf kiezen wat het beste past!",
+                "multipleViewersMessage": "Absoluut! 👥\n\nJe kunt het op meerdere manieren gebruiken:\n• Samen op groot scherm in de huiskamer\n• Groepsactiviteit bij dagbesteding\n• Individueel op eigen tablet\n\nSamen beleven of alleen genieten - allebei kan!"
+            },
+            "pricing": {
+                "message": "Laten we het over prijzen hebben! 💰\n\nWat wil je weten?",
+                "organizations": "Wat kost het voor organisaties?",
+                "requestQuote": "Offerte aanvragen",
+                "homeSubscription": "Thuis abonnement?",
+                "organizationsMessage": "Goed dat je vraagt! 📊\n\nDe prijs is afhankelijk van:\n• Het aantal bewoners op je locatie\n• We hanteren staffelkorting\n• Hoe meer gebruikers, hoe voordeliger!\n\nWil je een op maat gemaakte offerte? Vul dan het offerteformulier in op onze website en we voorzien je snel van een passend voorstel!",
+                "requestQuoteMessage": "Perfect! 📝\n\nVul het offerteformulier in op onze website en we nemen zo snel mogelijk contact met je op voor een persoonlijk voorstel.\n\nHeb je nog andere vragen?"
+            },
+            "support": {
+                "message": "Ik help je graag met technische vragen! 🛠️\n\nWaar loop je tegenaan?",
+                "videoNotStarting": "Video start niet",
+                "needInternet": "Internet nodig?",
+                "browsers": "Welke browsers werken?",
+                "videoNotStartingMessage": "Vervelend dat de video niet start! Laten we dat oplossen: 🔧\n\n1. Controleer je internetverbinding\n2. Vernieuw de pagina (F5)\n3. Nog steeds niet? Probeer Chrome of Edge\n4. Cache legen kan ook helpen\n\nWerkt het nog niet? Neem dan contact op met onze support!",
+                "needInternetMessage": "Ja, internet is noodzakelijk! 🌐\n\nVirtueel Wandelen is een online streamingplatform, dus je hebt een internetverbinding nodig om de video's te kunnen bekijken.\n\nZorg voor een stabiele verbinding voor de beste ervaring!",
+                "browsersMessage": "Voor de beste ervaring raden we aan: 💻\n\n✓ Google Chrome (beste optie)\n✓ Microsoft Edge (ook prima)\n✓ Safari (Mac/iOS)\n✓ Firefox\n\nChrome en Edge werken het soepelst met alle functies!",
+                "technicalProblems": "Technische problemen?"
+            },
+            "target": {
+                "message": "Virtueel Wandelen is speciaal ontwikkeld voor: 💚\n\n• Mensen die minder mobiel zijn\n• Bewoners van zorginstellingen\n• Mensen met dementie\n• Iedereen met behoefte aan herkenbare natuurbeleving\n\nDus eigenlijk voor iedereen die wil genieten van de natuur, maar er niet altijd naartoe kan!",
+                "dementiaTips": "Tips voor dementie?",
+                "aboutVW": "Wat is Virtueel Wandelen?"
+            },
+            "newVideos": {
+                "message": "We blijven groeien! 🌲\n\nElke maand voegen we nieuwe natuurwandelingen toe. Deze worden opgenomen op herkenbare plekken in Nederland.\n\nWe zijn begonnen in Overijssel en breiden nu uit naar andere provincies. Zo blijft het aanbod actueel en gevarieerd!\n\nHeb je een speciaal verzoek voor een locatie?",
+                "requestWalk": "Ja, wandeling aanvragen",
+                "videoLength": "Hoe lang zijn de video's?"
+            },
+            "actions": {
+                "moreUsageQuestions": "Meer gebruiksvragen",
+                "aboutPricing": "Ja, vertel over prijzen",
+                "howToUseBox": "Hoe gebruik ik de box?"
+            }
         }
     },
     "dawnForest": {
@@ -809,7 +886,7 @@
                 "extraInfo": "Extra informatie",
                 "organizationTargetGroup": "Organisatie & Doelgroep",
                 "virtualWalkingUse": "Gebruik van Virtueel Wandelen",
-                "quotationSetup": "Offerte & opstartkosten"
+                "quotationSetup": "Offerte & nieuwsbrief"
             },
             "labels": {
                 "organizationName": "Organisatie naam",
@@ -1019,7 +1096,7 @@
         "upgradePlan": "Abonnement upgraden",
         "cancelSubscription": "Abonnement opzeggen",
         "closeAccount": "Account sluiten",
-        "closeAccountDescription": "Om je account te sluiten, verplaats eerst alle resterende sites naar de prullenbak. Als je site Premium-abonnementen of verbonden domeinen heeft, moet je deze eerst annuleren of overdragen.",
+        "closeAccountDescription": "Om je account te sluiten, moet je eerst je abonnement opzeggen.",
         "closeAccountButton": "Account sluiten",
         "saveChanges": "Wijzigingen opslaan",
         "cancel": "Annuleren",
@@ -1098,7 +1175,7 @@
         "closeAccountConfirmError": "Typ 'sluit mijn account' exact zoals weergegeven",
         "accountClosedSuccess": "Uw account is succesvol gesloten",
         "accountCloseError": "Kan account niet sluiten. Probeer het opnieuw.",
-        "cancelTrialWarning": "Waarschuwing: U bent in de proefperiode. Annuleren zal uw account onmiddellijk verwijderen. Wilt u doorgaan?",
+        "cancelTrialWarning": "Waarschuwing: Je bevindt je in de proefperiode. Als je nu annuleert wordt je account onmiddellijk verwijderen. Wil je doorgaan?",
         "cancelPaidWarning": "Uw abonnement wordt geannuleerd, maar uw account blijft actief tot het einde van uw huidige factureringsperiode. Wilt u doorgaan?",
         "accountDeletedDuringTrial": "Uw account is succesvol verwijderd.",
         "subscriptionCancelled": "Abonnement succesvol geannuleerd.",
@@ -1106,12 +1183,21 @@
         "subscriptionCancelledNotice": "Uw abonnement is geannuleerd. Uw account blijft actief tot:",
         "trialPeriodNotice": "U bent momenteel in uw gratis proefperiode tot:"
     },
+    "otp": {
+        "title": "Controleer uw code",
+        "subtitle": "We hebben een beveiligingscode naar uw e-mailadres gestuurd. Vul de code hieronder in om verder te gaan.",
+        "testOtp": "Test OTP:",
+        "otpLabel": "OTP",
+        "otpPlaceholder": "voer beveiliginscode in",
+        "verifyButton": "Verifiéren",
+        "resendButton": "beveiligingscode opnieuw verzenden"
+    },
     "volunteerHome": {
         "welcome": "Welkom bij Virtual Wandelen!",
         "heroTitle": "Breng Natuur naar Degenen Die Niet Kunnen Lopen",
         "heroDescription": "Leg vast, deel en upload kalmerende natuurvideo's om de dag op te fleuren van ouderen en mensen met dementie.",
-        "recentlyCreated": "Recent Door U Gemaakt",
-        "recentlyCreatedSubtitle": "Bekijk, bewerk en volg de impact van uw video's.",
+        "recentlyCreated": "Recent door U jou Ggemaakt",
+        "recentlyCreatedSubtitle": "Bekijk, bewerk en volg de impact van jouw video's.",
         "locationRequestForm": "Locatie Aanvraag Formulier",
         "locationRequestSubtitle": "Selecteer en voeg leden toe uit dit offerteverzoek.",
         "allPatients": "Alle Patiënten",

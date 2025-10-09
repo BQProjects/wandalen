@@ -4,9 +4,11 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import LoginImg from "../../assets/LoginImg.png";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 const Otp = () => {
+  const { t } = useTranslation();
   const [otp, setOtp] = useState("");
   const { email } = useParams();
   const navigate = useNavigate();
@@ -139,15 +141,15 @@ const Otp = () => {
               {/* Header */}
               <div className="flex flex-col items-start w-full text-center sm:text-left">
                 <h1 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2 sm:mb-3">
-                  Verify OTP
+                  {t("otp.title")}
                 </h1>
                 <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base md:text-lg">
-                  Enter the OTP sent to your email.
+                  {t("otp.subtitle")}
                 </p>
                 {/* Display OTP for testing if received */}
                 {receivedOtp && (
                   <div className="text-[#381207] font-['Poppins'] text-sm sm:text-base mt-2 p-2 bg-[#f0ebe7] rounded">
-                    <strong>Test OTP:</strong> {receivedOtp}
+                    <strong>{t("otp.testOtp")}</strong> {receivedOtp}
                   </div>
                 )}
               </div>
@@ -155,7 +157,7 @@ const Otp = () => {
               {/* OTP Input */}
               <div className="flex flex-col items-start gap-2 sm:gap-3 w-full">
                 <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
-                  OTP
+                  {t("otp.otpLabel")}
                 </label>
                 <input
                   type="text"
@@ -163,7 +165,7 @@ const Otp = () => {
                   onChange={(e) => setOtp(e.target.value)}
                   required
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-lg sm:text-xl text-center focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
-                  placeholder="Enter OTP"
+                  placeholder={t("otp.otpPlaceholder")}
                   maxLength={6}
                   inputMode="numeric"
                   autoComplete="one-time-code"
@@ -176,7 +178,7 @@ const Otp = () => {
               type="submit"
               className="w-full py-2.5 sm:py-3 px-4 rounded-lg bg-[#5b6502] text-white text-center font-['Poppins'] text-sm sm:text-base md:text-lg font-medium hover:bg-[#4a5201] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-offset-2"
             >
-              Verify
+              {t("otp.verifyButton")}
             </button>
 
             {/* Resend OTP Link */}
@@ -186,7 +188,7 @@ const Otp = () => {
                 className="text-[#5b6502] font-['Poppins'] text-sm sm:text-base font-medium hover:underline"
                 onClick={handleResendOtp}
               >
-                Resend OTP
+                {t("otp.resendButton")}
               </button>
             </div>
           </form>
