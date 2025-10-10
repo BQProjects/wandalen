@@ -117,22 +117,36 @@ const BecomeVolunteer = () => {
               </div>
 
               <div className="space-y-6">
-                {t("becomeVolunteer.benefits.benefits", {
-                  returnObjects: true,
-                }).map((benefit, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-3 py-3 border-b border-border/20"
-                  >
-                    <Check
-                      className="text-primary mt-1 flex-shrink-0"
-                      size={24}
-                    />
-                    <p className="text-lg leading-relaxed font-['Poppins']">
-                      {benefit}
-                    </p>
-                  </div>
-                ))}
+                {(() => {
+                  const benefits = t("becomeVolunteer.benefits.benefits", {
+                    returnObjects: true,
+                  });
+                  const benefitsHeadings = t(
+                    "becomeVolunteer.benefits.benefitsHeading",
+                    {
+                      returnObjects: true,
+                    }
+                  );
+                  return benefits.map((benefit, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 py-3 border-b border-border/20"
+                    >
+                      <Check
+                        className="text-primary mt-1 flex-shrink-0"
+                        size={24}
+                      />
+                      <div>
+                        <h3 className="text-2xl font-['Poppins'] font-semibold mb-2 text-primary">
+                          {benefitsHeadings[index]}
+                        </h3>
+                        <p className="text-lg leading-relaxed font-['Poppins']">
+                          {benefit}
+                        </p>
+                      </div>
+                    </div>
+                  ));
+                })()}
               </div>
 
               <div className="flex flex-wrap gap-4 pt-4">

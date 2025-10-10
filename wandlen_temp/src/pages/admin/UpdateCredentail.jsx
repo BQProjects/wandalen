@@ -207,7 +207,17 @@ const UpdateCredentail = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="flex-1 bg-[#f7f6f4] p-6">
+      {/* Header Section */}
+      <div className="mb-8">
+        <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
+          Admin Account Management
+        </h1>
+        <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
+          Create and manage administrator accounts for the platform.
+        </p>
+      </div>
+
       {/* Message */}
       {message.text && (
         <div
@@ -225,19 +235,19 @@ const UpdateCredentail = () => {
       <div className="mb-8">
         <nav className="flex space-x-8">
           {[
-            { id: "create", label: "Create Admin", icon: "➕" },
-            { id: "manage", label: "Manage Admins", icon: "⚙️" },
+            { id: "create", label: "Create Admin", icon: "+" },
+            { id: "manage", label: "Manage Admins", icon: "" },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors font-['Poppins'] ${
                 activeTab === tab.id
-                  ? "bg-blue-100 text-blue-700 border border-blue-200"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  ? "bg-[#a6a643]/[.2] text-[#2a341f] border border-[#a6a643]/[.3]"
+                  : "text-[#381207] hover:bg-[#a6a643]/[.1] hover:text-[#2a341f]"
               }`}
             >
-              <span>{tab.icon}</span>
+              {tab.icon && <span className="text-lg">{tab.icon}</span>}
               {tab.label}
             </button>
           ))}
@@ -245,17 +255,17 @@ const UpdateCredentail = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="bg-white rounded-lg shadow-sm border">
+      <div className="bg-[#ede4dc]/[.30] rounded-[0.625rem] overflow-hidden">
         {/* Create Admin Tab */}
         {activeTab === "create" && (
-          <div className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          <div className="p-8">
+            <h2 className="text-2xl font-semibold text-[#381207] font-['Poppins'] mb-6">
               Create New Admin Account
             </h2>
             <form onSubmit={handleCreateAdmin} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
                     Email Address *
                   </label>
                   <input
@@ -264,13 +274,14 @@ const UpdateCredentail = () => {
                     onChange={(e) =>
                       setNewAdmin({ ...newAdmin, email: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
+                    placeholder="admin@example.com"
                     required
                   />
                 </div>
                 <div></div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
                     Password *
                   </label>
                   <input
@@ -279,13 +290,14 @@ const UpdateCredentail = () => {
                     onChange={(e) =>
                       setNewAdmin({ ...newAdmin, password: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
+                    placeholder="Enter password"
                     required
                     minLength="6"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
                     Confirm Password *
                   </label>
                   <input
@@ -297,16 +309,17 @@ const UpdateCredentail = () => {
                         confirmPassword: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
+                    placeholder="Confirm password"
                     required
                   />
                 </div>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end pt-4">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-['Poppins'] font-medium transition-colors"
                 >
                   {loading ? "Creating..." : "Create Admin Account"}
                 </button>
@@ -317,8 +330,8 @@ const UpdateCredentail = () => {
 
         {/* Manage Admins Tab */}
         {activeTab === "manage" && (
-          <div className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          <div className="p-8">
+            <h2 className="text-2xl font-semibold text-[#381207] font-['Poppins'] mb-6">
               Manage Admin Accounts
             </h2>
 
@@ -326,15 +339,15 @@ const UpdateCredentail = () => {
               {admins.map((admin) => (
                 <div
                   key={admin._id}
-                  className="border border-gray-200 rounded-lg p-4"
+                  className="bg-white rounded-lg p-6 border border-[#e5e3df] hover:bg-[#ede4dc]/[.5] transition-colors"
                 >
                   {editingAdmin === admin._id ? (
                     // Edit Form
-                    <form onSubmit={handleUpdateAdmin} className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <form onSubmit={handleUpdateAdmin} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Email
+                          <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
+                            Email Address
                           </label>
                           <input
                             type="email"
@@ -345,12 +358,12 @@ const UpdateCredentail = () => {
                                 email: e.target.value,
                               })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
                             Current Password *
                           </label>
                           <input
@@ -362,12 +375,13 @@ const UpdateCredentail = () => {
                                 currentPassword: e.target.value,
                               })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
+                            placeholder="Enter current password"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
                             New Password (optional)
                           </label>
                           <input
@@ -379,12 +393,13 @@ const UpdateCredentail = () => {
                                 password: e.target.value,
                               })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
+                            placeholder="Enter new password"
                             minLength="6"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
                             Confirm New Password
                           </label>
                           <input
@@ -396,50 +411,51 @@ const UpdateCredentail = () => {
                                 confirmPassword: e.target.value,
                               })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
+                            placeholder="Confirm new password"
                           />
                         </div>
                       </div>
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-3 pt-4">
                         <button
                           type="button"
                           onClick={handleCancelEdit}
-                          className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                          className="px-6 py-2 text-[#381207] border border-[#e5e3df] rounded-lg hover:bg-[#ede4dc]/[.5] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-offset-2 font-['Poppins'] transition-colors"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
                           disabled={loading}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-['Poppins'] font-medium transition-colors"
                         >
-                          {loading ? "Updating..." : "Update"}
+                          {loading ? "Updating..." : "Update Admin"}
                         </button>
                       </div>
                     </form>
                   ) : (
                     // Admin Info
                     <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-medium text-[#381207] font-['Poppins'] mb-1">
                           {admin.email}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[#4b4741] font-['Poppins']">
                           Created:{" "}
                           {new Date(admin.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-3 ml-6">
                         <button
                           onClick={() => handleEditAdmin(admin)}
-                          className="px-3 py-1 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          className="px-4 py-2 bg-[#dd9219] text-white rounded-lg hover:bg-[#c4a016] focus:outline-none focus:ring-2 focus:ring-[#dd9219] focus:ring-offset-2 font-['Poppins'] transition-colors"
                         >
                           Edit
                         </button>
                         {admins.length > 1 && (
                           <button
                             onClick={() => handleDeleteAdmin(admin._id)}
-                            className="px-3 py-1 text-red-600 border border-red-600 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            className="px-4 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 font-['Poppins'] transition-colors"
                           >
                             Delete
                           </button>
@@ -452,8 +468,13 @@ const UpdateCredentail = () => {
             </div>
 
             {admins.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                No admin accounts found
+              <div className="text-center py-12">
+                <div className="text-[#4b4741] font-['Poppins'] text-lg mb-2">
+                  No admin accounts found
+                </div>
+                <p className="text-[#4b4741] font-['Poppins'] text-sm">
+                  Create your first admin account using the "Create Admin" tab.
+                </p>
               </div>
             )}
           </div>

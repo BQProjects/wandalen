@@ -56,11 +56,11 @@
         },
         "secondHero": {
             "subtitle": "Digitale wandelingen in de Nederlandse natuur",
-            "description": "Stel je voor: een boswandeling over dat smalle paadje, het ruisen van bladeren door de bomen en zingende vogels. Voor veel mensen kan zo’n natuurervaring veel betekenen. Virtueel Wandelen brengt deze ervaring weer dichtbij, rechtstreeks vanuit huis of een zorgorganisatie. Het biedt rust, ontspanning èn herkenning.",
+            "description": "Stel je voor: een boswandeling over dat smalle paadje, het ruisen van bladeren door de bomen en zingende vogels. Voor meel mensen kan zo’n natuurervaring veel betekenen. Virtueel Wandelen brengt deze ervaring weer dichtbij, rechtstreeks vanuit huis of een zorgorganisatie. Het biedt rust, ontspanning èn herkenning.",
             "features": {
                 "exploreNature": "Ontdek Nederlandse natuur wandelingen",
                 "simpleViewing": "Uniek en makkelijk in gebruik",
-                "instantWatch": "Bekijk Direct met Één klik"
+                "instantWatch": "Bekijk direct met één klik"
             }
         },
         "chat": {
@@ -261,7 +261,7 @@
             ],
             "getQuote": "Offerte Aanvragen",
             "subscribeNow": "Nu Abonneren",
-            "joinVolunteer": "Doe Mee als Vrijwilliger"
+            "joinVolunteer": "Doe mee als vrijwilliger"
         },
         "tinaSection": {
             "title": "Tina - Oprichter van Virtueel Wandelen.",
@@ -304,7 +304,7 @@
         "lastNamePlaceholder": "Achternaam",
         "notesLabel": "Notities",
         "notesPlaceholder": "ik blijf graag op de hoogte van Virtueel Wandelen.",
-        "subscribeButton": "ontvang inspiratie",
+        "subscribeButton": "Ontvang inspiratie",
         "imageAlt": "Handen vasthouden in de natuur"
     },
     "requestCard": {
@@ -363,7 +363,7 @@
         }
     },
     "faq": {
-        "title": "Veelgestelde Vragen",
+        "title": "Veelgestelde vragen",
         "questions": [
             {
                 "question": "Wat is Virtueel Wandelen?",
@@ -402,12 +402,12 @@
         "description1": "Virtueel Wandelen maakt natuurbeleving toegankelijk voor iedereen, ongeacht fysieke beperkingen, en bevordert ontspanning, herkenning en welzijn met echte natuur wandeling video’s.",
         "description2": "Laagdrempelig en toegankelijk",
         "description3": "Virtueel Wandelen brengt de kracht van natuurbeleving naar mensen die minder mobiel zijn, door middel van opgenomen echte natuurvideo's uit de buurt te tonen. Met authentieke, zorgvuldig samengestelde beelden zorgen we voor ontspanning, herkenning en een positieve impact op welzijn en gezondheid. Ons doel is om natuur toegankelijk te maken voor iedereen en zo de verbinding met jezelf en mogelijk ook de buitenwereld te versterken.",
-        "ctaButton": "start jouw wandeling"
+        "ctaButton": "Start jouw wandeling"
     },
     "partnersSection": {
         "title": "Onze samenwerkende partners",
         "subtitle": "Samenwerken om mensen dichter bij de natuur te brengen, of de natuur dichter bij mensen",
-        "partner1Text": "We werken samen met 10 Natuurlijk om fysieke buitenervaringen en vergroening in de gezondheidszorg aan te moedigen.",
+        "partner1Text": "We werken samen met 10 Natuurlijk om fysieke<br /> buitenervaringen en vergroening in de gezondheidszorg<br /> aan te moedigen.",
         "partner2Title": "Stichting The Society Documents Foundation.",
         "partner2Text": "Deze stichting is gewijd aan het maken van documentaires, films en documenten met sociaal nut en met maken van impact. Evenals het behoud van immaterieel erfgoed voor toekomstige generaties. Vanuit deze stichting helpen zo’n 20 vrijwilligers om prachtige natuur wandeling video’s te maken voor ons platform."
     },
@@ -435,12 +435,18 @@
             "title": "Voordelen",
             "subtitle": "Waarom Virtueel Wandelen?",
             "benefits": [
-                "Brengt natuur veilig naar binnen - geeft mensen de kans om van natuur te genieten zonder risico's, vooral voor mensen die niet meer buiten kunnen lopen.",
-                "Stimuleert herinneringen - vertrouwde geluiden en beelden kunnen herkenning en vreugdevolle momenten oproepen.",
-                "Moedigt sociale verbinding aan - creëert gedeelde ervaringen met familie, verzorgers of medebewoners — en er kan natuurlijk ook alleen van worden genoten.",
-                "Vermindert angst en stress - rustgevende natuurlijke beelden en geluiden helpen onrust te verminderen en brengen kalmte."
+                "Geeft mensen de kans om van natuur te genieten zonder risico's, vooral voor mensen die niet meer buiten kunnen lopen.",
+                "Vertrouwde geluiden en beelden kunnen herkenning en vreugdevolle momenten oproepen.",
+                "Creëert gedeelde ervaringen met familie, verzorgers of medebewoners — en er kan natuurlijk ook alleen van worden genoten.",
+                "Rustgevende natuurlijke beelden en geluiden helpen onrust te verminderen en brengen kalmte."
             ],
-            "joinVolunteer": "Doe Mee als Vrijwilliger",
+            "benefitsHeading":[
+                "Brengt natuur veilig naar binnen - ",
+                "Stimuleert herinneringen - ",
+                "Moedigt sociale verbinding aan - ",
+                "Vermindert angst en stress - "
+            ],
+            "joinVolunteer": "Doe mee als vrijwilliger",
             "alreadyVolunteer": "ik ben al vrijwilliger"
         },
         "howItWorks": {
@@ -494,7 +500,7 @@
         }
     },
     "faqVolunteer": {
-        "title": "Veelgestelde Vragen",
+        "title": "Veelgestelde vragen",
         "faqs": [
             {
                 "question": "Welke muziek wordt gebruikt bij de video's?",
@@ -659,7 +665,8 @@
         },
         "discountBadge": "20% korting",
         "launchBadge": "Launch Aanbieding",
-        "discountCode": "Gebruik code NATUUR01 voor eerste maand korting",
+        "discountCode": "Gebruik de kortingscode Natuur01 voor € 3,- korting op je maandabonnement",
+        "discountExpiry": "Gebruik deze actiecode vòòr 1 december",
         "discountInstead": "i.p.v."
     },
     "payment": {
@@ -861,7 +868,7 @@
         }
     },
     "chooseYourExperience": {
-        "subtitle": "Selecteer de optie die het beste bij u jou past.",
+        "subtitle": "Selecteer de optie die het beste bij jou past.",
         "organization": {
             "title": "Voor Zorgorganisaties",
             "description": "Breng natuur in groepsomgevingen met eenvoudige toegang, ondersteuning en hulpmiddelen voor bewoners.",
@@ -886,12 +893,12 @@
                 "extraInfo": "Extra informatie",
                 "organizationTargetGroup": "Organisatie & Doelgroep",
                 "virtualWalkingUse": "Gebruik van Virtueel Wandelen",
-                "quotationSetup": "Offerte & nieuwsbrief"
+                "quotationSetup": "Offerte en nieuwsbrief"
             },
             "labels": {
                 "organizationName": "Organisatie naam",
-                "contactEmail": "Contact E-mail",
-                "phoneNumber": "Telefoon nummer",
+                "contactEmail": "E-mail organisatie",
+                "phoneNumber": "Telefoonnummer",
                 "address": "Adres",
                 "street": "Straat",
                 "postalCode": "Postcode",
@@ -908,13 +915,13 @@
                 "onboardingSupport": "Heeft u behoefte aan onboarding en integratieondersteuning?",
                 "additionalServices": "Heeft u interesse in onze Virtueel Wandelen Beleefbox?",
                 "notes": "Opmerkingen",
-                "agreeToTerms": "Ik ga ermee akkoord dat mijn gegevens worden gebruikt om een offerte voor te bereiden.",
+                "agreeToTerms": "Ik ga ermee akkoord dat mijn gegevens worden gebruikt om een offerte voor te bereiden. They need to click thisone.",
                 "newsletter": "Ja, ik wil mij ook aanmelden voor de nieuwsbrief van Virtueel Wandelen met updates en inspiratie."
             },
             "placeholders": {
                 "organizationName": "Bijv. Zorgcentrum de Linde",
                 "contactEmail": "Bijv. info@wellnesscenter.nl",
-                "phone": "+31",
+                "phone": "+31 | Mobiele telefoonnummer",
                 "address": "Straat, huisnummer",
                 "street": "Straat, huisnummer...",
                 "postalCode": "Bijv., 1234 AB",
@@ -929,7 +936,7 @@
                 "estimatedClients": "Bijv., 20 cliënten per week",
                 "startDate": "Bijv., 01 Oktober 2025",
                 "onboardingExplanation": "Leg uit alstublieft",
-                "additionalServices": "Vertel ons wat u wilt verkennen. Voorbeeld: \"Ja, neem een X aantal beleefboxen met geur, geluid en tast elementen mee in de offerte (€85,99 per stuk).",
+                "additionalServices": "Vertel ons wat u wilt. Voorbeeld: \"Ja, neem een X aantal beleefboxen met geur, geluid en tast elementen mee in de offerte (€85,99 per stuk).",
                 "notes": "Bijv., speciale factureringsinstructies of toegankelijkheidsbehoeften"
             },
             "options": {
@@ -1013,7 +1020,7 @@
                 "phoneNumber": "+31",
                 "street": "Straat",
                 "postalCode": "Postcode",
-                "city": "Stad",
+                "city": "Plaats",
                 "notes": "Deel eventuele vaardigheden, beschikbaarheid of speciale interesses"
             },
             "checkboxes": {
@@ -1050,7 +1057,7 @@
             "description": "Laat je meevoeren door natuurwandelvideo's die je zintuigen stimuleren en herinneringen oproepen."
         },
         "grid": {
-            "title": "Je Favoriete Video's",
+            "title": "Je favoriete video's",
             "subtitle": "Vind en geniet gemakkelijk van de video's waar je het meest van houdt, altijd.",
             "emptyState": "Geen natuurvideo's beschikbaar op dit moment."
         }
@@ -1153,6 +1160,7 @@
         "loginInfo": "Login Informatie",
         "accountEmail": "Account E-mail",
         "password": "Wachtwoord",
+        "changePassword": "Wachtwoord Wijzigen",
         "subscriptionInfo": "Abonnementsinformatie",
         "currentPlan": "Huidig Plan",
         "validUntil": "Geldig Tot",

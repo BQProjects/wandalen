@@ -315,7 +315,7 @@ const MessageUs = () => {
                     <div
                       className={`p-2 sm:p-3 rounded-lg max-w-xs ${
                         msg.type === "bot"
-                          ? "bg-[#5b6502] text-white"
+                          ? "bg-secondary text-black"
                           : "bg-gray-200 text-gray-800"
                       }`}
                     >
@@ -329,7 +329,7 @@ const MessageUs = () => {
               {isTyping && (
                 <div className="mb-3 sm:mb-4">
                   <div className="flex items-start">
-                    <div className="bg-[#5b6502] text-white p-2 sm:p-3 rounded-lg max-w-xs">
+                    <div className="bg-secondary text-black p-2 sm:p-3 rounded-lg max-w-xs">
                       <p className="text-xs sm:text-sm animate-pulse">
                         {t("aran.chat.typing")}
                       </p>
@@ -339,12 +339,12 @@ const MessageUs = () => {
               )}
               <div ref={messagesEndRef} />
             </div>
-            <div className="p-3 sm:p-4 border-t bg-white flex flex-wrap gap-2">
+            <div className="p-3 sm:p-4 border-t border-gray-300 bg-white flex flex-wrap gap-2">
               {chatFlow[currentNode].options.map((opt, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleOptionClick(opt)}
-                  className="bg-[#5b6502] text-white text-xs px-2 py-1 rounded-lg hover:bg-[#4a5501] transition"
+                  className="bg-secondary text-black text-xs px-2 py-1 rounded-lg hover:bg-[#4a5501] transition"
                 >
                   {opt.label}
                 </button>
@@ -541,46 +541,45 @@ const Aran = () => {
             {/* Video 1 - Mountain/Forest Scene */}
             <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
               <iframe
-                src="https://player.vimeo.com/video/1123134607?h=ab295a6d9e&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                src="https://player.vimeo.com/video/1125835751?h=cb1c1b43cb&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
                 frameborder="0"
                 className="w-full h-full absolute inset-0 rounded-2xl"
                 referrerpolicy="strict-origin-when-cross-origin"
-                title="Hellendoorn: Eelerberg rode route zomer"
+                title="Video 1 homepage: titel under: Lemelerberg in de  winter"
               ></iframe>
             </div>
 
             {/* Video 2 - Purple Lavender Scene */}
             <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
               <iframe
-                src="https://player.vimeo.com/video/1123837047?h=5766de89d0&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="w-full h-full absolute inset-0 rounded-2xl"
+                src="https://player.vimeo.com/video/1125836067?h=b385661387&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
                 frameborder="0"
+                className="w-full h-full absolute inset-0 rounded-2xl"
                 referrerpolicy="strict-origin-when-cross-origin"
-                title="Landgoed Twickel Lente"
+                title="Video 2 homepage: De IJssel over bij Den Nul"
               ></iframe>
             </div>
 
             {/* Video 3 - Ocean Sunset Scene */}
             <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
               <iframe
-                src="https://player.vimeo.com/video/1123135340?h=d7d9750a5d&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="w-full h-full absolute inset-0 rounded-2xl"
+                src="https://player.vimeo.com/video/1125836341?h=3c53c14e8c&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
                 frameborder="0"
+                className="w-full h-full absolute inset-0 rounded-2xl"
                 referrerpolicy="strict-origin-when-cross-origin"
-                title="Hellendoorn: Landgoed Eelerberg rondje pinetum zomer"
+                title="Video 3 homepage: title: Koeien kijken op het Boetelerveld"
               ></iframe>
             </div>
 
             {/* Video 4 - Winter Forest Scene */}
             <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
               <iframe
-                src="https://player.vimeo.com/video/1123842137?h=6758297932&title=0&byline=0&portrait=0&controls=1&muted=0&pip=0&keyboard=0&loop=0"
+                src="https://player.vimeo.com/video/1125836865?h=1976cd5af1&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                frameborder="0"
                 className="w-full h-full absolute inset-0 rounded-2xl"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                referrerPolicy="strict-origin-when-cross-origin"
-                title="Dalfsen Park Bellingeweer"
-              />
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="Video 4 homepage: Een zomerse wandeling over de heide"
+              ></iframe>
             </div>
           </div>
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import UploadIcon from "../../assets/UploadIcon.svg";
-import LinkIcon from "../../assets/LinkIcon.svg";
+//import LinkIcon from "../../assets/LinkIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -500,6 +500,19 @@ const VolunteerCreateVideo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState("");
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
+
+  // Cleanup video preview URL on unmount or video change
+  useEffect(() => {
+    if (videoFile) {
+      const url = URL.createObjectURL(videoFile);
+      setVideoPreviewUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+        setVideoPreviewUrl(null);
+      };
+    }
+  }, [videoFile]);
 
   // Handle tag selection
   const handleTagChange = (e) => {
@@ -972,22 +985,14 @@ const VolunteerCreateVideo = () => {
             </div>
             <div className="border-2 border-dashed border-[#e5e3df] rounded-lg p-8 h-64 flex flex-col items-center justify-center bg-[#f7f6f4]">
               {videoFile ? (
-                <div className="text-center">
-                  <svg
-                    width={48}
-                    height={48}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="mx-auto mb-4 text-[#a6a643]"
+                <div className="text-center w-full">
+                  <video
+                    src={videoPreviewUrl}
+                    controls
+                    className="w-full max-h-40 mx-auto mb-4 rounded object-contain"
                   >
-                    <path
-                      d="M14.828 14.828a4 4 0 0 1-5.656 0M9 10h1.586a1 1 0 0 1 .707.293l.707.707A1 1 0 0 0 12.414 11H15m-3-3h1.586a1 1 0 0 1 .707.293l.707.707A1 1 0 0 0 15.414 9H18m-3-3h1.586a1 1 0 0 1 .707.293l.707.707A1 1 0 0 0 17.414 7H20M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                    Your browser does not support the video tag.
+                  </video>
                   <p className="text-[#381207] text-sm font-[Poppins]">
                     {videoFile.name}
                   </p>
@@ -1039,12 +1044,12 @@ const VolunteerCreateVideo = () => {
                             {t("volunteerCreateVideo.uploadFromComputer")}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
+                        {/* <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
                           <img src={LinkIcon} alt="Link Icon" />
                           <span className="text-[#381207] font-[Poppins] text-sm font-medium">
                             Add link
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     </>
                   )}
@@ -1219,7 +1224,7 @@ const VolunteerCreateVideo = () => {
 
             {/* Sound Stimuli and Animals */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              {/* <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
                   Sound Stimuli
                 </label>
@@ -1235,7 +1240,7 @@ const VolunteerCreateVideo = () => {
                   <option value="wind">Wind</option>
                   <option value="forest sounds">Forest Sounds</option>
                 </select>
-              </div>
+              </div> */}
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
                   {t("volunteerCreateVideo.animals")}
@@ -1251,7 +1256,7 @@ const VolunteerCreateVideo = () => {
                   </option>
                   <option value="Vogels">Vogels</option>
                   <option value="Eenden">Eenden</option>
-                  <option value="Reeën">Reeën</option>
+                  <option value="Reeen">Reeen</option>
                   <option value="Konijnen/hazen">Konijnen/hazen</option>
                   <option value="Egels">Egels</option>
                   <option value="Schapen">Schapen</option>

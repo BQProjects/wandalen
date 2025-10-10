@@ -402,7 +402,7 @@
         "description1": "Virtual Walking opens the door to nature for everyone — regardless of physical limitations. Through authentic, real-life walking videos, we bring the beauty, peace, and familiarity of local landscapes to people who may no longer be able to experience them in person.",
         "description2": "From seniors with dementia to those with limited mobility, our videos bring calm, spark recognition, and support well-being — strengthening connections with the world and with oneself.",
         "description3": "Virtual Walking brings the power of experiencing nature to people with limited mobility by showcasing real nature videos from the neighborhood. With authentic, carefully curated footage, we create relaxation, connection, and a positive impact on well-being and health. Our goal is to make nature accessible to everyone, strengthening their connection with themselves and potentially the outside world.",
-        "ctaButton": "Start Your Journey"
+        "ctaButton": "Start your Journey"
     },
     "partnersSection": {
         "title": "Our Collaborating Partners",
@@ -435,10 +435,16 @@
             "title": "Positive Benefits",
             "subtitle": "Why Virtual Walking?",
             "benefits": [
-                "Brings nature safely indoors - gives people the chance to enjoy nature without risks, especially for those unable to walk outside.",
-                "Stimulates memories - familiar sounds and views can trigger recognition and joyful moments.",
-                "Encourages social connection - creates shared experiences with family, caregivers, or fellow residents — and can also be enjoyed alone.",
-                "Reduces anxiety and stress - soothing natural sights and sounds help ease restlessness and bring calm."
+                "Gives people the chance to enjoy nature without risks, especially for those unable to walk outside.",
+                "Familiar sounds and views can trigger recognition and joyful moments.",
+                "Creates shared experiences with family, caregivers, or fellow residents — and can also be enjoyed alone.",
+                "Soothing natural sights and sounds help ease restlessness and bring calm."
+            ],
+            "benefitsHeading": [
+                "Brings nature safely indoors - ",
+                "Stimulates memories - ",
+                "Encourages social connection - ",
+                "Reduces anxiety and stress - "
             ],
             "joinVolunteer": "Join as Volunteer",
             "alreadyVolunteer": "Already a Volunteer"
@@ -659,7 +665,8 @@
         },
         "discountBadge": "20% discount",
         "launchBadge": "Launch Offer",
-        "discountCode": "Use code NATUUR01 for first month discount",
+        "discountCode": "Use the discount code Natuur01 for a €3 discount on your monthly subscription.",
+        "discountExpiry": "Use this promotion before December 1st",
         "discountInstead": "instead of"
     },
     "payment": {

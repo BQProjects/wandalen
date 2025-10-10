@@ -1,5 +1,5 @@
 import React from "react";
-import OrangeWood from "../assets/orangeWood.jpg";
+import OrangeWood from "../assets/BrownForest.png";
 import MemoryIcon from "../assets/MemoryIcon.svg";
 import BrainIcon from "../assets/BrainIcon.svg";
 import UserGroupIcon from "../assets/UserGroupIcon.svg";

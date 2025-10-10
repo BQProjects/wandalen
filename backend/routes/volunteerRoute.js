@@ -41,7 +41,11 @@ volunteerRouter.post(
   uploadCoverImage
 );
 
-volunteerRouter.get("/getSelfVideos/:volunteerId", selfUploaded);
+volunteerRouter.get(
+  "/getSelfVideos/:volunteerId",
+  validateActiveSession,
+  selfUploaded
+);
 volunteerRouter.put(
   "/editVideoInfo/:videoId",
   validateActiveSession,
@@ -59,7 +63,11 @@ volunteerRouter.delete(
   validateActiveSession,
   deleteVideo
 );
-volunteerRouter.get("/getProfile/:volunteerId", getProfile);
+volunteerRouter.get(
+  "/getProfile/:volunteerId",
+  validateActiveSession,
+  getProfile
+);
 volunteerRouter.put(
   "/editProfile/:volunteerId",
   validateActiveSession,

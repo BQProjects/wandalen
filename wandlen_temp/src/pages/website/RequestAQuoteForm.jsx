@@ -847,7 +847,7 @@ const RequestAQuoteForm = () => {
               {t("requestQuoteForm.form.sections.quotationSetup")}
             </h3>
             <div className="flex flex-col items-start gap-2">
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   name="newsletter"
@@ -858,7 +858,7 @@ const RequestAQuoteForm = () => {
                 <span className="text-[#2a341f] text-sm">
                   {t("requestQuoteForm.form.labels.newsletter")}
                 </span>
-              </div>
+              </div> */}
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"

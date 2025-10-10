@@ -9,6 +9,7 @@ import SubscribeCard from "../../components/SubscribeCard";
 import Footer from "../../components/Footer";
 import { useTranslation } from "react-i18next";
 import tina from "../../assets/tina.jpg";
+import { Link } from "react-router-dom";
 
 const OurApproach = () => {
   const { t } = useTranslation();
@@ -56,6 +57,15 @@ const OurApproach = () => {
                     {t("ourApproach.description3")}
                   </div>
                 </div>
+                {/* CTA Button */}
+                <div className="flex justify-start ">
+                  <Link
+                    to="/choose-experience"
+                    className="flex items-center w-fit gap-2.5 py-2 px-5 rounded-lg bg-primary text-white font-[Poppins]  text-base sm:text-lg md:text-xl font-medium leading-[136%] hover:bg-opacity-90 transition-colors"
+                  >
+                    {t("ourApproach.ctaButton")}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -71,10 +81,7 @@ const OurApproach = () => {
           </div>
         </div>
         <div className="flex justify-center md:justify-end">
-          <img
-            src={PlantSvg}
-            className="w-full h-12  md:w-auto md:h-auto"
-          />
+          <img src={PlantSvg} className="w-full h-12  md:w-auto md:h-auto" />
         </div>
       </div>
 
@@ -88,7 +95,7 @@ const OurApproach = () => {
                 Tina Rozendal – van der Meer
               </div>
               <div className="max-w-4xl text-[#381207] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-[136%]">
-                founder of Virtueel Wandelen.
+                Founder of Virtueel Wandelen.
               </div>
             </div>
 

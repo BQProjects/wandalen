@@ -33,6 +33,7 @@ const verifyOtp = async (req, res) => {
   const newSession = new SessionStoreModel({
     sessionId,
     email,
+    data: { userId: record.who, role: type },
     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
   });
   await newSession.save();

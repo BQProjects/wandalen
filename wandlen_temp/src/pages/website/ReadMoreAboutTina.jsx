@@ -15,7 +15,7 @@ function ReadMoreAboutTina() {
               Tina Rozendal – van der Meer
             </div>
             <div className="max-w-4xl text-[#381207] font-['Poppins'] text-3xl lg:text-5xl font-semibold leading-[136%]">
-              founder of Virtueel Wandelen.
+              Founder of Virtueel Wandelen.
             </div>
           </div>
 

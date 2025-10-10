@@ -76,13 +76,14 @@ const Login = () => {
 
           // Set auth context for org
           setUserType("organization");
-          setSessionId(res.data._id);
+          setSessionId(res.data.sessionId);
 
           // Store in localStorage (aligned with working code)
           localStorage.setItem("userType", "organization");
           localStorage.setItem("orgData", JSON.stringify(res.data));
           localStorage.setItem("orgId", res.data._id);
-          localStorage.setItem("sessionId", res.data._id);
+          localStorage.setItem("sessionId", res.data.sessionId);
+          localStorage.setItem("userId", res.data._id);
 
           navigate(redirectPath);
         } else {
@@ -123,10 +124,11 @@ const Login = () => {
             <div className="flex flex-col gap-6 sm:gap-8">
               <div className="text-center lg:text-left">
                 <h1 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2 sm:mb-3">
-                  Welcome back!
+                  Welkom: log in met je bestaande account
                 </h1>
                 <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base md:text-lg">
-                  Please select your role and log in.
+                  Gebruik je e-mailadres en wachtwoord waarmee je eerder bent
+                  geregistreerd.
                 </p>
               </div>
 
@@ -222,7 +224,7 @@ const Login = () => {
                 {/* Role Selection */}
                 <div className="flex flex-col gap-2 sm:gap-3">
                   <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
-                    Select your role
+                    Selecteer je rol om verder te gaan.
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
                     <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg">
@@ -301,7 +303,7 @@ const Login = () => {
                 className="text-[#5b6502] font-['Poppins'] text-sm sm:text-base font-medium hover:underline"
                 onClick={() => navigate("/forgot-password")}
               >
-                Forgot Password?
+                wachtwoord vergeten
               </button>
             </div>
           </form>

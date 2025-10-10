@@ -16,6 +16,7 @@ const VideoClient = () => {
   const { id } = useParams();
   const { DATABASE_URL } = useContext(DatabaseContext);
   const { t } = useTranslation();
+  const sessionId = localStorage.getItem("sessionId");
   const [formData, setFormData] = useState({
     name: "",
     url: "",
@@ -55,7 +56,9 @@ const VideoClient = () => {
 
   const getVideo = async () => {
     try {
-      const res = await axios.get(`${DATABASE_URL}/client/get-video/${id}`);
+      const res = await axios.get(`${DATABASE_URL}/client/get-video/${id}`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       setFormData({
         name: res.data.title,
         url: res.data.url,
@@ -70,7 +73,13 @@ const VideoClient = () => {
 
   const addView = async () => {
     try {
-      const res = await axios.put(`${DATABASE_URL}/client/add-view/${id}`);
+      const res = await axios.put(
+        `${DATABASE_URL}/client/add-view/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
+      );
       setFormData((prev) => ({ ...prev, views: prev.views + 1 }));
     } catch (error) {
       console.error("Error adding view:", error);
@@ -83,7 +92,10 @@ const VideoClient = () => {
 
     try {
       const res = await axios.get(
-        `${DATABASE_URL}/client/check-like/${id}?userId=${userId}`
+        `${DATABASE_URL}/client/check-like/${id}?userId=${userId}`,
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
       );
       setIsLiked(res.data.isLiked);
     } catch (error) {
@@ -101,7 +113,10 @@ const VideoClient = () => {
     try {
       const res = await axios.put(
         `${DATABASE_URL}/client/add-like/${id}?userId=${userId}`,
-        {}
+        {},
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
       );
       setIsLiked(res.data.liked);
       setFormData((prev) => ({
@@ -120,7 +135,9 @@ const VideoClient = () => {
         ? `${DATABASE_URL}/client/get-reviews/${id}?userId=${userId}`
         : `${DATABASE_URL}/client/get-reviews/${id}`;
 
-      const res = await axios.get(url);
+      const res = await axios.get(url, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       setReviews(res.data.reviews || []);
 
       if (userId && res.data.hasReviewed) {
@@ -141,12 +158,18 @@ const VideoClient = () => {
     }
 
     try {
-      await axios.post(`${DATABASE_URL}/client/add-review`, {
-        clientId: userId,
-        review: reviewForm.review,
-        rating: reviewForm.rating,
-        vidoId: id,
-      });
+      await axios.post(
+        `${DATABASE_URL}/client/add-review`,
+        {
+          clientId: userId,
+          review: reviewForm.review,
+          rating: reviewForm.rating,
+          vidoId: id,
+        },
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
+      );
 
       // Update state
       setJustSubmitted(true);

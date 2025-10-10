@@ -24,6 +24,7 @@ const OrganizationProfile = () => {
   const [originalData, setOriginalData] = useState({});
   const { DATABASE_URL } = useContext(DatabaseContext);
   const sessionId = localStorage.getItem("sessionId");
+  const orgId = localStorage.getItem("userId");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -35,7 +36,9 @@ const OrganizationProfile = () => {
 
   const getOrgData = async () => {
     try {
-      const res = await axios.get(`${DATABASE_URL}/org/getOrg/${sessionId}`);
+      const res = await axios.get(`${DATABASE_URL}/org/getOrg/${orgId}`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       const org = res.data.org;
       const data = {
         fullName: org.contactPerson?.fullName || "",
@@ -85,10 +88,9 @@ const OrganizationProfile = () => {
           phoneNumber: profileData.phone,
         },
       };
-      await axios.put(
-        `${DATABASE_URL}/org/updateOrg/${sessionId}`,
-        updatedData
-      );
+      await axios.put(`${DATABASE_URL}/org/updateOrg/${orgId}`, updatedData, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       toast.success(t("organizationProfile.profileUpdatedSuccess"));
       setIsEditing(false);
       setOriginalData(profileData);
@@ -128,9 +130,7 @@ const OrganizationProfile = () => {
         `${DATABASE_URL}/org/update-password/${orgId}`,
         { newPassword: passwordData.newPassword },
         {
-          headers: {
-            "x-session-id": sessionId,
-          },
+          headers: { Authorization: `Bearer ${sessionId}` },
         }
       );
 
@@ -156,9 +156,7 @@ const OrganizationProfile = () => {
       const response = await axios.delete(
         `${DATABASE_URL}/org/delete-account/${orgId}`,
         {
-          headers: {
-            "x-session-id": sessionId,
-          },
+          headers: { Authorization: `Bearer ${sessionId}` },
         }
       );
 
@@ -207,7 +205,7 @@ const OrganizationProfile = () => {
 
       // Update profile picture in backend
       await axios.put(
-        `${DATABASE_URL}/org/upload-profile-picture/${sessionId}`,
+        `${DATABASE_URL}/org/upload-profile-picture/${orgId}`,
         { profilePicUrl: imageUrl },
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );
@@ -228,7 +226,7 @@ const OrganizationProfile = () => {
   const handleRemoveProfilePic = async () => {
     try {
       await axios.put(
-        `${DATABASE_URL}/org/upload-profile-picture/${sessionId}`,
+        `${DATABASE_URL}/org/upload-profile-picture/${orgId}`,
         { profilePicUrl: "" },
         { headers: { Authorization: `Bearer ${sessionId}` } }
       );

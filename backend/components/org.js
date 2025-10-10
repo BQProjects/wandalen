@@ -1,4 +1,5 @@
 const OrgModel = require("../models/orgModel");
+const SessionStoreModel = require("../models/sessionStoreModel");
 
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
@@ -23,7 +24,23 @@ const orgLogin = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    res.status(201).json(org);
+    // Cancel previous session if exists
+    const session = await SessionStoreModel.findOne({ email });
+    if (session) {
+      await SessionStoreModel.findByIdAndDelete(session._id);
+    }
+
+    // Create new session with 24 hour expiry
+    const sessionId = crypto.randomBytes(16).toString("hex");
+    const newSession = new SessionStoreModel({
+      sessionId,
+      email,
+      data: { userId: org._id, role: "organization" },
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+    await newSession.save();
+
+    res.status(201).json({ ...org.toObject(), sessionId: newSession._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

@@ -21,8 +21,10 @@ const {
   createTraining,
   updateTraining,
   deleteTraining,
+  deleteVolunteer,
   approveOrg,
   updateOrg,
+  deleteOrg,
   uploadVideo,
   getVideo,
   toggleVideoApproval,
@@ -47,6 +49,7 @@ adminRouter.get("/all-requests", getAllOrgRequest);
 adminRouter.get("/org-requests/:orgId", getOrgRequest);
 adminRouter.get("/all-volunteers", getAllVolunteerData);
 adminRouter.get("/volunteer/:id", getVolunteerInfo);
+adminRouter.delete("/delete-volunteer/:id", deleteVolunteer);
 adminRouter.get("/video-req", getallVideoRequest);
 adminRouter.delete("/video-req/:id", deteleteVideoRequest);
 adminRouter.get("/all-videos", getAllvideos);
@@ -61,6 +64,7 @@ adminRouter.put("/trainings/:id", updateTraining);
 adminRouter.delete("/trainings/:id", deleteTraining);
 adminRouter.put("/approve-org/:orgId", approveOrg);
 adminRouter.put("/update-org/:orgId", updateOrg);
+adminRouter.delete("/delete-request/:orgId", deleteOrg);
 adminRouter.post("/uploadVideo", uploadVideo);
 adminRouter.get("/get-video/:videoId", getVideo);
 adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);

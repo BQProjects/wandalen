@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UploadIcon from "../../assets/UploadIcon.svg";
-import LinkIcon from "../../assets/LinkIcon.svg";
+//import LinkIcon from "../../assets/LinkIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -989,12 +989,12 @@ const CreateVideo = () => {
                             Upload from computer
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
+                        {/* <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
                           <img src={LinkIcon} alt="Link Icon" />
                           <span className="text-[#381207] font-[Poppins] text-sm font-medium">
                             Add link
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     </>
                   )}
@@ -1157,7 +1157,7 @@ const CreateVideo = () => {
 
             {/* Sound Stimuli and Animals */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              {/* <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
                   Sound Stimuli
                 </label>
@@ -1173,7 +1173,7 @@ const CreateVideo = () => {
                   <option value="wind">Wind</option>
                   <option value="forest sounds">Forest Sounds</option>
                 </select>
-              </div>
+              </div> */}
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
                   Animals
@@ -1187,7 +1187,7 @@ const CreateVideo = () => {
                   <option value="">-Select an option-</option>
                   <option value="Vogels">Vogels</option>
                   <option value="Eenden">Eenden</option>
-                  <option value="Reeën">Reeën</option>
+                  <option value="Reeen">Reeen</option>
                   <option value="Konijnen/hazen">Konijnen/hazen</option>
                   <option value="Egels">Egels</option>
                   <option value="Schapen">Schapen</option>

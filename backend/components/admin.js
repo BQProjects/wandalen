@@ -200,35 +200,57 @@ const getAllvideos = async (req, res) => {
         query.$or.push(
           { location: searchPattern },
           { province: searchPattern },
-          { municipality: searchPattern }
+          { municipality: searchPattern },
+          { tags: { $in: [loc] } }
         );
       });
     }
     if (province) {
       const provinces = Array.isArray(province) ? province : [province];
-      query.province = { $in: provinces };
+      query.$or = query.$or || [];
+      provinces.forEach((p) => {
+        query.$or.push({ province: p }, { tags: { $in: [p] } });
+      });
     }
     if (municipality) {
       const municipalities = Array.isArray(municipality)
         ? municipality
         : [municipality];
-      query.municipality = { $in: municipalities };
+      query.$or = query.$or || [];
+      municipalities.forEach((m) => {
+        query.$or.push({ municipality: m }, { tags: { $in: [m] } });
+      });
     }
     if (season) {
       const seasons = Array.isArray(season) ? season : [season];
-      query.season = { $in: seasons };
+      query.$or = query.$or || [];
+      seasons.forEach((s) => {
+        query.$or.push({ season: s }, { tags: { $in: [s] } });
+      });
     }
     if (nature) {
       const natures = Array.isArray(nature) ? nature : [nature];
-      query.nature = { $in: natures };
+      query.$or = query.$or || [];
+      natures.forEach((n) => {
+        query.$or.push({ nature: n }, { tags: { $in: [n] } });
+      });
     }
     if (animals) {
       const animalList = Array.isArray(animals) ? animals : [animals];
-      query.animals = { $in: animalList };
+      query.$or = query.$or || [];
+      animalList.forEach((animal) => {
+        query.$or.push(
+          { animals: { $regex: animal, $options: "i" } },
+          { tags: { $in: [animal] } }
+        );
+      });
     }
     if (sound) {
       const sounds = Array.isArray(sound) ? sound : [sound];
-      query.sound = { $in: sounds };
+      query.$or = query.$or || [];
+      sounds.forEach((s) => {
+        query.$or.push({ sound: s }, { tags: { $in: [s] } });
+      });
     }
 
     // Fetch videos with filters and pagination
@@ -377,6 +399,34 @@ const deleteTraining = async (req, res) => {
       return res.status(404).json({ message: "Training not found" });
     }
     res.status(200).json({ message: "Training deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteVolunteer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedVolunteer = await VolunteerModel.findByIdAndDelete(id);
+    if (!deletedVolunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+    res.status(200).json({ message: "Volunteer deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteOrg = async (req, res) => {
+  try {
+    const { orgId } = req.params;
+    const deletedOrg = await OrgModel.findByIdAndDelete(orgId);
+    if (!deletedOrg) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+    res.status(200).json({ message: "Organization deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -958,8 +1008,10 @@ module.exports = {
   createTraining,
   updateTraining,
   deleteTraining,
+  deleteVolunteer,
   approveOrg,
   updateOrg,
+  deleteOrg,
   uploadVideo,
   getVideo,
   toggleVideoApproval,

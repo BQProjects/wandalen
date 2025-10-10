@@ -1,73 +1,65 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BgVideo from "../../assets/BgVideo.mp4";
+import { useTranslation } from "react-i18next";
+import HandHold from "../../assets/HandHold.png";
 import VideoGridWithFilters from "../../components/common/VideoGridWithFilters";
+import { DatabaseContext } from "../../contexts/DatabaseContext";
+import axios from "axios";
+import Footer from "../../components/Footer";
+import RoutesNearYou from "../../components/common/RoutesNearYou";
 
 const AllVideos = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [videos, setVideos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeFilters, setActiveFilters] = useState({});
+  const [total, setTotal] = useState(0);
+  const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
+  const itemsPerPage = 9;
 
-  const videos = [
-    {
-      id: 1,
-      title: "Korte wandeling Holterberg",
-      duration: "15 min",
-      location: "Hellendoorn, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Opkomende zon", "Kinderen", "Wilde dieren", "Bos"],
-      views: 320,
-      likes: 123,
-    },
-    {
-      id: 2,
-      title: "Boswandeling met vogels",
-      duration: "25 min",
-      location: "Lemele, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Winter", "Sneeuw", "Gouden gras", "Vogels", "Bos"],
-      views: 450,
-      likes: 89,
-    },
-    {
-      id: 3,
-      title: "Strandwandeling zonsondergang",
-      duration: "30 min",
-      location: "Lemelerveld, Noordzee kust",
-      thumbnail: BgVideo,
-      tags: ["Winter", "Koeien", "Rustig briesje", "Strand"],
-      views: 200,
-      likes: 67,
-    },
-    {
-      id: 4,
-      title: "Bergpad met uitzicht",
-      duration: "20 min",
-      location: "Luttenberg, Nederland",
-      thumbnail: BgVideo,
-      tags: ["Vogels", "Opkomende zon", "Heide"],
-      views: 300,
-      likes: 150,
-    },
-    {
-      id: 5,
-      title: "Rustige rivierwandeling",
-      duration: "50 min",
-      location: "Raalte, IJssel",
-      thumbnail: BgVideo,
-      tags: ["Kinderen", "Wilde dieren", "Water", "Zomer"],
-      views: 280,
-      likes: 95,
-    },
-    {
-      id: 6,
-      title: "Herfstkleuren in het bos",
-      duration: "22 min",
-      location: "Hellendoorn, Utrechtse Heuvelrug",
-      thumbnail: BgVideo,
-      tags: ["Sneeuw", "Gouden gras", "Herfst", "Bos"],
-      views: 400,
-      likes: 110,
-    },
-  ];
+  const fetchVideos = async (page, filters) => {
+    try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      // Map filters to backend fields (matching the backend query)
+      const fieldMap = {
+        Lengte: "duration",
+        Locatie: "location", // Now searches location, province, and municipality
+        Seizoen: "season",
+        Natuurtype: "nature",
+        Dieren: "animals",
+      };
+      Object.entries(filters).forEach(([key, values]) => {
+        const field = fieldMap[key];
+        if (field && values.length > 0) {
+          values.forEach((value) => params.append(field, value));
+        }
+      });
+      const res = await axios.get(
+        `${DATABASE_URL}/client/get-all-videos?${params}`,
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
+      );
+      setVideos(res.data.videos);
+      setTotal(res.data.total);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVideos(currentPage, activeFilters);
+  }, [currentPage, activeFilters]);
+
+  // Add this new useEffect to reset page on filter change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeFilters]);
 
   const handleVideoSelect = (id) => {
     navigate(`video/${id}`);
@@ -75,33 +67,55 @@ const AllVideos = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f5f0] to-[#ede4dc]">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="py-8 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl lg:text-5xl font-bold text-[#381207] mb-4">
-            Select Your Video
+      <div className="relative w-full h-[86vh] flex items-center justify-center">
+        {/* Background Image */}
+        <img
+          src={HandHold}
+          alt="Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Overlay Filter */}
+        <div className="absolute inset-0 bg-[#2A341F] opacity-55"></div>
+
+        {/* Centered Text */}
+        <div className="relative text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#DD9219] mb-4">
+            {t("selectVideo.hero.title")}
           </h1>
-          <p className="text-lg text-[#6b5b4a] max-w-2xl">
-            Discover the perfect nature walk video for your relaxation and
-            mindfulness journey.
+          <p className="text-5xl text-[#EDE4DC] font-bold font-[Poppins] max-w-2xl mx-auto">
+            {t("selectVideo.hero.subtitle")}
+          </p>
+          <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">
+            {t("selectVideo.hero.description")}
           </p>
         </div>
+      </div>
 
+      <div className="mx-auto relative px-4 sm:px-10 md:px-20 pt-20">
         {/* Video Grid with Filters */}
         <VideoGridWithFilters
           videos={videos}
           onVideoSelect={handleVideoSelect}
-          title="Available Nature Videos"
-          subtitle="Discover beautiful nature walks from our volunteers."
+          title={t("selectVideo.grid.title")}
+          subtitle={t("selectVideo.grid.subtitle")}
+          customFilterOptions={null}
           showFilters={true}
-          showStats={false}
+          showStats={true}
           isClientView={true}
-          emptyStateMessage="No nature videos available at the moment."
+          emptyStateMessage={t("selectVideo.grid.emptyState")}
           showResultsCount={true}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          activeFilters={activeFilters}
+          onFilterChange={setActiveFilters}
+          totalPages={Math.ceil(total / itemsPerPage)}
+          total={total} // Pass total matching videos
         />
 
+        {/* TODO: need to change the favorites section to pagination section */}
         {/* Favorites Section */}
-        <div className="px-4 sm:px-6 lg:px-8 pb-8">
+        {/* <div className="px-4 sm:px-6 lg:px-8 pb-8">
           <div className="bg-[#381207] rounded-2xl p-8 text-center text-[#ede4dc]">
             <div className="flex items-center justify-center gap-3 mb-4">
               <h3 className="text-2xl font-semibold text-[#dd9219]">
@@ -114,8 +128,10 @@ const AllVideos = () => {
               tranquility.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
+      <RoutesNearYou />
+      <Footer />
     </div>
   );
 };

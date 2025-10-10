@@ -3,7 +3,7 @@ const { Resend } = require("resend");
 const resend = new Resend("re_Fe4pwmbH_E1KvQv2MGo1QZj9fZvfYAH6V");
 
 // Helper function to handle empty strings, null, and undefined values
-const getDisplayValue = (value, defaultText = "Not provided") => {
+const getDisplayValue = (value, defaultText = "Niet opgegeven") => {
   if (
     value === null ||
     value === undefined ||
@@ -53,9 +53,9 @@ const emailTemplates = {
   }</li>
         <li><strong>Email:</strong> ${userData.email}</li>
         <li><strong>Telefoon:</strong> ${
-          userData.phoneNumber || "Not provided"
+          userData.phoneNumber || "Niet opgegeven"
         }</li>
-        <li><strong>Adres:</strong> ${userData.address || "Not provided"}</li>
+        <li><strong>Adres:</strong> ${userData.address || "Niet opgegeven"}</li>
       </ul>
       
       <p>Ons team zal je aanmelding bekijken en binnen 2-3 werkdagen contact met je opnemen.</p>
@@ -63,171 +63,170 @@ const emailTemplates = {
       <p>Met vriendelijke groet,<br>Tina van Virtueel Wandelen</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische e-mail. Beantwoord deze e-mail niet.</p>
     </div>
   `,
 
   volunteerSignupAdmin: (userData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">New Volunteer Registration</h2>
-      <p>A new volunteer has registered on Virtueel Wandelen.</p>
+      <h2 style="color: #381207;">Nieuwe Vrijwilliger Registratie</h2>
+      <p>Een nieuwe vrijwilliger heeft zich aangemeld bij Virtueel Wandelen.</p>
       
-      <h3 style="color: #5b6502;">Volunteer Details:</h3>
+      <h3 style="color: #5b6502;">Vrijwilliger Details:</h3>
       <ul>
-        <li><strong>Name:</strong> ${userData.firstName} ${
+        <li><strong>Naam:</strong> ${userData.firstName} ${
     userData.lastName
   }</li>
         <li><strong>Email:</strong> ${userData.email}</li>
-        <li><strong>Phone:</strong> ${
-          userData.phoneNumber || "Not provided"
+        <li><strong>Telefoon:</strong> ${
+          userData.phoneNumber || "Niet opgegeven"
         }</li>
-        <li><strong>Address:</strong> ${userData.address || "Not provided"}</li>
-        <li><strong>Postal Code:</strong> ${
-          userData.postal || "Not provided"
+        <li><strong>Adres:</strong> ${userData.address || "Niet opgegeven"}</li>
+        <li><strong>Postcode:</strong> ${
+          userData.postal || "Niet opgegeven"
         }</li>
-        <li><strong>First Time Volunteer:</strong> ${
-          userData.isFirstTime ? "Yes" : "No"
+        <li><strong>Eerste keer vrijwilliger:</strong> ${
+          userData.isFirstTime ? "Ja" : "Nee"
         }</li>
-        <li><strong>Updating Info:</strong> ${
-          userData.isUpdate ? "Yes" : "No"
+        <li><strong>Info bijwerken:</strong> ${
+          userData.isUpdate ? "Ja" : "Nee"
         }</li>
-        <li><strong>Notes:</strong> ${userData.notes || "None"}</li>
+        <li><strong>Notities:</strong> ${userData.notes || "Geen"}</li>
       </ul>
       
-      <p>Please review and contact the volunteer if needed.</p>
+      <p>Bekijk de aanmelding en neem contact op met de vrijwilliger indien nodig.</p>
       
-      <p>Virtueel Wandelen System</p>
+      <p>Virtueel Wandelen Systeem</p>
     </div>
   `,
 
   // Quote request templates
   quoteRequestUser: (formData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Quote Request Received</h2>
-      <p>Dear ${formData.fullName},</p>
-      <p>Thank you for requesting a quote from Virtueel Wandelen. We have received your request and our support team will get back to you soon with a detailed proposal.</p>
+      <h2 style="color: #381207;">Offerte Aanvraag Ontvangen</h2>
+      <p>Beste ${formData.fullName},</p>
+      <p>Bedankt voor het aanvragen van een offerte bij Virtueel Wandelen. We hebben uw aanvraag ontvangen en ons ondersteuningsteam zal binnenkort contact met u opnemen met een gedetailleerd voorstel.</p>
       
-      <h3 style="color: #5b6502;">Your Organization Details:</h3>
+      <h3 style="color: #5b6502;">Uw Organisatiegegevens:</h3>
       <ul>
-        <li><strong>Organization:</strong> ${formData.organizationName}</li>
+        <li><strong>Organisatie:</strong> ${formData.organizationName}</li>
         <li><strong>Contact Email:</strong> ${formData.contactEmail}</li>
-        <li><strong>Phone:</strong> ${formData.phone}</li>
-        <li><strong>Total Clients:</strong> ${formData.totalClients}</li>
-        <li><strong>Estimated Users:</strong> ${formData.estimatedClients}</li>
-        <li><strong>Start Date:</strong> ${formData.startDate}</li>
+        <li><strong>Telefoon:</strong> ${formData.phone}</li>
+        <li><strong>Totaal aantal cliënten:</strong> ${formData.totalClients}</li>
+        <li><strong>Geschat aantal gebruikers:</strong> ${formData.estimatedClients}</li>
+        <li><strong>Startdatum:</strong> ${formData.startDate}</li>
       </ul>
       
-      <p>Our team will review your requirements and send you a customized quote within 1-2 business days.</p>
+      <p>Ons team zal uw eisen bekijken en binnen 1-2 werkdagen een aangepaste offerte naar u sturen.</p>
       
-      <p>Best regards,<br>Virtueel Wandelen Sales Team</p>
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Sales Team</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische e-mail. Beantwoord deze e-mail niet.</p>
     </div>
   `,
 
   quoteRequestAdmin: (formData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">New Quote Request</h2>
-      <p>A new quote request has been submitted.</p>
+      <h2 style="color: #381207;">Nieuwe Offerte Aanvraag</h2>
+      <p>Er is een nieuwe offerte aanvraag ingediend.</p>
       
-      <h3 style="color: #5b6502;">Organization Information:</h3>
+      <h3 style="color: #5b6502;">Organisatie Informatie:</h3>
       <ul>
-        <li><strong>Organization Name:</strong> ${
-          formData.organizationName
-        }</li>
+        <li><strong>Organisatie Naam:</strong> ${formData.organizationName}</li>
         <li><strong>Contact Email:</strong> ${formData.contactEmail}</li>
-        <li><strong>Phone:</strong> ${formData.phone}</li>
-        <li><strong>Address:</strong> ${formData.address}</li>
-        <li><strong>Website:</strong> ${formData.website || "Not provided"}</li>
+        <li><strong>Telefoon:</strong> ${formData.phone}</li>
+                <li><strong>Website:</strong> ${
+                  formData.website || "Niet opgegeven"
+                }</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Contact Person:</h3>
+      <h3 style="color: #5b6502;">Contactpersoon:</h3>
       <ul>
-        <li><strong>Name:</strong> ${formData.fullName}</li>
-        <li><strong>Job Title:</strong> ${formData.jobTitle}</li>
+        <li><strong>Naam:</strong> ${formData.fullName}</li>
+        <li><strong>Functie:</strong> ${formData.jobTitle}</li>
         <li><strong>Email:</strong> ${formData.emailAddress}</li>
-        <li><strong>Phone:</strong> ${formData.phoneContact}</li>
+        <li><strong>Telefoon:</strong> ${formData.phoneContact}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Requirements:</h3>
+      <h3 style="color: #5b6502;">Eisen:</h3>
       <ul>
-        <li><strong>Total Clients:</strong> ${formData.totalClients}</li>
-        <li><strong>Number of Locations:</strong> ${
-          formData.numberLocations
+        <li><strong>Totaal aantal cliënten:</strong> ${
+          formData.totalClients
         }</li>
-        <li><strong>Target Groups:</strong> ${
-          formData.soortZorgorganisatie
+        <li><strong>Aantal locaties:</strong> ${formData.numberLocations}</li>
+        <li><strong>Doelgroepen:</strong> ${formData.soortZorgorganisatie}</li>
+        <li><strong>Geschat aantal gebruikers:</strong> ${
+          formData.estimatedClients
         }</li>
-        <li><strong>Estimated Users:</strong> ${formData.estimatedClients}</li>
-        <li><strong>Desired Start Date:</strong> ${formData.startDate}</li>
-        <li><strong>Onboarding Support:</strong> ${
+        <li><strong>Gewenste startdatum:</strong> ${formData.startDate}</li>
+        <li><strong>Onboarding ondersteuning:</strong> ${
           formData.onboardingSupport
         }</li>
-        <li><strong>Additional Services:</strong> ${
-          formData.additionalServices || "None"
+        <li><strong>Aanvullende diensten:</strong> ${
+          formData.additionalServices || "Geen"
         }</li>
-        <li><strong>Notes:</strong> ${formData.notes || "None"}</li>
+        <li><strong>Notities:</strong> ${formData.notes || "Geen"}</li>
       </ul>
       
-      <p>Please follow up with the client within 24 hours.</p>
+      <p>Neem binnen 24 uur contact op met de klant.</p>
       
-      <p>Virtueel Wandelen System</p>
+      <p>Virtueel Wandelen Systeem</p>
     </div>
   `,
 
   // Individual payment templates
   paymentUser: (userData, planData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Welcome to Virtueel Wandelen!</h2>
-      <p>Dear ${userData.firstName} ${userData.lastName},</p>
-      <p>Thank you for subscribing to Virtueel Wandelen. Your account has been created and your 7-day free trial has started.</p>
+      <h2 style="color: #381207;">Welkom bij Virtueel Wandelen!</h2>
+      <p>Beste ${userData.firstName} ${userData.lastName},</p>
+      <p>Bedankt voor het abonneren op Virtueel Wandelen. Uw account is aangemaakt en uw 7-daagse gratis proefperiode is gestart.</p>
       
-      <h3 style="color: #5b6502;">Subscription Details:</h3>
+      <h3 style="color: #5b6502;">Abonnementsgegevens:</h3>
       <ul>
-        <li><strong>Plan:</strong> ${planData.title}</li>
-        <li><strong>Price:</strong> €${planData.price}/${planData.period}</li>
-        <li><strong>Company:</strong> ${userData.companyName}</li>
+        <li><strong>Abonnement:</strong> ${planData.title}</li>
+        <li><strong>Prijs:</strong> €${planData.price}/${planData.period}</li>
+        <li><strong>Bedrijf:</strong> ${userData.companyName}</li>
         <li><strong>Email:</strong> ${userData.email}</li>
       </ul>
       
-      <p>Your free trial will end in 7 days. You can cancel anytime before the trial ends to avoid charges.</p>
+      <p>Uw gratis proefperiode eindigt over 7 dagen. U kunt op elk moment annuleren voordat de proefperiode eindigt om kosten te vermijden.</p>
       
-      <p>Our support team will get back to you soon with login credentials and setup instructions.</p>
+      <p>Ons ondersteuningsteam zal binnenkort contact met u opnemen met inloggegevens en installatie-instructies.</p>
       
-      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische e-mail. Beantwoord deze e-mail niet.</p>
     </div>
   `,
 
   paymentAdmin: (userData, planData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">New Individual Subscription</h2>
-      <p>A new individual subscription has been created.</p>
+      <h2 style="color: #381207;">Nieuw Individueel Abonnement</h2>
+      <p>Er is een nieuw individueel abonnement aangemaakt.</p>
       
-      <h3 style="color: #5b6502;">Customer Details:</h3>
+      <h3 style="color: #5b6502;">Klantgegevens:</h3>
       <ul>
-        <li><strong>Name:</strong> ${userData.firstName} ${userData.lastName}</li>
+        <li><strong>Naam:</strong> ${userData.firstName} ${userData.lastName}</li>
         <li><strong>Email:</strong> ${userData.email}</li>
-        <li><strong>Company:</strong> ${userData.companyName}</li>
-        <li><strong>Function:</strong> ${userData.function}</li>
-        <li><strong>Phone:</strong> ${userData.telephone}</li>
-        <li><strong>Country:</strong> ${userData.country}</li>
-        <li><strong>Address:</strong> ${userData.address}, ${userData.city}, ${userData.postalCode}</li>
+        <li><strong>Bedrijf:</strong> ${userData.companyName}</li>
+        <li><strong>Functie:</strong> ${userData.function}</li>
+        <li><strong>Telefoon:</strong> ${userData.telephone}</li>
+        <li><strong>Land:</strong> ${userData.country}</li>
+        <li><strong>Adres:</strong> ${userData.address}, ${userData.city}, ${userData.postalCode}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Subscription Details:</h3>
+      <h3 style="color: #5b6502;">Abonnementsgegevens:</h3>
       <ul>
-        <li><strong>Plan:</strong> ${planData.title}</li>
-        <li><strong>Price:</strong> €${planData.price}/${planData.period}</li>
-        <li><strong>Trial Period:</strong> 7 days</li>
+        <li><strong>Abonnement:</strong> ${planData.title}</li>
+        <li><strong>Prijs:</strong> €${planData.price}/${planData.period}</li>
+        <li><strong>Proefperiode:</strong> 7 dagen</li>
       </ul>
       
-      <p>Please set up the customer account and send login credentials.</p>
+      <p>Stel het klantaccount in en stuur inloggegevens.</p>
       
-      <p>Virtueel Wandelen System</p>
+      <p>Virtueel Wandelen Systeem</p>
     </div>
   `,
 
@@ -237,81 +236,81 @@ const emailTemplates = {
       <h2 style="color: #381207;">
         ${
           isUpdate
-            ? "Virtueel Wandelen - Your Organization Account has been Updated!"
-            : "Welcome to Virtueel Wandelen - Your Organization Account is Ready!"
+            ? "Virtueel Wandelen - Uw Organisatie Account is Bijgewerkt!"
+            : "Welkom bij Virtueel Wandelen - Uw Organisatie Account is Gereed!"
         }
       </h2>
-      <p>Dear ${orgData.contactPerson?.fullName || "Team"},</p>
+      <p>Beste ${orgData.contactPerson?.fullName || "Team"},</p>
       <p>
         ${
           isUpdate
-            ? "Your organization account with Virtueel Wandelen has been successfully updated."
-            : "Congratulations! Your organization account with Virtueel Wandelen has been approved and created successfully."
+            ? "Uw organisatie account bij Virtueel Wandelen is succesvol bijgewerkt."
+            : "Gefeliciteerd! Uw organisatie account bij Virtueel Wandelen is goedgekeurd en succesvol aangemaakt."
         }
       </p>
       
-      <h3 style="color: #5b6502;">Organization Details:</h3>
+      <h3 style="color: #5b6502;">Organisatiegegevens:</h3>
       <ul>
-        <li><strong>Organization:</strong> ${orgData.orgName}</li>
+        <li><strong>Organisatie:</strong> ${orgData.orgName}</li>
         <li><strong>Contact Email:</strong> ${
           orgData.contactPerson?.email || orgData.email
         }</li>
-        <li><strong>Phone:</strong> ${orgData.phoneNo}</li>
-        <li><strong>Address:</strong> ${getDisplayValue(
+        <li><strong>Telefoon:</strong> ${orgData.phoneNo}</li>
+        <li><strong>Adres:</strong> ${getDisplayValue(
           orgData.address
         )}, ${getDisplayValue(orgData.city)} ${getDisplayValue(
     orgData.postal
   )}</li>
-        <li><strong>Client Limit:</strong> ${orgData.clientLimit} users</li>
-        <li><strong>Plan Valid From:</strong> ${getDisplayValue(
+        <li><strong>Klantlimiet:</strong> ${orgData.clientLimit} gebruikers</li>
+        <li><strong>Abonnement geldig vanaf:</strong> ${getDisplayValue(
           orgData.planValidFrom,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Plan Valid To:</strong> ${getDisplayValue(
+        <li><strong>Abonnement geldig tot:</strong> ${getDisplayValue(
           orgData.planValidTo,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Amount Paid:</strong> ${getDisplayValue(
+        <li><strong>Bedrag betaald:</strong> ${getDisplayValue(
           orgData.amountPaid,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
       </ul>
       
       ${
         !isUpdate
           ? `
-      <h3 style="color: #5b6502;">Next Steps:</h3>
-      <p>To complete your account setup, please create your password by clicking the link below:</p>
+      <h3 style="color: #5b6502;">Volgende stappen:</h3>
+      <p>Om uw account setup te voltooien, maak uw wachtwoord aan door op de onderstaande link te klikken:</p>
       
       <div style="text-align: center; margin: 30px 0;">
         <a href="${passwordLink}" 
            style="background-color: #5b6502; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
-          Set Your Password
+          Stel Uw Wachtwoord In
         </a>
       </div>
       
-      <p>Once you've set your password, you can:</p>
+      <p>Eenmaal uw wachtwoord ingesteld, kunt u:</p>
       <ul>
-        <li>Log in to your organization dashboard</li>
-        <li>Add and manage your clients/patients</li>
-        <li>Access Virtueel Wandelen's virtual walking platform</li>
-        <li>Monitor usage and progress</li>
+        <li>Inloggen op uw organisatie dashboard</li>
+        <li>Cliënten/patiënten toevoegen en beheren</li>
+        <li>Toegang krijgen tot Virtueel Wandelen's virtuele wandelplatform</li>
+        <li>Gebruik en voortgang monitoren</li>
       </ul>
       `
           : `
-      <h3 style="color: #5b6502;">What's Next:</h3>
-      <p>Your account details have been updated successfully. You can continue using your existing login credentials to access your organization dashboard.</p>
+      <h3 style="color: #5b6502;">Wat nu?</h3>
+      <p>Uw accountgegevens zijn succesvol bijgewerkt. U kunt doorgaan met het gebruik van uw bestaande inloggegevens om toegang te krijgen tot uw organisatie dashboard.</p>
       `
       }
       
-      <p>If you have any questions or need assistance, our support team is here to help.</p>
+      <p>Als u vragen heeft of hulp nodig heeft, ons ondersteuningsteam staat voor u klaar.</p>
       
-      <p>Best regards,<br>Virtueel Wandelen Support Team</p>
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated email. ${
+      <p style="font-size: 12px; color: #666;">Dit is een automatische e-mail. ${
         !isUpdate
-          ? "If you have any issues with the password setup link, please contact our support team."
+          ? "Als u problemen heeft met de wachtwoord setup link, neem dan contact op met ons ondersteuningsteam."
           : ""
       }</p>
     </div>
@@ -319,221 +318,217 @@ const emailTemplates = {
 
   customerApprovalAdmin: (orgData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Organization Account ${
-        orgData.requestStates === "approved" ? "Updated" : "Created"
-      } Successfully</h2>
-      <p>An organization account has been ${
+      <h2 style="color: #381207;">Organisatie Account ${
+        orgData.requestStates === "approved" ? "Bijgewerkt" : "Aangemaakt"
+      } Succesvol</h2>
+      <p>Een organisatie account is ${
         orgData.requestStates === "approved"
-          ? "updated"
-          : "created and approved"
-      } in the system.</p>
+          ? "bijgewerkt"
+          : "aangemaakt en goedgekeurd"
+      } in het systeem.</p>
       
-      <h3 style="color: #5b6502;">Organization Information:</h3>
+      <h3 style="color: #5b6502;">Organisatie Informatie:</h3>
       <ul>
-        <li><strong>Organization Name:</strong> ${orgData.orgName}</li>
+        <li><strong>Organisatie Naam:</strong> ${orgData.orgName}</li>
         <li><strong>Contact Email:</strong> ${
           orgData.contactPerson?.email || orgData.email
         }</li>
-        <li><strong>Phone:</strong> ${orgData.phoneNo}</li>
-        <li><strong>Address:</strong> ${getDisplayValue(orgData.address)}</li>
-        <li><strong>City:</strong> ${getDisplayValue(orgData.city)}</li>
-        <li><strong>Postal Code:</strong> ${getDisplayValue(
-          orgData.postal
-        )}</li>
+        <li><strong>Telefoon:</strong> ${orgData.phoneNo}</li>
+        <li><strong>Adres:</strong> ${getDisplayValue(orgData.address)}</li>
+        <li><strong>Stad:</strong> ${getDisplayValue(orgData.city)}</li>
+        <li><strong>Postcode:</strong> ${getDisplayValue(orgData.postal)}</li>
         <li><strong>Website:</strong> ${getDisplayValue(orgData.website)}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Contact Person:</h3>
+      <h3 style="color: #5b6502;">Contactpersoon:</h3>
       <ul>
-        <li><strong>Name:</strong> ${getDisplayValue(
+        <li><strong>Naam:</strong> ${getDisplayValue(
           orgData.contactPerson?.fullName
         )}</li>
-        <li><strong>Job Title:</strong> ${getDisplayValue(
+        <li><strong>Functie:</strong> ${getDisplayValue(
           orgData.contactPerson?.jobTitle
         )}</li>
         <li><strong>Email:</strong> ${getDisplayValue(
           orgData.contactPerson?.email
         )}</li>
-        <li><strong>Phone:</strong> ${getDisplayValue(
+        <li><strong>Telefoon:</strong> ${getDisplayValue(
           orgData.contactPerson?.phoneNumber
         )}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Plan Details:</h3>
+      <h3 style="color: #5b6502;">Abonnementsgegevens:</h3>
       <ul>
-        <li><strong>Amount Paid:</strong> ${getDisplayValue(
+        <li><strong>Bedrag betaald:</strong> ${getDisplayValue(
           orgData.amountPaid,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Plan Valid From:</strong> ${getDisplayValue(
+        <li><strong>Abonnement geldig vanaf:</strong> ${getDisplayValue(
           orgData.planValidFrom,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Plan Valid To:</strong> ${getDisplayValue(
+        <li><strong>Abonnement geldig tot:</strong> ${getDisplayValue(
           orgData.planValidTo,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Client Limit:</strong> ${orgData.clientLimit} users</li>
-        <li><strong>Total Clients:</strong> ${getDisplayValue(
+        <li><strong>Klantlimiet:</strong> ${orgData.clientLimit} gebruikers</li>
+        <li><strong>Totaal aantal cliënten:</strong> ${getDisplayValue(
           orgData.totalClients,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Number of Locations:</strong> ${getDisplayValue(
+        <li><strong>Aantal locaties:</strong> ${getDisplayValue(
           orgData.numberOfLocations,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Type of Care Organization:</strong> ${getDisplayValue(
+        <li><strong>Type zorgorganisatie:</strong> ${getDisplayValue(
           orgData.soortZorgorganisatie,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Estimated Users:</strong> ${getDisplayValue(
+        <li><strong>Geschat aantal gebruikers:</strong> ${getDisplayValue(
           orgData.estimatedUsers,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Desired Start Date:</strong> ${
+        <li><strong>Gewenste startdatum:</strong> ${
           orgData.desiredStartDate
             ? new Date(orgData.desiredStartDate).toLocaleDateString()
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
-        <li><strong>Need Integration Support:</strong> ${
-          orgData.needIntegrationSupport ? "Yes" : "No"
+        <li><strong>Integratie ondersteuning nodig:</strong> ${
+          orgData.needIntegrationSupport ? "Ja" : "Nee"
         }</li>
-        <li><strong>Additional Services:</strong> ${
-          orgData.additionalServices || "None"
+        <li><strong>Aanvullende diensten:</strong> ${
+          orgData.additionalServices || "Geen"
         }</li>
-        <li><strong>Notes:</strong> ${orgData.notes || "None"}</li>
+        <li><strong>Notities:</strong> ${orgData.notes || "Geen"}</li>
       </ul>
       
-      <p>The customer has been sent an email with a password setup link to complete their account activation.</p>
+      <p>De klant heeft een e-mail ontvangen met een wachtwoord setup link om hun account activatie te voltooien.</p>
       
-      <p>Action Required: Monitor the customer's onboarding process and provide support as needed.</p>
+      <p>Actie vereist: Monitor het onboarding proces van de klant en bied ondersteuning indien nodig.</p>
       
-      <p>Virtueel Wandelen Admin System</p>
+      <p>Virtueel Wandelen Admin Systeem</p>
     </div>
   `,
 
   // Quote request templates for organizations
   quoteRequestUser: (orgData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Quote Request Received - Virtueel Wandelen</h2>
-      <p>Dear ${getDisplayValue(
+      <h2 style="color: #381207;">Offerte Aanvraag Ontvangen - Virtueel Wandelen</h2>
+      <p>Beste ${getDisplayValue(
         orgData.contactPerson?.fullName,
-        "Valued Customer"
+        "Gewaardeerde Klant"
       )},</p>
       
-      <p>Thank you for your interest in Virtueel Wandelen! We've received your quote request and our team will review it shortly.</p>
+      <p>Bedankt voor uw interesse in Virtueel Wandelen! We hebben uw offerte aanvraag ontvangen en ons team zal deze binnenkort bekijken.</p>
       
-      <h3 style="color: #5b6502;">Your Request Details:</h3>
+      <h3 style="color: #5b6502;">Uw Aanvraaggegevens:</h3>
       <ul>
-        <li><strong>Organization:</strong> ${orgData.orgName}</li>
+        <li><strong>Organisatie:</strong> ${orgData.orgName}</li>
         <li><strong>Email:</strong> ${
           orgData.contactPerson?.email || orgData.email
         }</li>
-        <li><strong>Estimated Users:</strong> ${getDisplayValue(
+        <li><strong>Geschat aantal gebruikers:</strong> ${getDisplayValue(
           orgData.estimatedUsers,
-          "Not specified"
+          "Niet opgegeven"
         )}</li>
-        <li><strong>Target Groups:</strong> ${
+        <li><strong>Doelgroepen:</strong> ${
           orgData.targetGroup && orgData.targetGroup.length > 0
             ? orgData.targetGroup.join(", ")
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
-        <li><strong>Desired Start Date:</strong> ${
+        <li><strong>Gewenste startdatum:</strong> ${
           orgData.desiredStartDate
             ? new Date(orgData.desiredStartDate).toLocaleDateString()
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
       </ul>
       
-      <h3 style="color: #5b6502;">What's Next?</h3>
-      <p>Our sales team will:</p>
+      <h3 style="color: #5b6502;">Wat nu?</h3>
+      <p>Ons salesteam zal:</p>
       <ul>
-        <li>Review your requirements within 24 hours</li>
-        <li>Prepare a customized quote based on your needs</li>
-        <li>Contact you to discuss implementation details</li>
-        <li>Schedule a demo if requested</li>
+        <li>Uw eisen binnen 24 uur bekijken</li>
+        <li>Een aangepaste offerte op basis van uw behoeften opstellen</li>
+        <li>Contact met u opnemen om implementatiedetails te bespreken</li>
+        <li>Indien gewenst een demo plannen</li>
       </ul>
       
-      <p>In the meantime, feel free to explore our website to learn more about Virtueel Wandelen's virtual walking platform and its benefits for cognitive health and wellness.</p>
+      <p>Intussen kunt u onze website verkennen om meer te leren over Virtueel Wandelen's virtuele wandelplatform en de voordelen voor cognitieve gezondheid en welzijn.</p>
       
-      <p>If you have any urgent questions, please don't hesitate to contact us.</p>
+      <p>Als u dringende vragen heeft, aarzel dan niet om contact met ons op te nemen.</p>
       
-      <p>Best regards,<br>Virtueel Wandelen Sales Team</p>
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Sales Team</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated confirmation. Our team will be in touch with you soon.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische bevestiging. Ons team zal binnenkort contact met u opnemen.</p>
     </div>
   `,
 
   quoteRequestAdmin: (orgData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">New Quote Request - Organization</h2>
-      <p>A new organization has submitted a quote request.</p>
+      <h2 style="color: #381207;">Nieuwe Offerte Aanvraag - Organisatie</h2>
+      <p>Een nieuwe organisatie heeft een offerte aanvraag ingediend.</p>
       
-      <h3 style="color: #5b6502;">Organization Information:</h3>
+      <h3 style="color: #5b6502;">Organisatie Informatie:</h3>
       <ul>
-        <li><strong>Organization Name:</strong> ${orgData.orgName}</li>
+        <li><strong>Organisatie Naam:</strong> ${orgData.orgName}</li>
         <li><strong>Email:</strong> ${
           orgData.contactPerson?.email || orgData.email
         }</li>
-        <li><strong>Phone:</strong> ${getDisplayValue(orgData.phoneNo)}</li>
-        <li><strong>Address:</strong> ${getDisplayValue(orgData.address)}</li>
-        <li><strong>City:</strong> ${getDisplayValue(orgData.city)}</li>
-        <li><strong>Postal Code:</strong> ${getDisplayValue(
-          orgData.postal
-        )}</li>
+        <li><strong>Telefoon:</strong> ${getDisplayValue(orgData.phoneNo)}</li>
+        <li><strong>Adres:</strong> ${getDisplayValue(orgData.address)}</li>
+        <li><strong>Stad:</strong> ${getDisplayValue(orgData.city)}</li>
+        <li><strong>Postcode:</strong> ${getDisplayValue(orgData.postal)}</li>
         <li><strong>Website:</strong> ${getDisplayValue(orgData.website)}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Contact Person:</h3>
+      <h3 style="color: #5b6502;">Contactpersoon:</h3>
       <ul>
-        <li><strong>Name:</strong> ${getDisplayValue(
+        <li><strong>Naam:</strong> ${getDisplayValue(
           orgData.contactPerson?.fullName
         )}</li>
-        <li><strong>Job Title:</strong> ${getDisplayValue(
+        <li><strong>Functie:</strong> ${getDisplayValue(
           orgData.contactPerson?.jobTitle
         )}</li>
         <li><strong>Email:</strong> ${getDisplayValue(
           orgData.contactPerson?.email
         )}</li>
-        <li><strong>Phone:</strong> ${getDisplayValue(
+        <li><strong>Telefoon:</strong> ${getDisplayValue(
           orgData.contactPerson?.phoneNumber
         )}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Requirements:</h3>
+      <h3 style="color: #5b6502;">Eisen:</h3>
       <ul>
-        <li><strong>Total Clients:</strong> ${getDisplayValue(
+        <li><strong>Totaal aantal cliënten:</strong> ${getDisplayValue(
           orgData.totalClients
         )}</li>
-        <li><strong>Number of Locations:</strong> ${getDisplayValue(
+        <li><strong>Aantal locaties:</strong> ${getDisplayValue(
           orgData.numberOfLocations
         )}</li>
-        <li><strong>Target Groups:</strong> ${
+        <li><strong>Doelgroepen:</strong> ${
           orgData.targetGroup && orgData.targetGroup.length > 0
             ? orgData.targetGroup.join(", ")
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
-        <li><strong>Estimated Users:</strong> ${getDisplayValue(
+        <li><strong>Geschat aantal gebruikers:</strong> ${getDisplayValue(
           orgData.estimatedUsers
         )}</li>
-        <li><strong>Desired Start Date:</strong> ${
+        <li><strong>Gewenste startdatum:</strong> ${
           orgData.desiredStartDate
             ? new Date(orgData.desiredStartDate).toLocaleDateString()
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
-        <li><strong>Need Integration Support:</strong> ${
-          orgData.needIntegrationSupport ? "Yes" : "No"
+        <li><strong>Integratie ondersteuning nodig:</strong> ${
+          orgData.needIntegrationSupport ? "Ja" : "Nee"
         }</li>
-        <li><strong>Additional Services:</strong> ${
-          orgData.additionalServices || "None"
+        <li><strong>Aanvullende diensten:</strong> ${
+          orgData.additionalServices || "Geen"
         }</li>
-        <li><strong>Notes:</strong> ${orgData.notes || "None"}</li>
+        <li><strong>Notities:</strong> ${orgData.notes || "Geen"}</li>
       </ul>
       
-      <p><strong>Action Required:</strong> Please review the request and follow up with the organization within 24 hours.</p>
+      <p><strong>Actie vereist:</strong> Bekijk de aanvraag en neem binnen 24 uur contact op met de organisatie.</p>
       
-      <p>Virtueel Wandelen Admin System</p>
+      <p>Virtueel Wandelen Admin Systeem</p>
     </div>
   `,
 
@@ -559,16 +554,16 @@ const emailTemplates = {
         <li><strong>Abonnement:</strong> ${getDisplayValue(
           clientData.plan
         )}</li>
-        <li><strong>Abonnementtype:</strong> Individual</li>
+        <li><strong>Abonnementtype:</strong> Individueel</li>
         <li><strong>Startdatum:</strong> ${
           clientData.startDate
             ? new Date(clientData.startDate).toLocaleDateString()
-            : "Today"
+            : "Vandaag"
         }</li>
         <li><strong>Einddatum:</strong> ${
           clientData.endDate
             ? new Date(clientData.endDate).toLocaleDateString()
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
       </ul>
       
@@ -585,62 +580,62 @@ const emailTemplates = {
       <p>Met vriendelijke groet,<br>Virtueel Wandelen Supportteam</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">Dit is een automatische bevestiging. Je ontvangt zo direct een mail met jouw  accountgegevens.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische bevestiging. U ontvangt zo direct een mail met uw accountgegevens.</p>
     </div>
   `,
 
   individualSubscriptionAdmin: (clientData) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">New Individual Subscription</h2>
-      <p>A new individual has subscribed to Virtueel Wandelen.</p>
+      <h2 style="color: #381207;">Nieuw Individueel Abonnement</h2>
+      <p>Een nieuwe persoon heeft zich geabonneerd op Virtueel Wandelen.</p>
       
-      <h3 style="color: #5b6502;">Subscriber Information:</h3>
+      <h3 style="color: #5b6502;">Abonnee Informatie:</h3>
       <ul>
-        <li><strong>Name:</strong> ${getDisplayValue(
+        <li><strong>Naam:</strong> ${getDisplayValue(
           clientData.firstName
         )} ${getDisplayValue(clientData.lastName)}</li>
         <li><strong>Email:</strong> ${clientData.email}</li>
-        <li><strong>Phone:</strong> ${getDisplayValue(clientData.phoneNo)}</li>
-        <li><strong>Company:</strong> ${getDisplayValue(
+        <li><strong>Telefoon:</strong> ${getDisplayValue(
+          clientData.phoneNo
+        )}</li>
+        <li><strong>Bedrijf:</strong> ${getDisplayValue(
           clientData.company
         )}</li>
-        <li><strong>Function:</strong> ${getDisplayValue(
+        <li><strong>Functie:</strong> ${getDisplayValue(
           clientData.function
         )}</li>
-        <li><strong>Country:</strong> ${getDisplayValue(
-          clientData.country
-        )}</li>
-        <li><strong>Address:</strong> ${getDisplayValue(
-          clientData.address
-        )}</li>
-        <li><strong>City:</strong> ${getDisplayValue(clientData.city)}</li>
-        <li><strong>Postal Code:</strong> ${getDisplayValue(
+        <li><strong>Land:</strong> ${getDisplayValue(clientData.country)}</li>
+        <li><strong>Adres:</strong> ${getDisplayValue(clientData.address)}</li>
+        <li><strong>Stad:</strong> ${getDisplayValue(clientData.city)}</li>
+        <li><strong>Postcode:</strong> ${getDisplayValue(
           clientData.postal
         )}</li>
       </ul>
       
-      <h3 style="color: #5b6502;">Subscription Details:</h3>
+      <h3 style="color: #5b6502;">Abonnementsgegevens:</h3>
       <ul>
-        <li><strong>Plan:</strong> ${getDisplayValue(clientData.plan)}</li>
-        <li><strong>Subscription Type:</strong> ${getDisplayValue(
-          clientData.subscriptionType,
-          "Individual"
+        <li><strong>Abonnement:</strong> ${getDisplayValue(
+          clientData.plan
         )}</li>
-        <li><strong>Start Date:</strong> ${
+        <li><strong>Abonnementstype:</strong> ${getDisplayValue(
+          clientData.subscriptionType,
+          "Individueel"
+        )}</li>
+        <li><strong>Startdatum:</strong> ${
           clientData.startDate
             ? new Date(clientData.startDate).toLocaleDateString()
-            : "Today"
+            : "Vandaag"
         }</li>
-        <li><strong>End Date:</strong> ${
+        <li><strong>Einddatum:</strong> ${
           clientData.endDate
             ? new Date(clientData.endDate).toLocaleDateString()
-            : "Not specified"
+            : "Niet opgegeven"
         }</li>
       </ul>
       
-      <p><strong>Action Required:</strong> Please review and approve the subscription, then send login credentials to the subscriber.</p>
+      <p><strong>Actie vereist:</strong> Bekijk het abonnement en keur het goed, stuur dan inloggegevens naar de abonnee.</p>
       
-      <p>Virtueel Wandelen Admin System</p>
+      <p>Virtueel Wandelen Admin Systeem</p>
     </div>
   `,
 
@@ -670,9 +665,9 @@ const emailTemplates = {
   // Forgot password OTP email template
   forgotPasswordOtpEmail: (otp) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Password Reset OTP - Virtual Wandlen</h2>
-      <p>Dear User,</p>
-      <p>You have requested to reset your password for your Virtual Wandlen account. Please use the following One-Time Password (OTP) to complete the password reset:</p>
+      <h2 style="color: #381207;">Wachtwoord Reset OTP - Virtueel Wandelen</h2>
+      <p>Beste gebruiker,</p>
+      <p>U heeft verzocht om uw wachtwoord te resetten voor uw Virtueel Wandelen account. Gebruik de volgende Eenmalige Wachtwoord (OTP) om de wachtwoord reset te voltooien:</p>
       
       <div style="text-align: center; margin: 30px 0;">
         <div style="display: inline-block; padding: 15px 30px; background-color: #5b6502; color: white; font-size: 24px; font-weight: bold; border-radius: 8px; letter-spacing: 2px;">
@@ -680,24 +675,24 @@ const emailTemplates = {
         </div>
       </div>
       
-      <p><strong>Important:</strong> This OTP is valid for 5 minutes only. Please do not share this code with anyone.</p>
-      <p>If you did not request this password reset, please ignore this email.</p>
+      <p><strong>Belangrijk:</strong> Deze OTP is slechts 5 minuten geldig. Deel deze code met niemand.</p>
+      <p>Als u deze wachtwoord reset niet heeft aangevraagd, negeer dan deze e-mail.</p>
       
-      <p>Best regards,<br>Virtual Wandlen Support Team</p>
+      <p>Met vriendelijke groet,<br>Virtueel Wandelen Support Team</p>
       
       <hr style="margin: 20px 0;">
-      <p style="font-size: 12px; color: #666;">This is an automated email. Please do not reply to this email.</p>
+      <p style="font-size: 12px; color: #666;">Dit is een automatische e-mail. Beantwoord deze e-mail niet.</p>
     </div>
   `,
 
   // Subscription renewal template
   subscriptionRenewed: (firstName, newEndDate) => ({
-    subject: "Your Subscription Has Been Renewed",
+    subject: "Uw Abonnement is Vernieuwd",
     html: `
-      <h2>Hi ${firstName},</h2>
-      <p>Your subscription has been automatically renewed!</p>
-      <p><strong>New expiration date:</strong> ${newEndDate.toLocaleDateString()}</p>
-      <p>You can continue enjoying all premium features.</p>
+      <h2>Hoi ${firstName},</h2>
+      <p>Uw abonnement is automatisch vernieuwd!</p>
+      <p><strong>Nieuwe vervaldatum:</strong> ${newEndDate.toLocaleDateString()}</p>
+      <p>U kunt blijven genieten van alle premium functies.</p>
     `,
   }),
 };
