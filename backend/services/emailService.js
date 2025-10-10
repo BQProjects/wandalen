@@ -1,6 +1,6 @@
 const { Resend } = require("resend");
 
-const resend = new Resend("re_Fe4pwmbH_E1KvQv2MGo1QZj9fZvfYAH6V");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Helper function to handle empty strings, null, and undefined values
 const getDisplayValue = (value, defaultText = "Niet opgegeven") => {

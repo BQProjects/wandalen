@@ -307,7 +307,7 @@ const clientSignUp = async (req, res) => {
         },
         {
           auth: {
-            username: process.env.LAPOSTA_API_KEY || "VYgJJ2g6ihPna2pI2ZDg",
+            username: process.env.LAPOSTA_API_KEY,
             password: "",
           },
         }

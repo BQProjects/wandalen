@@ -9,8 +9,7 @@ const path = require("path");
  * Use this to review video data before importing to MongoDB
  */
 
-const VIMEO_ACCESS_TOKEN =
-  process.env.VIMEO_ACCESS_TOKEN || "47f86c1de3626455750d70a90f8383b4";
+const VIMEO_ACCESS_TOKEN = process.env.VIMEO_ACCESS_TOKEN;
 const VIMEO_API_BASE = "https://api.vimeo.com";
 
 // Fetch all videos from Vimeo with full details
