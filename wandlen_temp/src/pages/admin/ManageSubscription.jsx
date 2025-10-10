@@ -177,6 +177,37 @@ const ManageSubscription = () => {
     navigate("/admin/subscription-overview", { state: { subscription: sub } });
   };
 
+  const handleDeleteClient = async (clientId, stripeSubscriptionId) => {
+    if (!stripeSubscriptionId) {
+      // No subscription, can delete directly
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this client?"
+      );
+      if (!confirmDelete) return;
+    } else {
+      // Has subscription, check if cancelled
+      const confirmDelete = window.confirm(
+        "This client has a Stripe subscription. Make sure the subscription is cancelled in Stripe before deleting. Proceed with deletion?"
+      );
+      if (!confirmDelete) return;
+    }
+
+    try {
+      const res = await axios.delete(
+        `${DATABASE_URL}/admin/delete-client/${clientId}`,
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
+        }
+      );
+      toast.success(res.data.message);
+      // Refresh the subscriptions list
+      fetchSubscriptions();
+    } catch (error) {
+      console.error("Error deleting client:", error);
+      toast.error(error.response?.data?.message || "Failed to delete client");
+    }
+  };
+
   return (
     <div className="flex-1 bg-[#f7f6f4] p-6 overflow-y-auto">
       {/* Header Section */}
@@ -366,7 +397,7 @@ const ManageSubscription = () => {
                 className="cursor-pointer hover:scale-110 transition-transform"
                 onClick={(e) => {
                   e.stopPropagation();
-                  // Add delete functionality here
+                  handleDeleteClient(sub.clientId, sub.stripeSubscriptionId);
                 }}
               >
                 <path

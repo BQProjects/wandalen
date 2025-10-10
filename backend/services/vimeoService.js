@@ -8,8 +8,7 @@ const FormData = require("form-data");
 
 class VimeoService {
   constructor() {
-    this.accessToken =
-      process.env.VIMEO_ACCESS_TOKEN || "47f86c1de3626455750d70a90f8383b4";
+    this.accessToken = process.env.VIMEO_ACCESS_TOKEN;
     this.baseUrl = "https://api.vimeo.com";
 
     if (!this.accessToken) {

@@ -12,10 +12,9 @@ const VideoModel = require("../models/videoModel");
  * It extracts: title, description, thumbnail, tags, duration, and video URL
  */
 
-const VIMEO_ACCESS_TOKEN =
-  process.env.VIMEO_ACCESS_TOKEN || "47f86c1de3626455750d70a90f8383b4";
+const VIMEO_ACCESS_TOKEN = process.env.VIMEO_ACCESS_TOKEN;
 const VIMEO_API_BASE = "https://api.vimeo.com";
-const MONGODB_URI = process.env.MONGODB_URI || "your_mongodb_connection_string";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // Helper function to parse location data from tags or description
 const parseLocationData = (tags, description) => {

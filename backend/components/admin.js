@@ -433,6 +433,48 @@ const deleteOrg = async (req, res) => {
   }
 };
 
+const deleteClient = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const client = await ClientModel.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    // Check if client has an active Stripe subscription
+    if (client.stripeSubscriptionId) {
+      const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+      try {
+        const subscription = await stripe.subscriptions.retrieve(
+          client.stripeSubscriptionId
+        );
+
+        // Check if subscription is cancelled
+        if (
+          subscription.status !== "canceled" &&
+          !subscription.cancel_at_period_end
+        ) {
+          return res.status(400).json({
+            message:
+              "Cannot delete client with active subscription. Please cancel the subscription in Stripe first.",
+          });
+        }
+      } catch (stripeError) {
+        console.error("Error checking Stripe subscription:", stripeError);
+        // If we can't check Stripe, allow deletion to avoid blocking
+        console.warn("Proceeding with deletion due to Stripe API error");
+      }
+    }
+
+    // Delete the client
+    await ClientModel.findByIdAndDelete(clientId);
+    res.status(200).json({ message: "Client deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const approveOrg = async (req, res) => {
   try {
     const { orgId } = req.params;
@@ -1012,6 +1054,7 @@ module.exports = {
   approveOrg,
   updateOrg,
   deleteOrg,
+  deleteClient,
   uploadVideo,
   getVideo,
   toggleVideoApproval,

@@ -25,6 +25,7 @@ const {
   approveOrg,
   updateOrg,
   deleteOrg,
+  deleteClient,
   uploadVideo,
   getVideo,
   toggleVideoApproval,
@@ -65,6 +66,7 @@ adminRouter.delete("/trainings/:id", deleteTraining);
 adminRouter.put("/approve-org/:orgId", approveOrg);
 adminRouter.put("/update-org/:orgId", updateOrg);
 adminRouter.delete("/delete-request/:orgId", deleteOrg);
+adminRouter.delete("/delete-client/:clientId", deleteClient);
 adminRouter.post("/uploadVideo", uploadVideo);
 adminRouter.get("/get-video/:videoId", getVideo);
 adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);

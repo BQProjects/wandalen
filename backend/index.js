@@ -33,9 +33,7 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 
 mongoose
-  .connect(
-    "mongodb+srv://teja29204:QHsGliWUpy5I0b2E@wand.h0ohxzz.mongodb.net/test?retryWrites=true&w=majority&appName=wand"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Database is connected");
   })
