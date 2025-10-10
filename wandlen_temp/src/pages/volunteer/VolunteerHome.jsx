@@ -132,7 +132,6 @@ const VolunteerHome = () => {
         Seizoen: "season",
         Natuurtype: "nature",
         Dieren: "animals",
-        Geluidsprikkels: "sound",
       };
       Object.entries(filters).forEach(([key, values]) => {
         const field = fieldMap[key];
@@ -200,7 +199,7 @@ const VolunteerHome = () => {
           <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#A6A643] mb-4">
             {t("volunteerHome.welcome")}
           </h1>
-          <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
+          <p className="text-5xl text-[#EDE4DC] font-bold font-[Poppins] max-w-2xl mx-auto">
             {t("volunteerHome.heroTitle")}
           </p>
           <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">

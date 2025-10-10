@@ -41,7 +41,7 @@ const ViewBlog = () => {
     <div className="flex-shrink-0 bg-secondary">
       <div className="flex-shrink-0">
         {/* Title */}
-        <div className="inline-flex flex-col items-start gap-4 px-4 sm:px-10 md:px-20">
+        <div className="inline-flex flex-col items-start gap-4 px-4 sm:px-10 md:px-20 mt-10">
           <div className="text-primary font-[Poppins] text-xl md:text-[2rem] font-semibold leading-[136%]">
             Blog
           </div>

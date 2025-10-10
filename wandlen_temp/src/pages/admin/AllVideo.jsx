@@ -127,7 +127,6 @@ const AllVideos = () => {
         Seizoen: "season",
         Natuurtype: "nature",
         Dieren: "animals",
-        Geluidsprikkels: "sound",
       };
       Object.entries(filters).forEach(([key, values]) => {
         const field = fieldMap[key];

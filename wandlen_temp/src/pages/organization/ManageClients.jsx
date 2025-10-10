@@ -13,12 +13,13 @@ const ManageClients = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const { t } = useTranslation();
   const sessionId = localStorage.getItem("sessionId");
+  const orgId = localStorage.getItem("userId");
 
   const getAllClients = async () => {
     try {
-      const res = await axios.get(
-        `${DATABASE_URL}/org/getClients/${sessionId}`
-      );
+      const res = await axios.get(`${DATABASE_URL}/org/getClients/${orgId}`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       setClients(res.data);
     } catch (error) {
       console.error("Error fetching clients:", error);
@@ -27,7 +28,9 @@ const ManageClients = () => {
 
   const getOrgData = async () => {
     try {
-      const res = await axios.get(`${DATABASE_URL}/org/getOrg/${sessionId}`);
+      const res = await axios.get(`${DATABASE_URL}/org/getOrg/${orgId}`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       setOrgData(res.data.org); // Fix: Access the nested 'org' key
     } catch (error) {
       console.error("Error fetching org data:", error);
@@ -76,6 +79,9 @@ const ManageClients = () => {
             phoneNo: newClient.phoneNo,
             startDate: orgData.planValidFrom,
             endDate: orgData.planValidTo,
+          },
+          {
+            headers: { Authorization: `Bearer ${sessionId}` },
           }
         );
         if (res.status === 200) {
@@ -99,16 +105,22 @@ const ManageClients = () => {
       } else {
         // Add new client
         const randomPassword = Math.random().toString(36).slice(-8);
-        const res = await axios.post(`${DATABASE_URL}/org/addClient`, {
-          firstName: newClient.firstName,
-          lastName: newClient.lastName,
-          email: newClient.email,
-          password: randomPassword,
-          orgId: sessionId,
-          phoneNo: newClient.phoneNo,
-          startDate: orgData.planValidFrom,
-          endDate: orgData.planValidTo,
-        });
+        const res = await axios.post(
+          `${DATABASE_URL}/org/addClient`,
+          {
+            firstName: newClient.firstName,
+            lastName: newClient.lastName,
+            email: newClient.email,
+            password: randomPassword,
+            orgId: orgId,
+            phoneNo: newClient.phoneNo,
+            startDate: orgData.planValidFrom,
+            endDate: orgData.planValidTo,
+          },
+          {
+            headers: { Authorization: `Bearer ${sessionId}` },
+          }
+        );
 
         if (res.status === 201) {
           toast.success(t("manageClients.clientAddedSuccess"));
@@ -129,7 +141,9 @@ const ManageClients = () => {
 
   const handleDeleteClient = async (id) => {
     try {
-      await axios.delete(`${DATABASE_URL}/org/deleteClient/${id}`);
+      await axios.delete(`${DATABASE_URL}/org/deleteClient/${id}`, {
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
       setClients(clients.filter((client) => client._id !== id)); // Remove from local state after successful delete
       toast.success(t("manageClients.clientDeletedSuccess"));
     } catch (error) {
@@ -315,89 +329,6 @@ const ManageClients = () => {
           </div>
         ) : (
           <>
-            {/* Clients Table */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-[#a6a643]/20 border-b border-[#d9bbaa]">
-                      <th className="px-6 py-4 text-left">
-                        <input type="checkbox" className="w-4 h-4" />
-                      </th>
-                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        {t("manageClients.fullName")}
-                      </th>
-                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        {t("manageClients.phoneNumber")}
-                      </th>
-                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        {t("manageClients.emailId")}
-                      </th>
-                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
-                        {t("manageClients.generatedPassword")}
-                      </th>
-                      <th className="px-6 py-4 text-left"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {clients.map((client, index) => (
-                      <tr
-                        key={client._id} // Fix: Use _id for unique key
-                        className={
-                          index % 2 === 0 ? "bg-white" : "bg-[#ede4dc]"
-                        }
-                      >
-                        <td className="px-6 py-4">
-                          <input
-                            type="checkbox"
-                            checked={client.checked}
-                            onChange={() => handleCheckboxChange(client._id)} // Already using _id
-                            className="w-4 h-4"
-                          />
-                        </td>
-                        <td className="px-6 py-4 text-[#381207]">
-                          {client.firstName} {client.lastName}
-                        </td>
-                        <td className="px-6 py-4 text-[#381207]">
-                          {client.phoneNo}
-                        </td>
-                        <td className="px-6 py-4 text-[#381207]">
-                          {client.email}
-                        </td>
-                        <td className="px-6 py-4 text-[#381207]">
-                          {client.plainPassword}
-                        </td>
-                        <td className="px-6 py-4 flex space-x-2">
-                          <button
-                            onClick={() => handleEditClient(client)}
-                            className="text-[#381207] hover:text-blue-600 transition"
-                          >
-                            {t("manageClients.edit")}
-                          </button>
-                          <button
-                            onClick={() => handleDeleteClient(client._id)} // Already using _id
-                            className="text-[#381207] hover:text-red-600 transition"
-                          >
-                            <svg
-                              width={17}
-                              height={16}
-                              viewBox="0 0 17 16"
-                              fill="none"
-                            >
-                              <path
-                                d="M4.5026 12.6667C4.5026 13.0203 4.64308 13.3594 4.89313 13.6095C5.14318 13.8595 5.48232 14 5.83594 14H11.1693C11.5229 14 11.862 13.8595 12.1121 13.6095C12.3621 13.3594 12.5026 13.0203 12.5026 12.6667V4.66667H4.5026V12.6667ZM5.83594 6H11.1693V12.6667H5.83594V6ZM10.8359 2.66667L10.1693 2H6.83594L6.16927 2.66667H3.83594V4H13.1693V2.66667H10.8359Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
             {/* Add New Client Section - Conditionally Rendered */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               {isLoading ? (
@@ -431,7 +362,7 @@ const ManageClients = () => {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                       <div>
                         <label className="block text-[#7a756e] font-medium mb-2">
                           {t("manageClients.firstName")}
@@ -520,6 +451,88 @@ const ManageClients = () => {
                   </p>
                 </div>
               )}
+            </div>
+            {/* Clients Table */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden mt-8">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-[#a6a643]/20 border-b border-[#d9bbaa]">
+                      <th className="px-6 py-4 text-left">
+                        <input type="checkbox" className="w-4 h-4" />
+                      </th>
+                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
+                        {t("manageClients.fullName")}
+                      </th>
+                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
+                        {t("manageClients.phoneNumber")}
+                      </th>
+                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
+                        {t("manageClients.emailId")}
+                      </th>
+                      <th className="px-6 py-4 text-left text-[#2a341f] font-medium">
+                        {t("manageClients.generatedPassword")}
+                      </th>
+                      <th className="px-6 py-4 text-left"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clients.map((client, index) => (
+                      <tr
+                        key={client._id} // Fix: Use _id for unique key
+                        className={
+                          index % 2 === 0 ? "bg-white" : "bg-[#ede4dc]"
+                        }
+                      >
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={client.checked}
+                            onChange={() => handleCheckboxChange(client._id)} // Already using _id
+                            className="w-4 h-4"
+                          />
+                        </td>
+                        <td className="px-6 py-4 text-[#381207]">
+                          {client.firstName} {client.lastName}
+                        </td>
+                        <td className="px-6 py-4 text-[#381207]">
+                          {client.phoneNo}
+                        </td>
+                        <td className="px-6 py-4 text-[#381207]">
+                          {client.email}
+                        </td>
+                        <td className="px-6 py-4 text-[#381207]">
+                          {client.plainPassword}
+                        </td>
+                        <td className="px-6 py-4 flex space-x-2">
+                          <button
+                            onClick={() => handleEditClient(client)}
+                            className="text-[#381207] hover:text-blue-600 transition"
+                          >
+                            {t("manageClients.edit")}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteClient(client._id)} // Already using _id
+                            className="text-[#381207] hover:text-red-600 transition"
+                          >
+                            <svg
+                              width={17}
+                              height={16}
+                              viewBox="0 0 17 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M4.5026 12.6667C4.5026 13.0203 4.64308 13.3594 4.89313 13.6095C5.14318 13.8595 5.48232 14 5.83594 14H11.1693C11.5229 14 11.862 13.8595 12.1121 13.6095C12.3621 13.3594 12.5026 13.0203 12.5026 12.6667V4.66667H4.5026V12.6667ZM5.83594 6H11.1693V12.6667H5.83594V6ZM10.8359 2.66667L10.1693 2H6.83594L6.16927 2.66667H3.83594V4H13.1693V2.66667H10.8359Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </>
         )}

@@ -338,124 +338,125 @@ const SubscriptionOverview = () => {
         </div>
 
         {/* Sidebar - Subscription History */}
-        <div className="w-96">
-          <div className="bg-[#f7f6f4] rounded-2xl">
+        <div className="w-96 flex-shrink-0">
+          <div className="bg-[#f7f6f4] rounded-2xl sticky top-6">
             <div className="p-6 border-b border-[#e5e3df]">
               <h3 className="text-[#381207] font-['Poppins'] text-2xl font-medium text-center">
-                Subscription history
+                Subscription History
               </h3>
+              <p className="text-[#4b4741] font-['Poppins'] text-sm text-center mt-2">
+                Track important subscription milestones and dates
+              </p>
             </div>
 
             <div className="p-6">
               <div className="flex gap-4">
                 {/* Timeline */}
-                <div className="flex flex-col items-center gap-1 pt-1">
-                  {/* Generate dynamic timeline dots based on events */}
-                  {paymentDetails?.stripe?.paymentHistory &&
-                  paymentDetails.stripe.paymentHistory.length > 0 ? (
-                    paymentDetails.stripe.paymentHistory
-                      .slice(0, 5)
-                      .map((payment, index) => (
-                        <React.Fragment key={payment.id}>
-                          <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
-                          {index <
-                            Math.min(
-                              paymentDetails.stripe.paymentHistory.length - 1,
-                              4
-                            ) && <div className="w-px h-16 bg-[#a6a643]" />}
-                        </React.Fragment>
-                      ))
-                  ) : (
-                    // Default timeline if no Stripe history
-                    <>
-                      <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
-                      <div className="w-px h-16 bg-[#a6a643]" />
-                      <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
-                      {subscription.status !== "Trial" && (
-                        <>
-                          <div className="w-px h-16 bg-[#a6a643]" />
-                          <div className="w-3 h-3 rounded-full bg-[#a6a643]" />
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
+                <div className="flex flex-col items-center gap-1 pt-1"></div>
 
                 {/* Timeline Content */}
                 <div className="flex-1 space-y-12">
-                  {paymentDetails?.stripe?.paymentHistory &&
-                  paymentDetails.stripe.paymentHistory.length > 0 ? (
-                    // Display payment history from Stripe
-                    paymentDetails.stripe.paymentHistory
-                      .slice(0, 5)
-                      .map((payment, index) => (
-                        <div key={payment.id}>
-                          <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                            {payment.status === "succeeded"
-                              ? "Payment Successful"
-                              : "Payment " + payment.status}
+                  {(() => {
+                    const timelineEvents = [];
+
+                    // Trial end event (if applicable)
+                    if (
+                      subscription.status === "Trial" ||
+                      subscription.trialEndDate
+                    ) {
+                      timelineEvents.push({
+                        title: "Trial Period",
+                        date: subscription.trialEndDate || subscription.endDate,
+                        description:
+                          subscription.status === "Trial"
+                            ? "7-day trial ends"
+                            : "Trial period active",
+                        status:
+                          subscription.status === "Trial"
+                            ? "Active"
+                            : "Completed",
+                      });
+                    }
+
+                    // Subscription start event
+                    timelineEvents.push({
+                      title: "Subscription Started",
+                      date: subscription.startDate,
+                      description: subscription.planType
+                        ? `${subscription.planType} plan activated`
+                        : "Subscription activated",
+                      status: "Completed",
+                    });
+
+                    // Subscription active/renewal event
+                    if (subscription.status === "Active") {
+                      timelineEvents.push({
+                        title: "Subscription Active",
+                        date: subscription.startDate,
+                        description: subscription.planType
+                          ? `Currently on ${subscription.planType} plan`
+                          : "Subscription is active",
+                        status: "Active",
+                      });
+                    }
+
+                    // Subscription end/cancellation event
+                    if (
+                      subscription.status === "Cancelled" ||
+                      subscription.status === "Expired" ||
+                      subscription.endDate
+                    ) {
+                      const isCancelled = subscription.status === "Cancelled";
+                      const isExpired = subscription.status === "Expired";
+
+                      timelineEvents.push({
+                        title: isCancelled
+                          ? "Subscription Cancelled"
+                          : isExpired
+                          ? "Subscription Expired"
+                          : "Subscription Ends",
+                        date:
+                          subscription.endDate ||
+                          paymentDetails?.stripe?.canceledAt,
+                        description: isCancelled
+                          ? "Subscription has been cancelled"
+                          : isExpired
+                          ? "Subscription has expired"
+                          : `Renews on ${subscription.endDate}`,
+                        status:
+                          isCancelled || isExpired ? "Completed" : "Upcoming",
+                      });
+                    }
+
+                    return timelineEvents.map((event, index) => (
+                      <div key={index}>
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium">
+                            {event.title}
                           </h4>
-                          <p className="text-[#4b4741] font-['Poppins'] mb-1">
-                            {new Date(payment.created).toLocaleDateString()}
-                          </p>
-                          <p className="text-[#4b4741] font-['Poppins'] text-sm">
-                            € {payment.amount.toFixed(2)} -{" "}
-                            {payment.paymentMethodDetails?.brand || "Card"}
-                          </p>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              event.status === "Active"
+                                ? "bg-green-100 text-green-800"
+                                : event.status === "Completed"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {event.status}
+                          </span>
                         </div>
-                      ))
-                  ) : (
-                    // Default timeline events if no Stripe history
-                    <>
-                      {subscription.status === "Cancelled" &&
-                        paymentDetails?.stripe?.canceledAt && (
-                          <div>
-                            <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                              Subscription Cancelled
-                            </h4>
-                            <p className="text-[#4b4741] font-['Poppins']">
-                              {new Date(
-                                paymentDetails.stripe.canceledAt
-                              ).toLocaleDateString()}
-                            </p>
-                          </div>
-                        )}
-
-                      {subscription.status === "Active" && (
-                        <div>
-                          <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                            Subscription Active
-                          </h4>
-                          <p className="text-[#4b4741] font-['Poppins']">
-                            {subscription.startDate}
-                          </p>
-                        </div>
-                      )}
-
-                      {subscription.status !== "Trial" &&
-                        subscription.paymentStatus === "Paid" && (
-                          <div>
-                            <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                              Payment Processed
-                            </h4>
-                            <p className="text-[#4b4741] font-['Poppins']">
-                              {subscription.startDate}
-                            </p>
-                          </div>
-                        )}
-
-                      <div>
-                        <h4 className="text-[#381207] font-['Poppins'] text-lg font-medium mb-2">
-                          {subscription.status === "Trial"
-                            ? "Trial Started"
-                            : "Subscription Created"}
-                        </h4>
-                        <p className="text-[#4b4741] font-['Poppins']">
-                          {subscription.startDate}
+                        <p className="text-[#4b4741] font-['Poppins'] mb-1">
+                          {event.date
+                            ? new Date(event.date).toLocaleDateString()
+                            : "Date not available"}
+                        </p>
+                        <p className="text-[#4b4741] font-['Poppins'] text-sm">
+                          {event.description}
                         </p>
                       </div>
-                    </>
-                  )}
+                    ));
+                  })()}
                 </div>
               </div>
             </div>

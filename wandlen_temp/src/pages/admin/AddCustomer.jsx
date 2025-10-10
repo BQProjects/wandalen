@@ -370,7 +370,7 @@ const AddCustomer = () => {
                 onChange={(e) => setPhoneNo(e.target.value)}
               />
             </div>
-            <div className="md:col-span-2">
+            {/* <div className="md:col-span-2">
               <label className="block text-muted-foreground font-base text-sm mb-2">
                 Address
               </label>
@@ -379,7 +379,7 @@ const AddCustomer = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               ></textarea>
-            </div>
+            </div> */}
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
                 Street

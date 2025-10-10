@@ -20,8 +20,17 @@ const SubscriptionCard = ({
   onClick,
   icon,
   t,
+  discountCode,
+  discountAmount,
+  isLaunch = false,
 }) => (
   <div className="relative flex-shrink-0 w-full h-full min-h-[530px]">
+    {/* Launch Badge */}
+    {isLaunch && (
+      <div className="absolute top-4 right-4 bg-[#a6a643] text-white px-3 py-1 rounded-full text-xs font-bold z-10">
+        {t("subscribe.launchBadge", "Launch Aanbieding")}
+      </div>
+    )}
     {/* Icon */}
     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       {icon}
@@ -38,17 +47,45 @@ const SubscriptionCard = ({
             €
           </div>
           <div className="text-[#381207] text-center font-['Poppins'] text-3xl md:text-5xl font-normal leading-[normal]">
-            {price} <span className="text-sm font-normal">/ {period}</span>
+            {originalPrice ? (
+              <>
+                <span className="line-through text-gray-500 mr-2">
+                  {originalPrice}
+                </span>
+                {price}
+              </>
+            ) : (
+              price
+            )}{" "}
+            <span className="text-sm font-normal">/ {period}</span>
           </div>
         </div>
-        {originalPrice && (
-          <div className="text-[#a6a643] text-sm font-medium">
-            {t(
-              "subscribe.discountCode",
-              "Gebruik code NATUUR01 voor eerste maand korting"
-            )}{" "}
-            (€{originalPrice} {t("subscribe.discountInstead", "i.p.v.")} €
-            {price})
+        {originalPrice && discountCode && (
+          <div className="text-[#a6a643] text-sm font-medium text-center">
+            {period === "jaar" ? (
+              <>
+                Gebruik de kortingscode {discountCode} voor 15% korting op je
+                jaarabonnement
+                <br />
+                Gebruik deze actiecode vòòr 1 december
+                <br />
+                15% discount for the year subscription = € {price},-
+              </>
+            ) : (
+              <>
+                {t(
+                  "subscribe.discountCode",
+                  `Gebruik de kortingscode ${discountCode} voor ${discountAmount} korting op je maandabonnement`
+                )}
+                <br />
+                <span className="text-xs">
+                  {t(
+                    "subscribe.discountExpiry",
+                    "Gebruik deze actiecode vòòr 1 december"
+                  )}
+                </span>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -234,13 +271,20 @@ const Subscribe = () => {
     ...basePlan,
     price: "9.99",
     period: t("subscribe.plan.periods.month"),
+    originalPrice: "12.99",
+    discountCode: "Natuur01",
+    discountAmount: "€ 3,-",
+    isLaunch: true,
   };
 
   const yearlyPlan = {
     ...basePlan,
-    price: "119.88",
+    price: "99.37",
     period: t("subscribe.plan.periods.year"),
-    originalPrice: "95.90",
+    originalPrice: "116.91",
+    discountCode: "Natuur02",
+    discountAmount: "15%",
+    isLaunch: true,
   };
 
   const handleHealthcareClick = () => {

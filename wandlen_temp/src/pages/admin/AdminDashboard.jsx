@@ -109,7 +109,7 @@ const AdminDashboard = () => {
           </p>
         </div>
         <button
-          className="bg-[#a6a643] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#959837] transition-colors"
+          className="bg-[#a6a643] text-white px-4 py-2 rounded-lg text-xl font-medium hover:bg-[#959837] transition-colors"
           onClick={() => {
             window.location.href = "/admin/manage";
           }}

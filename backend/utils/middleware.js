@@ -23,7 +23,10 @@ const validateActiveSession = async (req, res, next) => {
     return res.status(401).json({ error: "Unauthorized: No active session" });
   }
 
-  req.user = { _id: session.userId, role: session.role || "user" };
+  req.user = {
+    _id: session.data?.userId || session._id,
+    role: session.data?.role || "user",
+  };
 
   next();
 };

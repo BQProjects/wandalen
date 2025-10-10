@@ -185,7 +185,7 @@ const VolunteerDetail = () => {
               </div>
             </div>
           </div>
-          <div className="mt-6 flex justify-center">
+          {/* <div className="mt-6 flex justify-center">
             {volunteer.status !== "confirmed" && (
               <button
                 onClick={handleConfirm}
@@ -199,7 +199,7 @@ const VolunteerDetail = () => {
                 Already Confirmed
               </span>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

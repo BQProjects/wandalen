@@ -36,7 +36,7 @@ function HowItWorks() {
             <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#DD9219] mb-4">
               {t("volunteerHowItWorks.heroTitle")}
             </h1>
-            <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
+            <p className="text-5xl text-[#EDE4DC] font-bold font-[Poppins] max-w-2xl mx-auto">
               {t("volunteerHowItWorks.heroSubtitle")}
             </p>
             <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">

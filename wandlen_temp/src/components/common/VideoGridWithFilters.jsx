@@ -176,7 +176,9 @@ const VideoCard = ({
           {title}
         </h3>
 
-        <p className="text-[#381207] text-sm mb-3 opacity-75">{location}</p>
+        {!isClientView && (
+          <p className="text-[#381207] text-sm mb-3 opacity-75">{location}</p>
+        )}
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
@@ -348,11 +350,10 @@ const VideoGridWithFilters = ({
       "Water, moeras, rivier & meren",
       "Stadsgroen & park",
     ], // Updated nature types as requested
-    Geluidsprikkels: ["birds", "water", "wind", "forest sounds"], // Restored sound options
     Dieren: [
       "Vogels",
       "Eenden",
-      "Reeën",
+      "Reeen",
       "Konijnen/hazen",
       "Egels",
       "Schapen",
@@ -788,7 +789,7 @@ const VideoGridWithFilters = ({
         <div className="text-[#dd9219] font-['Poppins'] text-2xl font-semibold leading-[136%] mb-2">
           {title}
         </div>
-        <div className="text-[#381207] font-['Poppins'] text-5xl font-medium leading-[136%]">
+        <div className="text-[#381207] font-['Poppins'] text-5xl font-bold leading-[136%]">
           {subtitle}
         </div>
       </div>
@@ -804,7 +805,7 @@ const VideoGridWithFilters = ({
                   <div key={filter} className="relative">
                     <input
                       type="text"
-                      placeholder="Zoek locatie, provincie of gemeente..."
+                      placeholder="Zoek provincie, gemeente of plaats"
                       value={activeFilters[filter]?.[0] || ""}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -819,7 +820,7 @@ const VideoGridWithFilters = ({
                           onFilterChange(newFilters);
                         }
                       }}
-                      className="pt-[0.6875rem] pb-[0.6875rem] px-5 h-[3.125rem] rounded-lg font-['Poppins'] font-medium transition-all duration-200 bg-[#f8f5f0] text-[#381207] hover:bg-[#e6d9cd] border border-[#d4c4b7] focus:outline-none focus:ring-2 focus:ring-[#dd9219]"
+                      className="pt-[0.6875rem] pb-[0.6875rem] px-5 h-[3.125rem] w-[320px] rounded-lg font-['Poppins'] font-medium transition-all duration-200 bg-[#f8f5f0] text-[#381207] hover:bg-[#e6d9cd] border border-[#d4c4b7] focus:outline-none focus:ring-2 focus:ring-[#dd9219]"
                     />
                   </div>
                 );

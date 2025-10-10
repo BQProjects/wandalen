@@ -360,7 +360,7 @@ const PatientProfile = () => {
         {/* Centered Content */}
         <div className="relative text-center max-w-4xl mx-auto px-4">
           <div className="flex flex-col items-center">
-            <div className="relative w-32 h-32 rounded-full bg-cover bg-center mb-4">
+            <div className="relative w-32 h-32 rounded-full mb-4 flex items-center justify-center bg-[#f7f6f4] border-2 border-[#e5e3df]">
               {profileData.profilePic ? (
                 <div
                   className="w-full h-full rounded-full bg-cover bg-center"
@@ -378,11 +378,11 @@ const PatientProfile = () => {
                 accept="image/*"
                 onChange={handleProfilePicUpload}
                 className="hidden"
-                id="profile-pic-upload"
+                id="volunteer-profile-pic-upload"
                 disabled={uploadingImage}
               />
               <label
-                htmlFor="profile-pic-upload"
+                htmlFor="volunteer-profile-pic-upload"
                 className={`absolute bottom-0 right-0 cursor-pointer ${
                   uploadingImage
                     ? "opacity-50 cursor-not-allowed"

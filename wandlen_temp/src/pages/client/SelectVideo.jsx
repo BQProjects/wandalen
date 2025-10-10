@@ -32,7 +32,6 @@ const SelectVideo = () => {
         Seizoen: "season",
         Natuurtype: "nature",
         Dieren: "animals",
-        Geluidsprikkels: "sound",
       };
       Object.entries(filters).forEach(([key, values]) => {
         const field = fieldMap[key];
@@ -84,7 +83,7 @@ const SelectVideo = () => {
           <h1 className="text-4xl lg:text-2xl font-semibold font-[Poppins] text-[#DD9219] mb-4">
             {t("selectVideo.hero.title")}
           </h1>
-          <p className="text-5xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto">
+          <p className="text-5xl text-[#EDE4DC] font-bold font-[Poppins] max-w-2xl mx-auto">
             {t("selectVideo.hero.subtitle")}
           </p>
           <p className="text-2xl text-[#EDE4DC] font-medium font-[Poppins] max-w-2xl mx-auto mt-4">

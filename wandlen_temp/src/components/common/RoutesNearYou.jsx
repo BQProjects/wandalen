@@ -9,6 +9,7 @@ function RoutesNearYou() {
   const { t } = useTranslation();
   const scrollRef = useRef(null);
   const { DATABASE_URL } = useContext(DatabaseContext);
+  const sessionId = localStorage.getItem("sessionId");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -37,6 +38,9 @@ function RoutesNearYou() {
           email: formData.email,
           location: formData.location,
           link: formData.link || undefined,
+        },
+        {
+          headers: { Authorization: `Bearer ${sessionId}` },
         }
       );
 

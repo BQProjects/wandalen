@@ -24,9 +24,12 @@ const PartnersSection = () => {
             />
           </div>
           <div className="flex flex-shrink-0 justify-center items-center gap-2.5 p-4 sm:p-6 lg:p-8 w-full lg:w-4/6 h-auto min-h-[200px] lg:h-[21.375rem] rounded-3xl bg-accent">
-            <span className="text-white text-center font-[Poppins] text-lg sm:text-xl lg:text-3xl font-medium leading-[160%]">
-              {t("partnersSection.partner1Text")}
-            </span>
+            <span
+              className="text-white text-center font-[Poppins] text-base sm:text-lg lg:text-2xl font-medium leading-[160%]"
+              dangerouslySetInnerHTML={{
+                __html: t("partnersSection.partner1Text"),
+              }}
+            />
           </div>
         </div>
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">

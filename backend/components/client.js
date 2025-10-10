@@ -7,6 +7,7 @@ const VideoRequestModel = require("../models/videoRequestModel");
 const bcrypt = require("bcrypt");
 const LikeModel = require("../models/likeModel");
 const mongoose = require("mongoose");
+const axios = require("axios");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 
 // Improved checkAndExtendSubscription with comprehensive error handling
@@ -287,6 +288,41 @@ const clientSignUp = async (req, res) => {
 
     await newClient.save();
 
+    // Send to Laposta for newsletter/campaign
+    try {
+      const lapostaResponse = await axios.post(
+        "https://api.laposta.nl/v2/member",
+        {
+          list_id: process.env.LAPOSTA_LIST_ID || "1wxtckhyt7",
+          email: email,
+          ip: "1.1.1.1",
+          custom_fields: {
+            voornaam: firstName,
+            achternaam: lastName || "",
+          },
+          tags: ["paid_subscriber"],
+          options: {
+            ignore_double_optin: true,
+          },
+        },
+        {
+          auth: {
+            username: process.env.LAPOSTA_API_KEY || "VYgJJ2g6ihPna2pI2ZDg",
+            password: "",
+          },
+        }
+      );
+      console.log(
+        "Laposta response for paid subscriber:",
+        lapostaResponse.data
+      );
+    } catch (lapostaError) {
+      console.error(
+        "Laposta error for paid subscriber:",
+        lapostaError.response?.data || lapostaError.message
+      );
+    }
+
     sendSignupEmails(newClient).catch((emailError) => {
       console.error("Error sending client signup emails:", emailError);
     });
@@ -397,35 +433,57 @@ const getAllvideos = async (req, res) => {
         query.$or.push(
           { location: searchPattern },
           { province: searchPattern },
-          { municipality: searchPattern }
+          { municipality: searchPattern },
+          { tags: { $in: [loc] } }
         );
       });
     }
     if (province) {
       const provinces = Array.isArray(province) ? province : [province];
-      query.province = { $in: provinces };
+      query.$or = query.$or || [];
+      provinces.forEach((p) => {
+        query.$or.push({ province: p }, { tags: { $in: [p] } });
+      });
     }
     if (municipality) {
       const municipalities = Array.isArray(municipality)
         ? municipality
         : [municipality];
-      query.municipality = { $in: municipalities };
+      query.$or = query.$or || [];
+      municipalities.forEach((m) => {
+        query.$or.push({ municipality: m }, { tags: { $in: [m] } });
+      });
     }
     if (season) {
       const seasons = Array.isArray(season) ? season : [season];
-      query.season = { $in: seasons };
+      query.$or = query.$or || [];
+      seasons.forEach((s) => {
+        query.$or.push({ season: s }, { tags: { $in: [s] } });
+      });
     }
     if (nature) {
       const natures = Array.isArray(nature) ? nature : [nature];
-      query.nature = { $in: natures };
+      query.$or = query.$or || [];
+      natures.forEach((n) => {
+        query.$or.push({ nature: n }, { tags: { $in: [n] } });
+      });
     }
     if (animals) {
       const animalList = Array.isArray(animals) ? animals : [animals];
-      query.animals = { $in: animalList };
+      query.$or = query.$or || [];
+      animalList.forEach((animal) => {
+        query.$or.push(
+          { animals: { $regex: animal, $options: "i" } },
+          { tags: { $in: [animal] } }
+        );
+      });
     }
     if (sound) {
       const sounds = Array.isArray(sound) ? sound : [sound];
-      query.sound = { $in: sounds };
+      query.$or = query.$or || [];
+      sounds.forEach((s) => {
+        query.$or.push({ sound: s }, { tags: { $in: [s] } });
+      });
     }
 
     // Fetch videos with filters and pagination
