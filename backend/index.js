@@ -27,6 +27,7 @@ app.use(
       "https://simple-quotes-alter.vercel.app",
       "https://wandalen-nw69.vercel.app",
       "https://wandalen.vercel.app",
+      "http://virtueelwandelen.nl",
     ],
   })
 );
