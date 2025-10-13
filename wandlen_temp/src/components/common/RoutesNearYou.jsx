@@ -266,7 +266,7 @@ function RoutesNearYou() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3 px-6 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5202] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-4 py-2 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5202] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting
                         ? "Submitting..."

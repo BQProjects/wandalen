@@ -8,11 +8,11 @@ const Footer = () => {
   return (
     <footer className="bg-[#2a341f] text-[#ede4dc] py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-6 md:px-8 lg:px-10">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 lg:gap-16 justify-center">
           {/* Company Info */}
           <div className="mb-4 sm:mb-0 text-center sm:text-left">
-            <div className="space-y-3 text-sm sm:text-base">
-              <div className="flex items-center justify-center sm:justify-start gap-3 mb-4">
+            <div className="flex flex-col items-center sm:items-start space-y-3">
+              <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center">
                   <svg
                     width={28}
@@ -20,7 +20,7 @@ const Footer = () => {
                     viewBox="0 0 65 90"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-[#ede4dc]"
+                    className="text-[#ede4dc] flex-shrink-0"
                   >
                     <path
                       d="M14.2586 89.999C22.9212 87.9819 31.8499 87.0855 40.3494 84.4564C51.4417 81.0257 62.7915 73.7764 64.5343 61.45C66.2084 49.5804 62.8344 37.7367 62.9889 25.8672L57.7948 28.1514C43.8522 35.7886 45.1744 41.2192 45.1744 41.2192C45.389 43.3827 47.1576 45.5291 48.9863 47.7616C50.4286 49.5287 53.0815 50.9424 50.4801 53.0456C49.7332 53.649 48.5656 53.8904 48.059 54.3127C47.003 55.2006 48.2222 56.4849 48.454 57.2262C48.8832 58.6313 48.4025 59.5019 47.2091 60.1742C47.956 60.8638 48.3509 61.088 48.1792 62.2172C48.0762 62.9326 47.2348 63.1481 46.8571 63.7773C46.0501 65.122 46.7369 65.9065 46.8743 67.1994C47.6727 74.9401 37.3102 70.8456 33.1463 71.2852L28.7936 70.9577C24.6812 70.9318 19.7189 71.8024 18.2679 76.1296L14.25 89.9903L14.2586 89.999Z"
@@ -47,7 +47,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.home")}
                 </Link>
@@ -55,7 +55,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/ourVission"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.ourVision")}
                 </Link>
@@ -63,7 +63,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/subscribe"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.subscriptions")}
                 </Link>
@@ -71,7 +71,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/become-volunteer"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
+                  className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.volunteer")}
                 </Link>
@@ -92,17 +92,17 @@ const Footer = () => {
           </div>
 
           {/* Socials */}
-          <div className="text-center sm:text-left">
+          <div className="text-center sm:text-left ml-20">
             <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 font-[Poppins]">
-              Follow Us
+              {t("footer.followUs")}
             </h4>
-            {/* <div className="flex justify-center sm:justify-start gap-5 sm:gap-6">
+            <div className="flex flex-col justify-center sm:justify-start items-center sm:items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
               <a
                 href="https://www.facebook.com/profile.php?id=61575691716922"
-                className="hover:text-[#a6a643] transition-colors"
+                className="hover:text-[#a6a643] transition-colors rounded-full hover:bg-[#a6a643]/10"
                 aria-label="Facebook"
               >
-                <svg
+                {/* <svg
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -117,20 +117,21 @@ const Footer = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                </svg>
+                </svg> */}
+                Facebook
               </a>
               <a
                 href="https://www.instagram.com/virtueelwandelen/"
-                className="hover:text-[#a6a643] transition-colors"
+                className="hover:text-[#a6a643] transition-colors rounded-full hover:bg-[#a6a643]/10"
                 aria-label="Instagram"
               >
-                <svg
-                  width="24"
-                  height="24"
+                {/* <svg
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  className="w-5 h-5"
                 >
                   <path
                     d="M17 2H7C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2Z"
@@ -153,20 +154,21 @@ const Footer = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                </svg>
+                </svg> */}
+                Instagram
               </a>
               <a
                 href="https://www.linkedin.com/company/106807275/"
-                className="hover:text-[#a6a643] transition-colors"
+                className="hover:text-[#a6a643] transition-colors rounded-full hover:bg-[#a6a643]/10"
                 aria-label="LinkedIn"
               >
-                <svg
-                  width="24"
-                  height="24"
+                {/* <svg
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  className="w-5 h-5"
                 >
                   <path
                     d="M16 8C17.5913 8 19.1174 8.63214 20.2426 9.75736C21.3679 10.8826 22 12.4087 22 14V21H18V14C18 13.4696 17.7893 12.9609 17.4142 12.5858C17.0391 12.2107 16.5304 12 16 12C15.4696 12 14.9609 12.2107 14.5858 12.5858C14.2107 12.9609 14 13.4696 14 14V21H10V14C10 12.4087 10.6321 10.8826 11.7574 9.75736C12.8826 8.63214 14.4087 8 16 8Z"
@@ -189,53 +191,32 @@ const Footer = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                </svg>
+                </svg> */}
+                LinkedIn
               </a>
-            </div> */}
-            <ul className="space-y-2 sm:space-y-3 text-sm mt-4 sm:mt-6">
-              <li className="hidden sm:block">
-                <a
-                  href="https://www.facebook.com/profile.php?id=61575691716922"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
-                >
-                  {t("footer.facebook")}
-                </a>
-              </li>
-              <li className="hidden sm:block">
-                <a
-                  href="https://www.instagram.com/virtueelwandelen/"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
-                >
-                  {t("footer.instagram")}
-                </a>
-              </li>
-              <li className="hidden sm:block">
-                <a
-                  href="https://www.linkedin.com/company/106807275/"
-                  className="hover:text-[#a6a643] transition-colors inline-block py-1 px-2 font-[Poppins]"
-                >
-                  {t("footer.linkedin")}
-                </a>
-              </li>
-            </ul>
+            </div>
           </div>
         </div>
-        <div>
-          <p className="text-xs sm:text-sm">{t("footer.copyright")}</p>
-          <div className="text-xs sm:text-sm opacity-75 flex flex-col sm:flex-row justify-center sm:justify-start gap-2 sm:gap-4">
-            <Link
-              to="/terms"
-              className="hover:text-[#a6a643] transition-colors font-[Poppins]"
-            >
-              {t("footer.termsAndConditions")}
-            </Link>
-            {/* <span className="hidden sm:inline">&</span>
-            <Link
-              to="/agreement"
-              className="hover:text-[#a6a643] transition-colors font-[Poppins]"
-            >
-              {t("footer.privacyPolicy")}
-            </Link> */}
+        <div className="border-t border-[#ede4dc]/20 mt-8 pt-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-xs sm:text-sm text-center sm:text-left font-[Poppins]">
+              {t("footer.copyright")}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-xs sm:text-sm opacity-75">
+              <Link
+                to="/terms"
+                className="hover:text-[#a6a643] transition-colors font-[Poppins] text-center sm:text-left"
+              >
+                {t("footer.termsAndConditions")}
+              </Link>
+              {/* <span className="hidden sm:inline text-[#ede4dc]/60">&</span>
+              <Link
+                to="/agreement"
+                className="hover:text-[#a6a643] transition-colors font-[Poppins] text-center sm:text-left"
+              >
+                {t("footer.privacyPolicy")}
+              </Link> */}
+            </div>
           </div>
         </div>
       </div>

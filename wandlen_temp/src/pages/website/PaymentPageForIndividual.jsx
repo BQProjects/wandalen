@@ -484,7 +484,7 @@ const PaymentPageForIndividual = () => {
 
               <button
                 onClick={handlePaymentSubscription}
-                className="w-full mt-6 py-3 bg-[#5b6502] text-white font-medium rounded-lg hover:bg-[#4a5502] transition-colors"
+                className="mt-6 px-4 py-2 bg-[#5b6502] text-white font-medium rounded-lg hover:bg-[#4a5502] transition-colors"
               >
                 {t("payment.buttons.continue")}
               </button>
