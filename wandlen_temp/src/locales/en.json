@@ -25,7 +25,12 @@
         "loginButton": "Log in",
         "forgotPassword": "Forgot password",
         "showPassword": "Show password",
-        "hidePassword": "Hide password"
+        "hidePassword": "Hide password",
+        "errors": {
+            "invalidEmail": "Email address not found",
+            "invalidPassword": "Incorrect password",
+            "generic": "Login failed. Please check your credentials and try again."
+        }
     },
     "footer": {
         "companyName": "Virtueel Wandelen",
@@ -680,7 +685,7 @@
             "buttonText": "Contact us"
         },
         "discountBadge": "20% discount",
-        "launchBadge": "Launch Offer",
+        "launchBadge": "Launch Discount",
         "discountCode": "Use the discount code Natuur01 for a €3 discount on your monthly subscription.",
         "discountExpiry": "Use this promotion before December 1st",
         "discountInstead": "instead of"
@@ -1254,7 +1259,11 @@
         "otpLabel": "OTP",
         "otpPlaceholder": "enter security code",
         "verifyButton": "Verify",
-        "resendButton": "resend security code"
+        "resendButton": "resend security code",
+        "errors": {
+            "invalidOtp": "Invalid or expired security code",
+            "generic": "Verification failed. Please try again."
+        }
     },
     "volunteerHome": {
         "welcome": "Welkom bij Virtueel Wandelen!",

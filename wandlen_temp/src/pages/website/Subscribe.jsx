@@ -28,7 +28,7 @@ const SubscriptionCard = ({
     {/* Launch Badge */}
     {isLaunch && (
       <div className="absolute top-4 right-4 bg-[#a6a643] text-white px-3 py-1 rounded-full text-xs font-bold z-10">
-        {t("subscribe.launchBadge", "Launch Aanbieding")}
+        {t("subscribe.launchBadge", "Launch Discount")}
       </div>
     )}
     {/* Icon */}
@@ -270,7 +270,7 @@ const Subscribe = () => {
   const monthlyPlan = {
     ...basePlan,
     price: "9.99",
-    period: t("subscribe.plan.periods.month"),
+    period: "month",
     originalPrice: "12.99",
     discountCode: "Natuur01",
     discountAmount: "€ 3,-",
@@ -280,7 +280,7 @@ const Subscribe = () => {
   const yearlyPlan = {
     ...basePlan,
     price: "99.37",
-    period: t("subscribe.plan.periods.year"),
+    period: "year",
     originalPrice: "116.91",
     discountCode: "Natuur02",
     discountAmount: "15%",

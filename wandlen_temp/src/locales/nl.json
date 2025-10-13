@@ -25,7 +25,12 @@
         "loginButton": "Inloggen",
         "forgotPassword": "Wachtwoord vergeten",
         "showPassword": "Wachtwoord tonen",
-        "hidePassword": "Wachtwoord verbergen"
+        "hidePassword": "Wachtwoord verbergen",
+        "errors": {
+            "invalidEmail": "E-mailadres niet gevonden",
+            "invalidPassword": "Onjuist wachtwoord",
+            "generic": "Inloggen mislukt. Controleer je gegevens en probeer het opnieuw."
+        }
     },
     "footer": {
         "companyName": "Virtueel Wandelen",
@@ -680,7 +685,7 @@
             "buttonText": "Neem contact op"
         },
         "discountBadge": "20% korting",
-        "launchBadge": "Launch Aanbieding",
+        "launchBadge": "Lancerings korting",
         "discountCode": "Gebruik de kortingscode Natuur01 voor € 3,- korting op je maandabonnement",
         "discountExpiry": "Gebruik deze actiecode vòòr 1 december",
         "discountInstead": "i.p.v."
@@ -1214,7 +1219,11 @@
         "otpLabel": "OTP",
         "otpPlaceholder": "voer beveiliginscode in",
         "verifyButton": "Verifiéren",
-        "resendButton": "beveiligingscode opnieuw verzenden"
+        "resendButton": "beveiligingscode opnieuw verzenden",
+        "errors": {
+            "invalidOtp": "Ongeldige of verlopen beveiligingscode",
+            "generic": "Verificatie mislukt. Probeer het opnieuw."
+        }
     },
     "volunteerHome": {
         "welcome": "Welkom bij Virtual Wandelen!",

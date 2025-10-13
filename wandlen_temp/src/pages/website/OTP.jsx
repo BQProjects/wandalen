@@ -106,13 +106,32 @@ const Otp = () => {
         const from = location.state?.from?.pathname || `/${userType}`;
         navigate(from);
       } else {
-        toast.error("OTP verification failed. Please try again.");
+        // Check for specific error messages in non-200 responses
+        if (
+          res.data?.message &&
+          res.data.message.includes("Invalid or expired OTP")
+        ) {
+          toast.error(t("otp.errors.invalidOtp"));
+        } else {
+          toast.error("OTP verification failed. Please try again.");
+        }
       }
     } catch (error) {
       console.error("Error during OTP verification:", error);
-      toast.error(
-        "An error occurred during OTP verification. Please try again."
-      );
+
+      // Check for specific backend error messages
+      if (error.response?.data?.message) {
+        const errorMessage = error.response.data.message;
+        if (errorMessage.includes("Invalid or expired OTP")) {
+          toast.error(t("otp.errors.invalidOtp"));
+        } else {
+          toast.error(t("otp.errors.generic"));
+        }
+      } else {
+        toast.error(
+          "An error occurred during OTP verification. Please try again."
+        );
+      }
     }
   };
 
