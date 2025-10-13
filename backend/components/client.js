@@ -102,7 +102,7 @@ const checkAndExtendSubscription = async (client) => {
       try {
         await sendEmail(
           client.email,
-          "Subscription Renewed",
+          "Uw Abonnement is Vernieuwd",
           emailTemplates.subscriptionRenewed(client.firstName, stripeEndDate)
         );
       } catch (emailError) {
@@ -208,7 +208,7 @@ const clientLogin = async (req, res) => {
     try {
       await sendEmail(
         email,
-        "Your OTP for Virtual Wandlen",
+        "Uw eenmalig wachtwoord voor Virtueel Wandelen",
         emailTemplates.otpEmail(otp)
       );
       console.log(`OTP sent to ${email}: ${otp}`);
@@ -353,12 +353,12 @@ const clientSignUp = async (req, res) => {
 // Separate function for sending signup emails (non-blocking)
 async function sendSignupEmails(client) {
   try {
-    const adminEmail = "tina@10natuurlijk.nl";
+    const adminEmail = "info@virtueelwandelen.nl";
 
     // Send email to user
     await sendEmail(
       client.email,
-      "Subscription Received - Virtual Wandlen",
+      "Abonnement ontvangen - Virtueel Wandelen",
       emailTemplates.individualSubscriptionUser(client)
     );
 
@@ -366,7 +366,7 @@ async function sendSignupEmails(client) {
     if (adminEmail) {
       await sendEmail(
         adminEmail,
-        "New Individual Subscription - Virtual Wandlen",
+        "Nieuw Individueel Abonnement - Virtueel Wandelen",
         emailTemplates.individualSubscriptionAdmin(client)
       );
     }

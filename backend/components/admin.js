@@ -521,7 +521,7 @@ const approveOrg = async (req, res) => {
 
     // Send emails after successful approval
     try {
-      const adminEmail = "crc6892@gmail.com";
+      const adminEmail = "info@virtueelwandelen.nl";
       const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
 
       // Create password setup link
@@ -532,7 +532,7 @@ const approveOrg = async (req, res) => {
       // Send email to customer (isUpdate = false for new approvals)
       await sendEmail(
         customerEmail,
-        "Welcome to Virtual Wandlen - Your Organization Account is Approved!",
+        "Welkom bij Virtueel Wandelen - Uw Organisatie Account is Goedgekeurd!",
         emailTemplates.customerApprovalUser(updatedOrg, passwordLink, false)
       );
 
@@ -540,7 +540,7 @@ const approveOrg = async (req, res) => {
       if (adminEmail) {
         await sendEmail(
           adminEmail,
-          "Organization Account Created - Virtual Wandlen",
+          "Organisatie Account Aangemaakt - Virtueel Wandelen",
           emailTemplates.customerApprovalAdmin(updatedOrg)
         );
       }
@@ -599,12 +599,12 @@ const updateOrg = async (req, res) => {
     }
     // Send emails after successful update
     try {
-      const adminEmail = "crc6892@gmail.com";
+      const adminEmail = "info@virtueelwandelen.nl";
       const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
 
       // For updates, we don't include password setup link in customer email
       const passwordLink = `${
-        process.env.FRONTEND_URL || "http://localhost:5173"
+        process.env.FRONTEND_URL || "https://wandalen-nw69.vercel.app"
       }/generate-pass/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = true for updates, no password link)

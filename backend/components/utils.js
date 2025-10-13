@@ -84,7 +84,7 @@ const resendOtp = async (req, res) => {
     try {
       await sendEmail(
         email,
-        "Your OTP for Virtual Wandlen",
+        "Uw eenmalig wachtwoord voor Virtueel Wandelen",
         emailTemplates.otpEmail(otp)
       );
       console.log(`OTP resent to ${email}: ${otp}`);
@@ -258,7 +258,7 @@ const sendForgotPasswordOtp = async (req, res) => {
     try {
       await sendEmail(
         email,
-        "Password Reset OTP - Virtual Wandlen",
+        "Wachtwoord Reset OTP - Virtueel Wandelen",
         emailTemplates.forgotPasswordOtpEmail(otp)
       );
       console.log(`Forgot password OTP sent to ${email}: ${otp}`);

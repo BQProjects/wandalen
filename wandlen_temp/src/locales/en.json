@@ -11,6 +11,22 @@
         "login": "Log in",
         "subscriptions": "Subscriptions"
     },
+    "login": {
+        "title": "Welcome: log in with your existing account",
+        "description": "Use your email address and password that you registered with earlier.",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "roleLabel": "Select your role to continue.",
+        "caregiver": "Caregiver",
+        "volunteer": "Volunteer",
+        "organization": "Organization",
+        "loginButton": "Log in",
+        "forgotPassword": "Forgot password",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password"
+    },
     "footer": {
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",

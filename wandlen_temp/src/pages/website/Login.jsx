@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import LoginImg from "../../assets/LoginImg.png";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { t } = useTranslation();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -124,11 +126,10 @@ const Login = () => {
             <div className="flex flex-col gap-6 sm:gap-8">
               <div className="text-center lg:text-left">
                 <h1 className="text-[#381207] font-['Poppins'] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-2 sm:mb-3">
-                  Welkom: log in met je bestaande account
+                  {t("login.title")}
                 </h1>
                 <p className="text-[#7a756e] font-['Poppins'] text-sm sm:text-base md:text-lg">
-                  Gebruik je e-mailadres en wachtwoord waarmee je eerder bent
-                  geregistreerd.
+                  {t("login.description")}
                 </p>
               </div>
 
@@ -136,7 +137,7 @@ const Login = () => {
                 {/* Email Field */}
                 <div className="flex flex-col gap-1 sm:gap-2">
                   <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
-                    Email
+                    {t("login.email")}
                   </label>
                   <input
                     type="email"
@@ -145,14 +146,14 @@ const Login = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
-                    placeholder="Enter your email"
+                    placeholder={t("login.emailPlaceholder")}
                   />
                 </div>
 
                 {/* Password Field */}
                 <div className="flex flex-col gap-1 sm:gap-2">
                   <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
-                    Password
+                    {t("login.password")}
                   </label>
                   <div className="relative">
                     <input
@@ -162,14 +163,16 @@ const Login = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502]"
-                      placeholder="Enter your password"
+                      placeholder={t("login.passwordPlaceholder")}
                     />
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#7a756e] hover:text-[#5b6502] transition-colors"
                       aria-label={
-                        showPassword ? "Hide password" : "Show password"
+                        showPassword
+                          ? t("login.hidePassword")
+                          : t("login.showPassword")
                       }
                     >
                       {showPassword ? (
@@ -224,7 +227,7 @@ const Login = () => {
                 {/* Role Selection */}
                 <div className="flex flex-col gap-2 sm:gap-3">
                   <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
-                    Selecteer je rol om verder te gaan.
+                    {t("login.roleLabel")}
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
                     <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg">
@@ -242,7 +245,7 @@ const Login = () => {
                         htmlFor="caregiver"
                         className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
                       >
-                        Caregiver
+                        {t("login.caregiver")}
                       </label>
                     </div>
 
@@ -261,7 +264,7 @@ const Login = () => {
                         htmlFor="volunteer"
                         className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
                       >
-                        Volunteer
+                        {t("login.volunteer")}
                       </label>
                     </div>
 
@@ -280,7 +283,7 @@ const Login = () => {
                         htmlFor="organization"
                         className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
                       >
-                        Organization
+                        {t("login.organization")}
                       </label>
                     </div>
                   </div>
@@ -293,7 +296,7 @@ const Login = () => {
               type="submit"
               className="w-full py-2.5 sm:py-3 px-4 rounded-lg bg-[#5b6502] text-white text-center font-['Poppins'] text-sm sm:text-base md:text-lg font-medium hover:bg-[#4a5201] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-offset-2"
             >
-              Log in
+              {t("login.loginButton")}
             </button>
 
             {/* Forgot Password Link */}
@@ -303,7 +306,7 @@ const Login = () => {
                 className="text-[#5b6502] font-['Poppins'] text-sm sm:text-base font-medium hover:underline"
                 onClick={() => navigate("/forgot-password")}
               >
-                wachtwoord vergeten
+                {t("login.forgotPassword")}
               </button>
             </div>
           </form>

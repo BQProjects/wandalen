@@ -323,8 +323,8 @@ const PaymentPageForIndividual = () => {
 
         // Determine which Stripe link to use based on plan period
         const stripeLinks = {
-          month: "https://buy.stripe.com/test_bJecN49hWbLodtG1DU4gg00", // test
-          //month: "https://buy.stripe.com/3cI3cu8ikclW6VV2dabbG00", // prod
+          //month: "https://buy.stripe.com/test_bJecN49hWbLodtG1DU4gg00", // test
+          month: "https://buy.stripe.com/3cI3cu8ikclW6VV2dabbG00", // prod
           year: "https://buy.stripe.com/eVq5kCdCE5Xy6VVaJGbbG01",
         };
 
