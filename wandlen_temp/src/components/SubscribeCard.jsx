@@ -189,7 +189,7 @@ const SubscribeCard = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-[#5b6502] hover:bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium tracking-[-0.2px] cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="sm:w-auto px-4 py-2 rounded-lg bg-[#5b6502] hover:bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium tracking-[-0.2px] cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
