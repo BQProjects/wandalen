@@ -25,7 +25,12 @@
         "loginButton": "Inloggen",
         "forgotPassword": "Wachtwoord vergeten",
         "showPassword": "Wachtwoord tonen",
-        "hidePassword": "Wachtwoord verbergen"
+        "hidePassword": "Wachtwoord verbergen",
+        "errors": {
+            "invalidEmail": "E-mailadres niet gevonden",
+            "invalidPassword": "Onjuist wachtwoord",
+            "generic": "Inloggen mislukt. Controleer je gegevens en probeer het opnieuw."
+        }
     },
     "footer": {
         "companyName": "Virtueel Wandelen",
@@ -1214,7 +1219,11 @@
         "otpLabel": "OTP",
         "otpPlaceholder": "voer beveiliginscode in",
         "verifyButton": "Verifiéren",
-        "resendButton": "beveiligingscode opnieuw verzenden"
+        "resendButton": "beveiligingscode opnieuw verzenden",
+        "errors": {
+            "invalidOtp": "Ongeldige of verlopen beveiligingscode",
+            "generic": "Verificatie mislukt. Probeer het opnieuw."
+        }
     },
     "volunteerHome": {
         "welcome": "Welkom bij Virtual Wandelen!",

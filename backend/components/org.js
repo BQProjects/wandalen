@@ -19,9 +19,9 @@ const orgLogin = async (req, res) => {
   try {
     const org = await OrgModel.findOne({ email }).select("+password");
     if (!org)
-      return res.status(400).json({ message: "Invalid credentials cssdc" });
+      return res.status(400).json({ message: "Invalid credentials email" });
     if (!org.password || org.password !== password) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials password" });
     }
 
     // Cancel previous session if exists

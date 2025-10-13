@@ -95,9 +95,21 @@ const Login = () => {
           });
         }
       } else {
-        toast.error(
-          "Login failed. Please check your credentials and try again."
-        );
+        // Check for specific error messages in non-success responses
+        if (res.data?.message) {
+          const errorMessage = res.data.message;
+          if (errorMessage.includes("Invalid credentials email")) {
+            toast.error(t("login.errors.invalidEmail"));
+          } else if (errorMessage.includes("Invalid credentials password")) {
+            toast.error(t("login.errors.invalidPassword"));
+          } else {
+            toast.error(t("login.errors.generic"));
+          }
+        } else {
+          toast.error(
+            "Login failed. Please check your credentials and try again."
+          );
+        }
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -110,7 +122,19 @@ const Login = () => {
         return;
       }
 
-      toast.error("An error occurred during login. Please try again.");
+      // Check for specific backend error messages
+      if (error.response?.data?.message) {
+        const errorMessage = error.response.data.message;
+        if (errorMessage.includes("Invalid credentials email")) {
+          toast.error(t("login.errors.invalidEmail"));
+        } else if (errorMessage.includes("Invalid credentials password")) {
+          toast.error(t("login.errors.invalidPassword"));
+        } else {
+          toast.error(t("login.errors.generic"));
+        }
+      } else {
+        toast.error("An error occurred during login. Please try again.");
+      }
     }
   };
 

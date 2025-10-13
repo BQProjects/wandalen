@@ -270,7 +270,7 @@ const Subscribe = () => {
   const monthlyPlan = {
     ...basePlan,
     price: "9.99",
-    period: t("subscribe.plan.periods.month"),
+    period: "month",
     originalPrice: "12.99",
     discountCode: "Natuur01",
     discountAmount: "€ 3,-",
@@ -280,7 +280,7 @@ const Subscribe = () => {
   const yearlyPlan = {
     ...basePlan,
     price: "99.37",
-    period: t("subscribe.plan.periods.year"),
+    period: "year",
     originalPrice: "116.91",
     discountCode: "Natuur02",
     discountAmount: "15%",
