@@ -28,7 +28,7 @@ const SubscriptionCard = ({
     {/* Launch Badge */}
     {isLaunch && (
       <div className="absolute top-4 right-4 bg-[#a6a643] text-white px-3 py-1 rounded-full text-xs font-bold z-10">
-        {t("subscribe.launchBadge", "Launch Aanbieding")}
+        {t("subscribe.launchBadge", "Launch Discount")}
       </div>
     )}
     {/* Icon */}

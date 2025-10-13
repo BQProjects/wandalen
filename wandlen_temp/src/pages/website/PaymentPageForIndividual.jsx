@@ -466,19 +466,19 @@ const PaymentPageForIndividual = () => {
                 />
 
                 <FormInput
-                  label={t("payment.form.labels.city")}
-                  placeholder={t("payment.form.placeholders.city")}
-                  value={formData.city}
-                  onChange={(value) => handleInputChange("city", value)}
-                  error={errors.city}
-                />
-
-                <FormInput
                   label={t("payment.form.labels.postalCode")}
                   placeholder={t("payment.form.placeholders.postalCode")}
                   value={formData.postalCode}
                   onChange={(value) => handleInputChange("postalCode", value)}
                   error={errors.postalCode}
+                />
+
+                <FormInput
+                  label={t("payment.form.labels.city")}
+                  placeholder={t("payment.form.placeholders.city")}
+                  value={formData.city}
+                  onChange={(value) => handleInputChange("city", value)}
+                  error={errors.city}
                 />
               </div>
 
