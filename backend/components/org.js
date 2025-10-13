@@ -118,12 +118,12 @@ const orgSignUp = async (req, res) => {
 
     // Send emails after successful organization creation
     try {
-      const adminEmail = "crc6892@gmail.com";
+      const adminEmail = "info@virtueelwandelen.nl";
 
       // Send email to user
       await sendEmail(
         newOrg.contactPerson?.email || newOrg.email,
-        "Quote Request Received - Virtual Wandlen",
+        "Offerte Aanvraag Ontvangen - Virtueel Wandelen",
         emailTemplates.quoteRequestUser(newOrg)
       );
 
@@ -131,7 +131,7 @@ const orgSignUp = async (req, res) => {
       if (adminEmail) {
         await sendEmail(
           adminEmail,
-          "New Quote Request - Virtual Wandlen",
+          "Nieuwe Offerte Aanvraag - Virtueel Wandelen",
           emailTemplates.quoteRequestAdmin(newOrg)
         );
       }

@@ -33,7 +33,7 @@ const volunteerLogin = async (req, res) => {
     try {
       await sendEmail(
         email,
-        "Your OTP for Virtual Wandlen",
+        "Uw eenmalig wachtwoord voor Virtueel Wandelen",
         emailTemplates.otpEmail(otp)
       );
       console.log(`OTP sent to ${email}: ${otp}`);
@@ -69,12 +69,12 @@ const volunteerSigUp = async (req, res) => {
 
     // Send emails after successful volunteer creation
     try {
-      const adminEmail = "crc6892@gmail.com";
+      const adminEmail = "info@virtueelwandelen.nl";
 
       // Send email to user
       await sendEmail(
         newVolunteer.email,
-        "Welcome to Virtual Wandlen - Volunteer Registration Confirmed",
+        "Welkom bij Virtueel Wandelen - Vrijwilliger Registratie Bevestigd",
         emailTemplates.volunteerSignupUser(newVolunteer)
       );
 
@@ -82,7 +82,7 @@ const volunteerSigUp = async (req, res) => {
       if (adminEmail) {
         await sendEmail(
           adminEmail,
-          "New Volunteer Registration - Virtual Wandlen",
+          "Nieuwe Vrijwilliger Registratie - Virtueel Wandelen",
           emailTemplates.volunteerSignupAdmin(newVolunteer)
         );
       }

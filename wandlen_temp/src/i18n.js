@@ -20,6 +20,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
+    lng: "nl",
     fallbackLng: "nl",
     debug: true,
 
@@ -28,7 +29,7 @@ i18n
     },
 
     detection: {
-      order: ["localStorage", "navigator", "htmlTag"],
+      order: ["localStorage"],
       caches: ["localStorage"],
     },
     react: {

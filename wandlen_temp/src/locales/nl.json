@@ -11,6 +11,22 @@
         "login": "Inloggen",
         "subscriptions": "Abonnementen"
     },
+    "login": {
+        "title": "Welkom: log in met je bestaande account",
+        "description": "Gebruik je e-mailadres en wachtwoord waarmee je eerder bent geregistreerd.",
+        "email": "E-mail",
+        "emailPlaceholder": "Voer je e-mailadres in",
+        "password": "Wachtwoord",
+        "passwordPlaceholder": "Voer je wachtwoord in",
+        "roleLabel": "Selecteer je rol om verder te gaan.",
+        "caregiver": "Zorgverlener",
+        "volunteer": "Vrijwilliger",
+        "organization": "Organisatie",
+        "loginButton": "Inloggen",
+        "forgotPassword": "Wachtwoord vergeten",
+        "showPassword": "Wachtwoord tonen",
+        "hidePassword": "Wachtwoord verbergen"
+    },
     "footer": {
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
@@ -440,7 +456,7 @@
                 "Creëert gedeelde ervaringen met familie, verzorgers of medebewoners — en er kan natuurlijk ook alleen van worden genoten.",
                 "Rustgevende natuurlijke beelden en geluiden helpen onrust te verminderen en brengen kalmte."
             ],
-            "benefitsHeading":[
+            "benefitsHeading": [
                 "Brengt natuur veilig naar binnen - ",
                 "Stimuleert herinneringen - ",
                 "Moedigt sociale verbinding aan - ",
