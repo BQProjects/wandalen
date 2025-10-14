@@ -87,6 +87,7 @@ class VimeoService {
         },
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
+        timeout: 3600000,
       });
 
       console.log("Video uploaded successfully, waiting for processing...");

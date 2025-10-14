@@ -15,7 +15,7 @@ const {
 const app = express();
 app.set("trust proxy", true);
 
-app.use(express.json());
+app.use(express.json({ limit: "50gb" }));
 app.use(
   cors({
     origin: [
@@ -31,7 +31,7 @@ app.use(
     ],
   })
 );
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false, limit: "50gb" }));
 
 mongoose
   .connect(process.env.MONGODB_URI)

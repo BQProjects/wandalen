@@ -92,10 +92,10 @@ const OurApproach = () => {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-start gap-2 mb-8 lg:mb-12">
               <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-[136%]">
-                Tina Rozendal – van der Meer
+                {t("tina.name")}
               </div>
               <div className="max-w-4xl text-[#381207] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-[136%]">
-                Founder of Virtueel Wandelen.
+                {t("tina.title")}
               </div>
             </div>
 
@@ -113,36 +113,13 @@ const OurApproach = () => {
               <div className="flex flex-col items-start gap-6 lg:gap-10 w-full lg:w-[558px]">
                 <div className="flex flex-col items-start gap-4 lg:gap-5 self-stretch">
                   <div className="self-stretch text-[#381207] text-justify font-['Poppins'] text-base sm:text-lg lg:text-xl leading-[160%]">
-                    Tina grew up on the outskirts of the village of Haarle in
-                    Salland, Overijssel. At this hobby farm she was often
-                    outside, in the vegetable garden, the meadow, by the pond or
-                    the other animals in the yard. She grew up with nature
-                    around her. Tina helps both healthcare organizations and
-                    government agencies as a process supervisor in greening and
-                    connection on the theme of nature &amp; health.&nbsp;
+                    {t("tina.paragraph1")}
                   </div>
                   <div className="self-stretch text-[#381207] text-justify font-['Poppins'] text-base sm:text-lg lg:text-xl leading-[160%]">
-                    Tina comes from a care family. Both her parents worked in
-                    the hospital. Her mother as a nurse and her father started
-                    in the operating room as an anesthesia assistant and then
-                    focused on improving the logistics processes in hospitals in
-                    his career. Tina learned from her family how your body works
-                    and how to build in peace by listening to your body and
-                    connecting with nature. She likes to bring this basic need
-                    of man for a natural environment and its influence on your
-                    body and mind back to people in this way.
+                    {t("tina.paragraph2")}
                   </div>
                   <div className="self-stretch text-[#381207] text-justify font-['Poppins'] text-base sm:text-lg lg:text-xl leading-[160%]">
-                    Tina has the qualities of an inspiring connector. She uses
-                    her personal qualities to make an impact. Tina is warm and
-                    sensitive, enthusiastic and energetic and alert to new
-                    opportunities and possibilities. She is also inspiring and
-                    mobilizing, optimistic, independent and original. These
-                    characteristics have ensured that she has developed this
-                    plan and to realize this platform. Virtual Walking therefore
-                    aims to focus on the well-being and resilience of people by
-                    making a direct connection with nature in an environment
-                    where it is no longer taken for granted.
+                    {t("tina.paragraph3")}
                   </div>
                 </div>
               </div>
