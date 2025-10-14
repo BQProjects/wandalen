@@ -169,7 +169,7 @@ const subscribe = async (req, res) => {
     }
 
     res.status(201).json({
-      message: "Successfully subscribed to our newsletter!",
+      message: "Succesvol geabonneerd op onze nieuwsbrief!",
       subscription: {
         email: newSubscription.email,
         firstName: newSubscription.firstName,

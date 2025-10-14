@@ -127,8 +127,8 @@ const PreviewExperience = () => {
                 onClick={() => setActiveDevice(index)}
                 className={`flex justify-center items-center p-1 w-8 h-8 rounded transition-all duration-300 ${
                   activeDevice === index
-                    ? "bg-[#5b6502] scale-110"
-                    : "bg-[#e5e3df] hover:bg-[#d5d3cf]"
+                    ? "bg-[#a6a643] scale-110"
+                    : "bg-[#e5e3df58] hover:bg-[#d5d3cf]"
                 }`}
               >
                 {device.icon}

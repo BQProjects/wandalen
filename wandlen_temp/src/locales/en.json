@@ -95,6 +95,7 @@
                 "usage": "🎯 Usage & Features",
                 "pricing": "💰 Prices & Subscriptions",
                 "support": "🛠️ Technical support",
+                "contact": "📧 Contact us",
                 "backToMenu": "↩️ Back to main menu",
                 "moreOptions": "More options →",
                 "back": "← Back"
@@ -149,10 +150,14 @@
                 "videoNotStarting": "Video won't start",
                 "needInternet": "Internet needed?",
                 "browsers": "Which browsers work?",
+                "contact": "Contact information",
                 "videoNotStartingMessage": "Sorry the video won't start! Let's fix that: 🔧\n\n1. Check your internet connection\n2. Refresh the page (F5)\n3. Still not working? Try Chrome or Edge\n4. Clearing cache can also help\n\nStill not working? Contact our support!",
                 "needInternetMessage": "Yes, internet is necessary! 🌐\n\nVirtueel Wandelen is an online streaming platform, so you need an internet connection to watch the videos.\n\nEnsure a stable connection for the best experience!",
                 "browsersMessage": "For the best experience we recommend: 💻\n\n✓ Google Chrome (best option)\n✓ Microsoft Edge (also great)\n✓ Safari (Mac/iOS)\n✓ Firefox\n\nChrome and Edge work smoothest with all features!",
                 "technicalProblems": "Technical problems?"
+            },
+            "contact": {
+                "message": "Need more support or have questions? 📧\n\nFeel free to contact us directly:\n\n📧 Email: info@virtueelwandelen.nl\n📞 Phone: 06-43754290\n\nWe're here to help you with any questions about Virtueel Wandelen!"
             },
             "target": {
                 "message": "Virtueel Wandelen is specially developed for: 💚\n\n• People with limited mobility\n• Residents of care facilities\n• People with dementia\n• Anyone who needs recognizable nature experiences\n\nSo basically for everyone who wants to enjoy nature, but can't always go there!",
@@ -182,7 +187,11 @@
         "notesLabel": "Notes",
         "notesPlaceholder": "I would like to stay informed about Virtual Walking...",
         "subscribeButton": "Subscribe",
-        "imageAlt": "Holding hands in nature"
+        "imageAlt": "Holding hands in nature",
+        "successMessage": "Successfully subscribed to our newsletter!",
+        "validationError": "Please fill in all required fields",
+        "emailError": "Please enter a valid email address",
+        "errorMessage": "Something went wrong. Please try again."
     },
     "requestCard": {
         "header": {

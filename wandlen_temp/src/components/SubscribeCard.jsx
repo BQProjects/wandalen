@@ -185,7 +185,7 @@ const SubscribeCard = () => {
             </div>
 
             {/* Subscribe Button */}
-            <div className="flex justify-center sm:justify-end w-full mt-2 sm:mt-4">
+            <div className="flex w-full mt-2 sm:mt-4">
               <button
                 type="submit"
                 disabled={isLoading}
