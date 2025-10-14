@@ -131,7 +131,7 @@ const ClientHeader = () => {
               />
             </svg>
             <div className="body-5 text-[#381207] font-poppins text-xl font-medium leading-[136%]">
-              {i18n.language === "en" ? t("header.english") : "Nederlands"}
+              {i18n.language === "en" ? t("header.english") : t("header.dutch")}
             </div>
             <svg
               width={24}
@@ -155,7 +155,7 @@ const ClientHeader = () => {
                 onClick={() => changeLanguage("nl")}
                 className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
               >
-                Nederlands
+                {t("header.dutch")}
               </button>
               <button
                 onClick={() => changeLanguage("en")}
@@ -223,7 +223,9 @@ const ClientHeader = () => {
                   />
                 </svg>
                 <div className="body-5 text-brown font-['Poppins'] text-lg font-medium leading-[136%]">
-                  {i18n.language === "en" ? t("header.english") : "Nederlands"}
+                  {i18n.language === "en"
+                    ? t("header.english")
+                    : t("header.dutch")}
                 </div>
                 <svg
                   width={24}
@@ -253,7 +255,7 @@ const ClientHeader = () => {
                     onClick={() => changeLanguage("nl")}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#381207] font-poppins text-lg font-medium"
                   >
-                    Nederlands
+                    {t("header.dutch")}
                   </button>
                 </div>
               )}

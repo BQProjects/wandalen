@@ -8,6 +8,7 @@
         "subscribe": "Abonneren",
         "blog": "Blog",
         "english": "Engels",
+        "dutch": "Nederlands",
         "login": "Inloggen",
         "subscriptions": "Abonnementen"
     },
@@ -1095,6 +1096,25 @@
             "logout": "Uitloggen"
         }
     },
+    "organizationHeader": {
+        "navigation": {
+            "welcome": "Welkom",
+            "allVideos": "Alle Video's"
+        },
+        "buttons": {
+            "logout": "Uitloggen"
+        }
+    },
+    "volunteerHeader": {
+        "navigation": {
+            "welcome": "Welkom",
+            "howItWorks": "Hoe het werkt",
+            "createVideo": "Video maken"
+        },
+        "buttons": {
+            "logout": "Uitloggen"
+        }
+    },
     "videoClient": {
         "back": "Terug",
         "defaultTitle": "Winterwandeling Boetelerveld",
@@ -1263,7 +1283,10 @@
         "deleteConfirm": "Weet u zeker dat u deze video wilt verwijderen?",
         "deleteSuccess": "Video succesvol verwijderd",
         "deleteFailed": "Video verwijderen mislukt",
-        "deleteError": "Er is een fout opgetreden bij het verwijderen van de video"
+        "deleteError": "Er is een fout opgetreden bij het verwijderen van de video",
+        "futureVideosTitle": "Toekomstige Video's Planning",
+        "futureVideosDescription": "Beheer en volg aankomende videolocaties in real-time",
+        "viewPlanning": "Planning Bekijken"
     },
     "volunteerHowItWorks": {
         "heroTitle": "Hoe te helpen als Vrijwilliger",

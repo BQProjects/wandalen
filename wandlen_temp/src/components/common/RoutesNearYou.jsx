@@ -262,7 +262,7 @@ function RoutesNearYou() {
                       {message}
                     </div>
                   )}
-                  <div className="flex flex-col items-center gap-2.5 w-full">
+                  <div className="flex flex-col items-start gap-2.5 w-full">
                     <button
                       type="submit"
                       disabled={isSubmitting}
