@@ -78,7 +78,7 @@ function FutureVideos() {
       {/* Header */}
       <header className="bg-white shadow-md p-5 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-gray-800">
-          🎬 Future Videos
+          Future Videos
         </h1>
         <button
           onClick={() => window.location.reload()}

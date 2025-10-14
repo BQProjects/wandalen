@@ -516,9 +516,9 @@ const Aran = () => {
           </div>
         </div>
       </div>
-
+      <div className="border-1 border-[#A6A09A]" />
       {/* Discover Nature Videos Section */}
-      <div className="flex-shrink-0 w-full min-h-[600px] md:min-h-[800px] lg:min-h-[941px] bg-[#eeebc6] flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-10 md:px-20">
+      <div className="flex-shrink-0 w-full min-h-[600px] md:min-h-[800px] lg:min-h-[941px] bg-[#EDE4DC] flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-10 md:px-20">
         <div className="w-full mx-auto text-start">
           {/* Header Section */}
           <div className="mb-8 sm:mb-12 md:mb-16">

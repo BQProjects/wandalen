@@ -257,7 +257,8 @@ const getAllvideos = async (req, res) => {
     const videos = await VideoModel.find(query)
       .populate("uploadedBy", "firstName lastName email") // Populate volunteer info
       .skip((page - 1) * limit)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .sort({ createdAt: -1 }); // Sort by newest first
 
     // Count total with filters
     const total = await VideoModel.countDocuments(query);

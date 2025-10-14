@@ -163,6 +163,16 @@ const VolunteerHome = () => {
     setCurrentPage(1);
   }, [activeFilters]);
 
+  // Add useEffect to reset page when new videos are added (total increases)
+  const [prevTotal, setPrevTotal] = useState(0);
+  useEffect(() => {
+    if (total > prevTotal && prevTotal > 0) {
+      // Total increased, meaning new video was added - reset to page 1
+      setCurrentPage(1);
+    }
+    setPrevTotal(total);
+  }, [total, prevTotal]);
+
   const getAllRequests = async () => {
     try {
       const res = await axios.get(`${DATABASE_URL}/volunteer/getAllRequests`, {

@@ -86,8 +86,8 @@
         },
         "chat": {
             "title": "Chat with Virtueel Wandelen",
-            "greeting": "Hello! I'm Vw, your virtual assistant for Virtueel Wandelen. 👋\n\nI'm happy to help with all your questions. How can I assist you?",
-            "typing": "Vw is typing...",
+            "greeting": "Hello! I'm Noa, your virtual assistant for Virtueel Wandelen. 👋\n\nI'm happy to help with all your questions. How can I assist you?",
+            "typing": "Noa is typing...",
             "menu": {
                 "aboutVW": "📖 Tell me about Virtueel Wandelen",
                 "login": "🔐 Login & Account",
@@ -688,7 +688,11 @@
         "launchBadge": "Launch Discount",
         "discountCode": "Use the discount code Natuur01 for a €3 discount on your monthly subscription.",
         "discountExpiry": "Use this promotion before December 1st",
-        "discountInstead": "instead of"
+        "discountInstead": "instead of",
+        "discountMessages": {
+            "monthly": "Use the discount code Natuur01 for €3,- discount on your monthly subscription. Use the promotion before December 1st",
+            "yearly": "Use the discount code Natuur02 for 15% discount on your yearly subscription. Use the promotion before December 1st"
+        }
     },
     "payment": {
         "header": {
@@ -1252,11 +1256,28 @@
         "accountClosedSuccess": "Your account has been closed successfully",
         "accountCloseError": "Failed to close account. Please try again."
     },
+    "forgotPassword": {
+        "forgotPasswordTitle": "Forgot Password",
+        "resetPasswordTitle": "Reset Password",
+        "forgotPasswordDescription": "Enter your email to receive a reset code.",
+        "resetPasswordDescription": "Enter the one-time password and your new password.",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "otp": "One-time password",
+        "otpPlaceholder": "Enter one-time password",
+        "newPassword": "New Password",
+        "newPasswordPlaceholder": "Enter new password",
+        "sendOtpButton": "Send one-time password",
+        "resetPasswordButton": "Reset Password",
+        "resendOtp": "Resend one-time password",
+        "backToLogin": "Back to Login",
+        "loginImageAlt": "Login Image"
+    },
     "otp": {
         "title": "Verify your code",
         "subtitle": "We have sent a security code to your email address. Enter the code below to continue.",
-        "testOtp": "Test OTP:",
-        "otpLabel": "OTP",
+        "testOtp": "one-time password:",
+        "otpLabel": "One-time password",
         "otpPlaceholder": "enter security code",
         "verifyButton": "Verify",
         "resendButton": "resend security code",
@@ -1266,8 +1287,8 @@
         }
     },
     "volunteerHome": {
-        "welcome": "Welkom bij Virtueel Wandelen!",
-        "heroTitle": "Bring Nature to Those Who Can't Walk",
+        "welcome": "Welcome to Virtueel Wandelen.",
+        "heroTitle": "Bring nature closer again.",
         "heroDescription": "Capture, share, and upload calming nature videos to brighten the day of seniors and people with dementia.",
         "recentlyCreated": "Recently Created by You",
         "recentlyCreatedSubtitle": "View, edit, and track the impact of your videos.",
@@ -1313,7 +1334,12 @@
         "title": "Title",
         "titleRequired": "Title *",
         "description": "Description",
-        "videoDuration": "Video duration",
+        "videoDuration": "Video duration (minutes)",
+        "province": "Province",
+        "provincePlaceholder": "Select province",
+        "municipality": "Municipality",
+        "municipalityPlaceholder": "Select province first",
+        "durationPlaceholder": "e.g. 15",
         "location": "Location",
         "season": "Season",
         "natureType": "Nature Type",
@@ -1512,5 +1538,23 @@
             "paragraph1": "All videos, images, texts and other materials on the Virtual Walking platform are protected by copyright and owned by Virtual Walking, unless stated otherwise. Visitors and users are expressly prohibited from copying, distributing, making public or using these materials commercially without prior written permission.",
             "paragraph2": "When users submit material (such as comments or suggestions) for publication on the platform, Virtual Walking has the right to edit, shorten or not place this material. Users must ensure that submitted material does not infringe on the rights of third parties (including copyrights) and does not constitute unlawful conduct towards third parties. Users themselves are liable for any damage resulting from this."
         }
+    },
+    "videoGrid": {
+        "defaultTitle": "Recently Created by You",
+        "defaultSubtitle": "View, edit, and track the impact of your videos.",
+        "emptyStateMessage": "No videos match your current filters.",
+        "resultsCount": "{{count}} video found",
+        "resultsCount_plural": "{{count}} videos found",
+        "clearFiltersButton": "Clear all filters",
+        "previousButton": "Previous",
+        "nextButton": "Next",
+        "newLabel": "NEW",
+        "latestVideoLabel": "LATEST",
+        "approvedLabel": "APPROVED",
+        "pendingLabel": "PENDING",
+        "views": "views",
+        "likes": "likes",
+        "editButton": "Edit",
+        "deleteButton": "Delete"
     }
 }

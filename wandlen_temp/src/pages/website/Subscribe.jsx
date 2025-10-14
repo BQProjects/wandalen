@@ -62,29 +62,10 @@ const SubscriptionCard = ({
         </div>
         {originalPrice && discountCode && (
           <div className="text-[#a6a643] text-sm font-medium text-center">
-            {period === "jaar" ? (
-              <>
-                Gebruik de kortingscode {discountCode} voor 15% korting op je
-                jaarabonnement
-                <br />
-                Gebruik deze actiecode vòòr 1 december
-                <br />
-                15% discount for the year subscription = € {price},-
-              </>
-            ) : (
-              <>
-                {t(
-                  "subscribe.discountCode",
-                  `Gebruik de kortingscode ${discountCode} voor ${discountAmount} korting op je maandabonnement`
-                )}
-                <br />
-                <span className="text-xs">
-                  {t(
-                    "subscribe.discountExpiry",
-                    "Gebruik deze actiecode vòòr 1 december"
-                  )}
-                </span>
-              </>
+            {t(
+              `subscribe.discountMessages.${
+                period === "year" ? "yearly" : "monthly"
+              }`
             )}
           </div>
         )}
