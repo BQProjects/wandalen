@@ -41,6 +41,7 @@ const MessageUs = () => {
         { label: t("aran.chat.menu.usage"), next: "usage" },
         { label: t("aran.chat.menu.pricing"), next: "pricing" },
         { label: t("aran.chat.menu.support"), next: "support" },
+        { label: t("aran.chat.menu.contact"), next: "contact" },
       ],
     },
     q1: {
@@ -204,6 +205,7 @@ const MessageUs = () => {
         { label: t("aran.chat.support.videoNotStarting"), next: "q16" },
         { label: t("aran.chat.support.needInternet"), next: "q17" },
         { label: t("aran.chat.support.browsers"), next: "q18" },
+        { label: t("aran.chat.support.contact"), next: "contact" },
         { label: t("aran.chat.menu.backToMenu"), next: "start" },
       ],
     },
@@ -243,6 +245,10 @@ const MessageUs = () => {
         { label: t("aran.chat.newVideos.videoLength"), next: "q14" },
         { label: t("aran.chat.menu.backToMenu"), next: "start" },
       ],
+    },
+    contact: {
+      message: t("aran.chat.contact.message"),
+      options: [{ label: t("aran.chat.menu.backToMenu"), next: "start" }],
     },
   };
 

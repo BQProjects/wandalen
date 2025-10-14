@@ -95,6 +95,7 @@
                 "usage": "🎯 Gebruik & Functies",
                 "pricing": "💰 Prijzen & Abonnementen",
                 "support": "🛠️ Technische hulp",
+                "contact": "📧 Neem contact op",
                 "backToMenu": "↩️ Terug naar hoofdmenu",
                 "moreOptions": "Meer opties →",
                 "back": "← Terug"
@@ -149,10 +150,14 @@
                 "videoNotStarting": "Video start niet",
                 "needInternet": "Internet nodig?",
                 "browsers": "Welke browsers werken?",
+                "contact": "Contactgegevens",
                 "videoNotStartingMessage": "Vervelend dat de video niet start! Laten we dat oplossen: 🔧\n\n1. Controleer je internetverbinding\n2. Vernieuw de pagina (F5)\n3. Nog steeds niet? Probeer Chrome of Edge\n4. Cache legen kan ook helpen\n\nWerkt het nog niet? Neem dan contact op met onze support!",
                 "needInternetMessage": "Ja, internet is noodzakelijk! 🌐\n\nVirtueel Wandelen is een online streamingplatform, dus je hebt een internetverbinding nodig om de video's te kunnen bekijken.\n\nZorg voor een stabiele verbinding voor de beste ervaring!",
                 "browsersMessage": "Voor de beste ervaring raden we aan: 💻\n\n✓ Google Chrome (beste optie)\n✓ Microsoft Edge (ook prima)\n✓ Safari (Mac/iOS)\n✓ Firefox\n\nChrome en Edge werken het soepelst met alle functies!",
                 "technicalProblems": "Technische problemen?"
+            },
+            "contact": {
+                "message": "Meer ondersteuning nodig of vragen? 📧\n\nNeem gerust direct contact met ons op:\n\n📧 E-mail: info@virtueelwandelen.nl\n📞 Telefoon: 06-43754290\n\nWe helpen je graag met al je vragen over Virtueel Wandelen!"
             },
             "target": {
                 "message": "Virtueel Wandelen is speciaal ontwikkeld voor: 💚\n\n• Mensen die minder mobiel zijn\n• Bewoners van zorginstellingen\n• Mensen met dementie\n• Iedereen met behoefte aan herkenbare natuurbeleving\n\nDus eigenlijk voor iedereen die wil genieten van de natuur, maar er niet altijd naartoe kan!",
@@ -327,7 +332,11 @@
         "notesLabel": "Notities",
         "notesPlaceholder": "ik blijf graag op de hoogte van Virtueel Wandelen.",
         "subscribeButton": "Ontvang inspiratie",
-        "imageAlt": "Handen vasthouden in de natuur"
+        "imageAlt": "Handen vasthouden in de natuur",
+        "successMessage": "Succesvol ingeschreven voor onze nieuwsbrief!",
+        "validationError": "Vul alle verplichte velden in",
+        "emailError": "Voer een geldig e-mailadres in",
+        "errorMessage": "Er is iets misgegaan. Probeer het opnieuw."
     },
     "requestCard": {
         "header": {
