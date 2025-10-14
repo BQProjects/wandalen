@@ -665,9 +665,9 @@ const emailTemplates = {
   // Forgot password OTP email template
   forgotPasswordOtpEmail: (otp) => `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #381207;">Wachtwoord Reset OTP - Virtueel Wandelen</h2>
+      <h2 style="color: #381207;">Wachtwoord Reset - Virtueel Wandelen</h2>
       <p>Beste gebruiker,</p>
-      <p>U heeft verzocht om uw wachtwoord te resetten voor uw Virtueel Wandelen account. Gebruik de volgende Eenmalige Wachtwoord (OTP) om de wachtwoord reset te voltooien:</p>
+      <p>U heeft verzocht om uw wachtwoord te resetten voor uw Virtueel Wandelen account. Gebruik de volgende Eenmalige Wachtwoord om de wachtwoord reset te voltooien:</p>
       
       <div style="text-align: center; margin: 30px 0;">
         <div style="display: inline-block; padding: 15px 30px; background-color: #5b6502; color: white; font-size: 24px; font-weight: bold; border-radius: 8px; letter-spacing: 2px;">
@@ -675,7 +675,7 @@ const emailTemplates = {
         </div>
       </div>
       
-      <p><strong>Belangrijk:</strong> Deze OTP is slechts 5 minuten geldig. Deel deze code met niemand.</p>
+      <p><strong>Belangrijk:</strong> Dit eenmalige wachtwoord is slechts 5 minuten geldig. Deel deze code met niemand.</p>
       <p>Als u deze wachtwoord reset niet heeft aangevraagd, negeer dan deze e-mail.</p>
       
       <p>Met vriendelijke groet,<br>Virtueel Wandelen Support Team</p>

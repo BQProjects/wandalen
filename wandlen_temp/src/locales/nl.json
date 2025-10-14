@@ -52,8 +52,8 @@
         "linkedin": "LinkedIn"
     },
     "discoverVideos": {
-        "title": "Ontdek Natuur Video's",
-        "subtitle": "Kies een route of seizoen."
+        "title": "Ontdek onze natuur wandel video’s",
+        "subtitle": "Kies jouw favoriete route of seizoen."
     },
     "positiveExperiences": {
         "title": "Positieve Ervaringen",
@@ -86,8 +86,8 @@
         },
         "chat": {
             "title": "Chat met Virtueel Wandelen",
-            "greeting": "Hallo! Ik ben Vw, jouw virtuele assistent voor Virtueel Wandelen. 👋\n\nIk help je graag met al je vragen. Waar kan ik je mee helpen?",
-            "typing": "Vw is aan het typen...",
+            "greeting": "Hallo! Ik ben Noa, jouw virtuele assistent voor Virtueel Wandelen. 👋\n\nIk help je graag met al je vragen. Waar kan ik je mee helpen?",
+            "typing": "Noa is aan het typen...",
             "menu": {
                 "aboutVW": "📖 Vertel me over Virtueel Wandelen",
                 "login": "🔐 Inloggen & Account",
@@ -330,7 +330,7 @@
     },
     "requestCard": {
         "header": {
-            "subtitle": "Voor zorg organisaties en particulieren thuis",
+            "subtitle": "Voor Zorgorganisaties en particulieren thuis",
             "title": "Onbeperkte toegang tot natuurwandelingen. Probeer 7 dagen gratis. Annuleer wanneer je wilt."
         },
         "careInstitutions": {
@@ -664,7 +664,7 @@
             "title": "Thuis abonnement",
             "description": "Breng herkenbare natuur dichterbij en laat je geliefde ervan genieten thuis.",
             "features": [
-                "Onbeperkte virtuele wandelingen",
+                "Toegang tot àlle virtuele wandelingen",
                 "Nieuwe routes elke maand"
             ],
             "buttonText": "Start abonnement",
@@ -688,7 +688,11 @@
         "launchBadge": "Lancerings korting",
         "discountCode": "Gebruik de kortingscode Natuur01 voor € 3,- korting op je maandabonnement",
         "discountExpiry": "Gebruik deze actiecode vòòr 1 december",
-        "discountInstead": "i.p.v."
+        "discountInstead": "i.p.v.",
+        "discountMessages": {
+            "monthly": "Gebruik de kortingscode Natuur01 voor €3,- korting op je maandabonnement. Gebruik de actiecode vóór 1 december",
+            "yearly": "Gebruik de kortingscode Natuur02 voor 15% korting op je jaarabonnement. Gebruik de actiecode vóór 1 december"
+        }
     },
     "payment": {
         "header": {
@@ -1212,11 +1216,28 @@
         "subscriptionCancelledNotice": "Uw abonnement is geannuleerd. Uw account blijft actief tot:",
         "trialPeriodNotice": "U bent momenteel in uw gratis proefperiode tot:"
     },
+    "forgotPassword": {
+        "forgotPasswordTitle": "Wachtwoord Vergeten",
+        "resetPasswordTitle": "Wachtwoord Resetten",
+        "forgotPasswordDescription": "Voer uw e-mail in om een resetcode te ontvangen.",
+        "resetPasswordDescription": "Voer het eenmalige wachtwoord en uw nieuwe wachtwoord in.",
+        "email": "E-mail",
+        "emailPlaceholder": "Voer uw e-mail in",
+        "otp": "Eenmalig wachtwoord",
+        "otpPlaceholder": "Voer eenmalig wachtwoord in",
+        "newPassword": "Nieuw Wachtwoord",
+        "newPasswordPlaceholder": "Voer nieuw wachtwoord in",
+        "sendOtpButton": "Eenmalig wachtwoord versturen",
+        "resetPasswordButton": "Wachtwoord Resetten",
+        "resendOtp": "Eenmalig wachtwoord opnieuw versturen",
+        "backToLogin": "Terug naar Inloggen",
+        "loginImageAlt": "Inlog Afbeelding"
+    },
     "otp": {
         "title": "Controleer uw code",
         "subtitle": "We hebben een beveiligingscode naar uw e-mailadres gestuurd. Vul de code hieronder in om verder te gaan.",
-        "testOtp": "Test OTP:",
-        "otpLabel": "OTP",
+        "testOtp": "eenmalig wachtwoord:",
+        "otpLabel": "Eenmalig wachtwoord",
         "otpPlaceholder": "voer beveiliginscode in",
         "verifyButton": "Verifiéren",
         "resendButton": "beveiligingscode opnieuw verzenden",
@@ -1226,10 +1247,10 @@
         }
     },
     "volunteerHome": {
-        "welcome": "Welkom bij Virtual Wandelen!",
-        "heroTitle": "Breng Natuur naar Degenen Die Niet Kunnen Lopen",
+        "welcome": "Welkom bij Virtueel Wandelen.",
+        "heroTitle": "Breng natuur weer dichtbij.",
         "heroDescription": "Leg vast, deel en upload kalmerende natuurvideo's om de dag op te fleuren van ouderen en mensen met dementie.",
-        "recentlyCreated": "Recent door U jou Ggemaakt",
+        "recentlyCreated": "Recent door jou gemaakt",
         "recentlyCreatedSubtitle": "Bekijk, bewerk en volg de impact van jouw video's.",
         "locationRequestForm": "Locatie Aanvraag Formulier",
         "locationRequestSubtitle": "Selecteer en voeg leden toe uit dit offerteverzoek.",
@@ -1273,7 +1294,12 @@
         "title": "Titel",
         "titleRequired": "Titel *",
         "description": "Beschrijving",
-        "videoDuration": "Video duur",
+        "videoDuration": "Video duur (minuten)",
+        "province": "Provincie",
+        "provincePlaceholder": "Selecteer provincie",
+        "municipality": "Gemeente",
+        "municipalityPlaceholder": "Selecteer eerst jouw provincie",
+        "durationPlaceholder": "bijv. 15",
         "location": "Locatie",
         "season": "Seizoen",
         "natureType": "Natuur Type",
@@ -1455,5 +1481,23 @@
             "paragraph1": "Alle video's, afbeeldingen, teksten en overige materialen op het platform Virtueel Wandelen zijn auteursrechtelijk beschermd en eigendom van Virtueel Wandelen, tenzij anders vermeld. Het is bezoekers en gebruikers nadrukkelijk niet toegestaan deze materialen te kopiëren, verspreiden, openbaar te maken of commercieel te gebruiken zonder voorafgaande schriftelijke toestemming.",
             "paragraph2": "Wanneer gebruikers materiaal (zoals reacties of suggesties) inzenden voor publicatie op het platform, geldt dat Virtueel Wandelen het recht heeft dit materiaal te bewerken, in te korten of niet te plaatsen. Gebruikers dienen ervoor in te staan dat ingezonden materiaal geen inbreuk maakt op rechten van derden (waaronder auteursrechten) en geen onrechtmatig handelen jegens derden oplevert. Gebruikers zijn zelf aansprakelijk voor eventuele schade die hieruit voortvloeit."
         }
+    },
+    "videoGrid": {
+        "defaultTitle": "Recent Door U Gemaakt",
+        "defaultSubtitle": "Bekijk, bewerk en volg de impact van uw video's.",
+        "emptyStateMessage": "Geen video's komen overeen met uw huidige filters.",
+        "resultsCount": "{{count}} video gevonden",
+        "resultsCount_plural": "{{count}} video's gevonden",
+        "clearFiltersButton": "Alle filters wissen",
+        "previousButton": "Vorige",
+        "nextButton": "Volgende",
+        "newLabel": "NIEUW",
+        "latestVideoLabel": "LAATSTE",
+        "approvedLabel": "GOEDGEKEURD",
+        "pendingLabel": "IN BEHANDELING",
+        "views": "weergaven",
+        "likes": "likes",
+        "editButton": "Bewerken",
+        "deleteButton": "Verwijderen"
     }
 }

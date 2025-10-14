@@ -1099,13 +1099,32 @@ const VolunteerCreateVideo = () => {
             {/* Video Duration */}
             <div>
               <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                {t("volunteerCreateVideo.videoDuration")} (minutes)
+                {t("volunteerCreateVideo.videoDuration")}
               </label>
               <input
                 type="number"
                 name="duration"
                 value={formData.duration}
                 onChange={handleInputChange}
+                onKeyPress={(e) => {
+                  // Only allow numbers, backspace, delete, tab, escape, enter, and arrow keys
+                  if (
+                    !/[0-9]/.test(e.key) &&
+                    ![
+                      "Backspace",
+                      "Delete",
+                      "Tab",
+                      "Escape",
+                      "Enter",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "ArrowUp",
+                      "ArrowDown",
+                    ].includes(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
                 min="0"
                 className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
                 placeholder={t("volunteerCreateVideo.durationPlaceholder")}
@@ -1116,7 +1135,7 @@ const VolunteerCreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Province
+                  {t("volunteerCreateVideo.province")}
                 </label>
                 <select
                   name="province"
@@ -1124,7 +1143,9 @@ const VolunteerCreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">Select Province</option>
+                  <option value="">
+                    {t("volunteerCreateVideo.provincePlaceholder")}
+                  </option>
                   <option value="Drenthe">Drenthe</option>
                   <option value="Flevoland">Flevoland</option>
                   <option value="Friesland">Friesland</option>
@@ -1141,7 +1162,7 @@ const VolunteerCreateVideo = () => {
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Municipality
+                  {t("volunteerCreateVideo.municipality")}
                 </label>
                 <select
                   name="municipality"
@@ -1152,8 +1173,8 @@ const VolunteerCreateVideo = () => {
                 >
                   <option value="">
                     {formData.province
-                      ? "Select Municipality"
-                      : "Select Province First"}
+                      ? t("volunteerCreateVideo.selectOption")
+                      : t("volunteerCreateVideo.municipalityPlaceholder")}
                   </option>
                   {/* Municipality options will be populated based on selected province */}
                   {formData.province &&

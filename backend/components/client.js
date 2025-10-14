@@ -489,7 +489,8 @@ const getAllvideos = async (req, res) => {
     // Fetch videos with filters and pagination
     const videos = await VideoModel.find(query)
       .skip((page - 1) * limit)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .sort({ createdAt: -1 }); // Sort by newest first
 
     // Count total with filters
     const total = await VideoModel.countDocuments(query);

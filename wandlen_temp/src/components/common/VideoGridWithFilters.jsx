@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import OpkomendeZonIcon from "../../assets/opkomende-zon.svg";
 import OndergaandeZonIcon from "../../assets/ondergaande-zon.svg";
 import WinterIcon from "../../assets/winter.svg";
@@ -130,8 +131,10 @@ const VideoCard = ({
   uploadedBy,
   isAdminView = false,
   isApproved = false,
+  isFirstVideo = false,
 }) => {
   const { DATABASE_URL } = useContext(DatabaseContext);
+  const { t } = useTranslation();
   const sessionId = localStorage.getItem("sessionId");
   const currentUserId = localStorage.getItem("userId");
 
@@ -154,9 +157,9 @@ const VideoCard = ({
         <div className="absolute top-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
           {duration ? `${duration} min` : "N/A"}{" "}
         </div>
-        {isClientView && (
+        {isFirstVideo && (
           <div className="absolute top-2 left-2 bg-[#dd9219] text-white px-2 py-1 rounded text-sm font-medium">
-            NEW
+            {t("videoGrid.latestVideoLabel")}
           </div>
         )}
         {isAdminView && (
@@ -165,7 +168,9 @@ const VideoCard = ({
               isApproved ? "bg-green-500 text-white" : "bg-red-500 text-white"
             }`}
           >
-            {isApproved ? "APPROVED" : "PENDING"}
+            {isApproved
+              ? t("videoGrid.approvedLabel")
+              : t("videoGrid.pendingLabel")}
           </div>
         )}
       </div>
@@ -197,10 +202,15 @@ const VideoCard = ({
         {showStats && (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-sm text-[#381207] opacity-75">
-              <span>{views} views</span>
+              <span>
+                {views} {t("videoGrid.views")}
+              </span>
               <div className="flex items-center gap-1">
                 <HeartIcon />
-                <span>{likes} likes</span> {/* Added "likes" for clarity */}
+                <span>
+                  {likes} {t("videoGrid.likes")}
+                </span>{" "}
+                {/* Added "likes" for clarity */}
               </div>
             </div>
             {/* Edit and Delete buttons for volunteers and admins */}
@@ -214,7 +224,7 @@ const VideoCard = ({
                   className="px-3 py-1 bg-[#dd9219] text-white text-xs rounded hover:bg-[#c47a15] transition-colors"
                   title="Edit video"
                 >
-                  Edit
+                  {t("videoGrid.editButton")}
                 </button>
                 <button
                   onClick={(e) => {
@@ -224,7 +234,7 @@ const VideoCard = ({
                   className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
                   title="Delete video"
                 >
-                  Delete
+                  {t("videoGrid.deleteButton")}
                 </button>
               </div>
             )}
@@ -333,6 +343,7 @@ const VideoGridWithFilters = ({
   isAdminView = false, // Add isAdminView prop
 }) => {
   const [openDropdown, setOpenDropdown] = useState(null); // Keep only this internal state
+  const { t } = useTranslation();
 
   // Get the current user ID from localStorage
   const userId = localStorage.getItem("userId");
@@ -876,7 +887,7 @@ const VideoGridWithFilters = ({
         {showResultsCount && (
           <div className="mb-4">
             <span className="text-[#381207] font-['Poppins'] text-sm">
-              {total} video{total !== 1 ? "s" : ""} found
+              {t("videoGrid.resultsCount", { count: total })}
             </span>
           </div>
         )}
@@ -884,7 +895,7 @@ const VideoGridWithFilters = ({
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {paginatedVideos.length > 0 ? (
-            paginatedVideos.map((video) => (
+            paginatedVideos.map((video, index) => (
               <VideoCard
                 key={video._id || video.id}
                 videoId={video._id || video.id}
@@ -903,18 +914,21 @@ const VideoGridWithFilters = ({
                 uploadedBy={video.uploadedBy}
                 isAdminView={isAdminView}
                 isApproved={video.isApproved}
+                isFirstVideo={index === 0}
               />
             ))
           ) : (
             <div className="col-span-full text-center py-8">
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                {emptyStateMessage}
+                {emptyStateMessage === "No videos match your current filters."
+                  ? t("videoGrid.emptyStateMessage")
+                  : emptyStateMessage}
               </p>
               <button
                 onClick={() => onFilterChange({})} // Clear filters via prop
                 className="mt-4 px-4 py-2 bg-[#dd9219] text-white font-['Poppins'] rounded hover:bg-[#c47a15] transition-colors"
               >
-                Clear all filters
+                {t("videoGrid.clearFiltersButton")}
               </button>
             </div>
           )}
@@ -928,7 +942,7 @@ const VideoGridWithFilters = ({
               disabled={currentPage === 1}
               className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Previous
+              {t("videoGrid.previousButton")}
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
@@ -948,7 +962,7 @@ const VideoGridWithFilters = ({
               disabled={currentPage === totalPages}
               className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Next
+              {t("videoGrid.nextButton")}
             </button>
           </div>
         )}
