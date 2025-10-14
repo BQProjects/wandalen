@@ -185,10 +185,10 @@ const VolunteerProfile = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", "wandelen");
-      formData.append("cloud_name", "dojwaepbj");
+      formData.append("cloud_name", "duycbzosb");
 
       const cloudinaryResponse = await axios.post(
-        "https://api.cloudinary.com/v1_1/dojwaepbj/image/upload",
+        "https://api.cloudinary.com/v1_1/duycbzosb/image/upload",
         formData
       );
 

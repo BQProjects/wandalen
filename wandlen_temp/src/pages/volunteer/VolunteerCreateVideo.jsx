@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import UploadIcon from "../../assets/UploadIcon.svg";
-//import LinkIcon from "../../assets/LinkIcon.svg";
+import LinkIcon from "../../assets/LinkIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -501,10 +501,12 @@ const VolunteerCreateVideo = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState("");
   const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
+  const [showLinkModal, setShowLinkModal] = useState(false);
+  const [linkInput, setLinkInput] = useState("");
 
   // Cleanup video preview URL on unmount or video change
   useEffect(() => {
-    if (videoFile) {
+    if (videoFile && videoFile.type !== "link") {
       const url = URL.createObjectURL(videoFile);
       setVideoPreviewUrl(url);
       return () => {
@@ -611,6 +613,22 @@ const VolunteerCreateVideo = () => {
     }
   };
 
+  const handleAddLink = () => {
+    setShowLinkModal(true);
+  };
+
+  const handleLinkSubmit = () => {
+    if (linkInput.trim()) {
+      // Store the link in formData
+      setFormData({ ...formData, url: linkInput.trim() });
+      // Create a mock file object to show that a video source exists
+      setVideoFile({ name: "Google Drive Video", type: "link" });
+      setShowLinkModal(false);
+      setLinkInput("");
+      setShowUploadOptions(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -621,8 +639,8 @@ const VolunteerCreateVideo = () => {
     let imgUrl = formData.imgUrl; // Existing or new
 
     try {
-      // Upload video file to Vimeo only if new
-      if (videoFile) {
+      // Upload video file to Vimeo only if it's an actual file (not a link)
+      if (videoFile && videoFile.type !== "link") {
         setCurrentStep(t("volunteerCreateVideo.uploadingVideo"));
         setUploadProgress(20);
 
@@ -984,27 +1002,111 @@ const VolunteerCreateVideo = () => {
               </h2>
             </div>
             <div className="border-2 border-dashed border-[#e5e3df] rounded-lg p-8 h-64 flex flex-col items-center justify-center bg-[#f7f6f4]">
-              {videoFile ? (
+              {/* Show existing video URL in edit mode if no new video is selected */}
+              {editMode && !videoFile && !showUploadOptions && formData.url ? (
                 <div className="text-center w-full">
-                  <video
-                    src={videoPreviewUrl}
-                    controls
-                    className="w-full max-h-40 mx-auto mb-4 rounded object-contain"
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                  <p className="text-[#381207] text-sm font-[Poppins]">
-                    {videoFile.name}
-                  </p>
+                  <div className="mb-4">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <svg
+                        className="w-5 h-5 text-[#2a341f]"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                      </svg>
+                      <span className="text-[#381207] font-medium font-[Poppins]">
+                        Current Video URL
+                      </span>
+                    </div>
+                    <p className="text-[#7a756e] text-sm break-all mb-4 font-[Poppins] px-4">
+                      {formData.url}
+                    </p>
+                    <a
+                      href={formData.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#2a341f] text-white rounded-lg hover:bg-[#1e241a] transition font-[Poppins] text-sm mb-3"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
+                      </svg>
+                      Download/View Video
+                    </a>
+                  </div>
                   <button
-                    onClick={() => {
-                      setVideoFile(null);
-                      setShowUploadOptions(false);
-                    }}
-                    className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
+                    onClick={() => setShowUploadOptions(true)}
+                    className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium"
                   >
-                    {t("volunteerCreateVideo.remove")}
+                    Upload New Video
                   </button>
+                </div>
+              ) : videoFile ? (
+                <div className="text-center w-full">
+                  {videoFile.type === "link" ? (
+                    // Show Google Drive link
+                    <div className="text-center">
+                      <div className="mb-4">
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                          <svg
+                            className="w-5 h-5 text-[#2a341f]"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                          </svg>
+                          <span className="text-[#381207] font-medium font-[Poppins]">
+                            Video Link Added
+                          </span>
+                        </div>
+                        <p className="text-[#7a756e] text-sm break-all mb-3 font-[Poppins] px-4">
+                          {formData.url}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setVideoFile(null);
+                          setFormData({ ...formData, url: "" });
+                          setShowUploadOptions(false);
+                        }}
+                        className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
+                      >
+                        {t("volunteerCreateVideo.remove")}
+                      </button>
+                    </div>
+                  ) : (
+                    // Show video preview for uploaded files
+                    <>
+                      <video
+                        src={videoPreviewUrl}
+                        controls
+                        className="w-full max-h-40 mx-auto mb-4 rounded object-contain"
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                      <p className="text-[#381207] text-sm font-[Poppins]">
+                        {videoFile.name}
+                      </p>
+                      <button
+                        onClick={() => {
+                          setVideoFile(null);
+                          setShowUploadOptions(false);
+                        }}
+                        className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
+                      >
+                        {t("volunteerCreateVideo.remove")}
+                      </button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="text-center">
@@ -1032,7 +1134,7 @@ const VolunteerCreateVideo = () => {
                       </label>
 
                       {/* Upload Options */}
-                      <div className="bg-[#ede4dc] rounded-lg p-2 shadow-sm">
+                      <div className="bg-[#ede4dc] rounded-lg p-2 shadow-sm mb-4">
                         <div
                           className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100"
                           onClick={() =>
@@ -1044,13 +1146,26 @@ const VolunteerCreateVideo = () => {
                             {t("volunteerCreateVideo.uploadFromComputer")}
                           </span>
                         </div>
-                        {/* <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
+                        <div
+                          className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100"
+                          onClick={handleAddLink}
+                        >
                           <img src={LinkIcon} alt="Link Icon" />
-                          <span className="text-[#381207] font-[Poppins] text-sm font-medium">
+                          <span className="text-[#4b4741] font-[Poppins] text-sm font-medium">
                             Add link
                           </span>
-                        </div> */}
+                        </div>
                       </div>
+
+                      {/* Back button to view current video in edit mode */}
+                      {editMode && formData.url && (
+                        <button
+                          onClick={() => setShowUploadOptions(false)}
+                          className="text-[#7a756e] text-sm font-[Poppins] hover:text-[#381207] transition"
+                        >
+                          ← Back to Current Video
+                        </button>
+                      )}
                     </>
                   )}
                 </div>
@@ -1362,6 +1477,56 @@ const VolunteerCreateVideo = () => {
           </form>
         </div>
       </div>
+
+      {/* Link Input Modal */}
+      {showLinkModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h3 className="text-xl font-medium text-[#381207] mb-4 font-[Poppins]">
+              Add Video Link
+            </h3>
+            <p className="text-[#7a756e] text-sm mb-4 font-[Poppins]">
+              Paste your link here. Make sure the link is publicly accessible.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[#381207] font-medium mb-2 font-[Poppins]">
+                  Video Link
+                </label>
+                <input
+                  type="url"
+                  value={linkInput}
+                  onChange={(e) => setLinkInput(e.target.value)}
+                  placeholder="https://your-link-here.com"
+                  className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                />
+              </div>
+            </div>
+            <div className="flex gap-4 mt-6">
+              <button
+                onClick={() => {
+                  setShowLinkModal(false);
+                  setLinkInput("");
+                }}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-[Poppins]"
+              >
+                {t("volunteerCreateVideo.cancel")}
+              </button>
+              <button
+                onClick={handleLinkSubmit}
+                disabled={!linkInput.trim()}
+                className={`flex-1 px-4 py-2 rounded-lg transition font-[Poppins] ${
+                  linkInput.trim()
+                    ? "bg-[#2a341f] text-white hover:bg-[#1e241a]"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+              >
+                Add Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

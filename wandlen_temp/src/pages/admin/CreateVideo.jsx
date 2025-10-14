@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UploadIcon from "../../assets/UploadIcon.svg";
-//import LinkIcon from "../../assets/LinkIcon.svg";
+import LinkIcon from "../../assets/LinkIcon.svg";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -494,6 +494,21 @@ const CreateVideo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState("");
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
+  const [showLinkModal, setShowLinkModal] = useState(false);
+  const [linkInput, setLinkInput] = useState("");
+
+  // Cleanup video preview URL on unmount or video change
+  useEffect(() => {
+    if (videoFile && videoFile.type !== "link") {
+      const url = URL.createObjectURL(videoFile);
+      setVideoPreviewUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+        setVideoPreviewUrl(null);
+      };
+    }
+  }, [videoFile]);
 
   // Handle tag selection
   const handleTagChange = (e) => {
@@ -582,6 +597,22 @@ const CreateVideo = () => {
     }
   };
 
+  const handleAddLink = () => {
+    setShowLinkModal(true);
+  };
+
+  const handleLinkSubmit = () => {
+    if (linkInput.trim()) {
+      // Store the link in formData
+      setFormData({ ...formData, url: linkInput.trim() });
+      // Create a mock file object to show that a video source exists
+      setVideoFile({ name: "Google Drive Video", type: "link" });
+      setShowLinkModal(false);
+      setLinkInput("");
+      setShowUploadOptions(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -592,8 +623,8 @@ const CreateVideo = () => {
     let imgUrl = formData.imgUrl; // Existing or new
 
     try {
-      // Upload video file to Vimeo only if new
-      if (videoFile) {
+      // Upload video file to Vimeo only if it's an actual file (not a link)
+      if (videoFile && videoFile.type !== "link") {
         setCurrentStep("Uploading video to Vimeo...");
         setUploadProgress(20);
 
@@ -921,35 +952,111 @@ const CreateVideo = () => {
               </h2>
             </div>
             <div className="border-2 border-dashed border-[#e5e3df] rounded-lg p-8 h-64 flex flex-col items-center justify-center bg-[#f7f6f4]">
-              {videoFile ? (
-                <div className="text-center">
-                  <svg
-                    width={48}
-                    height={48}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="mx-auto mb-4 text-[#a6a643]"
-                  >
-                    <path
-                      d="M14.828 14.828a4 4 0 0 1-5.656 0M9 10h1.586a1 1 0 0 1 .707.293l.707.707A1 1 0 0 0 12.414 11H15m-3-3h1.586a1 1 0 0 1 .707.293l.707.707A1 1 0 0 0 15.414 9H18m-3-3h1.586a1 1 0 0 1 .707.293l.707.707A1 1 0 0 0 17.414 7H20M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <p className="text-[#381207] text-sm font-[Poppins]">
-                    {videoFile.name}
-                  </p>
+              {/* Show existing video URL in edit mode if no new video is selected */}
+              {editMode && !videoFile && !showUploadOptions && formData.url ? (
+                <div className="text-center w-full">
+                  <div className="mb-4">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <svg
+                        className="w-5 h-5 text-[#2a341f]"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                      </svg>
+                      <span className="text-[#381207] font-medium font-[Poppins]">
+                        Current Video URL
+                      </span>
+                    </div>
+                    <p className="text-[#7a756e] text-sm break-all mb-4 font-[Poppins] px-4">
+                      {formData.url}
+                    </p>
+                    <a
+                      href={formData.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#2a341f] text-white rounded-lg hover:bg-[#1e241a] transition font-[Poppins] text-sm mb-3"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
+                      </svg>
+                      Download/View Video
+                    </a>
+                  </div>
                   <button
-                    onClick={() => {
-                      setVideoFile(null);
-                      setShowUploadOptions(false);
-                    }}
-                    className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
+                    onClick={() => setShowUploadOptions(true)}
+                    className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium"
                   >
-                    Remove
+                    Upload New Video
                   </button>
+                </div>
+              ) : videoFile ? (
+                <div className="text-center w-full">
+                  {videoFile.type === "link" ? (
+                    // Show Google Drive link
+                    <div className="text-center">
+                      <div className="mb-4">
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                          <svg
+                            className="w-5 h-5 text-[#2a341f]"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                          </svg>
+                          <span className="text-[#381207] font-medium font-[Poppins]">
+                            Video Link Added
+                          </span>
+                        </div>
+                        <p className="text-[#7a756e] text-sm break-all mb-3 font-[Poppins] px-4">
+                          {formData.url}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setVideoFile(null);
+                          setFormData({ ...formData, url: "" });
+                          setShowUploadOptions(false);
+                        }}
+                        className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    // Show video preview for uploaded files
+                    <>
+                      <video
+                        src={videoPreviewUrl}
+                        controls
+                        className="w-full max-h-40 mx-auto mb-4 rounded object-contain"
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                      <p className="text-[#381207] text-sm font-[Poppins]">
+                        {videoFile.name}
+                      </p>
+                      <button
+                        onClick={() => {
+                          setVideoFile(null);
+                          setShowUploadOptions(false);
+                        }}
+                        className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="text-center">
@@ -977,7 +1084,7 @@ const CreateVideo = () => {
                       </label>
 
                       {/* Upload Options */}
-                      <div className="bg-[#ede4dc] rounded-lg p-2 shadow-sm">
+                      <div className="bg-[#ede4dc] rounded-lg p-2 shadow-sm mb-4">
                         <div
                           className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100"
                           onClick={() =>
@@ -989,13 +1096,26 @@ const CreateVideo = () => {
                             Upload from computer
                           </span>
                         </div>
-                        {/* <div className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100">
+                        <div
+                          className="flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100"
+                          onClick={handleAddLink}
+                        >
                           <img src={LinkIcon} alt="Link Icon" />
                           <span className="text-[#381207] font-[Poppins] text-sm font-medium">
                             Add link
                           </span>
-                        </div> */}
+                        </div>
                       </div>
+
+                      {/* Back button to view current video in edit mode */}
+                      {editMode && formData.url && (
+                        <button
+                          onClick={() => setShowUploadOptions(false)}
+                          className="text-[#7a756e] text-sm font-[Poppins] hover:text-[#381207] transition"
+                        >
+                          ← Back to Current Video
+                        </button>
+                      )}
                     </>
                   )}
                 </div>
@@ -1270,6 +1390,94 @@ const CreateVideo = () => {
           </form>
         </div>
       </div>
+
+      {/* Link Input Modal */}
+      {showLinkModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setShowLinkModal(false)}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "30px",
+              borderRadius: "8px",
+              maxWidth: "500px",
+              width: "90%",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ marginBottom: "20px", color: "#381207" }}>
+              Add Video Link
+            </h3>
+            <input
+              type="text"
+              value={linkInput}
+              onChange={(e) => setLinkInput(e.target.value)}
+              placeholder="Enter Google Drive or video link"
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginBottom: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                fontSize: "14px",
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLinkModal(false);
+                  setLinkInput("");
+                }}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#7a756e",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleLinkSubmit}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#2a341f",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Add Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
