@@ -81,7 +81,7 @@ const VolunteerHeader = () => {
           onClick={() => setActiveItem("welcome")}
         >
           <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
-            Welcome
+            {t("volunteerHeader.navigation.welcome")}
           </div>
           {(hoveredItem === "welcome" || activeItem === "welcome") && (
             <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
@@ -95,7 +95,7 @@ const VolunteerHeader = () => {
           onClick={() => setActiveItem("how it works")}
         >
           <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
-            How it works
+            {t("volunteerHeader.navigation.howItWorks")}
           </div>
           {(hoveredItem === "how it works" ||
             activeItem === "how it works") && (
@@ -110,7 +110,7 @@ const VolunteerHeader = () => {
           onClick={() => setActiveItem("create video")}
         >
           <div className="body text-[#381207] font-poppins font-medium text-xl leading-[136%]">
-            Create video
+            {t("volunteerHeader.navigation.createVideo")}
           </div>
           {(hoveredItem === "create video" ||
             activeItem === "create video") && (
@@ -136,7 +136,7 @@ const VolunteerHeader = () => {
               />
             </svg>
             <div className="body-5 text-[#381207] font-poppins text-xl font-medium leading-[136%]">
-              {i18n.language === "en" ? t("header.english") : "Nederlands"}
+              {i18n.language === "en" ? t("header.english") : t("header.dutch")}
             </div>
             <svg
               width={24}
@@ -160,7 +160,7 @@ const VolunteerHeader = () => {
                 onClick={() => changeLanguage("nl")}
                 className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
               >
-                Nederlands
+                {t("header.dutch")}
               </button>
               <button
                 onClick={() => changeLanguage("en")}
@@ -192,7 +192,7 @@ const VolunteerHeader = () => {
           onClick={handleLogout}
           className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-[#381207] text-white text-center font-['Poppins'] text-xl font-medium leading-[136%] hover:bg-[#4a3a2a] transition-colors"
         >
-          Logout
+          {t("volunteerHeader.buttons.logout")}
         </button>
       </div>
 
@@ -205,21 +205,21 @@ const VolunteerHeader = () => {
               className="text-[#381207] font-['Poppins'] text-lg font-medium hover:text-[#5b6502] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Welcome
+              {t("volunteerHeader.navigation.welcome")}
             </Link>
             <Link
               to="/volunteer/how-it-works"
               className="text-[#381207] font-['Poppins'] text-lg font-medium hover:text-[#5b6502] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              How it works
+              {t("volunteerHeader.navigation.howItWorks")}
             </Link>
             <Link
               to="/volunteer/create-video"
               className="text-[#381207] font-['Poppins'] text-lg font-medium hover:text-[#5b6502] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Create video
+              {t("volunteerHeader.navigation.createVideo")}
             </Link>
             {/* Language selector */}
             <div className="relative">
@@ -242,7 +242,9 @@ const VolunteerHeader = () => {
                   />
                 </svg>
                 <div className="body-5 text-brown font-['Poppins'] text-lg font-medium leading-[136%]">
-                  {i18n.language === "en" ? t("header.english") : "Nederlands"}
+                  {i18n.language === "en"
+                    ? t("header.english")
+                    : t("header.dutch")}
                 </div>
                 <svg
                   width={24}
@@ -272,7 +274,7 @@ const VolunteerHeader = () => {
                     onClick={() => changeLanguage("nl")}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#381207] font-poppins text-lg font-medium"
                   >
-                    Nederlands
+                    {t("header.dutch")}
                   </button>
                 </div>
               )}
@@ -300,7 +302,7 @@ const VolunteerHeader = () => {
               }}
               className="py-2 px-4 rounded-lg bg-[#381207] text-white font-['Poppins'] text-lg font-medium hover:bg-[#4a3a2a] transition-colors"
             >
-              Logout
+              {t("volunteerHeader.buttons.logout")}
             </button>
           </div>
         </div>

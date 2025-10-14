@@ -262,10 +262,10 @@ const VolunteerHome = () => {
                 </div>
                 <div>
                   <h3 className="text-[#2a341f] font-['Poppins'] text-2xl font-semibold">
-                    📊 Future Videos Planning
+                    {t("volunteerHome.futureVideosTitle")}
                   </h3>
                   <p className="text-[#381207] font-['Poppins'] text-base mt-1">
-                    Manage and track upcoming video locations in real-time
+                    {t("volunteerHome.futureVideosDescription")}
                   </p>
                 </div>
               </div>
@@ -273,7 +273,7 @@ const VolunteerHome = () => {
                 onClick={() => navigate("future-videos")}
                 className="bg-[#dd9219] hover:bg-[#c47a15] text-white font-['Poppins'] text-base font-medium px-6 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2"
               >
-                <span>View Planning</span>
+                <span>{t("volunteerHome.viewPlanning")}</span>
                 <svg
                   width="20"
                   height="20"
