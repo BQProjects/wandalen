@@ -1,0 +1,10 @@
+# robots.txt for Virtueel Wandelen (www.virtueelwandelen.nl)
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.virtueelwandelen.nl/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10

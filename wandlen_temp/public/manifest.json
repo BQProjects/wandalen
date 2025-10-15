@@ -1,0 +1,40 @@
+{
+    "name": "Virtueel Wandelen",
+    "short_name": "Virtueel Wandelen",
+    "description": "Virtueel Wandelen brengt herkenbare natuurwandelingen dichtbij voor wie dat zelf niet meer fysiek kan. Ontspan & geniet van prachtige Nederlandse natuur.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ede4dc",
+    "theme_color": "#2a341f",
+    "orientation": "any",
+    "lang": "nl",
+    "dir": "ltr",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "16x16 32x32 48x48",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/Footer.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "health",
+        "lifestyle",
+        "social"
+    ]
+}

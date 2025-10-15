@@ -1,8 +1,10 @@
 {
-  "name": "frontend",
+  "name": "virtueel-wandelen",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Virtueel Wandelen - Beleef Nederlandse natuur wandelingen",
+  "homepage": "https://www.virtueelwandelen.nl",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
