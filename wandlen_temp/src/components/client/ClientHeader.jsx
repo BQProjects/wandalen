@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
@@ -15,11 +15,37 @@ const ClientHeader = () => {
   const [activeItem, setActiveItem] = useState("welcome");
   const location = useLocation();
 
+  const languageMenuRef = useRef(null);
+  const mobileLanguageMenuRef = useRef(null);
+
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setIsLanguageMenuOpen(false);
     setIsMobileLanguageMenuOpen(false);
   };
+
+  // Close language menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        languageMenuRef.current &&
+        !languageMenuRef.current.contains(event.target)
+      ) {
+        setIsLanguageMenuOpen(false);
+      }
+      if (
+        mobileLanguageMenuRef.current &&
+        !mobileLanguageMenuRef.current.contains(event.target)
+      ) {
+        setIsMobileLanguageMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -113,7 +139,7 @@ const ClientHeader = () => {
           )}
         </Link>
         {/* Language selector */}
-        <div className="relative">
+        <div className="relative" ref={languageMenuRef}>
           <button
             onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
             className="flex justify-center items-center gap-2"
@@ -153,13 +179,21 @@ const ClientHeader = () => {
             <div className="absolute top-full mt-2 bg-secondary border border-[#381207] rounded-lg shadow-lg z-50">
               <button
                 onClick={() => changeLanguage("nl")}
-                className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
+                className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] font-poppins text-lg md:text-xl font-medium ${
+                  i18n.language === "nl"
+                    ? "bg-[#381207] text-[#f0ebe7]"
+                    : "text-[#381207]"
+                }`}
               >
                 {t("header.dutch")}
               </button>
               <button
                 onClick={() => changeLanguage("en")}
-                className="block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] text-[#381207] font-poppins text-lg md:text-xl font-medium"
+                className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] font-poppins text-lg md:text-xl font-medium ${
+                  i18n.language === "en"
+                    ? "bg-[#381207] text-[#f0ebe7]"
+                    : "text-[#381207]"
+                }`}
               >
                 {t("header.english")}
               </button>
@@ -203,7 +237,7 @@ const ClientHeader = () => {
               {t("clientHeader.navigation.welcome")}
             </Link>
             {/* Language selector */}
-            <div className="relative">
+            <div className="relative" ref={mobileLanguageMenuRef}>
               <button
                 onClick={() =>
                   setIsMobileLanguageMenuOpen(!isMobileLanguageMenuOpen)
@@ -247,13 +281,21 @@ const ClientHeader = () => {
                 <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px]">
                   <button
                     onClick={() => changeLanguage("en")}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#381207] font-poppins text-lg font-medium"
+                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins text-lg font-medium ${
+                      i18n.language === "en"
+                        ? "bg-[#381207] text-[#f0ebe7]"
+                        : "text-[#381207]"
+                    }`}
                   >
                     {t("header.english")}
                   </button>
                   <button
                     onClick={() => changeLanguage("nl")}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#381207] font-poppins text-lg font-medium"
+                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 font-poppins text-lg font-medium ${
+                      i18n.language === "nl"
+                        ? "bg-[#381207] text-[#f0ebe7]"
+                        : "text-[#381207]"
+                    }`}
                   >
                     {t("header.dutch")}
                   </button>

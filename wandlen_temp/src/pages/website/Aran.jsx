@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const MessageUs = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -256,6 +256,17 @@ const MessageUs = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Update first message when language changes
+  useEffect(() => {
+    setMessages([
+      {
+        type: "bot",
+        text: t("aran.chat.greeting"),
+      },
+    ]);
+    setCurrentNode("start");
+  }, [i18n.language, t]);
 
   const handleOptionClick = (option) => {
     const next = chatFlow[option.next];

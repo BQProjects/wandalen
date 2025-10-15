@@ -57,7 +57,9 @@ const SubscriptionCard = ({
             ) : (
               price
             )}{" "}
-            <span className="text-sm font-normal">/ {period}</span>
+            <span className="text-sm font-normal">
+              / {t(`subscribe.plan.periods.${period}`)}
+            </span>
           </div>
         </div>
         {originalPrice && discountCode && (

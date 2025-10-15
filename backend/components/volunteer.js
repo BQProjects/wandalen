@@ -6,7 +6,12 @@ const VideoRequestModel = require("../models/videoRequestModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 const vimeoService = require("../services/vimeoService");
 const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 50 * 1024 * 1024 * 1024, // 50GB limit
+  },
+});
 
 const volunteerLogin = async (req, res) => {
   const { email, password } = req.body;

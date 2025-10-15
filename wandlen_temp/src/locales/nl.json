@@ -37,7 +37,7 @@
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
         "termsAndConditions": "Algemene voorwaarden & Gebruikersovereenkomst",
-        "privacyPolicy": "Gebruikersovereenkomst",
+        "privacyPolicy": "Privacybeleid",
         "menu": "Menu",
         "home": "Home",
         "ourVision": "Onze Visie",
@@ -950,7 +950,7 @@
                 "onboardingSupport": "Heeft u behoefte aan onboarding en integratieondersteuning?",
                 "additionalServices": "Heeft u interesse in onze Virtueel Wandelen Beleefbox?",
                 "notes": "Opmerkingen",
-                "agreeToTerms": "Ik ga ermee akkoord dat mijn gegevens worden gebruikt om een offerte voor te bereiden. They need to click thisone.",
+                "agreeToTerms": "ik ga ermee akkoord dat mijn gegevens worden gebruikt om een offerte voor te bereiden en de nieuwsbrief te ontvangen. Ik ga akkoord met de algemene voorwaarden en gebruikersovereenkomst.",
                 "newsletter": "Ja, ik wil mij ook aanmelden voor de nieuwsbrief van Virtueel Wandelen met updates en inspiratie."
             },
             "placeholders": {
@@ -1150,6 +1150,7 @@
         "address": "Adres",
         "loginInfo": "Inloggegevens",
         "accountEmail": "Account e-mail",
+        "emailCannotBeChanged": "E-mail kan niet worden gewijzigd",
         "password": "Wachtwoord",
         "subscriptionInfo": "Abonnementsgegevens",
         "currentPlan": "Huidig abonnement",
@@ -1213,6 +1214,7 @@
         "address": "Adres",
         "loginInfo": "Login Informatie",
         "accountEmail": "Account E-mail",
+        "emailCannotBeChanged": "E-mail kan niet worden gewijzigd",
         "password": "Wachtwoord",
         "changePassword": "Wachtwoord Wijzigen",
         "subscriptionInfo": "Abonnementsinformatie",
@@ -1393,6 +1395,7 @@
         "address": "Adres",
         "loginInfo": "Inloggegevens",
         "accountEmail": "Account e-mail",
+        "emailCannotBeChanged": "E-mail kan niet worden gewijzigd",
         "password": "Wachtwoord",
         "closeAccount": "Uw account sluiten",
         "closeAccountDescription": "Om uw account te sluiten, verplaats eerst alle resterende sites naar de prullenbak. Als uw site Premium-abonnementen of verbonden domeinen heeft, moet u deze eerst annuleren of overdragen.",
@@ -1412,6 +1415,104 @@
     "common": {
         "language": "Taal",
         "and": "en"
+    },
+    "privacy": {
+        "title": "Privacybeleid Virtueel Wandelen",
+        "subtitle": "Versie: 1.0 – oktober 2025",
+        "lastModified": "Laatst gewijzigd: 15 oktober 2025",
+        "intro": "Virtueel Wandelen, gevestigd aan Dominee C. Keersstraat 79, 8151 AB Lemelerveld, is verantwoordelijk voor de verwerking van persoonsgegevens zoals weergegeven in dit privacybeleid. Wij vinden het belangrijk dat je weet hoe wij met je gegevens omgaan, waarom we die nodig hebben en welke rechten je hebt.",
+        "article1": {
+            "title": "Wie wij zijn",
+            "point1": "Naam onderneming: Virtueel Wandelen",
+            "point2": "KvK-nummer: 85578509",
+            "point3": "E-mailadres: info@virtueelwandelen.nl",
+            "point4": "Telefoonnummer: 06-43754290",
+            "point5": "Virtueel Wandelen is onderdeel van 10 Natuurlijk en richt zich op het bieden van digitale natuurbeleving via video's en aanvullende producten en diensten."
+        },
+        "article2": {
+            "title": "Welke gegevens wij verwerken",
+            "intro": "Wij verwerken persoonsgegevens die je zelf aan ons verstrekt bij:",
+            "point1": "het afsluiten van een abonnement of het aanvragen van een offerte;",
+            "point2": "het aanmaken van een gebruikersaccount;",
+            "point3": "het invullen van het contactformulier of inschrijven op de nieuwsbrief;",
+            "point4": "deelname aan een proefperiode of demo;",
+            "point5": "communicatie via e-mail of telefoon.",
+            "dataIntro": "Wij kunnen daarbij de volgende gegevens verwerken:",
+            "dataPoint1": "Voor- en achternaam",
+            "dataPoint2": "Adresgegevens (voor facturatie of levering van producten)",
+            "dataPoint3": "E-mailadres",
+            "dataPoint4": "Telefoonnummer",
+            "dataPoint5": "Betaal- en facturatiegegevens",
+            "dataPoint6": "Inloggegevens voor het platform",
+            "dataPoint7": "Organisatienaam en functie (indien van toepassing)",
+            "dataPoint8": "IP-adres en apparaat-informatie (technisch, anoniem geanalyseerd)"
+        },
+        "article3": {
+            "title": "Waarom wij deze gegevens verwerken",
+            "intro": "Virtueel Wandelen verwerkt jouw persoonsgegevens voor de volgende doeleinden:",
+            "point1": "Het aanmaken en beheren van jouw account;",
+            "point2": "Het leveren van onze (digitale) diensten en producten;",
+            "point3": "Het afhandelen van betalingen en facturatie;",
+            "point4": "Het verzenden van serviceberichten en nieuwsbrieven;",
+            "point5": "Het bieden van ondersteuning en klantenservice;",
+            "point6": "Het verbeteren van onze dienstverlening en gebruikerservaring;",
+            "point7": "Het voldoen aan wettelijke verplichtingen, zoals fiscale bewaarplicht."
+        },
+        "article4": {
+            "title": "Bewaartermijnen",
+            "intro": "Wij bewaren persoonsgegevens niet langer dan strikt nodig is om de doelen te realiseren waarvoor ze zijn verzameld.",
+            "point1": "Accountgegevens: zolang je abonnement actief is; daarna maximaal 12 maanden.",
+            "point2": "Factuurgegevens: 7 jaar (wettelijke bewaarplicht).",
+            "point3": "Nieuwsbriefinschrijvingen: totdat je je uitschrijft."
+        },
+        "article5": {
+            "title": "Delen van gegevens met derden",
+            "intro": "Wij delen jouw gegevens uitsluitend met derden als dat nodig is voor de uitvoering van onze overeenkomst of om te voldoen aan wettelijke verplichtingen. Denk hierbij aan:",
+            "point1": "onze betaalprovider (voor veilige betalingen);",
+            "point2": "hostingpartij (voor veilige opslag van data);",
+            "point3": "boekhouder of administratiekantoor (voor facturatie en belastingverplichtingen).",
+            "note": "Virtueel Wandelen verkoopt jouw gegevens nooit aan derden."
+        },
+        "article6": {
+            "title": "Beveiliging van persoonsgegevens",
+            "intro": "Virtueel Wandelen neemt passende technische en organisatorische maatregelen om misbruik, verlies of onbevoegde toegang te voorkomen. We gebruiken onder andere:",
+            "point1": "een beveiligde (SSL-)verbinding op onze website;",
+            "point2": "sterke wachtwoordbeveiliging voor accounts;"
+        },
+        "article7": {
+            "title": "Jouw rechten",
+            "intro": "Je hebt het recht om:",
+            "point1": "je persoonsgegevens in te zien, te corrigeren of te laten verwijderen;",
+            "point2": "bezwaar te maken tegen de verwerking van je gegevens;",
+            "point3": "de verwerking te beperken of gegevens over te dragen aan een andere partij;",
+            "point4": "je toestemming voor gegevensverwerking in te trekken.",
+            "contact": "Wil je gebruikmaken van een van deze rechten? Neem dan contact op via:",
+            "email": "📧 info@virtueelwandelen.nl",
+            "response": "Wij reageren binnen 30 dagen op je verzoek."
+        },
+        "article8": {
+            "title": "Nieuwsbrief en communicatie",
+            "point1": "Wanneer je je inschrijft voor onze nieuwsbrief, gebruiken wij je e-mailadres voor het verzenden van updates, inspiratie en informatie over onze dienstverlening en abonnementen van Virtueel Wandelen.",
+            "point2": "Je kunt je op elk moment uitschrijven via de afmeldlink in elke e-mail."
+        },
+        "article9": {
+            "title": "Wijzigingen in dit privacybeleid",
+            "point1": "Virtueel Wandelen behoudt zich het recht voor dit privacybeleid aan te passen.",
+            "point2": "De meest actuele versie is altijd te vinden op www.virtueelwandelen.nl",
+            "point3": "We raden je aan dit beleid regelmatig te raadplegen, zodat je op de hoogte blijft van eventuele wijzigingen."
+        },
+        "article10": {
+            "title": "Contact",
+            "intro": "Heb je vragen of klachten over ons privacybeleid of de verwerking van jouw gegevens?",
+            "contact": "Neem gerust contact met ons op:",
+            "company": "Virtueel Wandelen",
+            "address": "Dominee C. Keersstraat 79",
+            "city": "8151 AB Lemelerveld",
+            "email": "info@virtueelwandelen.nl",
+            "phone": "06-43754290",
+            "complaint": "Kom je er met ons niet uit?",
+            "complaintText": "Dan kun je altijd een klacht indienen bij de Autoriteit Persoonsgegevens via www.autoriteitpersoonsgegevens.nl."
+        }
     },
     "agreement": {
         "title": "Algemene Voorwaarden Virtueel Wandelen",

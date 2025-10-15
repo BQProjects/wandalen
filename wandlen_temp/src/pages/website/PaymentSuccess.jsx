@@ -162,6 +162,29 @@ const PaymentSuccess = () => {
     };
   }, [DATABASE_URL, navigate, searchParams, t]);
 
+  // Add LaPosta mailing list signup script after successful payment
+  useEffect(() => {
+    if (status === "success") {
+      // Check if script is already added to avoid duplicates
+      const existingScript = document.querySelector(
+        'script[src="https://embed.email-provider.eu/e/8bszbk81fr-l1ys2i7ii7.js"]'
+      );
+      if (!existingScript) {
+        // Make user email available globally for LaPosta script
+        const pendingData = localStorage.getItem("pendingSignupData");
+        if (pendingData) {
+          const signupData = JSON.parse(pendingData);
+          window.laPostaEmail = signupData.email;
+        }
+
+        const s = document.createElement("script");
+        s.src = "https://embed.email-provider.eu/e/8bszbk81fr-l1ys2i7ii7.js";
+        s.async = true;
+        document.body.appendChild(s);
+      }
+    }
+  }, [status]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f5f0] to-[#ede4dc] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">

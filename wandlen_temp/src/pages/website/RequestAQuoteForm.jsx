@@ -201,6 +201,29 @@ const RequestAQuoteForm = () => {
         }
       }
 
+      // Subscribe to LaPosta healthcare list
+      try {
+        const laPostaData = {
+          email: formData.emailAddress,
+          organisatienaam: formData.organizationName,
+          voornaam: formData.fullName.split(" ")[0] || formData.fullName,
+          achternaam: formData.fullName.split(" ").slice(1).join(" ") || "",
+          functie: formData.jobTitle,
+          telefoon: formData.phoneContact,
+          aantalbewoners:
+            formData.totalClients || formData.estimatedClients || "",
+        };
+
+        await axios.post(
+          `${DATABASE_URL}/utils/subscribe-healthcare-quote`,
+          laPostaData
+        );
+        console.log("LaPosta healthcare subscription successful");
+      } catch (laPostaError) {
+        console.error("LaPosta healthcare subscription error:", laPostaError);
+        // Don't fail the main submission if LaPosta fails
+      }
+
       toast.success(
         t("requestQuoteForm.form.messages.success") +
           " A confirmation email has been sent to your email address. Our support team will get back to you soon."
@@ -550,18 +573,24 @@ const RequestAQuoteForm = () => {
                   <label className="block text-[#381207] font-medium mb-2">
                     {t("requestQuoteForm.form.labels.jobTitle")}
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="jobTitle"
                     value={formData.jobTitle}
                     onChange={handleChange}
-                    placeholder={t(
-                      "requestQuoteForm.form.placeholders.jobTitle"
-                    )}
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
                       errors.jobTitle ? "border-red-500" : "border-[#cbcbcb]"
                     }`}
-                  />
+                  >
+                    <option value="">Selecteer een functie</option>
+                    <option value="Locatiemanager">Locatiemanager</option>
+                    <option value="Teamleider">Teamleider</option>
+                    <option value="Activiteitenbegeleider">
+                      Activiteitenbegeleider
+                    </option>
+                    <option value="HR manager / administratie">
+                      HR manager / administratie
+                    </option>
+                  </select>
                   {errors.jobTitle && (
                     <span className="text-red-500 text-sm">
                       {errors.jobTitle}

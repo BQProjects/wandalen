@@ -209,6 +209,12 @@ const Footer = () => {
               >
                 {t("footer.termsAndConditions")}
               </Link>
+              <Link
+                to="/privacy-policy"
+                className="hover:text-[#a6a643] transition-colors font-[Poppins] text-center sm:text-left"
+              >
+                {t("footer.privacyPolicy")}
+              </Link>
               {/* <span className="hidden sm:inline text-[#ede4dc]/60">&</span>
               <Link
                 to="/agreement"

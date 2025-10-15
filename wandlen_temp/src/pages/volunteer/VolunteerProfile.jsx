@@ -426,7 +426,7 @@ const VolunteerProfile = () => {
                 {profileData.accountEmail}
               </div>
               <p className="text-sm text-[#7a756e] mt-1 font-[Poppins]">
-                Email cannot be changed
+                {t("volunteerProfile.emailCannotBeChanged")}
               </p>
             </div>
             <div>
