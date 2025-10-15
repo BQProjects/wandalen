@@ -258,7 +258,7 @@ const sendForgotPasswordOtp = async (req, res) => {
     try {
       await sendEmail(
         email,
-        "Wachtwoord Reset OTP - Virtueel Wandelen",
+        "Wachtwoord resetcode - Virtueel Wandelen",
         emailTemplates.forgotPasswordOtpEmail(otp)
       );
       console.log(`Forgot password OTP sent to ${email}: ${otp}`);
@@ -321,6 +321,117 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const subscribeHealthcareQuote = async (req, res) => {
+  const {
+    email,
+    organisatienaam,
+    voornaam,
+    achternaam,
+    functie,
+    telefoon,
+    aantalbewoners,
+  } = req.body;
+
+  // Get client IP
+  const clientIP =
+    req.ip ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    "127.0.0.1";
+
+  try {
+    // Validate required fields
+    if (!email || !organisatienaam || !voornaam) {
+      return res.status(400).json({
+        message: "Email, organisatienaam en voornaam zijn verplicht",
+      });
+    }
+
+    // Send to LaPosta
+    try {
+      const bewonersMapping = {
+        "2–30": "minder dan 50",
+        "31–60": "50 tot 150",
+        "61–90": "50 tot 150",
+        ">90": "meer dan 150",
+      };
+
+      const mappedAantalBewoners =
+        bewonersMapping[aantalbewoners] || aantalbewoners;
+
+      // Build custom fields
+      const customFields = {
+        organisatienaam: organisatienaam,
+        voornaam: voornaam,
+        telefoon: telefoon || "",
+        bron: "website",
+      };
+
+      // Only add achternaam if it has a value
+      if (achternaam && achternaam.trim()) {
+        customFields.achternaam = achternaam.trim();
+      }
+
+      // Add functie as array (matches LaPosta multiple choice field)
+      if (functie && functie.trim()) {
+        customFields.functie = [functie.trim()];
+      }
+
+      // Add aantalbewoners - single option field, send as string (not array)
+      // LaPosta field is "Eén optie kiesbaar" (single selection)
+      if (mappedAantalBewoners) {
+        customFields.aantalbewoners = mappedAantalBewoners;
+      }
+
+      console.log("LaPosta custom fields being sent:", customFields); // Debug log
+
+      const lapostaResponse = await axios.post(
+        "https://api.laposta.nl/v2/member",
+        {
+          list_id: "t72km9raqh", // Zorginstellingen (B2B) list
+          email: email,
+          ip: clientIP,
+          source_url: "https://virtueelwandelen.nl/request-quote",
+          custom_fields: customFields,
+        },
+        {
+          auth: {
+            username: "VYgJJ2g6ihPna2pI2ZDg", // LaPosta API Key
+            password: "",
+          },
+        }
+      );
+      console.log("LaPosta healthcare response:", lapostaResponse.data);
+    } catch (lapostaError) {
+      console.error(
+        "LaPosta error:",
+        lapostaError.response?.data || lapostaError.message
+      );
+      return res.status(500).json({
+        message: "Fout bij het versturen naar LaPosta",
+        error: lapostaError.response?.data || lapostaError.message,
+      });
+    }
+
+    res.status(201).json({
+      message:
+        "Offerte aanvraag succesvol verzonden! We nemen spoedig contact met u op.",
+      data: {
+        email,
+        organisatienaam,
+        voornaam,
+        achternaam,
+        functie,
+        telefoon,
+        aantalbewoners,
+      },
+    });
+  } catch (error) {
+    console.error("Healthcare quote subscription error:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
 module.exports = {
   verifyOtp,
   resendOtp,
@@ -329,4 +440,5 @@ module.exports = {
   unsubscribe,
   sendForgotPasswordOtp,
   resetPassword,
+  subscribeHealthcareQuote,
 };

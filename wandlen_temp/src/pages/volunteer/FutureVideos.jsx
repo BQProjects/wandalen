@@ -76,13 +76,11 @@ function FutureVideos() {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-md p-5 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Future Videos
-        </h1>
+      <header className="bg-[#ede4dc] shadow-md p-5 flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-gray-800">Future Videos</h1>
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium"
+          className="px-4 py-2 bg-[#a6a643] hover:bg-[#5b6502] text-white rounded-lg text-sm font-medium"
         >
           Refresh
         </button>
@@ -90,7 +88,7 @@ function FutureVideos() {
 
       {/* Table */}
       <main className="flex-1 p-4">
-        <div className="bg-white rounded-2xl shadow-md p-3 h-full">
+        <div className="bg-[#ede4dc] rounded-2xl shadow-md h-full">
           <DataGrid
             rows={rows}
             columns={columns}
@@ -102,12 +100,26 @@ function FutureVideos() {
             disableSelectionOnClick
             sx={{
               border: 0,
+              borderColor: "#381207",
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: "#f9fafb",
                 fontWeight: "600",
+                borderBottom: "2px solid #a6a09a",
               },
               "& .MuiDataGrid-cell": {
                 fontSize: "0.9rem",
+                backgroundColor: "#ede4dc",
+                borderBottom: "1px solid #a6a09a",
+                borderRight: "1px solid #a6a09a",
+              },
+              "& .MuiDataGrid-row": {
+                backgroundColor: "#d9bbaa",
+                "&:hover": {
+                  backgroundColor: "#c9ab9a",
+                },
+              },
+              "& .MuiDataGrid-columnSeparator": {
+                color: "#a6a09a",
               },
             }}
           />

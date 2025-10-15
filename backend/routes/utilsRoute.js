@@ -8,6 +8,7 @@ const {
   unsubscribe,
   sendForgotPasswordOtp,
   resetPassword,
+  subscribeHealthcareQuote,
 } = require("../components/utils");
 const { verifyStripePayment } = require("../components/stripeVerification");
 const validateActiveSession = require("../utils/middleware");
@@ -24,5 +25,6 @@ utilRouter.post("/subscribe", subscribe);
 utilRouter.get("/subscriptions", validateActiveSession, getAllSubscriptions);
 utilRouter.post("/unsubscribe", unsubscribe);
 utilRouter.post("/verify-stripe-payment", verifyStripePayment);
+utilRouter.post("/subscribe-healthcare-quote", subscribeHealthcareQuote);
 
 module.exports = utilRouter;

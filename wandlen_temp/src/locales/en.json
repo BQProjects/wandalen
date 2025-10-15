@@ -37,7 +37,7 @@
         "companyName": "Virtueel Wandelen",
         "copyright": "© 2025 Virtueel Wandelen",
         "termsAndConditions": "Terms and Conditions & User Agreement",
-        "privacyPolicy": "User Agreement",
+        "privacyPolicy": "Privacy Policy",
         "menu": "Menu",
         "home": "Home",
         "ourVision": "Our Vision",
@@ -953,7 +953,7 @@
                 "additionalServices": "Additional services or custom solutions you are interested in?",
                 "notes": "Notes",
                 "newsletter": "Newsletter",
-                "agreeToTerms": "I agree that my details will be used to prepare a quotation."
+                "agreeToTerms": "I agree that my information will be used to prepare a quote and receive the newsletter. I agree to the terms and conditions and user agreement."
             },
             "placeholders": {
                 "organizationName": "For example, De Linde care center",
@@ -1156,6 +1156,7 @@
         "address": "Address",
         "loginInfo": "Login Info",
         "accountEmail": "Account Email",
+        "emailCannotBeChanged": "Email cannot be changed",
         "password": "Password",
         "subscriptionInfo": "Subscription Info",
         "currentPlan": "Current Plan",
@@ -1247,6 +1248,7 @@
         "address": "Address",
         "loginInfo": "Login Info",
         "accountEmail": "Account Email",
+        "emailCannotBeChanged": "Email cannot be changed",
         "password": "Password",
         "subscriptionInfo": "Subscription Info",
         "currentPlan": "Current Plan",
@@ -1433,6 +1435,7 @@
         "address": "Address",
         "loginInfo": "Login Info",
         "accountEmail": "Account Email",
+        "emailCannotBeChanged": "Email cannot be changed",
         "password": "Password",
         "closeAccount": "Close Your Account",
         "closeAccountDescription": "To close your account, first move any remaining sites to Trash. If your site has any Premium Plans or domains connected, you'll need to cancel or transfer them first.",
@@ -1469,6 +1472,104 @@
     "common": {
         "language": "Language",
         "and": "and"
+    },
+    "privacy": {
+        "title": "Privacy Policy Virtual Walking",
+        "subtitle": "Version: 1.0 – October 2025",
+        "lastModified": "Last modified: October 15, 2025",
+        "intro": "Virtual Walking, located at Dominee C. Keersstraat 79, 8151 AB Lemelerveld, is responsible for the processing of personal data as shown in this privacy policy. We believe it is important that you know how we handle your data, why we need it and what rights you have.",
+        "article1": {
+            "title": "Who we are",
+            "point1": "Company name: Virtual Walking",
+            "point2": "Chamber of Commerce number: 85578509",
+            "point3": "Email address: info@virtueelwandelen.nl",
+            "point4": "Phone number: 06-43754290",
+            "point5": "Virtual Walking is part of 10 Natuurlijk and focuses on providing digital nature experiences through videos and additional products and services."
+        },
+        "article2": {
+            "title": "What data we process",
+            "intro": "We process personal data that you provide to us yourself when:",
+            "point1": "subscribing to a subscription or requesting a quote;",
+            "point2": "creating a user account;",
+            "point3": "filling out the contact form or subscribing to the newsletter;",
+            "point4": "participating in a trial period or demo;",
+            "point5": "communication via email or telephone.",
+            "dataIntro": "We may process the following data:",
+            "dataPoint1": "First and last name",
+            "dataPoint2": "Address details (for billing or delivery of products)",
+            "dataPoint3": "Email address",
+            "dataPoint4": "Phone number",
+            "dataPoint5": "Payment and billing information",
+            "dataPoint6": "Login details for the platform",
+            "dataPoint7": "Organization name and position (if applicable)",
+            "dataPoint8": "IP address and device information (technical, analyzed anonymously)"
+        },
+        "article3": {
+            "title": "Why we process this data",
+            "intro": "Virtual Walking processes your personal data for the following purposes:",
+            "point1": "Creating and managing your account;",
+            "point2": "Delivering our (digital) services and products;",
+            "point3": "Handling payments and invoicing;",
+            "point4": "Sending service messages and newsletters;",
+            "point5": "Providing support and customer service;",
+            "point6": "Improving our service and user experience;",
+            "point7": "Complying with legal obligations, such as tax retention requirements."
+        },
+        "article4": {
+            "title": "Retention periods",
+            "intro": "We retain personal data no longer than strictly necessary to achieve the purposes for which they were collected.",
+            "point1": "Account data: as long as your subscription is active; thereafter a maximum of 12 months.",
+            "point2": "Invoice data: 7 years (legal retention requirement).",
+            "point3": "Newsletter subscriptions: until you unsubscribe."
+        },
+        "article5": {
+            "title": "Sharing data with third parties",
+            "intro": "We share your data exclusively with third parties if necessary for the execution of our agreement or to comply with legal obligations. This includes:",
+            "point1": "our payment provider (for secure payments);",
+            "point2": "hosting party (for secure data storage);",
+            "point3": "accountant or administration office (for invoicing and tax obligations).",
+            "note": "Virtual Walking never sells your data to third parties."
+        },
+        "article6": {
+            "title": "Security of personal data",
+            "intro": "Virtual Walking takes appropriate technical and organizational measures to prevent misuse, loss or unauthorized access. We use, among other things:",
+            "point1": "a secure (SSL) connection on our website;",
+            "point2": "strong password security for accounts;"
+        },
+        "article7": {
+            "title": "Your rights",
+            "intro": "You have the right to:",
+            "point1": "view, correct or have your personal data deleted;",
+            "point2": "object to the processing of your data;",
+            "point3": "restrict processing or transfer data to another party;",
+            "point4": "withdraw your consent for data processing.",
+            "contact": "Would you like to exercise any of these rights? Please contact us via:",
+            "email": "📧 info@virtueelwandelen.nl",
+            "response": "We respond to your request within 30 days."
+        },
+        "article8": {
+            "title": "Newsletter and communication",
+            "point1": "When you subscribe to our newsletter, we use your email address to send updates, inspiration and information about our services and Virtual Walking subscriptions.",
+            "point2": "You can unsubscribe at any time via the unsubscribe link in every email."
+        },
+        "article9": {
+            "title": "Changes to this privacy policy",
+            "point1": "Virtual Walking reserves the right to amend this privacy policy.",
+            "point2": "The most current version can always be found at www.virtueelwandelen.nl",
+            "point3": "We recommend that you consult this policy regularly so that you stay informed of any changes."
+        },
+        "article10": {
+            "title": "Contact",
+            "intro": "Do you have questions or complaints about our privacy policy or the processing of your data?",
+            "contact": "Please contact us:",
+            "company": "Virtual Walking",
+            "address": "Dominee C. Keersstraat 79",
+            "city": "8151 AB Lemelerveld",
+            "email": "info@virtueelwandelen.nl",
+            "phone": "06-43754290",
+            "complaint": "Can't you reach an agreement with us?",
+            "complaintText": "You can always file a complaint with the Dutch Data Protection Authority via www.autoriteitpersoonsgegevens.nl."
+        }
     },
     "agreement": {
         "title": "General Terms and Conditions Virtual Walking",

@@ -72,6 +72,7 @@ import TrainingDetails from "../pages/admin/VolunteerTrainingDetails";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Otp from "../pages/website/OTP";
 import FutureVideos from "../pages/volunteer/FutureVideos";
+import PrivacyPolicy from "../pages/website/PrivacyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -137,6 +138,10 @@ export const router = createBrowserRouter([
       {
         path: "terms",
         element: <TermnCondition />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicy />,
       },
       {
         path: "read-more",
