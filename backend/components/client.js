@@ -1085,8 +1085,8 @@ const createPendingSignup = async (req, res) => {
       });
     }
 
-    // Create Stripe checkout session
-    const session = await stripe.checkout.sessions.create({
+    // Build checkout session configuration
+    const checkoutConfig = {
       payment_method_types: ["card", "ideal"],
       line_items: [
         {
@@ -1110,7 +1110,13 @@ const createPendingSignup = async (req, res) => {
           pendingSignupId: pendingSignup._id.toString(),
         },
       },
-    });
+    };
+
+    // Users can enter Natuur01, Natuur02, or any other valid Stripe promotion code
+    checkoutConfig.allow_promotion_codes = true;
+
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create(checkoutConfig);
 
     // Update pending signup with Stripe session ID
     pendingSignup.stripeCheckoutSessionId = session.id;
@@ -1253,6 +1259,70 @@ const completeSignupAfterPayment = async (stripeSessionId) => {
 
     console.log(`✅ Client account created: ${newClient.email}`);
 
+    // Send to Laposta for newsletter/campaign
+    try {
+      // Add to first list (1wxtckhyt7)
+      const lapostaResponse1 = await axios.post(
+        "https://api.laposta.nl/v2/member",
+        {
+          list_id: process.env.LAPOSTA_LIST_ID || "1wxtckhyt7",
+          email: newClient.email,
+          ip: "1.1.1.1",
+          custom_fields: {
+            voornaam: newClient.firstName,
+            achternaam: newClient.lastName || "",
+          },
+          tags: ["paid_subscriber"],
+          options: {
+            ignore_double_optin: true,
+          },
+        },
+        {
+          auth: {
+            username: process.env.LAPOSTA_API_KEY,
+            password: "",
+          },
+        }
+      );
+      console.log(
+        "Laposta response for paid subscriber (list 1wxtckhyt7):",
+        lapostaResponse1.data
+      );
+
+      // Add to second list (l1ys2i7ii7)
+      const lapostaResponse2 = await axios.post(
+        "https://api.laposta.nl/v2/member",
+        {
+          list_id: "l1ys2i7ii7",
+          email: newClient.email,
+          ip: "1.1.1.1",
+          custom_fields: {
+            voornaam: newClient.firstName,
+            achternaam: newClient.lastName || "",
+          },
+          tags: ["paid_subscriber"],
+          options: {
+            ignore_double_optin: true,
+          },
+        },
+        {
+          auth: {
+            username: process.env.LAPOSTA_API_KEY,
+            password: "",
+          },
+        }
+      );
+      console.log(
+        "Laposta response for paid subscriber (list l1ys2i7ii7):",
+        lapostaResponse2.data
+      );
+    } catch (lapostaError) {
+      console.error(
+        "Laposta error for paid subscriber:",
+        lapostaError.response?.data || lapostaError.message
+      );
+    }
+
     // Mark pending signup as completed
     pendingSignup.status = "completed";
     await pendingSignup.save();
@@ -1270,6 +1340,11 @@ const completeSignupAfterPayment = async (stripeSessionId) => {
     } catch (emailError) {
       console.warn("⚠️ Failed to send welcome email:", emailError.message);
     }
+
+    // Send signup notification emails (user and admin)
+    sendSignupEmails(newClient).catch((emailError) => {
+      console.error("Error sending signup notification emails:", emailError);
+    });
 
     console.log(`✅ Signup completed successfully for ${newClient.email}`);
     return { success: true, client: newClient };
