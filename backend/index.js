@@ -29,7 +29,11 @@ app.use(
       "https://wandalen-nw69.vercel.app",
       "https://wandalen.vercel.app",
       "http://virtueelwandelen.nl",
+      "https://virtueelwandelen.nl",
+      "https://www.virtueelwandelen.nl",
+      "http://www.virtueelwandelen.nl",
     ],
+    credentials: true,
   })
 );
 app.use(express.urlencoded({ extended: false, limit: "50gb" }));
