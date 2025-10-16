@@ -23,10 +23,10 @@ const OurApproach = () => {
   return (
     <div className="flex-shrink-0 bg-secondary">
       <div>
-        <div className="px-4 sm:px-10 lg:px-20">
-          <div className="max-w-7xl mx-auto">
+        <div className="px-4 sm:px-10 lg:px-20 py-16">
+          <div className=" mx-auto">
             <div className="flex flex-col items-start gap-2 mb-8 lg:mb-12">
-              <div className="text-[#a6a643] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-[136%]">
+              <div className="text-[#5B6502] font-['Poppins'] text-xl sm:text-2xl lg:text-[2rem] font-semibold leading-[136%]">
                 {t("ourApproach.vision")}
               </div>
               <div className="max-w-4xl text-[#381207] font-['Poppins'] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-[136%]">
