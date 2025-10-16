@@ -1075,8 +1075,8 @@ const createPendingSignup = async (req, res) => {
     // Determine price ID based on plan period
     let priceId;
     if (plan.period === "month") {
-      //priceId = "price_1RJJaTBZBQKzDdfqpAwrEr5t"; // Monthly production price
-      priceId = "price_1RH90IBDkkC6KY4EQZJmFplW"; // Monthly test price
+      priceId = "price_1RJJaTBZBQKzDdfqpAwrEr5t"; // Monthly production price
+      //priceId = "price_1RH90IBDkkC6KY4EQZJmFplW"; // Monthly test price
     } else if (plan.period === "year") {
       priceId = "price_1SFY5KBZBQKzDdfq7tPywkXO"; // Yearly production price
       return res.status(400).json({
