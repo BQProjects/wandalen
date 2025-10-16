@@ -3,16 +3,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
-// Simple cookie helpers
-function getCookie(name) {
-  return document.cookie.split("; ").reduce((r, v) => {
-    const parts = v.split("=");
-    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-  }, "");
-}
-function deleteCookie(name) {
-  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-}
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
@@ -20,201 +10,105 @@ const PaymentSuccess = () => {
   const { t } = useTranslation();
   const { DATABASE_URL } = useContext(DatabaseContext);
   const [status, setStatus] = useState("processing"); // processing, success, error
-  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    let isCreating = false; // Prevent duplicate calls
-    let isMounted = true; // Track if component is still mounted
+    const sessionId = searchParams.get("session_id");
 
-    const createAccount = async () => {
-      // Prevent duplicate execution
-      if (isCreating) {
-        console.log("Account creation already in progress, skipping...");
-        return;
-      }
+    if (!sessionId) {
+      setStatus("error");
+      setErrorMessage("No session ID found");
+      return;
+    }
 
-      isCreating = true;
-
+    // Call backend to complete signup
+    const completeSignup = async () => {
       try {
-        // Get the stored signup data from cookie
-        const pendingData = getCookie("pendingSignupData");
-        const sessionId = searchParams.get("session_id");
+        console.log("Completing signup for session:", sessionId);
 
-        if (!pendingData) {
-          if (isMounted) {
-            setStatus("error");
-            setMessage(t("payment.messages.noDataFound"));
-          }
-          return;
-        }
-
-        if (!sessionId) {
-          if (isMounted) {
-            setStatus("error");
-            setMessage(t("payment.messages.paymentSessionNotFound"));
-          }
-          return;
-        }
-
-        const signupData = JSON.parse(pendingData);
-
-        // Step 1: Verify payment with backend
-        const verificationRes = await axios.post(
-          `${DATABASE_URL}/utils/verify-stripe-payment`,
-          {
-            sessionId: sessionId,
-            email: signupData.email,
-          }
+        const response = await axios.post(
+          `${DATABASE_URL}/client/manual-complete-signup`,
+          { sessionId }
         );
 
-        if (
-          !verificationRes.data.success ||
-          verificationRes.data.paymentStatus !== "paid"
-        ) {
-          if (isMounted) {
-            setStatus("error");
-            setMessage(t("payment.messages.paymentVerificationFailed"));
-          }
-          return;
-        }
-
-        // Calculate end date: 7 days free trial + 30 days paid = 37 days total
-        const trialEndDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
-        const subscriptionEndDate = new Date(
-          Date.now() + 37 * 24 * 60 * 60 * 1000
-        ); // 37 days from now
-
-        // Add payment confirmation details
-        const completeSignupData = {
-          ...signupData,
-          paymentStatus: "completed",
-          stripeSessionId: sessionId,
-          stripeCustomerId: verificationRes.data.customerId,
-          stripeSubscriptionId: verificationRes.data.subscriptionId,
-          endDate: subscriptionEndDate,
-          subscriptionDays: 37,
-          trialEndDate: trialEndDate,
-          paymentVerified: true,
-          subscriptionStatus: "trial",
-        };
-
-        // Step 2: Create the account after verification
-        const res = await axios.post(
-          `${DATABASE_URL}/client/signup`,
-          completeSignupData
-        );
-
-        if (res.status === 200 || res.status === 201) {
-          if (isMounted) {
-            setStatus("success");
-            setMessage(t("payment.messages.accountCreated"));
-          }
-
-          // Clear the stored data
-          deleteCookie("pendingSignupData");
-
-          // Redirect to login after 3 seconds
-          setTimeout(() => {
-            if (isMounted) {
-              navigate("/login");
-            }
-          }, 3000);
+        if (response.data.success) {
+          console.log("Signup completed successfully:", response.data);
+          setStatus("success");
         } else {
-          throw new Error("Signup failed");
+          console.error("Signup completion failed:", response.data);
+          setStatus("error");
+          setErrorMessage(response.data.message || "Failed to complete signup");
         }
       } catch (error) {
-        console.error("Error creating account:", error);
+        console.error("Error completing signup:", error);
 
-        // Handle duplicate email error specifically
+        // If account already exists, show success
         if (
           error.response?.status === 409 ||
-          error.response?.data?.error === "DUPLICATE_EMAIL" ||
-          error.response?.data?.code === 11000
+          error.response?.data?.message?.includes("duplicate") ||
+          error.response?.data?.message?.includes("already")
         ) {
-          console.log("Account already exists, redirecting to login...");
-          if (isMounted) {
-            setStatus("success");
-            setMessage(
-              t("payment.messages.accountExists") ||
-                "Account already exists. Redirecting to login..."
-            );
-          }
-
-          // Clear the stored data
-          deleteCookie("pendingSignupData");
-
-          // Redirect to login
-          setTimeout(() => {
-            if (isMounted) {
-              navigate("/login");
-            }
-          }, 2000);
-          return; // Important: exit after handling
-        }
-
-        // Handle other errors
-        if (isMounted) {
+          setStatus("success");
+        } else {
           setStatus("error");
-          setMessage(
-            error.response?.data?.message || t("payment.messages.signupFailed")
+          setErrorMessage(
+            error.response?.data?.message ||
+              "Failed to complete signup. Please contact support."
           );
         }
-      } finally {
-        isCreating = false;
       }
     };
 
-    createAccount();
+    // Wait 1 second then complete
+    setTimeout(completeSignup, 1000);
+  }, [searchParams, DATABASE_URL]);
 
-    // Cleanup function
-    return () => {
-      isMounted = false;
-    };
-  }, [DATABASE_URL, navigate, searchParams, t]);
-
-  // Add LaPosta mailing list signup script after successful payment
-  useEffect(() => {
-    if (status === "success") {
-      // Check if script is already added to avoid duplicates
-      const existingScript = document.querySelector(
-        'script[src="https://embed.email-provider.eu/e/8bszbk81fr-l1ys2i7ii7.js"]'
-      );
-      if (!existingScript) {
-        // Make user email available globally for LaPosta script
-        const pendingData = localStorage.getItem("pendingSignupData");
-        if (pendingData) {
-          const signupData = JSON.parse(pendingData);
-          window.laPostaEmail = signupData.email;
-        }
-
-        const s = document.createElement("script");
-        s.src = "https://embed.email-provider.eu/e/8bszbk81fr-l1ys2i7ii7.js";
-        s.async = true;
-        document.body.appendChild(s);
-      }
-    }
-  }, [status]);
+  const handleGoToLogin = () => {
+    navigate("/login");
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f8f5f0] to-[#ede4dc] flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen bg-[#f7f6f4] flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
         {status === "processing" && (
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 mb-4">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#5b6502]"></div>
+          <>
+            <div className="w-16 h-16 mx-auto mb-4">
+              <svg
+                className="animate-spin h-16 w-16 text-[#5b6502]"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
             </div>
-            <h2 className="text-2xl font-semibold text-[#381207] mb-2">
-              {t("payment.processing.title")}
+            <h2 className="text-2xl font-medium text-[#381207] mb-2">
+              {t("paymentSuccess.processing.title") || "Processing Payment..."}
             </h2>
-            <p className="text-[#7a756e]">{t("payment.processing.message")}</p>
-          </div>
+            <p className="text-[#7a756e]">
+              {t("paymentSuccess.processing.message") ||
+                "Please wait while we set up your account."}
+            </p>
+          </>
         )}
 
         {status === "success" && (
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-green-100">
+          <>
+            <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
               <svg
-                className="w-8 h-8 text-green-600"
+                className="w-10 h-10 text-green-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -222,26 +116,32 @@ const PaymentSuccess = () => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth="2"
                   d="M5 13l4 4L19 7"
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-semibold text-[#381207] mb-2">
-              {t("payment.success.title")}
+            <h2 className="text-2xl font-medium text-[#381207] mb-2">
+              {t("paymentSuccess.success.title") || "Payment Successful!"}
             </h2>
-            <p className="text-[#7a756e] mb-4">{message}</p>
-            <p className="text-sm text-[#7a756e]">
-              {t("payment.success.redirecting")}
+            <p className="text-[#7a756e] mb-6">
+              {t("paymentSuccess.success.message") ||
+                "Your account has been created successfully. You can now log in and start your 7-day free trial."}
             </p>
-          </div>
+            <button
+              onClick={handleGoToLogin}
+              className="w-full px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors font-medium"
+            >
+              {t("paymentSuccess.success.button") || "Go to Login"}
+            </button>
+          </>
         )}
 
         {status === "error" && (
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-red-100">
+          <>
+            <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
               <svg
-                className="w-8 h-8 text-red-600"
+                className="w-10 h-10 text-red-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -249,22 +149,26 @@ const PaymentSuccess = () => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth="2"
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-semibold text-[#381207] mb-2">
-              {t("payment.error.title")}
+            <h2 className="text-2xl font-medium text-[#381207] mb-2">
+              {t("paymentSuccess.error.title") || "Something went wrong"}
             </h2>
-            <p className="text-[#7a756e] mb-6">{message}</p>
-            {/* <button
+            <p className="text-[#7a756e] mb-6">
+              {errorMessage ||
+                t("paymentSuccess.error.message") ||
+                "We couldn't process your payment. Please try again or contact support."}
+            </p>
+            <button
               onClick={() => navigate("/client/subscribe")}
-              className="px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors"
+              className="w-full px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors font-medium"
             >
-              {t("payment.buttons.tryAgain")}
-            </button> */}
-          </div>
+              {t("paymentSuccess.error.button") || "Try Again"}
+            </button>
+          </>
         )}
       </div>
     </div>

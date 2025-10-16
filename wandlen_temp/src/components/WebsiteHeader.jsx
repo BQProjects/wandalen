@@ -265,7 +265,7 @@ const WebsiteHeader = () => {
                   <div className="absolute top-full mt-2 bg-secondary border border-[#381207] rounded-lg shadow-lg z-50">
                     <button
                       onClick={() => changeLanguage("nl")}
-                      className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] font-poppins text-lg md:text-xl font-medium ${
+                      className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] hover:text-[#381207] font-poppins text-lg md:text-xl font-medium ${
                         i18n.language === "nl"
                           ? "bg-[#381207] text-[#f0ebe7]"
                           : "text-[#381207]"
@@ -275,7 +275,7 @@ const WebsiteHeader = () => {
                     </button>
                     <button
                       onClick={() => changeLanguage("en")}
-                      className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] font-poppins text-lg md:text-xl font-medium ${
+                      className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] hover:text-[#381207] font-poppins text-lg md:text-xl font-medium ${
                         i18n.language === "en"
                           ? "bg-[#381207] text-[#f0ebe7]"
                           : "text-[#381207]"
@@ -419,7 +419,7 @@ const WebsiteHeader = () => {
                 <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-secondary border border-[#381207] rounded-lg shadow-lg z-50 min-w-[150px]">
                   <button
                     onClick={() => changeLanguage("en")}
-                    className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] font-poppins text-lg font-medium ${
+                    className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] hover:text-[#381207] font-poppins text-lg font-medium ${
                       i18n.language === "en"
                         ? "bg-[#381207] text-[#f0ebe7]"
                         : "text-[#381207]"
@@ -429,7 +429,7 @@ const WebsiteHeader = () => {
                   </button>
                   <button
                     onClick={() => changeLanguage("nl")}
-                    className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] font-poppins text-lg font-medium ${
+                    className={`block w-full text-left px-4 py-2 hover:bg-[#f0ebe7] hover:text-[#381207] font-poppins text-lg font-medium ${
                       i18n.language === "nl"
                         ? "bg-[#381207] text-[#f0ebe7]"
                         : "text-[#381207]"

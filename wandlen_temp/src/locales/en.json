@@ -1696,5 +1696,27 @@
         "paragraph1": "Tina grew up on the outskirts of the village of Haarle in Salland, Overijssel. At this hobby farm she was often outside, in the vegetable garden, the meadow, by the pond or the other animals in the yard. She grew up with nature around her. Tina helps both healthcare organizations and government agencies as a process supervisor in greening and connection on the theme of nature & health.",
         "paragraph2": "Tina comes from a care family. Both her parents worked in the hospital. Her mother as a nurse and her father started in the operating room as an anesthesia assistant and then focused on improving the logistics processes in hospitals in his career. Tina learned from her family how your body works and how to build in peace by listening to your body and connecting with nature. She likes to bring this basic need of man for a natural environment and its influence on your body and mind back to people in this way.",
         "paragraph3": "Tina has the qualities of an inspiring connector. She uses her personal qualities to make an impact. Tina is warm and sensitive, enthusiastic and energetic and alert to new opportunities and possibilities. She is also inspiring and mobilizing, optimistic, independent and original. These characteristics have ensured that she has developed this plan and to realize this platform. Virtual Walking therefore aims to focus on the well-being and resilience of people by making a direct connection with nature in an environment where it is no longer taken for granted."
+    },
+    "paymentSuccess": {
+        "processing": {
+            "title": "Processing Payment...",
+            "message": "Please wait while we set up your account."
+        },
+        "success": {
+            "title": "Payment Successful!",
+            "message": "Your account has been created successfully. You can now log in and start your 7-day free trial.",
+            "button": "Go to Login"
+        },
+        "error": {
+            "title": "Something went wrong",
+            "message": "We couldn't process your payment. Please try again or contact support.",
+            "button": "Try Again"
+        }
+    },
+    "paymentCancelled": {
+        "title": "Payment Cancelled",
+        "message": "Your payment was cancelled. You can try again when you're ready.",
+        "tryAgain": "Try Again",
+        "goHome": "Go Home"
     }
 }
