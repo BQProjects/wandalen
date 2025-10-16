@@ -4,6 +4,18 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
+// Simple cookie helpers
+function setCookie(name, value, days = 1) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie =
+    name +
+    "=" +
+    encodeURIComponent(value) +
+    "; expires=" +
+    expires +
+    "; path=/";
+}
+
 // Back Arrow Component
 const BackArrow = () => (
   <svg width={25} height={50} viewBox="0 0 25 50" fill="none">
@@ -302,37 +314,38 @@ const PaymentPageForIndividual = () => {
 
   const handlePaymentSubscription = async () => {
     try {
-      if (validateStep1()) {
-        // Store form data in localStorage to retrieve after payment
-        localStorage.setItem(
-          "pendingSignupData",
-          JSON.stringify({
-            firstName: formData.firstName,
-            lastName: formData.surname,
-            email: formData.email2,
-            password: formData.password,
-            function: formData.function,
-            telephone: formData.telephone,
-            country: formData.country,
-            address: formData.address,
-            city: formData.city,
-            postalCode: formData.postalCode,
-            plan: selectedPlan,
-          })
-        );
+      if (!validateStep1()) return;
 
-        // Determine which Stripe link to use based on plan period
-        const stripeLinks = {
-          //month: "https://buy.stripe.com/test_bJecN49hWbLodtG1DU4gg00", // test
-          month: "https://buy.stripe.com/3cI3cu8ikclW6VV2dabbG00", // prod
-          year: "https://buy.stripe.com/eVq5kCdCE5Xy6VVaJGbbG01",
-        };
+      // Store form data in cookie to retrieve after payment
+      setCookie(
+        "pendingSignupData",
+        JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.surname,
+          email: formData.email2,
+          password: formData.password,
+          function: formData.function,
+          telephone: formData.telephone,
+          country: formData.country,
+          address: formData.address,
+          city: formData.city,
+          postalCode: formData.postalCode,
+          plan: selectedPlan,
+        }),
+        1
+      );
 
-        const stripeUrl = stripeLinks[selectedPlan.period] || stripeLinks.month;
+      // Determine which Stripe link to use based on plan period
+      const stripeLinks = {
+        month: "https://buy.stripe.com/test_bJecN49hWbLodtG1DU4gg00", // test
+        //month: "https://buy.stripe.com/3cI3cu8ikclW6VV2dabbG00", // prod
+        year: "https://buy.stripe.com/eVq5kCdCE5Xy6VVaJGbbG01",
+      };
 
-        // Redirect to Stripe Checkout
-        window.location.href = stripeUrl;
-      }
+      const stripeUrl = stripeLinks[selectedPlan.period] || stripeLinks.month;
+
+      // Redirect to Stripe Checkout
+      window.location.href = stripeUrl;
     } catch (error) {
       console.error("Error during payment subscription:", error);
       toast.error(t("payment.messages.subscriptionFailed"));

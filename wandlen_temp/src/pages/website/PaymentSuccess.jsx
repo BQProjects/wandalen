@@ -3,6 +3,16 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+// Simple cookie helpers
+function getCookie(name) {
+  return document.cookie.split("; ").reduce((r, v) => {
+    const parts = v.split("=");
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+  }, "");
+}
+function deleteCookie(name) {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+}
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
@@ -26,8 +36,8 @@ const PaymentSuccess = () => {
       isCreating = true;
 
       try {
-        // Get the stored signup data from localStorage
-        const pendingData = localStorage.getItem("pendingSignupData");
+        // Get the stored signup data from cookie
+        const pendingData = getCookie("pendingSignupData");
         const sessionId = searchParams.get("session_id");
 
         if (!pendingData) {
@@ -101,7 +111,7 @@ const PaymentSuccess = () => {
           }
 
           // Clear the stored data
-          localStorage.removeItem("pendingSignupData");
+          deleteCookie("pendingSignupData");
 
           // Redirect to login after 3 seconds
           setTimeout(() => {
@@ -131,7 +141,7 @@ const PaymentSuccess = () => {
           }
 
           // Clear the stored data
-          localStorage.removeItem("pendingSignupData");
+          deleteCookie("pendingSignupData");
 
           // Redirect to login
           setTimeout(() => {
