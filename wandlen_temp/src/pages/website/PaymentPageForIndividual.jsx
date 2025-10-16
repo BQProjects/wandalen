@@ -323,6 +323,12 @@ const PaymentPageForIndividual = () => {
           city: formData.city,
           postalCode: formData.postalCode,
           plan: selectedPlan,
+        },
+        {
+          timeout: 30000, // 30 second timeout
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -340,11 +346,34 @@ const PaymentPageForIndividual = () => {
       toast.dismiss();
       console.error("Error during payment subscription:", error);
 
-      // Handle specific error messages
-      if (error.response?.data?.message) {
+      // Handle specific error types
+      if (error.code === "ERR_NETWORK") {
+        toast.error(
+          t("payment.messages.networkError") ||
+            "Network error. Please check your internet connection and try again."
+        );
+      } else if (error.code === "ECONNABORTED") {
+        toast.error(
+          t("payment.messages.timeoutError") ||
+            "Request timeout. Please try again."
+        );
+      } else if (error.response?.data?.message) {
         toast.error(error.response.data.message);
+      } else if (error.response?.status === 404) {
+        toast.error(
+          t("payment.messages.endpointNotFound") ||
+            "Service temporarily unavailable. Please try again later."
+        );
+      } else if (error.response?.status >= 500) {
+        toast.error(
+          t("payment.messages.serverError") ||
+            "Server error. Please try again later."
+        );
       } else {
-        toast.error(t("payment.messages.subscriptionFailed"));
+        toast.error(
+          t("payment.messages.subscriptionFailed") ||
+            "Payment failed. Please try again."
+        );
       }
     }
   };

@@ -813,7 +813,13 @@
             "noDataFound": "No signup data found. Please try again.",
             "accountCreated": "Account created successfully!",
             "paymentSessionNotFound": "Payment session not found. Please contact support.",
-            "paymentVerificationFailed": "Payment verification failed. Please contact support."
+            "paymentVerificationFailed": "Payment verification failed. Please contact support.",
+            "processingPayment": "Processing payment...",
+            "subscriptionFailed": "Payment failed. Please try again.",
+            "networkError": "Network error. Please check your internet connection and try again.",
+            "timeoutError": "Request timeout. Please try again.",
+            "endpointNotFound": "Service temporarily unavailable. Please try again later.",
+            "serverError": "Server error. Please try again later."
         },
         "processing": {
             "title": "Processing Payment",

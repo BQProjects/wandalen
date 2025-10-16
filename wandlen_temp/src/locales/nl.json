@@ -813,7 +813,13 @@
             "noDataFound": "Geen aanmeldgegevens gevonden. Probeer het opnieuw.",
             "accountCreated": "Account succesvol aangemaakt!",
             "paymentSessionNotFound": "Betalingssessie niet gevonden. Neem contact op met ondersteuning.",
-            "paymentVerificationFailed": "Betaling verificatie mislukt. Neem contact op met ondersteuning."
+            "paymentVerificationFailed": "Betaling verificatie mislukt. Neem contact op met ondersteuning.",
+            "processingPayment": "Betaling verwerken...",
+            "subscriptionFailed": "Betaling mislukt. Probeer het opnieuw.",
+            "networkError": "Netwerkfout. Controleer uw internetverbinding en probeer het opnieuw.",
+            "timeoutError": "Verzoek verlopen. Probeer het opnieuw.",
+            "endpointNotFound": "Service tijdelijk niet beschikbaar. Probeer het later opnieuw.",
+            "serverError": "Serverfout. Probeer het later opnieuw."
         },
         "processing": {
             "title": "Betaling Verwerken",
