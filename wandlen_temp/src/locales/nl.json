@@ -1165,6 +1165,7 @@
         "editProfile": "Profiel bewerken",
         "loginRequired": "Gebruiker niet ingelogd. Log opnieuw in.",
         "profileUpdateSuccess": "Profiel succesvol bijgewerkt!",
+        "changePassword": "Change Password",
         "profileUpdateError": "Profiel bijwerken mislukt. Probeer het opnieuw."
     },
     "manageClients": {
@@ -1410,6 +1411,7 @@
         "deleteAccount": "Account Verwijderen",
         "closeAccountConfirmError": "Typ 'sluit mijn account' exact zoals weergegeven",
         "accountClosedSuccess": "Uw account is succesvol gesloten",
+        "changePassword": "Change Password",
         "accountCloseError": "Kan account niet sluiten. Probeer het opnieuw."
     },
     "common": {
@@ -1639,5 +1641,27 @@
         "paragraph1": "Tina groeide op aan de rand van het dorp Haarle in Salland, Overijssel. Op deze hobbyboerderij was ze vaak buiten, in de moestuin, de wei, bij de vijver of de andere dieren in de tuin. Ze groeide op met natuur om zich heen. Tina helpt zowel zorgorganisaties als overheidsinstanties als procesbegeleider in vergroening en verbinding op het thema natuur & gezondheid.",
         "paragraph2": "Tina komt uit een zorgfamilie. Beide ouders werkten in het ziekenhuis. Haar moeder als verpleegkundige en haar vader begon in de operatiekamer als anesthesiemedewerker en richtte zich in zijn carrière op het verbeteren van de logistieke processen in ziekenhuizen. Tina leerde van haar familie hoe je lichaam werkt en hoe je rust kunt opbouwen door te luisteren naar je lichaam en verbinding te maken met de natuur. Ze vindt het leuk om deze basisbehoefte van de mens aan een natuurlijke omgeving en zijn invloed op je lichaam en geest op deze manier terug te brengen naar mensen.",
         "paragraph3": "Tina heeft de kwaliteiten van een inspirerende verbinder. Ze gebruikt haar persoonlijke kwaliteiten om impact te maken. Tina is warm en gevoelig, enthousiast en energiek en alert op nieuwe kansen en mogelijkheden. Ze is ook inspirerend en mobiliserend, optimistisch, onafhankelijk en origineel. Deze kenmerken hebben ervoor gezorgd dat ze dit plan heeft ontwikkeld en dit platform wil realiseren. Virtueel Wandelen richt zich daarom op het welzijn en de veerkracht van mensen door een directe verbinding te maken met de natuur in een omgeving waar het niet langer als vanzelfsprekend wordt beschouwd."
+    },
+    "paymentSuccess": {
+        "processing": {
+            "title": "Betaling verwerken...",
+            "message": "Een moment geduld terwijl we uw account instellen."
+        },
+        "success": {
+            "title": "Betaling gelukt!",
+            "message": "Uw account is succesvol aangemaakt. U kunt nu inloggen en uw gratis proefperiode van 7 dagen starten.",
+            "button": "Ga naar inloggen"
+        },
+        "error": {
+            "title": "Er is iets misgegaan",
+            "message": "We konden uw betaling niet verwerken. Probeer het opnieuw of neem contact op met de ondersteuning.",
+            "button": "Probeer opnieuw"
+        }
+    },
+    "paymentCancelled": {
+        "title": "Betaling geannuleerd",
+        "message": "Uw betaling is geannuleerd. U kunt het opnieuw proberen wanneer u er klaar voor bent.",
+        "tryAgain": "Probeer opnieuw",
+        "goHome": "Ga naar home"
     }
 }

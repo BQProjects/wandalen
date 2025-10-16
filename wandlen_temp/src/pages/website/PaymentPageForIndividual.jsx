@@ -3,18 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
-
-// Simple cookie helpers
-function setCookie(name, value, days = 1) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie =
-    name +
-    "=" +
-    encodeURIComponent(value) +
-    "; expires=" +
-    expires +
-    "; path=/";
-}
+import axios from "axios";
 
 // Back Arrow Component
 const BackArrow = () => (
@@ -316,39 +305,47 @@ const PaymentPageForIndividual = () => {
     try {
       if (!validateStep1()) return;
 
-      // Store form data in cookie to retrieve after payment
-      setCookie(
-        "pendingSignupData",
-        JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.surname,
+      toast.loading(
+        t("payment.messages.processingPayment") || "Processing payment..."
+      );
+
+      // Send data to backend to create pending signup and Stripe checkout session
+      const response = await axios.post(
+        `${DATABASE_URL}/client/create-pending-signup`,
+        {
           email: formData.email2,
           password: formData.password,
-          function: formData.function,
-          telephone: formData.telephone,
+          firstName: formData.firstName,
+          lastName: formData.surname,
+          phoneNo: formData.telephone,
           country: formData.country,
           address: formData.address,
           city: formData.city,
           postalCode: formData.postalCode,
           plan: selectedPlan,
-        }),
-        1
+        }
       );
 
-      // Determine which Stripe link to use based on plan period
-      const stripeLinks = {
-        month: "https://buy.stripe.com/test_bJecN49hWbLodtG1DU4gg00", // test
-        //month: "https://buy.stripe.com/3cI3cu8ikclW6VV2dabbG00", // prod
-        year: "https://buy.stripe.com/eVq5kCdCE5Xy6VVaJGbbG01",
-      };
-
-      const stripeUrl = stripeLinks[selectedPlan.period] || stripeLinks.month;
-
-      // Redirect to Stripe Checkout
-      window.location.href = stripeUrl;
+      if (response.data.success) {
+        toast.dismiss();
+        // Redirect to Stripe Checkout
+        window.location.href = response.data.checkoutUrl;
+      } else {
+        toast.dismiss();
+        toast.error(
+          response.data.message || t("payment.messages.subscriptionFailed")
+        );
+      }
     } catch (error) {
+      toast.dismiss();
       console.error("Error during payment subscription:", error);
-      toast.error(t("payment.messages.subscriptionFailed"));
+
+      // Handle specific error messages
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(t("payment.messages.subscriptionFailed"));
+      }
     }
   };
 

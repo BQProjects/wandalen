@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const validateActiveSession = require("../utils/middleware");
+const clientRouter = express.Router();
 const {
   clientSignUp,
   clientLogin,
@@ -19,11 +20,22 @@ const {
   updatePassword,
   cancelSubscription,
   syncSubscriptionWithStripe,
+  createPendingSignup,
+  handleStripeWebhook,
+  manualCompleteSignup,
 } = require("../components/client");
 
-const clientRouter = express.Router();
 clientRouter.use(cors());
 
+// Stripe webhook - MUST be before express.json() middleware
+clientRouter.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  handleStripeWebhook
+);
+
+clientRouter.post("/create-pending-signup", createPendingSignup);
+clientRouter.post("/manual-complete-signup", manualCompleteSignup);
 clientRouter.post("/signup", clientSignUp);
 clientRouter.post("/login", clientLogin);
 clientRouter.post("/request-video", validateActiveSession, requestVideo);

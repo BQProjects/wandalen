@@ -21,6 +21,7 @@ import HowItWorks from "../pages/volunteer/HowItWorks";
 import OurApproach from "../pages/website/OurApproach";
 import PaymentPageForIndividual from "../pages/website/PaymentPageForIndividual";
 import PaymentSuccess from "../pages/website/PaymentSuccess";
+import PaymentCancelled from "../pages/website/PaymentCancelled";
 import RequestAQuoteForm from "../pages/website/RequestAQuoteForm";
 import Subscribe from "../pages/website/Subscribe";
 import Training from "../pages/website/Traning";
@@ -112,6 +113,10 @@ export const router = createBrowserRouter([
         element: <PaymentSuccess />,
       },
       {
+        path: "payment-cancelled",
+        element: <PaymentCancelled />,
+      },
+      {
         path: "training/:id",
         element: <Training />,
       },
@@ -146,7 +151,7 @@ export const router = createBrowserRouter([
       {
         path: "read-more",
         element: <ReadMoreAboutTina />,
-      }
+      },
     ],
   },
   // Authentication routes without layouts (no headers)
@@ -252,7 +257,7 @@ export const router = createBrowserRouter([
       {
         path: "future-videos",
         element: <FutureVideos />,
-      }
+      },
     ],
   },
   // Admin routes can be added here when needed

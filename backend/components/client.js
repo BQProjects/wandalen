@@ -1014,6 +1014,422 @@ const syncSubscriptionWithStripe = async (req, res) => {
   }
 };
 
+// Create pending signup and Stripe checkout session
+const createPendingSignup = async (req, res) => {
+  const PendingSignupModel = require("../models/pendingSignupModel");
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+  try {
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNo,
+      country,
+      address,
+      city,
+      postalCode,
+      plan,
+    } = req.body;
+
+    // Validate required fields
+    if (!email || !password || !firstName || !lastName || !plan) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields",
+      });
+    }
+
+    // Check if email already exists in ClientModel
+    const existingClient = await ClientModel.findOne({ email });
+    if (existingClient) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered",
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Delete any existing pending signup with this email
+    await PendingSignupModel.deleteMany({ email });
+
+    // Create pending signup
+    const pendingSignup = await PendingSignupModel.create({
+      email,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      phoneNo,
+      country,
+      address,
+      city,
+      postalCode,
+      plan,
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+      status: "pending",
+    });
+
+    // Determine price ID based on plan period
+    let priceId;
+    if (plan.period === "month") {
+      //priceId = "price_1RJJaTBZBQKzDdfqpAwrEr5t"; // Monthly production price
+      priceId = "price_1RH90IBDkkC6KY4EQZJmFplW"; // Monthly test price
+    } else if (plan.period === "year") {
+      priceId = "price_1SFY5KBZBQKzDdfq7tPywkXO"; // Yearly production price
+      return res.status(400).json({
+        success: false,
+        message: "Invalid plan period",
+      });
+    }
+
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card", "ideal"],
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      success_url: `${process.env.FRONTEND_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/payment-cancelled`,
+      customer_email: email,
+      metadata: {
+        pendingSignupId: pendingSignup._id.toString(),
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+      },
+      subscription_data: {
+        trial_period_days: 7, // 7-day trial
+        metadata: {
+          pendingSignupId: pendingSignup._id.toString(),
+        },
+      },
+    });
+
+    // Update pending signup with Stripe session ID
+    pendingSignup.stripeCheckoutSessionId = session.id;
+    await pendingSignup.save();
+
+    return res.status(200).json({
+      success: true,
+      checkoutUrl: session.url,
+      sessionId: session.id,
+      pendingSignupId: pendingSignup._id,
+    });
+  } catch (error) {
+    console.error("Error creating pending signup:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create pending signup",
+      error: error.message,
+    });
+  }
+};
+
+// Complete signup after successful Stripe payment (called by webhook)
+const completeSignupAfterPayment = async (stripeSessionId) => {
+  const PendingSignupModel = require("../models/pendingSignupModel");
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+  try {
+    console.log(
+      `🔄 Starting signup completion for session: ${stripeSessionId}`
+    );
+
+    // Find pending signup by Stripe session ID
+    const pendingSignup = await PendingSignupModel.findOne({
+      stripeCheckoutSessionId: stripeSessionId,
+      status: "pending",
+    });
+
+    if (!pendingSignup) {
+      console.error(
+        `❌ Pending signup not found for session: ${stripeSessionId}`
+      );
+      throw new Error("Pending signup not found or already completed");
+    }
+
+    console.log(`✓ Found pending signup for: ${pendingSignup.email}`);
+
+    // Retrieve Stripe session to get subscription details
+    const session = await stripe.checkout.sessions.retrieve(stripeSessionId, {
+      expand: ["subscription", "customer"],
+    });
+
+    if (!session.subscription) {
+      console.error("❌ No subscription found in Stripe session");
+      throw new Error("No subscription found in Stripe session");
+    }
+
+    console.log(`✓ Retrieved Stripe session and subscription`);
+
+    const subscription =
+      typeof session.subscription === "string"
+        ? await stripe.subscriptions.retrieve(session.subscription)
+        : session.subscription;
+
+    const customer =
+      typeof session.customer === "string"
+        ? await stripe.customers.retrieve(session.customer)
+        : session.customer;
+
+    // Calculate dates with fallback logic
+    const now = new Date();
+
+    // Trial end date
+    let trialEnd;
+    if (subscription.trial_end && !isNaN(subscription.trial_end)) {
+      trialEnd = new Date(subscription.trial_end * 1000);
+    } else {
+      // Default to 7 days from now if trial_end is missing
+      trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    }
+
+    // Period end date
+    let periodEnd;
+    if (
+      subscription.current_period_end &&
+      !isNaN(subscription.current_period_end)
+    ) {
+      periodEnd = new Date(subscription.current_period_end * 1000);
+    } else {
+      // Calculate based on plan period if current_period_end is missing
+      const daysToAdd = pendingSignup.plan.period === "year" ? 365 : 30;
+      periodEnd = new Date(
+        trialEnd.getTime() + daysToAdd * 24 * 60 * 60 * 1000
+      );
+    }
+
+    console.log(
+      `✓ Dates calculated - Trial ends: ${trialEnd.toISOString()}, Period ends: ${periodEnd.toISOString()}`
+    );
+
+    // Validate dates before creating client
+    if (isNaN(trialEnd.getTime())) {
+      throw new Error("Invalid trial end date");
+    }
+    if (isNaN(periodEnd.getTime())) {
+      throw new Error("Invalid period end date");
+    }
+
+    const subscriptionDays = Math.ceil(
+      (periodEnd - now) / (1000 * 60 * 60 * 24)
+    );
+
+    console.log(`✓ Subscription days: ${subscriptionDays}`);
+
+    // Create the actual client account
+    const newClient = await ClientModel.create({
+      email: pendingSignup.email,
+      password: pendingSignup.password,
+      firstName: pendingSignup.firstName,
+      lastName: pendingSignup.lastName,
+      phoneNo: pendingSignup.phoneNo,
+      country: pendingSignup.country,
+      address: pendingSignup.address,
+      city: pendingSignup.city,
+      postal: pendingSignup.postalCode,
+      company: "",
+      plan: pendingSignup.plan,
+      subscriptionType: "individual",
+      paymentMethod: "stripe",
+      stripeCustomerId: customer.id,
+      stripeSubscriptionId: subscription.id,
+      stripeSessionId: stripeSessionId,
+      subscriptionStatus:
+        subscription.status === "trialing" ? "trial" : "active",
+      paymentStatus: "completed",
+      startDate: now,
+      trialEndDate: trialEnd,
+      endDate: periodEnd,
+      subscriptionDays: subscriptionDays,
+    });
+
+    console.log(`✅ Client account created: ${newClient.email}`);
+
+    // Mark pending signup as completed
+    pendingSignup.status = "completed";
+    await pendingSignup.save();
+
+    console.log(`✓ Pending signup marked as completed`);
+
+    // Send welcome email
+    try {
+      await sendEmail(
+        newClient.email,
+        "Welkom bij Virtueel Wandelen!",
+        emailTemplates.welcome(newClient.firstName, trialEnd)
+      );
+      console.log(`✓ Welcome email sent to ${newClient.email}`);
+    } catch (emailError) {
+      console.warn("⚠️ Failed to send welcome email:", emailError.message);
+    }
+
+    console.log(`✅ Signup completed successfully for ${newClient.email}`);
+    return { success: true, client: newClient };
+  } catch (error) {
+    console.error("💥 Error completing signup after payment:", error);
+    throw error;
+  }
+};
+
+// Stripe webhook handler
+const handleStripeWebhook = async (req, res) => {
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+  const sig = req.headers["stripe-signature"];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  try {
+    switch (event.type) {
+      case "checkout.session.completed":
+        const session = event.data.object;
+        console.log("Checkout session completed:", session.id);
+
+        // Complete the signup
+        await completeSignupAfterPayment(session.id);
+        break;
+
+      case "customer.subscription.updated":
+        const updatedSubscription = event.data.object;
+        console.log("Subscription updated:", updatedSubscription.id);
+
+        // Update client subscription status
+        const client = await ClientModel.findOne({
+          stripeSubscriptionId: updatedSubscription.id,
+        });
+
+        if (client) {
+          const newEndDate = new Date(
+            updatedSubscription.current_period_end * 1000
+          );
+          client.endDate = newEndDate;
+          client.subscriptionStatus = updatedSubscription.status;
+
+          // Check if trial ended
+          if (
+            updatedSubscription.status === "active" &&
+            client.subscriptionStatus === "trial"
+          ) {
+            client.subscriptionStatus = "active";
+          }
+
+          await client.save();
+          console.log(`✅ Updated subscription for ${client.email}`);
+        }
+        break;
+
+      case "customer.subscription.deleted":
+        const deletedSubscription = event.data.object;
+        console.log("Subscription deleted:", deletedSubscription.id);
+
+        const deletedClient = await ClientModel.findOne({
+          stripeSubscriptionId: deletedSubscription.id,
+        });
+
+        if (deletedClient) {
+          deletedClient.subscriptionStatus = "cancelled";
+          deletedClient.cancelledAt = new Date();
+          await deletedClient.save();
+          console.log(`🚫 Subscription cancelled for ${deletedClient.email}`);
+        }
+        break;
+
+      case "invoice.payment_failed":
+        const invoice = event.data.object;
+        console.log("Payment failed for invoice:", invoice.id);
+
+        const failedClient = await ClientModel.findOne({
+          stripeCustomerId: invoice.customer,
+        });
+
+        if (failedClient) {
+          // Send payment failed notification
+          try {
+            await sendEmail(
+              failedClient.email,
+              "Betalingsprobleem met uw abonnement",
+              emailTemplates.paymentFailed(failedClient.firstName)
+            );
+          } catch (emailError) {
+            console.warn(
+              "Failed to send payment failed email:",
+              emailError.message
+            );
+          }
+        }
+        break;
+
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
+    }
+
+    res.json({ received: true });
+  } catch (error) {
+    console.error("Error handling webhook:", error);
+    res.status(500).json({ error: "Webhook handler failed" });
+  }
+};
+
+// Manual completion endpoint for testing/fallback
+const manualCompleteSignup = async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+
+    if (!sessionId) {
+      return res.status(400).json({
+        success: false,
+        message: "Session ID is required",
+      });
+    }
+
+    console.log(`🔧 Manual completion requested for session: ${sessionId}`);
+
+    const result = await completeSignupAfterPayment(sessionId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Signup completed successfully",
+      client: {
+        email: result.client.email,
+        firstName: result.client.firstName,
+        lastName: result.client.lastName,
+      },
+    });
+  } catch (error) {
+    console.error("Error in manual completion:", error);
+
+    // Check if it's a duplicate key error (account already exists)
+    if (error.code === 11000 || error.message.includes("duplicate")) {
+      return res.status(200).json({
+        success: true,
+        message: "Account already exists",
+        alreadyExists: true,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to complete signup",
+    });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -1035,4 +1451,8 @@ module.exports = {
   checkAllSubscriptionsForRenewal,
   syncSubscriptionWithStripe,
   checkAndExtendSubscription,
+  createPendingSignup,
+  completeSignupAfterPayment,
+  handleStripeWebhook,
+  manualCompleteSignup,
 };

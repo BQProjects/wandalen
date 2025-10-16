@@ -14,6 +14,7 @@ const {
 
 const app = express();
 app.set("trust proxy", true);
+app.use("/client/webhook", express.raw({ type: "application/json" }));
 
 app.use(express.json({ limit: "50gb" }));
 app.use(
