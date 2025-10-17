@@ -76,6 +76,15 @@ const getTagIcon = (tag) => {
   return "🏷️";
 };
 
+// Helper function to format bytes
+const formatBytes = (bytes) => {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+};
+
 const VolunteerCreateVideo = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const location = useLocation();
@@ -503,6 +512,12 @@ const VolunteerCreateVideo = () => {
   const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [linkInput, setLinkInput] = useState("");
+  const [uploadStats, setUploadStats] = useState({
+    uploadedSize: 0,
+    totalSize: 0,
+    startTime: Date.now(),
+    estimatedTime: 0,
+  });
 
   // Cleanup video preview URL on unmount or video change
   useEffect(() => {
@@ -633,7 +648,13 @@ const VolunteerCreateVideo = () => {
     e.preventDefault();
     setIsLoading(true);
     setUploadProgress(0);
-    setCurrentStep(t("volunteerCreateVideo.startingUpload"));
+    setCurrentStep("Starting upload...");
+    setUploadStats({
+      uploadedSize: 0,
+      totalSize: 0,
+      startTime: Date.now(),
+      estimatedTime: 0,
+    });
 
     let videoUrl = formData.url; // Existing or new
     let imgUrl = formData.imgUrl; // Existing or new
@@ -642,69 +663,142 @@ const VolunteerCreateVideo = () => {
       // Upload video file to Vimeo only if it's an actual file (not a link)
       if (videoFile && videoFile.type !== "link") {
         setCurrentStep(t("volunteerCreateVideo.uploadingVideo"));
-        setUploadProgress(20);
 
         const videoFormData = new FormData();
         videoFormData.append("video", videoFile);
         videoFormData.append("title", formData.title || "Untitled Video");
         videoFormData.append("description", formData.description || "");
 
-        const vimeoResponse = await axios.post(
-          `${DATABASE_URL}/volunteer/upload-to-vimeo`,
-          videoFormData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${sessionId}`,
-            },
-          }
-        );
+        // Use XMLHttpRequest for Server-Sent Events to get real-time progress
+        const uploadUrl = `${DATABASE_URL}/volunteer/upload-to-vimeo`;
 
-        if (vimeoResponse.status === 200) {
-          videoUrl = vimeoResponse.data.videoUrl; // Vimeo embed URL
-          const vimeoVideoId = vimeoResponse.data.videoId; // Get Vimeo video ID
-          console.log("Vimeo upload success:", vimeoResponse.data);
+        // Setup promise to handle async XHR
+        await new Promise((resolveUpload, rejectUpload) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", uploadUrl, true);
+          xhr.setRequestHeader("Authorization", `Bearer ${sessionId}`);
 
-          // Upload thumbnail to Vimeo if cover image exists
-          if (coverImage) {
-            setCurrentStep(t("volunteerCreateVideo.uploadingCover"));
-            setUploadProgress(60);
+          let vimeoVideoIdFromStream = null;
+          let vimeoResult = null;
+          let lastProcessedLength = 0;
 
-            const thumbnailFormData = new FormData();
-            thumbnailFormData.append("thumbnail", coverImage);
-            thumbnailFormData.append("videoId", vimeoVideoId);
+          // Handle SSE streaming response
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === 3 || xhr.readyState === 4) {
+              // Receiving data or complete
+              const responseText = xhr.responseText;
+              const newData = responseText.substring(lastProcessedLength);
+              lastProcessedLength = responseText.length;
 
-            try {
-              const thumbnailResponse = await axios.post(
-                `${DATABASE_URL}/volunteer/upload-thumbnail-to-vimeo`,
-                thumbnailFormData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${sessionId}`,
-                  },
+              const lines = newData.split("\n");
+
+              for (const line of lines) {
+                if (line.startsWith("data: ")) {
+                  try {
+                    const data = JSON.parse(line.substring(6));
+
+                    if (data.stage === "creating") {
+                      setUploadProgress(data.percent || 0);
+                      setCurrentStep("Creating video on Vimeo...");
+                    } else if (data.stage === "uploading" && data.total) {
+                      // Real-time Vimeo upload progress
+                      const percentCompleted = Math.round(
+                        (data.loaded * 100) / data.total
+                      );
+                      setUploadProgress(percentCompleted);
+
+                      // Calculate real-time speed
+                      const currentTime = Date.now();
+                      const timeDiff =
+                        (currentTime - uploadStats.startTime) / 1000;
+                      const bytesDiff =
+                        data.loaded - (uploadStats.uploadedSize || 0);
+                      const instantSpeed =
+                        timeDiff > 0 ? bytesDiff / timeDiff : 0;
+
+                      const remainingBytes = data.total - data.loaded;
+                      const estimatedTime =
+                        instantSpeed > 0 ? remainingBytes / instantSpeed : 0;
+
+                      setUploadStats({
+                        uploadedSize: data.loaded,
+                        totalSize: data.total,
+                        startTime: uploadStats.startTime,
+                        estimatedTime: estimatedTime,
+                        currentSpeed: instantSpeed,
+                      });
+
+                      setCurrentStep("Uploading to Vimeo...");
+                    } else if (data.stage === "processing") {
+                      setUploadProgress(data.percent || 95);
+                      setCurrentStep("Processing video on Vimeo...");
+                    } else if (data.stage === "complete" && data.success) {
+                      vimeoResult = data;
+                      vimeoVideoIdFromStream = data.videoId;
+                      setUploadProgress(100);
+                      setCurrentStep("Upload complete");
+                    } else if (data.stage === "error") {
+                      rejectUpload(new Error(data.error || "Upload failed"));
+                    }
+                  } catch (e) {
+                    console.error("Error parsing SSE data:", e, line);
+                  }
                 }
-              );
-              if (thumbnailResponse.status === 200) {
-                imgUrl = thumbnailResponse.data.thumbnailUrl; // Vimeo thumbnail URL
-                console.log(
-                  "Vimeo thumbnail upload success:",
-                  thumbnailResponse.data
-                );
               }
-            } catch (thumbnailError) {
-              console.error("Thumbnail upload failed:", thumbnailError);
-              // Continue without thumbnail if it fails
             }
-          }
-        } else {
-          throw new Error("Video upload to Vimeo failed");
-        }
-        setUploadProgress(80);
+          };
+
+          xhr.onload = async () => {
+            if (xhr.status === 200 && vimeoResult) {
+              try {
+                videoUrl = vimeoResult.videoUrl;
+
+                // Upload thumbnail if exists
+                if (coverImage) {
+                  setCurrentStep(t("volunteerCreateVideo.uploadingCover"));
+                  const thumbnailFormData = new FormData();
+                  thumbnailFormData.append("thumbnail", coverImage);
+                  thumbnailFormData.append("videoId", vimeoVideoIdFromStream);
+
+                  try {
+                    const thumbnailResponse = await axios.post(
+                      `${DATABASE_URL}/volunteer/upload-thumbnail-to-vimeo`,
+                      thumbnailFormData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                          Authorization: `Bearer ${sessionId}`,
+                        },
+                      }
+                    );
+
+                    if (thumbnailResponse.status === 200) {
+                      imgUrl = thumbnailResponse.data.thumbnailUrl;
+                    }
+                  } catch (error) {
+                    console.error("Thumbnail upload failed:", error);
+                  }
+                }
+
+                resolveUpload();
+              } catch (error) {
+                rejectUpload(error);
+              }
+            } else {
+              rejectUpload(new Error("Video upload to Vimeo failed"));
+            }
+          };
+
+          xhr.onerror = () => {
+            rejectUpload(new Error("Network error during upload"));
+          };
+
+          xhr.send(videoFormData);
+        });
       } else if (coverImage && !videoFile && editMode) {
         // If only updating thumbnail in edit mode
         setCurrentStep(t("volunteerCreateVideo.uploadingCover"));
-        setUploadProgress(60);
+        setUploadProgress(10);
 
         // Extract video ID from existing URL if available
         const videoIdMatch = formData.url?.match(/vimeo\.com\/video\/(\d+)/);
@@ -723,6 +817,17 @@ const VolunteerCreateVideo = () => {
                 headers: {
                   "Content-Type": "multipart/form-data",
                   Authorization: `Bearer ${sessionId}`,
+                },
+                onUploadProgress: (progressEvent) => {
+                  const percentCompleted = Math.round(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                  );
+                  setUploadProgress(10 + Math.round(percentCompleted * 0.8)); // 10-90% for thumbnail
+                  setCurrentStep(
+                    `${t(
+                      "volunteerCreateVideo.uploadingCover"
+                    )} (${percentCompleted}%)`
+                  );
                 },
               }
             );
@@ -746,7 +851,7 @@ const VolunteerCreateVideo = () => {
           ? t("volunteerCreateVideo.updatingVideo")
           : t("volunteerCreateVideo.creatingVideo")
       );
-      setUploadProgress(90);
+      setUploadProgress(95);
 
       const payload = {
         title: formData.title,
@@ -920,20 +1025,33 @@ const VolunteerCreateVideo = () => {
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#a6a643]"></div>
               </div>
               <h3 className="text-lg font-medium text-[#381207] mb-2">
-                {editMode
-                  ? t("volunteerCreateVideo.updatingVideo")
-                  : t("volunteerCreateVideo.creatingVideo")}
+                {editMode ? "Updating Video" : "Creating Video"}
               </h3>
               <p className="text-sm text-[#7a756e] mb-4">{currentStep}</p>
 
               {/* Progress Bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
                 <div
                   className="bg-[#a6a643] h-2 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>
-              <p className="text-xs text-[#7a756e] mt-2">{uploadProgress}%</p>
+              <p className="text-xs font-medium text-[#381207] mb-1">
+                {uploadProgress}%
+              </p>
+
+              {/* Upload Stats */}
+              {uploadStats.totalSize > 0 && (
+                <div className="mt-4 space-y-2 text-sm text-[#7a756e]">
+                  <div className="flex justify-between items-center">
+                    <span>Uploaded:</span>
+                    <span className="font-medium text-[#381207]">
+                      {formatBytes(uploadStats.uploadedSize)} /{" "}
+                      {formatBytes(uploadStats.totalSize)}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

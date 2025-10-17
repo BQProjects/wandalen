@@ -467,26 +467,47 @@ const uploadToVimeo = async (req, res) => {
     const videoBuffer = req.file.buffer;
     const { title, description } = req.body;
 
-    // Upload to Vimeo
-    const result = await vimeoService.uploadVideo(videoBuffer, {
-      title: title || "Untitled Video",
-      description: description || "",
+    // Set up Server-Sent Events headers
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Cache-Control");
+
+    // Function to send progress updates
+    const sendProgress = (data) => {
+      res.write(`data: ${JSON.stringify(data)}\n\n`);
+    };
+
+    // Upload video with progress tracking
+    const result = await vimeoService.uploadVideoWithProgress(
+      videoBuffer,
+      { title: title || "Untitled Video", description: description || "" },
+      sendProgress
+    );
+
+    // Send final success message
+    sendProgress({
+      stage: "complete",
+      success: true,
+      videoId: result.videoId,
+      videoUrl: result.videoUrl,
     });
 
-    res.status(200).json({
-      message: "Video uploaded to Vimeo successfully",
-      videoUrl: result.videoUrl, // Changed from result.embedUrl to result.videoUrl
-      videoId: result.videoId,
-      link: result.link,
-      duration: result.duration,
-      playerUrl: result.videoUrl,
-    });
+    // End the response
+    res.end();
   } catch (error) {
-    console.error("Error uploading to Vimeo:", error);
-    res.status(500).json({
-      message: "Failed to upload video to Vimeo",
-      error: error.message,
-    });
+    console.error("Upload to Vimeo error:", error);
+
+    // Send error through SSE
+    res.write(
+      `data: ${JSON.stringify({
+        stage: "error",
+        error: error.message,
+      })}\n\n`
+    );
+
+    res.end();
   }
 };
 

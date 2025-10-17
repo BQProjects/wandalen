@@ -1514,7 +1514,6 @@ module.exports = {
   deleteAccount,
   addReview,
   getAllReviews,
-  getAccountInfo,
   getVideo,
   addView,
   addLike,

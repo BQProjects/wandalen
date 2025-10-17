@@ -731,33 +731,55 @@ const toggleVideoApproval = async (req, res) => {
 
 const uploadToVimeo = async (req, res) => {
   try {
-    if (!req.file) {
+    const { title, description } = req.body;
+    const videoFile = req.file;
+
+    if (!videoFile) {
       return res.status(400).json({ message: "No video file provided" });
     }
 
-    const videoBuffer = req.file.buffer;
-    const { title, description } = req.body;
+    // Set up Server-Sent Events headers
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Cache-Control");
 
-    // Upload to Vimeo
-    const result = await vimeoService.uploadVideo(videoBuffer, {
-      title: title || "Untitled Video",
-      description: description || "",
-    });
+    // Function to send progress updates
+    const sendProgress = (data) => {
+      console.log("Sending SSE progress:", data);
+      res.write(`data: ${JSON.stringify(data)}\n\n`);
+    };
 
-    res.status(200).json({
-      message: "Video uploaded to Vimeo successfully",
-      videoUrl: result.videoUrl, // Changed from result.embedUrl to result.videoUrl
+    // Upload video with progress tracking
+    const result = await vimeoService.uploadVideoWithProgress(
+      videoFile.buffer,
+      { title, description },
+      sendProgress
+    );
+
+    // Send final success message
+    sendProgress({
+      stage: "complete",
+      success: true,
       videoId: result.videoId,
-      link: result.link,
-      duration: result.duration,
-      playerUrl: result.videoUrl,
+      videoUrl: result.videoUrl,
     });
+
+    // End the response
+    res.end();
   } catch (error) {
-    console.error("Error uploading to Vimeo:", error);
-    res.status(500).json({
-      message: "Failed to upload video to Vimeo",
-      error: error.message,
-    });
+    console.error("Upload to Vimeo error:", error);
+
+    // Send error through SSE
+    res.write(
+      `data: ${JSON.stringify({
+        stage: "error",
+        error: error.message,
+      })}\n\n`
+    );
+
+    res.end();
   }
 };
 
