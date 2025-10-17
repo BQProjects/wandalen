@@ -497,6 +497,12 @@ const CreateVideo = () => {
   const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [linkInput, setLinkInput] = useState("");
+  const [uploadStats, setUploadStats] = useState({
+    uploadedSize: 0,
+    totalSize: 0,
+    startTime: null,
+    estimatedTime: 0,
+  });
 
   // Cleanup video preview URL on unmount or video change
   useEffect(() => {
@@ -613,11 +619,40 @@ const CreateVideo = () => {
     }
   };
 
+  // Helper function to format bytes
+  const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
+
+  // Helper function to format time
+  const formatTime = (seconds) => {
+    if (!seconds || seconds === Infinity) return "Calculating...";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    if (mins > 60) {
+      const hours = Math.floor(mins / 60);
+      const remainingMins = mins % 60;
+      return `${hours}h ${remainingMins}m`;
+    }
+    return `${mins}m ${secs}s`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setUploadProgress(0);
     setCurrentStep("Starting upload...");
+    setUploadStats({
+      uploadedSize: 0,
+      totalSize: 0,
+      startTime: Date.now(),
+      estimatedTime: 0,
+    });
 
     let videoUrl = formData.url; // Existing or new
     let imgUrl = formData.imgUrl; // Existing or new
@@ -626,70 +661,155 @@ const CreateVideo = () => {
       // Upload video file to Vimeo only if it's an actual file (not a link)
       if (videoFile && videoFile.type !== "link") {
         setCurrentStep("Uploading video to Vimeo...");
-        setUploadProgress(20);
 
         const videoFormData = new FormData();
         videoFormData.append("video", videoFile);
         videoFormData.append("title", formData.title || "Untitled Video");
         videoFormData.append("description", formData.description || "");
 
-        const vimeoResponse = await axios.post(
-          `${DATABASE_URL}/admin/upload-to-vimeo`,
-          videoFormData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${sessionId}`,
-            },
-          }
-        );
+        // Use XMLHttpRequest for Server-Sent Events to get real-time progress
+        const uploadUrl = `${DATABASE_URL}/admin/upload-to-vimeo`;
 
-        if (vimeoResponse.status === 200) {
-          videoUrl = vimeoResponse.data.videoUrl; // Vimeo embed URL
-          const vimeoVideoId = vimeoResponse.data.videoId; // Get Vimeo video ID
-          console.log("Vimeo upload success:", vimeoResponse.data);
+        // Setup promise to handle async XHR
+        await new Promise((resolveUpload, rejectUpload) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", uploadUrl, true);
+          xhr.setRequestHeader("Authorization", `Bearer ${sessionId}`);
 
-          // Upload thumbnail to Vimeo if cover image exists
-          if (coverImage) {
-            setCurrentStep("Uploading thumbnail to Vimeo...");
-            setUploadProgress(60);
+          let vimeoVideoIdFromStream = null;
+          let vimeoResult = null;
+          let lastProcessedLength = 0;
 
-            const thumbnailFormData = new FormData();
-            thumbnailFormData.append("thumbnail", coverImage);
-            thumbnailFormData.append("videoId", vimeoVideoId);
-
-            try {
-              const thumbnailResponse = await axios.post(
-                `${DATABASE_URL}/admin/upload-thumbnail-to-vimeo`,
-                thumbnailFormData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${sessionId}`,
-                  },
-                }
+          // Handle SSE streaming response
+          xhr.onreadystatechange = () => {
+            console.log(
+              "XHR readyState:",
+              xhr.readyState,
+              "status:",
+              xhr.status
+            );
+            if (xhr.readyState === 3 || xhr.readyState === 4) {
+              // Receiving data or complete
+              const responseText = xhr.responseText;
+              console.log(
+                "Response text length:",
+                responseText.length,
+                "new data from:",
+                lastProcessedLength
               );
+              const newData = responseText.substring(lastProcessedLength);
+              lastProcessedLength = responseText.length;
 
-              if (thumbnailResponse.status === 200) {
-                imgUrl = thumbnailResponse.data.thumbnailUrl; // Vimeo thumbnail URL
-                console.log(
-                  "Vimeo thumbnail upload success:",
-                  thumbnailResponse.data
-                );
+              console.log("New SSE data:", newData);
+              const lines = newData.split("\n");
+
+              for (const line of lines) {
+                if (line.startsWith("data: ")) {
+                  try {
+                    const data = JSON.parse(line.substring(6));
+                    console.log("Parsed SSE data:", data);
+
+                    if (data.stage === "creating") {
+                      setUploadProgress(data.percent || 0);
+                      setCurrentStep("Creating video on Vimeo...");
+                    } else if (data.stage === "uploading" && data.total) {
+                      // Real-time Vimeo upload progress
+                      const percentCompleted = Math.round(
+                        (data.loaded * 100) / data.total
+                      );
+                      setUploadProgress(percentCompleted);
+
+                      // Calculate real-time speed
+                      const currentTime = Date.now();
+                      const timeDiff =
+                        (currentTime - uploadStats.startTime) / 1000;
+                      const bytesDiff =
+                        data.loaded - (uploadStats.uploadedSize || 0);
+                      const instantSpeed =
+                        timeDiff > 0 ? bytesDiff / timeDiff : 0;
+
+                      const remainingBytes = data.total - data.loaded;
+                      const estimatedTime =
+                        instantSpeed > 0 ? remainingBytes / instantSpeed : 0;
+
+                      setUploadStats({
+                        uploadedSize: data.loaded,
+                        totalSize: data.total,
+                        startTime: uploadStats.startTime,
+                        estimatedTime: estimatedTime,
+                        currentSpeed: instantSpeed,
+                      });
+
+                      setCurrentStep("Uploading to Vimeo...");
+                    } else if (data.stage === "processing") {
+                      setUploadProgress(data.percent || 95);
+                      setCurrentStep("Processing video on Vimeo...");
+                    } else if (data.stage === "complete" && data.success) {
+                      vimeoResult = data;
+                      vimeoVideoIdFromStream = data.videoId;
+                      setUploadProgress(100);
+                      setCurrentStep("Video uploaded successfully!");
+                    } else if (data.stage === "error") {
+                      rejectUpload(new Error(data.error || "Upload failed"));
+                    }
+                  } catch (e) {
+                    console.error("Error parsing SSE data:", e, line);
+                  }
+                }
               }
-            } catch (thumbnailError) {
-              console.error("Thumbnail upload failed:", thumbnailError);
-              // Continue without thumbnail if it fails
             }
-          }
-        } else {
-          throw new Error("Video upload to Vimeo failed");
-        }
-        setUploadProgress(80);
+          };
+
+          xhr.onload = async () => {
+            if (xhr.status === 200 && vimeoResult) {
+              try {
+                videoUrl = vimeoResult.videoUrl;
+
+                // Upload thumbnail if exists
+                if (coverImage) {
+                  setCurrentStep("Uploading thumbnail to Vimeo...");
+                  const thumbnailFormData = new FormData();
+                  thumbnailFormData.append("thumbnail", coverImage);
+                  thumbnailFormData.append("videoId", vimeoVideoIdFromStream);
+
+                  try {
+                    const thumbnailResponse = await axios.post(
+                      `${DATABASE_URL}/admin/upload-thumbnail-to-vimeo`,
+                      thumbnailFormData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                          Authorization: `Bearer ${sessionId}`,
+                        },
+                      }
+                    );
+
+                    if (thumbnailResponse.status === 200) {
+                      imgUrl = thumbnailResponse.data.thumbnailUrl;
+                    }
+                  } catch (error) {
+                    console.error("Thumbnail upload failed:", error);
+                  }
+                }
+
+                resolveUpload();
+              } catch (error) {
+                rejectUpload(error);
+              }
+            } else {
+              rejectUpload(new Error("Video upload to Vimeo failed"));
+            }
+          };
+
+          xhr.onerror = () => {
+            rejectUpload(new Error("Network error during upload"));
+          };
+
+          xhr.send(videoFormData);
+        });
       } else if (coverImage && !videoFile && editMode) {
         // If only updating thumbnail in edit mode
         setCurrentStep("Uploading thumbnail to Vimeo...");
-        setUploadProgress(60);
 
         // Extract video ID from existing URL if available
         const videoIdMatch = formData.url?.match(/vimeo\.com\/video\/(\d+)/);
@@ -709,6 +829,12 @@ const CreateVideo = () => {
                   "Content-Type": "multipart/form-data",
                   Authorization: `Bearer ${sessionId}`,
                 },
+                onUploadProgress: (progressEvent) => {
+                  const percentCompleted = Math.round(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                  );
+                  setUploadProgress(percentCompleted);
+                },
               }
             );
 
@@ -723,11 +849,9 @@ const CreateVideo = () => {
             console.error("Thumbnail upload failed:", thumbnailError);
           }
         }
-        setUploadProgress(80);
       }
 
       setCurrentStep(editMode ? "Updating video..." : "Creating video...");
-      setUploadProgress(90);
 
       const payload = {
         title: formData.title,
@@ -879,13 +1003,46 @@ const CreateVideo = () => {
               <p className="text-sm text-[#7a756e] mb-4">{currentStep}</p>
 
               {/* Progress Bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
                 <div
                   className="bg-[#a6a643] h-2 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>
-              <p className="text-xs text-[#7a756e] mt-2">{uploadProgress}%</p>
+              <p className="text-xs font-medium text-[#381207] mb-1">
+                {uploadProgress}%
+              </p>
+
+              {/* Upload Stats */}
+              {uploadStats.totalSize > 0 && (
+                <div className="mt-4 space-y-2 text-sm text-[#7a756e]">
+                  <div className="flex justify-between items-center">
+                    <span>Uploaded:</span>
+                    <span className="font-medium text-[#381207]">
+                      {formatBytes(uploadStats.uploadedSize)} /{" "}
+                      {formatBytes(uploadStats.totalSize)}
+                    </span>
+                  </div>
+                  {/* <div className="flex justify-between items-center">
+                    <span>Estimated time:</span>
+                    <span className="font-medium text-[#381207]">
+                      {formatTime(uploadStats.estimatedTime)}
+                    </span>
+                  </div> */}
+                  {/* {uploadStats.uploadedSize > 0 && uploadStats.startTime && (
+                    <div className="flex justify-between items-center">
+                      <span>Upload speed:</span>
+                      <span className="font-medium text-[#381207]">
+                        {formatBytes(
+                          uploadStats.uploadedSize /
+                            ((Date.now() - uploadStats.startTime) / 1000)
+                        )}
+                        /s
+                      </span>
+                    </div>
+                  )} */}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1277,23 +1434,6 @@ const CreateVideo = () => {
 
             {/* Sound Stimuli and Animals */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* <div>
-                <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Sound Stimuli
-                </label>
-                <select
-                  name="soundStimuli"
-                  value={formData.soundStimuli}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
-                >
-                  <option value="">-Select an option-</option>
-                  <option value="birds">Birds</option>
-                  <option value="water">Water</option>
-                  <option value="wind">Wind</option>
-                  <option value="forest sounds">Forest Sounds</option>
-                </select>
-              </div> */}
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
                   Animals
