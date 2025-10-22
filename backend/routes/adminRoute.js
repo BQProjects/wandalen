@@ -4,9 +4,7 @@ const {
   adminLogin,
   getAllOrgData,
   getAllClientData,
-  getOrginfo,
   getAllOrgRequest,
-  getOrgRequest,
   getAllVolunteerData,
   getVolunteerInfo,
   getallVideoRequest,
@@ -38,6 +36,7 @@ const {
   upload,
   getClientPaymentDetails,
 } = require("../components/admin");
+const { getAllReviews } = require("../components/client");
 
 const adminRouter = express.Router();
 adminRouter.use(cors());
@@ -45,9 +44,7 @@ adminRouter.use(cors());
 adminRouter.post("/login", adminLogin);
 adminRouter.get("/all-orgs", getAllOrgData);
 adminRouter.get("/all-clients", getAllClientData);
-adminRouter.get("/org/:orgId", getOrginfo);
 adminRouter.get("/all-requests", getAllOrgRequest);
-adminRouter.get("/org-requests/:orgId", getOrgRequest);
 adminRouter.get("/all-volunteers", getAllVolunteerData);
 adminRouter.get("/volunteer/:id", getVolunteerInfo);
 adminRouter.delete("/delete-volunteer/:id", deleteVolunteer);
@@ -69,6 +66,7 @@ adminRouter.delete("/delete-request/:orgId", deleteOrg);
 adminRouter.delete("/delete-client/:clientId", deleteClient);
 adminRouter.post("/uploadVideo", uploadVideo);
 adminRouter.get("/get-video/:videoId", getVideo);
+adminRouter.get("/get-reviews/:videoId", getAllReviews);
 adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);
 adminRouter.post("/upload-to-vimeo", upload.single("video"), uploadToVimeo);
 adminRouter.post(

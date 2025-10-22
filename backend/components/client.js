@@ -1079,6 +1079,7 @@ const createPendingSignup = async (req, res) => {
       //priceId = "price_1RH90IBDkkC6KY4EQZJmFplW"; // Monthly test price
     } else if (plan.period === "year") {
       priceId = "price_1SFY5KBZBQKzDdfq7tPywkXO"; // Yearly production price
+    } else {
       return res.status(400).json({
         success: false,
         message: "Invalid plan period",

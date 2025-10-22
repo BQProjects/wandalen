@@ -123,9 +123,6 @@ const BlogLibrary = () => {
     <div className="w-full p-4">
       {/* Header Section */}
       <div className="mb-8">
-        <div className="text-[#dd9219] font-['Poppins'] text-2xl font-semibold leading-[136%] mb-2">
-          Blog Management
-        </div>
         <div className="text-[#381207] font-['Poppins'] text-5xl font-medium leading-[136%]">
           Blog Library
         </div>
