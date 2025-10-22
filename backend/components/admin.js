@@ -59,19 +59,6 @@ const getAllClientData = async (req, res) => {
   }
 };
 
-const getOrginfo = async (req, res) => {
-  try {
-    const { orgId } = req.params;
-    const org = await OrgModel.findById(orgId).populate("clients");
-    if (!org) {
-      return res.status(404).json({ message: "Organization not found" });
-    }
-    res.status(200).json(org);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
 const getAllOrgRequest = async (req, res) => {
   try {
@@ -85,21 +72,6 @@ const getAllOrgRequest = async (req, res) => {
   }
 };
 
-const getOrgRequest = async (req, res) => {
-  const { orgId } = req.params;
-  try {
-    const org = await OrgModel.findById(orgId)
-      .populate("clients")
-      .select("-password");
-    if (!org) {
-      return res.status(404).json({ message: "Organization not found" });
-    }
-    res.status(200).json(org);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
 const getAllVolunteerData = async (req, res) => {
   try {
@@ -1061,9 +1033,7 @@ module.exports = {
   adminLogin,
   getAllOrgData,
   getAllClientData,
-  getOrginfo,
   getAllOrgRequest,
-  getOrgRequest,
   getAllVolunteerData,
   getVolunteerInfo,
   getallVideoRequest,
