@@ -676,88 +676,83 @@ const CreateVideo = () => {
           xhr.open("POST", uploadUrl, true);
           xhr.setRequestHeader("Authorization", `Bearer ${sessionId}`);
 
+          // Set timeout for large files (30 minutes)
+          xhr.timeout = 30 * 60 * 1000;
+
           let vimeoVideoIdFromStream = null;
           let vimeoResult = null;
           let lastProcessedLength = 0;
+          let uploadStarted = false;
 
           // Handle SSE streaming response
           xhr.onreadystatechange = () => {
-            console.log(
-              "XHR readyState:",
-              xhr.readyState,
-              "status:",
-              xhr.status
-            );
             if (xhr.readyState === 3 || xhr.readyState === 4) {
-              // Receiving data or complete
+              if (!uploadStarted) {
+                uploadStarted = true;
+                console.log("Upload stream started");
+              }
+
               const responseText = xhr.responseText;
-              console.log(
-                "Response text length:",
-                responseText.length,
-                "new data from:",
-                lastProcessedLength
-              );
               const newData = responseText.substring(lastProcessedLength);
               lastProcessedLength = responseText.length;
 
-              console.log("New SSE data:", newData);
-              const lines = newData.split("\n");
+              if (newData.trim()) {
+                console.log("New SSE data received:", newData);
+                const lines = newData.split("\n");
 
-              for (const line of lines) {
-                if (line.startsWith("data: ")) {
-                  try {
-                    const data = JSON.parse(line.substring(6));
-                    console.log("Parsed SSE data:", data);
+                for (const line of lines) {
+                  if (line.startsWith("data: ")) {
+                    try {
+                      const data = JSON.parse(line.substring(6));
+                      console.log("Parsed SSE data:", data);
 
-                    if (data.stage === "creating") {
-                      setUploadProgress(data.percent || 0);
-                      setCurrentStep("Creating video on Vimeo...");
-                    } else if (data.stage === "uploading" && data.total) {
-                      // Real-time Vimeo upload progress
-                      const percentCompleted = Math.round(
-                        (data.loaded * 100) / data.total
+                      if (data.stage === "creating") {
+                        setUploadProgress(data.percent || 5);
+                        setCurrentStep("Creating video on Vimeo...");
+                      } else if (data.stage === "uploading") {
+                        if (data.percent) {
+                          setUploadProgress(data.percent);
+                          setCurrentStep(
+                            `Uploading to Vimeo... ${data.percent}%`
+                          );
+                        }
+                        if (data.loaded && data.total) {
+                          setUploadStats((prev) => ({
+                            ...prev,
+                            uploadedSize: data.loaded,
+                            totalSize: data.total,
+                          }));
+                        }
+                      } else if (data.stage === "processing") {
+                        setUploadProgress(data.percent || 95);
+                        setCurrentStep("Processing video on Vimeo...");
+                      } else if (data.stage === "complete" && data.success) {
+                        vimeoResult = data;
+                        vimeoVideoIdFromStream = data.videoId;
+                        setUploadProgress(100);
+                        setCurrentStep("Video uploaded successfully!");
+                      } else if (data.stage === "error") {
+                        rejectUpload(new Error(data.error || "Upload failed"));
+                        return;
+                      }
+                    } catch (e) {
+                      console.error(
+                        "Error parsing SSE data:",
+                        e,
+                        "Line:",
+                        line
                       );
-                      setUploadProgress(percentCompleted);
-
-                      // Calculate real-time speed
-                      const currentTime = Date.now();
-                      const timeDiff =
-                        (currentTime - uploadStats.startTime) / 1000;
-                      const bytesDiff =
-                        data.loaded - (uploadStats.uploadedSize || 0);
-                      const instantSpeed =
-                        timeDiff > 0 ? bytesDiff / timeDiff : 0;
-
-                      const remainingBytes = data.total - data.loaded;
-                      const estimatedTime =
-                        instantSpeed > 0 ? remainingBytes / instantSpeed : 0;
-
-                      setUploadStats({
-                        uploadedSize: data.loaded,
-                        totalSize: data.total,
-                        startTime: uploadStats.startTime,
-                        estimatedTime: estimatedTime,
-                        currentSpeed: instantSpeed,
-                      });
-
-                      setCurrentStep("Uploading to Vimeo...");
-                    } else if (data.stage === "processing") {
-                      setUploadProgress(data.percent || 95);
-                      setCurrentStep("Processing video on Vimeo...");
-                    } else if (data.stage === "complete" && data.success) {
-                      vimeoResult = data;
-                      vimeoVideoIdFromStream = data.videoId;
-                      setUploadProgress(100);
-                      setCurrentStep("Video uploaded successfully!");
-                    } else if (data.stage === "error") {
-                      rejectUpload(new Error(data.error || "Upload failed"));
                     }
-                  } catch (e) {
-                    console.error("Error parsing SSE data:", e, line);
                   }
                 }
               }
             }
+          };
+
+          xhr.ontimeout = () => {
+            rejectUpload(
+              new Error("Upload timeout - please try again with a smaller file")
+            );
           };
 
           xhr.onload = async () => {
