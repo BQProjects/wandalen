@@ -719,8 +719,10 @@ const uploadToVimeo = async (req, res) => {
 
     // Function to send progress updates
     const sendProgress = (data) => {
-      console.log("Sending SSE progress:", data);
       res.write(`data: ${JSON.stringify(data)}\n\n`);
+      if (res.flush) {
+        res.flush(); // Ensure the data is sent immediately
+      }
     };
 
     // Upload video with progress tracking
