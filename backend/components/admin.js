@@ -59,7 +59,6 @@ const getAllClientData = async (req, res) => {
   }
 };
 
-
 const getAllOrgRequest = async (req, res) => {
   try {
     const requests = await OrgModel.find({})
@@ -71,7 +70,6 @@ const getAllOrgRequest = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 const getAllVolunteerData = async (req, res) => {
   try {
@@ -710,20 +708,44 @@ const uploadToVimeo = async (req, res) => {
       return res.status(400).json({ message: "No video file provided" });
     }
 
-    // Set up Server-Sent Events headers
+    console.log(
+      `Starting upload for file: ${videoFile.originalname}, size: ${videoFile.size} bytes`
+    );
+
+    // Set up Server-Sent Events headers with additional headers for real-time streaming
     res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
     res.setHeader("Connection", "keep-alive");
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Cache-Control");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Cache-Control, Authorization"
+    );
+    res.setHeader("X-Accel-Buffering", "no"); // Disable nginx buffering
+    res.setHeader("Content-Encoding", "identity"); // Disable compression
 
     // Function to send progress updates
     const sendProgress = (data) => {
+      console.log("Sending SSE progress:", data);
       res.write(`data: ${JSON.stringify(data)}\n\n`);
+
+      // Force flush if available
       if (res.flush) {
-        res.flush(); // Ensure the data is sent immediately
+        res.flush();
+      }
+
+      // Alternative method to ensure immediate sending
+      if (res.socket && res.socket.write) {
+        res.socket.uncork();
       }
     };
+
+    // Send initial progress
+    sendProgress({
+      stage: "starting",
+      message: "Upload initiated",
+      fileSize: videoFile.size,
+    });
 
     // Upload video with progress tracking
     const result = await vimeoService.uploadVideoWithProgress(
@@ -740,18 +762,24 @@ const uploadToVimeo = async (req, res) => {
       videoUrl: result.videoUrl,
     });
 
+    console.log(`Upload completed successfully. Video ID: ${result.videoId}`);
+
     // End the response
     res.end();
   } catch (error) {
     console.error("Upload to Vimeo error:", error);
 
     // Send error through SSE
-    res.write(
-      `data: ${JSON.stringify({
-        stage: "error",
-        error: error.message,
-      })}\n\n`
-    );
+    try {
+      res.write(
+        `data: ${JSON.stringify({
+          stage: "error",
+          error: error.message,
+        })}\n\n`
+      );
+    } catch (writeError) {
+      console.error("Error writing error response:", writeError);
+    }
 
     res.end();
   }
