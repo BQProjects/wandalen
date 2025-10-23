@@ -664,128 +664,121 @@ const VolunteerCreateVideo = () => {
       if (videoFile && videoFile.type !== "link") {
         setCurrentStep(t("volunteerCreateVideo.uploadingVideo"));
 
-        const videoFormData = new FormData();
-        videoFormData.append("video", videoFile);
-        videoFormData.append("title", formData.title || "Untitled Video");
-        videoFormData.append("description", formData.description || "");
+        // Step 1: Get upload ticket from backend
+        const ticketResponse = await axios.post(
+          `${DATABASE_URL}/volunteer/get-vimeo-upload-ticket`,
+          {
+            title: formData.title || "Untitled Video",
+            description: formData.description || "",
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${sessionId}`,
+            },
+          }
+        );
 
-        // Use XMLHttpRequest for Server-Sent Events to get real-time progress
-        const uploadUrl = `${DATABASE_URL}/volunteer/upload-to-vimeo`;
+        if (
+          !ticketResponse.data.ticket ||
+          !ticketResponse.data.ticket.upload_link
+        ) {
+          throw new Error("Failed to get Vimeo upload ticket");
+        }
 
-        // Setup promise to handle async XHR
+        const { upload_link, uri } = ticketResponse.data.ticket;
+        const videoId = uri.split("/").pop(); // Extract video ID from URI
+
+        // Step 2: Upload directly to Vimeo using XMLHttpRequest
         await new Promise((resolveUpload, rejectUpload) => {
           const xhr = new XMLHttpRequest();
-          xhr.open("POST", uploadUrl, true);
-          xhr.setRequestHeader("Authorization", `Bearer ${sessionId}`);
 
-          let vimeoVideoIdFromStream = null;
-          let vimeoResult = null;
-          let lastProcessedLength = 0;
+          xhr.open("POST", upload_link, true);
+          xhr.timeout = 30 * 60 * 1000; // 30 minutes
 
-          // Handle SSE streaming response
-          xhr.onreadystatechange = () => {
-            if (xhr.readyState === 3 || xhr.readyState === 4) {
-              // Receiving data or complete
-              const responseText = xhr.responseText;
-              const newData = responseText.substring(lastProcessedLength);
-              lastProcessedLength = responseText.length;
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const percentCompleted = Math.round(
+                (event.loaded * 100) / event.total
+              );
+              setUploadProgress(percentCompleted);
 
-              const lines = newData.split("\n");
+              // Calculate real-time speed and ETA
+              const currentTime = Date.now();
+              const timeDiff = (currentTime - uploadStats.startTime) / 1000;
+              const bytesDiff = event.loaded - (uploadStats.uploadedSize || 0);
+              const instantSpeed = timeDiff > 0 ? bytesDiff / timeDiff : 0;
 
-              for (const line of lines) {
-                if (line.startsWith("data: ")) {
-                  try {
-                    const data = JSON.parse(line.substring(6));
+              const remainingBytes = event.total - event.loaded;
+              const estimatedTime =
+                instantSpeed > 0 ? remainingBytes / instantSpeed : 0;
 
-                    if (data.stage === "creating") {
-                      setUploadProgress(data.percent || 0);
-                      setCurrentStep("Creating video on Vimeo...");
-                    } else if (data.stage === "uploading" && data.total) {
-                      // Real-time Vimeo upload progress
-                      const percentCompleted = Math.round(
-                        (data.loaded * 100) / data.total
-                      );
-                      setUploadProgress(percentCompleted);
+              setUploadStats({
+                uploadedSize: event.loaded,
+                totalSize: event.total,
+                startTime: uploadStats.startTime,
+                estimatedTime: estimatedTime,
+                currentSpeed: instantSpeed,
+              });
 
-                      // Calculate real-time speed
-                      const currentTime = Date.now();
-                      const timeDiff =
-                        (currentTime - uploadStats.startTime) / 1000;
-                      const bytesDiff =
-                        data.loaded - (uploadStats.uploadedSize || 0);
-                      const instantSpeed =
-                        timeDiff > 0 ? bytesDiff / timeDiff : 0;
-
-                      const remainingBytes = data.total - data.loaded;
-                      const estimatedTime =
-                        instantSpeed > 0 ? remainingBytes / instantSpeed : 0;
-
-                      setUploadStats({
-                        uploadedSize: data.loaded,
-                        totalSize: data.total,
-                        startTime: uploadStats.startTime,
-                        estimatedTime: estimatedTime,
-                        currentSpeed: instantSpeed,
-                      });
-
-                      setCurrentStep("Uploading to Vimeo...");
-                    } else if (data.stage === "processing") {
-                      setUploadProgress(data.percent || 95);
-                      setCurrentStep("Processing video on Vimeo...");
-                    } else if (data.stage === "complete" && data.success) {
-                      vimeoResult = data;
-                      vimeoVideoIdFromStream = data.videoId;
-                      setUploadProgress(100);
-                      setCurrentStep("Upload complete");
-                    } else if (data.stage === "error") {
-                      rejectUpload(new Error(data.error || "Upload failed"));
-                    }
-                  } catch (e) {
-                    console.error("Error parsing SSE data:", e, line);
-                  }
-                }
-              }
+              setCurrentStep("Uploading to Vimeo...");
             }
           };
 
           xhr.onload = async () => {
-            if (xhr.status === 200 && vimeoResult) {
+            if (xhr.status === 201 || xhr.status === 200) {
               try {
-                videoUrl = vimeoResult.videoUrl;
-
-                // Upload thumbnail if exists
-                if (coverImage) {
-                  setCurrentStep(t("volunteerCreateVideo.uploadingCover"));
-                  const thumbnailFormData = new FormData();
-                  thumbnailFormData.append("thumbnail", coverImage);
-                  thumbnailFormData.append("videoId", vimeoVideoIdFromStream);
-
-                  try {
-                    const thumbnailResponse = await axios.post(
-                      `${DATABASE_URL}/volunteer/upload-thumbnail-to-vimeo`,
-                      thumbnailFormData,
-                      {
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                          Authorization: `Bearer ${sessionId}`,
-                        },
-                      }
-                    );
-
-                    if (thumbnailResponse.status === 200) {
-                      imgUrl = thumbnailResponse.data.thumbnailUrl;
-                    }
-                  } catch (error) {
-                    console.error("Thumbnail upload failed:", error);
+                // Step 3: Get video details from backend
+                const videoDetailsResponse = await axios.get(
+                  `${DATABASE_URL}/volunteer/get-vimeo-video-details/${videoId}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${sessionId}`,
+                    },
                   }
-                }
+                );
 
-                resolveUpload();
+                if (videoDetailsResponse.data.embedUrl) {
+                  videoUrl = videoDetailsResponse.data.embedUrl;
+
+                  // Upload thumbnail if exists
+                  if (coverImage) {
+                    setCurrentStep(t("volunteerCreateVideo.uploadingCover"));
+                    const thumbnailFormData = new FormData();
+                    thumbnailFormData.append("thumbnail", coverImage);
+                    thumbnailFormData.append("videoId", videoId);
+
+                    try {
+                      const thumbnailResponse = await axios.post(
+                        `${DATABASE_URL}/volunteer/upload-thumbnail-to-vimeo`,
+                        thumbnailFormData,
+                        {
+                          headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization: `Bearer ${sessionId}`,
+                          },
+                        }
+                      );
+
+                      if (thumbnailResponse.status === 200) {
+                        imgUrl = thumbnailResponse.data.thumbnailUrl;
+                      }
+                    } catch (error) {
+                      console.error("Thumbnail upload failed:", error);
+                    }
+                  }
+
+                  resolveUpload();
+                } else {
+                  rejectUpload(new Error("Failed to get video details"));
+                }
               } catch (error) {
                 rejectUpload(error);
               }
             } else {
-              rejectUpload(new Error("Video upload to Vimeo failed"));
+              rejectUpload(
+                new Error(`Upload failed with status ${xhr.status}`)
+              );
             }
           };
 
@@ -793,7 +786,10 @@ const VolunteerCreateVideo = () => {
             rejectUpload(new Error("Network error during upload"));
           };
 
-          xhr.send(videoFormData);
+          const formDataUpload = new FormData();
+          formDataUpload.append("file_data", videoFile);
+
+          xhr.send(formDataUpload);
         });
       } else if (coverImage && !videoFile && editMode) {
         // If only updating thumbnail in edit mode

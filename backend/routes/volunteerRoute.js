@@ -18,6 +18,8 @@ const {
   uploadToVimeo,
   uploadCoverImage,
   upload,
+  getVimeoUploadTicket,
+  getVimeoVideoDetails,
 } = require("../components/volunteer");
 const validateActiveSession = require("../utils/middleware");
 
@@ -40,7 +42,16 @@ volunteerRouter.post(
   upload.single("thumbnail"),
   uploadCoverImage
 );
-
+volunteerRouter.post(
+  "/get-vimeo-upload-ticket",
+  validateActiveSession,
+  getVimeoUploadTicket
+);
+volunteerRouter.get(
+  "/get-vimeo-video-details/:videoId",
+  validateActiveSession,
+  getVimeoVideoDetails
+);
 volunteerRouter.get(
   "/getSelfVideos/:volunteerId",
   validateActiveSession,

@@ -549,6 +549,61 @@ const uploadCoverImage = async (req, res) => {
   }
 };
 
+/**
+ * Get Vimeo upload ticket for direct client-to-Vimeo upload
+ */
+const getVimeoUploadTicket = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    console.log("Getting Vimeo upload ticket for direct upload...");
+
+    const ticket = await vimeoService.getUploadTicket({ title, description });
+
+    res.status(200).json({
+      message: "Upload ticket obtained successfully",
+      ticket,
+    });
+  } catch (error) {
+    console.error("Error getting Vimeo upload ticket:", error);
+    res.status(500).json({
+      message: "Failed to get Vimeo upload ticket",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get Vimeo video details after direct upload
+ */
+const getVimeoVideoDetails = async (req, res) => {
+  try {
+    const { videoId } = req.params;
+
+    console.log(`Getting Vimeo video details for video ${videoId}...`);
+
+    const videoData = await vimeoService.getVideo(videoId);
+
+    // Construct embed URL with privacy hash and embed parameters
+    const privacyHash =
+      videoData.player_embed_url.split("?h=")[1]?.split("&")[0] || "";
+    const embedParams = `?h=${privacyHash}&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479`;
+    const fullEmbedUrl = `https://player.vimeo.com/video/${videoId}${embedParams}`;
+
+    res.status(200).json({
+      message: "Video details retrieved successfully",
+      embedUrl: fullEmbedUrl,
+      videoData,
+    });
+  } catch (error) {
+    console.error("Error getting Vimeo video details:", error);
+    res.status(500).json({
+      message: "Failed to get Vimeo video details",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   volunteerLogin,
   volunteerSigUp,
@@ -567,4 +622,6 @@ module.exports = {
   uploadToVimeo,
   uploadCoverImage,
   upload,
+  getVimeoUploadTicket,
+  getVimeoVideoDetails,
 };
