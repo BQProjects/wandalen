@@ -458,6 +458,82 @@ class VimeoService {
       );
     }
   }
+
+  /**
+   * Get Vimeo upload ticket for direct client upload
+   * @param {Object} videoDetails - Video metadata
+   * @returns {Promise<Object>} - Upload ticket with credentials
+   */
+  async getUploadTicket(videoDetails = {}) {
+    try {
+      const { title, description } = videoDetails;
+
+      console.log("Getting Vimeo upload ticket...");
+
+      const response = await axios.post(
+        `${this.baseUrl}/me/videos`,
+        {
+          upload: {
+            approach: "post",
+            size: "0", // Size will be determined by client
+          },
+          name: title || "Untitled Video",
+          description: description || "",
+          privacy: {
+            view: "unlisted",
+            embed: "public",
+            download: false,
+          },
+          embed: {
+            buttons: {
+              like: false,
+              watchlater: false,
+              share: false,
+              embed: false,
+            },
+            logos: {
+              vimeo: false,
+            },
+            title: {
+              name: "hide",
+              owner: "hide",
+              portrait: "hide",
+            },
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/vnd.vimeo.*+json;version=3.4",
+          },
+        }
+      );
+
+      const { upload, uri } = response.data;
+      const videoId = uri.split("/").pop();
+
+      return {
+        success: true,
+        videoId,
+        uploadLink: upload.upload_link,
+        completeUri: upload.complete_uri,
+        ticketId: upload.ticket_id,
+        maxFileSize: upload.max_file_size,
+        redirectUrl: upload.redirect_url,
+      };
+    } catch (error) {
+      console.error(
+        "Vimeo upload ticket error:",
+        error.response?.data || error
+      );
+      throw new Error(
+        `Failed to get Vimeo upload ticket: ${
+          error.response?.data?.error || error.message
+        }`
+      );
+    }
+  }
 }
 
 module.exports = new VimeoService();

@@ -29,6 +29,8 @@ const {
   toggleVideoApproval,
   uploadToVimeo,
   uploadThumbnailToVimeo,
+  getVimeoUploadTicket,
+  getVimeoVideoDetails,
   createAdmin,
   getAllAdmins,
   updateAdmin,
@@ -74,6 +76,8 @@ adminRouter.post(
   upload.single("thumbnail"),
   uploadThumbnailToVimeo
 );
+adminRouter.post("/get-vimeo-upload-ticket", getVimeoUploadTicket);
+adminRouter.get("/get-vimeo-video-details/:videoId", getVimeoVideoDetails);
 adminRouter.get("/admins", getAllAdmins);
 adminRouter.post("/adminscreate", createAdmin);
 adminRouter.put("/admins/:id", updateAdmin);
