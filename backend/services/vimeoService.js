@@ -475,7 +475,6 @@ class VimeoService {
         {
           upload: {
             approach: "post",
-            size: "0", // Size will be determined by client
           },
           name: title || "Untitled Video",
           description: description || "",
@@ -513,14 +512,17 @@ class VimeoService {
       const { upload, uri } = response.data;
       const videoId = uri.split("/").pop();
 
+      // console.log(`Upload ticket created for video ${videoId}`);
+
       return {
         success: true,
         videoId,
-        uploadLink: upload.upload_link,
-        completeUri: upload.complete_uri,
-        ticketId: upload.ticket_id,
-        maxFileSize: upload.max_file_size,
-        redirectUrl: upload.redirect_url,
+        upload_link: upload.upload_link,
+        uri,
+        complete_uri: upload.complete_uri,
+        ticket_id: upload.ticket_id,
+        max_file_size: upload.max_file_size,
+        redirect_url: upload.redirect_url,
       };
     } catch (error) {
       console.error(

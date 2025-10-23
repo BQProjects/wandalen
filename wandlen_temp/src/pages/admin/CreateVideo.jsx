@@ -688,7 +688,9 @@ const CreateVideo = () => {
 
           xhr.upload.addEventListener("progress", (event) => {
             if (event.lengthComputable) {
-              const percentComplete = Math.round((event.loaded / event.total) * 100);
+              const percentComplete = Math.round(
+                (event.loaded / event.total) * 100
+              );
               setUploadProgress(percentComplete);
               setCurrentStep(`Uploading to Vimeo... ${percentComplete}%`);
               setUploadStats((prev) => ({
@@ -704,7 +706,9 @@ const CreateVideo = () => {
               console.log("Direct upload to Vimeo successful");
               resolveUpload();
             } else {
-              rejectUpload(new Error(`Upload failed with status ${xhr.status}`));
+              rejectUpload(
+                new Error(`Upload failed with status ${xhr.status}`)
+              );
             }
           });
 
@@ -716,7 +720,7 @@ const CreateVideo = () => {
             rejectUpload(new Error("Upload timeout"));
           });
 
-          xhr.open("POST", ticket.uploadLink, true);
+          xhr.open("POST", ticket.upload_link, true);
           // No authorization header needed for direct upload to Vimeo
           xhr.timeout = 30 * 60 * 1000; // 30 minutes
 
@@ -730,7 +734,7 @@ const CreateVideo = () => {
         setCurrentStep("Completing upload and getting video URL...");
 
         // Wait a moment for Vimeo to process
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
 
         // Get video details from backend (which will call Vimeo API)
         const videoDetailsResponse = await axios.get(
