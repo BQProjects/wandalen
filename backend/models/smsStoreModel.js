@@ -21,6 +21,10 @@ const otpSchema = new mongoose.Schema({
     type: String,
     default: "login",
   },
+  role: {
+    type: String,
+    enum: ["caregiver", "volunteer", "organization"],
+  },
 });
 
 module.exports = mongoose.model("Otp", otpSchema);
