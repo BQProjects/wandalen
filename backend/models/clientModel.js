@@ -117,6 +117,13 @@ const ClientSchema = new Schema(
       type: String,
       default: "",
     },
+    dailyWatchCount: {
+      type: Number,
+      default: 0,
+    },
+    lastWatchDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

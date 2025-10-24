@@ -639,15 +639,69 @@ const getVideo = async (req, res) => {
   }
 };
 
+// Helper function to reset daily watch count if it's a new day
+const resetDailyWatchCountIfNeeded = (client) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Start of today
+
+  const lastWatch = client.lastWatchDate
+    ? new Date(client.lastWatchDate)
+    : null;
+
+  // Check if last watch date is not today
+  const isToday =
+    lastWatch &&
+    lastWatch >= today &&
+    lastWatch < new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+  if (!isToday) {
+    // Reset count for new day
+    client.dailyWatchCount = 0;
+    client.lastWatchDate = today;
+    console.log(
+      `🔄 Reset daily watch count for ${client.email} - new day started`
+    );
+    return true; // Indicates reset occurred
+  }
+
+  return false; // No reset needed
+};
+
 const addView = async (req, res) => {
   const { videoId } = req.params;
+  const clientId = req.user._id;
+
   try {
+    // Find the client
+    const client = await ClientModel.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    // Always check and reset daily count if needed (proactive reset)
+    resetDailyWatchCountIfNeeded(client);
+
+    // Check limit
+    if (client.dailyWatchCount >= 20) {
+      return res.status(429).json({
+        message:
+          "Daily video watch limit reached. You can watch up to 20 videos per day.",
+        limitReached: true,
+      });
+    }
+
+    // Increment count
+    client.dailyWatchCount += 1;
+    await client.save();
+
+    // Add view to video
     const video = await VideoModel.findById(videoId);
     if (!video.views) {
       video.views = 0;
     }
     video.views += 1;
     await video.save();
+
     res.json({ message: "View added successfully" });
   } catch (error) {
     console.error(error);
@@ -1506,6 +1560,49 @@ const manualCompleteSignup = async (req, res) => {
   }
 };
 
+const getWatchLimit = async (req, res) => {
+  const clientId = req.user._id;
+
+  try {
+    const client = await ClientModel.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    // Check and reset daily count if needed before returning status
+    resetDailyWatchCountIfNeeded(client);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const lastWatch = client.lastWatchDate
+      ? new Date(client.lastWatchDate)
+      : null;
+    const isToday = lastWatch && lastWatch >= today && lastWatch < tomorrow;
+
+    let resetTime;
+    if (isToday && client.dailyWatchCount >= 20) {
+      // Reset at midnight
+      resetTime = tomorrow;
+    } else {
+      resetTime = null; // Not reached or already reset
+    }
+
+    res.json({
+      dailyWatchCount: client.dailyWatchCount,
+      lastWatchDate: client.lastWatchDate,
+      limitReached: isToday && client.dailyWatchCount >= 20,
+      resetTime: resetTime,
+      maxLimit: 20,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   clientLogin,
   clientSignUp,
@@ -1530,4 +1627,5 @@ module.exports = {
   completeSignupAfterPayment,
   handleStripeWebhook,
   manualCompleteSignup,
+  getWatchLimit,
 };
