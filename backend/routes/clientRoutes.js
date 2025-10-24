@@ -23,6 +23,7 @@ const {
   createPendingSignup,
   handleStripeWebhook,
   manualCompleteSignup,
+  getWatchLimit,
 } = require("../components/client");
 
 clientRouter.use(cors());
@@ -81,5 +82,6 @@ clientRouter.post(
   validateActiveSession,
   syncSubscriptionWithStripe
 );
+clientRouter.get("/get-watch-limit", validateActiveSession, getWatchLimit);
 
 module.exports = clientRouter;

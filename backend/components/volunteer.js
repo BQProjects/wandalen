@@ -5,13 +5,6 @@ const VideoModel = require("../models/videoModel");
 const VideoRequestModel = require("../models/videoRequestModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 const vimeoService = require("../services/vimeoService");
-const multer = require("multer");
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 50 * 1024 * 1024 * 1024, // 50GB limit
-  },
-});
 
 const volunteerLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -458,66 +451,6 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-const uploadToVimeo = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No video file provided" });
-    }
-
-    const videoBuffer = req.file.buffer;
-    const { title, description } = req.body;
-
-    // Set up Server-Sent Events headers
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Connection", "keep-alive");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Cache-Control");
-
-    // Function to send progress updates
-    const sendProgress = (data) => {
-      res.write(`data: ${JSON.stringify(data)}\n\n`);
-      if (res.flush) {
-        res.flush(); // Ensure the data is sent immediately
-      }
-    };
-
-    // Upload video with progress tracking
-    const result = await vimeoService.uploadVideoWithProgress(
-      videoBuffer,
-      { title: title || "Untitled Video", description: description || "" },
-      sendProgress
-    );
-
-    // Send final success message
-    sendProgress({
-      stage: "complete",
-      success: true,
-      videoId: result.videoId,
-      videoUrl: result.videoUrl,
-    });
-
-    // End the response
-    res.end();
-  } catch (error) {
-    console.error("Upload to Vimeo error:", error);
-
-    // Send error through SSE
-    res.write(
-      `data: ${JSON.stringify({
-        stage: "error",
-        error: error.message,
-      })}\n\n`
-    );
-
-    res.end();
-  }
-};
-
-/**
- * Upload cover image to Vimeo
- * This endpoint uploads a thumbnail to a Vimeo video
- */
 const uploadCoverImage = async (req, res) => {
   try {
     if (!req.file) {
@@ -619,9 +552,7 @@ module.exports = {
   uploadProfilePicture,
   updatePassword,
   deleteAccount,
-  uploadToVimeo,
   uploadCoverImage,
-  upload,
   getVimeoUploadTicket,
   getVimeoVideoDetails,
 };

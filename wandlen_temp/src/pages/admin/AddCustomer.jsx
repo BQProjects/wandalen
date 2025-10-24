@@ -423,54 +423,6 @@ const AddCustomer = () => {
           </div>
         </div>
 
-        {/* Organization Representative */}
-        <div>
-          <h2 className="text-2xl font-medium text-muted-foreground mb-4">
-            Organization Representative
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-muted-foreground font-base text-sm mb-2">
-                Full Name
-              </label>
-              <input
-                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
-                value={orgFullName}
-                onChange={(e) => setOrgFullName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block text-muted-foreground font-base text-sm mb-2">
-                Job Title / Position
-              </label>
-              <input
-                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
-                value={orgJobTitle}
-                onChange={(e) => setOrgJobTitle(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block text-muted-foreground font-base text-sm mb-2">
-                Email Address
-              </label>
-              <input
-                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
-                value={orgEmailAddress}
-                onChange={(e) => setOrgEmailAddress(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block text-muted-foreground font-base text-sm mb-2">
-                Phone Number
-              </label>
-              <input
-                className="input border border-[#B3B1AC] p-2 rounded-md w-full"
-                value={orgPhoneContact}
-                onChange={(e) => setOrgPhoneContact(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
 
         {/* Contact Person */}
         <div>

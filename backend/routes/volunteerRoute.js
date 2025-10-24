@@ -1,5 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB limit for thumbnails
+  },
+});
 const {
   volunteerSigUp,
   volunteerLogin,
@@ -15,9 +22,7 @@ const {
   uploadProfilePicture,
   updatePassword,
   deleteAccount,
-  uploadToVimeo,
   uploadCoverImage,
-  upload,
   getVimeoUploadTicket,
   getVimeoVideoDetails,
 } = require("../components/volunteer");
@@ -30,12 +35,6 @@ volunteerRouter.use(cors());
 volunteerRouter.post("/signup", volunteerSigUp);
 volunteerRouter.post("/login", volunteerLogin);
 volunteerRouter.post("/uploadVideos", validateActiveSession, uploadVideos);
-volunteerRouter.post(
-  "/upload-to-vimeo",
-  validateActiveSession,
-  upload.single("video"),
-  uploadToVimeo
-);
 volunteerRouter.post(
   "/upload-thumbnail-to-vimeo",
   validateActiveSession,

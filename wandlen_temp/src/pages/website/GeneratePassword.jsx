@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 const GeneratePassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { DATABASE_URL } = useContext(DatabaseContext);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,6 +43,14 @@ const GeneratePassword = () => {
       );
       toast.error("Failed to set password");
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -78,28 +88,140 @@ const GeneratePassword = () => {
                   <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
-                    placeholder="Enter Password"
-                  />
+                  <div className="relative w-full">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
+                      placeholder="Enter Password"
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#7a756e] hover:text-[#5b6502] transition-colors"
+                      aria-label={
+                        showPassword ? "Hide Password" : "Show Password"
+                      }
+                    >
+                      {showPassword ? (
+                        <svg
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 3l18 18"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex flex-col items-start gap-2 sm:gap-3 w-full">
                   <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
-                    placeholder="Confirm Password"
-                  />
+                  <div className="relative w-full">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
+                      placeholder="Confirm Password"
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleConfirmPasswordVisibility}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#7a756e] hover:text-[#5b6502] transition-colors"
+                      aria-label={
+                        showConfirmPassword ? "Hide Password" : "Show Password"
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <svg
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 3l18 18"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -21,10 +21,10 @@ const RequestAQuoteForm = () => {
     city: "",
     website: "",
     // Organization Details (renamed to avoid conflict)
-    orgFullName: "",
-    orgJobTitle: "",
-    orgEmailAddress: "",
-    orgPhoneContact: "",
+    // orgFullName: "",
+    // orgJobTitle: "",
+    // orgEmailAddress: "",
+    // orgPhoneContact: "",
     // Contact Person (kept as is)
     fullName: "",
     jobTitle: "",
@@ -86,23 +86,6 @@ const RequestAQuoteForm = () => {
       newErrors.city = t("requestQuoteForm.validation.city");
     if (formData.website && !validateUrl(formData.website))
       newErrors.website = t("requestQuoteForm.validation.websiteInvalid");
-    // Updated validations for org fields
-    if (!formData.orgFullName.trim())
-      newErrors.orgFullName = t("requestQuoteForm.validation.fullName");
-    if (!formData.orgJobTitle.trim())
-      newErrors.orgJobTitle = t("requestQuoteForm.validation.jobTitle");
-    if (!formData.orgEmailAddress.trim())
-      newErrors.orgEmailAddress = t("requestQuoteForm.validation.emailAddress");
-    else if (!validateEmail(formData.orgEmailAddress))
-      newErrors.orgEmailAddress = t(
-        "requestQuoteForm.validation.emailAddressInvalid"
-      );
-    if (!formData.orgPhoneContact.trim())
-      newErrors.orgPhoneContact = t("requestQuoteForm.validation.phoneContact");
-    else if (!validatePhone(formData.orgPhoneContact))
-      newErrors.orgPhoneContact = t(
-        "requestQuoteForm.validation.phoneContactInvalid"
-      );
     // Contact Person validations
     if (!formData.fullName.trim())
       newErrors.fullName = t("requestQuoteForm.validation.fullName");
@@ -267,6 +250,9 @@ const RequestAQuoteForm = () => {
 
             {/* Organization Details */}
             <div className="space-y-6">
+              <h3 className="text-2xl font-medium text-[#381207]">
+                {t("requestQuoteForm.form.sections.organizationDetails")}
+              </h3>
               <div>
                 <label className="block text-[#381207] font-medium mb-2">
                   {t("requestQuoteForm.form.labels.organizationName")}
@@ -432,111 +418,6 @@ const RequestAQuoteForm = () => {
                 {errors.website && (
                   <span className="text-red-500 text-sm">{errors.website}</span>
                 )}
-              </div>
-            </div>
-
-            {/* Organization Details Section (renamed fields) */}
-            <h3 className="text-2xl font-medium text-[#381207]">
-              {t("requestQuoteForm.form.sections.organizationDetails")}
-            </h3>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-[#381207] font-medium mb-2">
-                    {t("requestQuoteForm.form.labels.fullName")}
-                  </label>
-                  <input
-                    type="text"
-                    name="orgFullName"
-                    value={formData.orgFullName}
-                    onChange={handleChange}
-                    onInput={handleNameInput}
-                    placeholder={t(
-                      "requestQuoteForm.form.placeholders.fullName"
-                    )}
-                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                      errors.orgFullName ? "border-red-500" : "border-[#cbcbcb]"
-                    }`}
-                  />
-                  {errors.orgFullName && (
-                    <span className="text-red-500 text-sm">
-                      {errors.orgFullName}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-[#381207] font-medium mb-2">
-                    {t("requestQuoteForm.form.labels.jobTitle")}
-                  </label>
-                  <input
-                    type="text"
-                    name="orgJobTitle"
-                    value={formData.orgJobTitle}
-                    onChange={handleChange}
-                    placeholder={t(
-                      "requestQuoteForm.form.placeholders.jobTitle"
-                    )}
-                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                      errors.orgJobTitle ? "border-red-500" : "border-[#cbcbcb]"
-                    }`}
-                  />
-                  {errors.orgJobTitle && (
-                    <span className="text-red-500 text-sm">
-                      {errors.orgJobTitle}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-[#381207] font-medium mb-2">
-                    {t("requestQuoteForm.form.labels.emailAddress")}
-                  </label>
-                  <input
-                    type="email"
-                    name="orgEmailAddress"
-                    value={formData.orgEmailAddress}
-                    onChange={handleChange}
-                    placeholder={t(
-                      "requestQuoteForm.form.placeholders.emailAddress"
-                    )}
-                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                      errors.orgEmailAddress
-                        ? "border-red-500"
-                        : "border-[#cbcbcb]"
-                    }`}
-                  />
-                  {errors.orgEmailAddress && (
-                    <span className="text-red-500 text-sm">
-                      {errors.orgEmailAddress}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-[#381207] font-medium mb-2">
-                    {t("requestQuoteForm.form.labels.phoneNumber")}
-                  </label>
-                  <input
-                    type="tel"
-                    name="orgPhoneContact"
-                    value={formData.orgPhoneContact}
-                    onChange={handleChange}
-                    onInput={handlePhoneInput}
-                    placeholder={t(
-                      "requestQuoteForm.form.placeholders.phoneContact"
-                    )}
-                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] ${
-                      errors.orgPhoneContact
-                        ? "border-red-500"
-                        : "border-[#cbcbcb]"
-                    }`}
-                  />
-                  {errors.orgPhoneContact && (
-                    <span className="text-red-500 text-sm">
-                      {errors.orgPhoneContact}
-                    </span>
-                  )}
-                </div>
               </div>
             </div>
 

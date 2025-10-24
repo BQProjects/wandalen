@@ -3,6 +3,7 @@ import { DatabaseContext } from "../../contexts/DatabaseContext";
 import axios from "axios";
 import Footer from "../../components/Footer";
 import { useTranslation } from "react-i18next";
+import HandHold from "../../assets/HandHold.png";
 import RoutesNearYou from "../../components/common/RoutesNearYou";
 import toast from "react-hot-toast";
 
@@ -10,6 +11,7 @@ const ManageClients = () => {
   const [clients, setClients] = useState([]);
   const [orgData, setOrgData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [firstName, setFirstName] = useState("");
   const { DATABASE_URL } = useContext(DatabaseContext);
   const { t } = useTranslation();
   const sessionId = localStorage.getItem("sessionId");
@@ -44,6 +46,12 @@ const ManageClients = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (orgData) {
+      setFirstName(orgData.orgName || "Organization");
+    }
+  }, [orgData]);
 
   const [newClient, setNewClient] = useState({
     firstName: "",
@@ -174,6 +182,34 @@ const ManageClients = () => {
 
   return (
     <div className="min-h-screen bg-[#ede4dc]">
+      <div className="relative w-full h-[86vh] flex items-center justify-center mb-10">
+        {/* Background Image */}
+        <img
+          src={HandHold}
+          alt="Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Overlay Filter */}
+        <div className="absolute inset-0 bg-[#2A341F] opacity-55"></div>
+
+        {/* Centered Text */}
+        <div className="relative text-center max-w-4xl mx-auto px-4">
+          <div className="inline-flex justify-center items-center gap-2.5">
+            <div className="flex items-center gap-5">
+              <div className="welcome text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
+                Welcome
+              </div>
+              <div className="text-[#a6a643] font-['Poppins'] text-8xl font-semibold leading-[normal]">
+                {firstName}
+              </div>
+            </div>
+            <div className="text text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
+              !
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto mb-10">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-[#dd9219] mb-2">
