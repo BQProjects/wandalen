@@ -195,17 +195,17 @@ const ManageClients = () => {
 
         {/* Centered Text */}
         <div className="relative text-center max-w-4xl mx-auto px-4">
-          <div className="inline-flex justify-center items-center gap-2.5">
-            <div className="flex items-center gap-5">
-              <div className="welcome text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
-                Welcome
-              </div>
+          <div className="flex flex-col justify-center items-center gap-2.5">
+            <div className="welcome text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
+              Welcome
+            </div>
+            <div className="flex items-center gap-1">
               <div className="text-[#a6a643] font-['Poppins'] text-8xl font-semibold leading-[normal]">
                 {firstName}
               </div>
-            </div>
-            <div className="text text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
-              !
+              <div className="text text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
+                !
+              </div>
             </div>
           </div>
         </div>
@@ -543,7 +543,7 @@ const ManageClients = () => {
                         <td className="px-6 py-4 flex space-x-2">
                           <button
                             onClick={() => handleEditClient(client)}
-                            className="text-[#381207] hover:text-blue-600 transition"
+                            className="text-[#381207] hover:text-[#5b6502] transition"
                           >
                             {t("manageClients.edit")}
                           </button>

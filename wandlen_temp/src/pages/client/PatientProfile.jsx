@@ -449,7 +449,11 @@ const PatientProfile = () => {
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
                   {t("patientProfile.fullName")}
                 </label>
-                {isEditing ? (
+                {isOrg ? (
+                  <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
+                    {profileData.fullName}
+                  </div>
+                ) : isEditing ? (
                   <input
                     type="text"
                     name="fullName"
@@ -467,7 +471,11 @@ const PatientProfile = () => {
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
                   {t("patientProfile.organizationName")}
                 </label>
-                {isEditing ? (
+                {isOrg ? (
+                  <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
+                    {profileData.organizationName}
+                  </div>
+                ) : isEditing ? (
                   <input
                     type="text"
                     name="organizationName"
@@ -487,7 +495,11 @@ const PatientProfile = () => {
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
                   {t("patientProfile.contactEmail")}
                 </label>
-                {isEditing ? (
+                {isOrg ? (
+                  <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
+                    {profileData.contactEmail}
+                  </div>
+                ) : isEditing ? (
                   <input
                     type="email"
                     name="contactEmail"
@@ -505,7 +517,11 @@ const PatientProfile = () => {
                 <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
                   {t("patientProfile.phoneNumber")}
                 </label>
-                {isEditing ? (
+                {isOrg ? (
+                  <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207]">
+                    {profileData.phone}
+                  </div>
+                ) : isEditing ? (
                   <input
                     type="tel"
                     name="phone"
@@ -524,7 +540,11 @@ const PatientProfile = () => {
               <label className="block text-[#7a756e] font-medium mb-2 font-[Poppins]">
                 {t("patientProfile.address")}
               </label>
-              {isEditing ? (
+              {isOrg ? (
+                <div className="w-full p-3 border border-[#b3b1ac] font-[Poppins] bg-[#f7f6f4] rounded-lg text-[#381207] min-h-[3rem]">
+                  {profileData.address}
+                </div>
+              ) : isEditing ? (
                 <textarea
                   name="address"
                   value={profileData.address}
@@ -652,7 +672,7 @@ const PatientProfile = () => {
 
         {/* Action Buttons */}
         <div className="flex justify-center gap-4">
-          {isEditing ? (
+          {isEditing && !isOrg ? (
             <>
               <button
                 onClick={handleSave}
@@ -668,12 +688,14 @@ const PatientProfile = () => {
               </button>
             </>
           ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-6 py-3 bg-[#2a341f] font-[Poppins] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
-            >
-              {t("patientProfile.editProfile")}
-            </button>
+            !isOrg && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-6 py-3 bg-[#2a341f] font-[Poppins] text-white rounded-lg hover:bg-[#1e241a] transition font-medium"
+              >
+                {t("patientProfile.editProfile")}
+              </button>
+            )
           )}
         </div>
       </div>

@@ -494,9 +494,9 @@ const approveOrg = async (req, res) => {
       const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
 
       // Create password setup link
-      const passwordLink = `${"https://virtueelwandelen.nl/"}/generate-pass/${
-        updatedOrg._id
-      }`;
+      const passwordLink = `${
+        process.env.FRONTEND_URL || "https://virtueelwandelen.nl"
+      }/generate-pass/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = false for new approvals)
       await sendEmail(

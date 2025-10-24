@@ -88,7 +88,7 @@ const OrganizationProfile = () => {
           phoneNumber: profileData.phone,
         },
       };
-      await axios.put(`${DATABASE_URL}/org/updateOrg/${orgId}`, updatedData, {
+      await axios.put(`${DATABASE_URL}/org/editOrg/${orgId}`, updatedData, {
         headers: { Authorization: `Bearer ${sessionId}` },
       });
       toast.success(t("organizationProfile.profileUpdatedSuccess"));

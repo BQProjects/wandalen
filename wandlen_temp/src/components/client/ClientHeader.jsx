@@ -219,7 +219,7 @@ const ClientHeader = () => {
         {/* Logout button */}
         <button
           onClick={handleLogout}
-          className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-[#381207] text-white text-center font-['Poppins'] text-xl font-medium leading-[136%] hover:bg-[#4a3a2a] transition-colors"
+          className="flex justify-center items-center gap-2.5 py-2 px-4 rounded-lg bg-[#381207] text-white text-center font-poppins text-xl font-medium leading-[136%] hover:bg-[#4a3a2a] transition-colors"
         >
           {t("clientHeader.buttons.logout")}
         </button>
@@ -231,7 +231,7 @@ const ClientHeader = () => {
           <div className="flex flex-col items-center gap-4 py-4">
             <Link
               to="/client/"
-              className="text-[#381207] font-['Poppins'] text-lg font-medium hover:text-[#5b6502] transition-colors"
+              className="text-[#381207] font-poppins text-lg font-medium hover:text-[#5b6502] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               {t("clientHeader.navigation.welcome")}
@@ -256,7 +256,7 @@ const ClientHeader = () => {
                     fill="#4B4741"
                   />
                 </svg>
-                <div className="body-5 text-brown font-['Poppins'] text-lg font-medium leading-[136%]">
+                <div className="body-5 text-brown font-poppins text-lg font-medium leading-[136%]">
                   {i18n.language === "en"
                     ? t("header.english")
                     : t("header.dutch")}
@@ -324,7 +324,7 @@ const ClientHeader = () => {
                 handleLogout();
                 setIsMenuOpen(false);
               }}
-              className="py-2 px-4 rounded-lg bg-[#381207] text-white font-['Poppins'] text-lg font-medium hover:bg-[#4a3a2a] transition-colors"
+              className="py-2 px-4 rounded-lg bg-[#381207] text-white font-poppins text-lg font-medium hover:bg-[#4a3a2a] transition-colors"
             >
               {t("clientHeader.buttons.logout")}
             </button>
