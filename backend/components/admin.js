@@ -9,13 +9,6 @@ const BlogModel = require("../models/blogModel");
 const TrainingModel = require("../models/trainingModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 const vimeoService = require("../services/vimeoService");
-const multer = require("multer");
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 50 * 1024 * 1024 * 1024, // 50GB limit
-  },
-});
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -501,7 +494,7 @@ const approveOrg = async (req, res) => {
       const customerEmail = updatedOrg.contactPerson?.email || updatedOrg.email;
 
       // Create password setup link
-      const passwordLink = `${"https://wandalen-nw69.vercel.app/"}/generate-pass/${
+      const passwordLink = `${"https://virtueelwandelen.nl/"}/generate-pass/${
         updatedOrg._id
       }`;
 
@@ -580,7 +573,7 @@ const updateOrg = async (req, res) => {
 
       // For updates, we don't include password setup link in customer email
       const passwordLink = `${
-        process.env.FRONTEND_URL || "https://wandalen-nw69.vercel.app"
+        process.env.FRONTEND_URL || "https://virtueelwandelen.nl"
       }/generate-pass/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = true for updates, no password link)
@@ -699,96 +692,6 @@ const toggleVideoApproval = async (req, res) => {
   }
 };
 
-const uploadToVimeo = async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    const videoFile = req.file;
-
-    if (!videoFile) {
-      return res.status(400).json({ message: "No video file provided" });
-    }
-
-    console.log(
-      `Starting upload for file: ${videoFile.originalname}, size: ${videoFile.size} bytes`
-    );
-
-    // Set up Server-Sent Events headers with additional headers for real-time streaming
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache, no-transform");
-    res.setHeader("Connection", "keep-alive");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Cache-Control, Authorization"
-    );
-    res.setHeader("X-Accel-Buffering", "no"); // Disable nginx buffering
-    res.setHeader("Content-Encoding", "identity"); // Disable compression
-
-    // Function to send progress updates
-    const sendProgress = (data) => {
-      console.log("Sending SSE progress:", data);
-      res.write(`data: ${JSON.stringify(data)}\n\n`);
-
-      // Force flush if available
-      if (res.flush) {
-        res.flush();
-      }
-
-      // Alternative method to ensure immediate sending
-      if (res.socket && res.socket.write) {
-        res.socket.uncork();
-      }
-    };
-
-    // Send initial progress
-    sendProgress({
-      stage: "starting",
-      message: "Upload initiated",
-      fileSize: videoFile.size,
-    });
-
-    // Upload video with progress tracking
-    const result = await vimeoService.uploadVideoWithProgress(
-      videoFile.buffer,
-      { title, description },
-      sendProgress
-    );
-
-    // Send final success message
-    sendProgress({
-      stage: "complete",
-      success: true,
-      videoId: result.videoId,
-      videoUrl: result.videoUrl,
-    });
-
-    console.log(`Upload completed successfully. Video ID: ${result.videoId}`);
-
-    // End the response
-    res.end();
-  } catch (error) {
-    console.error("Upload to Vimeo error:", error);
-
-    // Send error through SSE
-    try {
-      res.write(
-        `data: ${JSON.stringify({
-          stage: "error",
-          error: error.message,
-        })}\n\n`
-      );
-    } catch (writeError) {
-      console.error("Error writing error response:", writeError);
-    }
-
-    res.end();
-  }
-};
-
-/**
- * Upload thumbnail to Vimeo
- * This endpoint uploads a thumbnail to a Vimeo video
- */
 const uploadThumbnailToVimeo = async (req, res) => {
   try {
     if (!req.file) {
@@ -1141,9 +1044,7 @@ module.exports = {
   uploadVideo,
   getVideo,
   toggleVideoApproval,
-  uploadToVimeo,
   uploadThumbnailToVimeo,
-  upload,
   createAdmin,
   getAllAdmins,
   updateAdmin,

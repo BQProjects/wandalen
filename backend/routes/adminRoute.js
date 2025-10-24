@@ -1,5 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB limit for thumbnails
+  },
+});
 const {
   adminLogin,
   getAllOrgData,
@@ -27,7 +34,6 @@ const {
   uploadVideo,
   getVideo,
   toggleVideoApproval,
-  uploadToVimeo,
   uploadThumbnailToVimeo,
   getVimeoUploadTicket,
   getVimeoVideoDetails,
@@ -35,7 +41,6 @@ const {
   getAllAdmins,
   updateAdmin,
   deleteAdmin,
-  upload,
   getClientPaymentDetails,
 } = require("../components/admin");
 const { getAllReviews } = require("../components/client");
@@ -70,7 +75,6 @@ adminRouter.post("/uploadVideo", uploadVideo);
 adminRouter.get("/get-video/:videoId", getVideo);
 adminRouter.get("/get-reviews/:videoId", getAllReviews);
 adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);
-adminRouter.post("/upload-to-vimeo", upload.single("video"), uploadToVimeo);
 adminRouter.post(
   "/upload-thumbnail-to-vimeo",
   upload.single("thumbnail"),
