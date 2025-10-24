@@ -12,17 +12,25 @@ function ForgotPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
   const navigate = useNavigate();
   const { DATABASE_URL } = useContext(DatabaseContext);
   const { t } = useTranslation();
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
+
+    if (!email || !selectedRole) {
+      toast.error("Please fill in email and select your role");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${DATABASE_URL}/utils/forgot-password-send-otp`,
         {
           email,
+          role: selectedRole,
         }
       );
       if (res.status === 200) {
@@ -46,6 +54,7 @@ function ForgotPassword() {
           email,
           otp,
           newPassword,
+          role: selectedRole,
         }
       );
       if (res.status === 200) {
@@ -68,6 +77,7 @@ function ForgotPassword() {
         `${DATABASE_URL}/utils/forgot-password-send-otp`,
         {
           email,
+          role: selectedRole,
         }
       );
       if (res.status === 200) {
@@ -79,6 +89,10 @@ function ForgotPassword() {
       console.error("Error resending OTP:", error);
       toast.error("An error occurred while resending OTP. Please try again.");
     }
+  };
+
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value);
   };
 
   const togglePasswordVisibility = () => {
@@ -132,6 +146,74 @@ function ForgotPassword() {
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#e5e3df] bg-[#f7f6f4] text-[#4b4741] font-['Poppins'] text-lg sm:text-xl focus:outline-none focus:ring-2 focus:ring-[#5b6502] transition-colors"
                   placeholder={t("forgotPassword.emailPlaceholder")}
                 />
+              </div>
+
+              {/* Role Selection - Always shown */}
+              <div className="flex flex-col gap-2 sm:gap-3">
+                <label className="text-[#381207] font-['Poppins'] font-medium text-sm sm:text-base">
+                  {t("login.roleLabel")}
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+                  <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg">
+                    <input
+                      type="radio"
+                      id="caregiver"
+                      name="role"
+                      value="caregiver"
+                      checked={selectedRole === "caregiver"}
+                      onChange={handleRoleChange}
+                      required
+                      disabled={otpSent}
+                      className="w-4 h-4 accent-[#5b6502]"
+                    />
+                    <label
+                      htmlFor="caregiver"
+                      className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
+                    >
+                      {t("login.caregiver")}
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg ">
+                    <input
+                      type="radio"
+                      id="volunteer"
+                      name="role"
+                      value="volunteer"
+                      checked={selectedRole === "volunteer"}
+                      onChange={handleRoleChange}
+                      required
+                      disabled={otpSent}
+                      className="w-4 h-4 accent-[#5b6502]"
+                    />
+                    <label
+                      htmlFor="volunteer"
+                      className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
+                    >
+                      {t("login.volunteer")}
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-2 p-2 sm:p-3 rounded-lg">
+                    <input
+                      type="radio"
+                      id="organization"
+                      name="role"
+                      value="organization"
+                      checked={selectedRole === "organization"}
+                      onChange={handleRoleChange}
+                      required
+                      disabled={otpSent}
+                      className="w-4 h-4 accent-[#5b6502]"
+                    />
+                    <label
+                      htmlFor="organization"
+                      className="text-[#381207] font-['Poppins'] text-sm sm:text-base cursor-pointer"
+                    >
+                      {t("login.organization")}
+                    </label>
+                  </div>
+                </div>
               </div>
 
               {/* OTP Input - Shown after OTP sent */}

@@ -221,36 +221,51 @@ const unsubscribe = async (req, res) => {
 };
 
 const sendForgotPasswordOtp = async (req, res) => {
-  const { email } = req.body;
+  const { email, role } = req.body;
 
   try {
-    // Check if user exists in any model
-    let user = await ClientModel.findOne({ email });
-    let userType = "client";
-    if (!user) {
-      user = await VolunteerModel.findOne({ email });
-      userType = "volunteer";
+    // Validate role
+    if (!role || !["caregiver", "volunteer", "organization"].includes(role)) {
+      return res.status(400).json({ message: "Invalid or missing role" });
     }
-    if (!user) {
-      user = await OrgModel.findOne({ email });
-      userType = "org";
+
+    // Map role to model
+    let UserModel;
+    let userType;
+    switch (role) {
+      case "caregiver":
+        UserModel = ClientModel;
+        userType = "client";
+        break;
+      case "volunteer":
+        UserModel = VolunteerModel;
+        userType = "volunteer";
+        break;
+      case "organization":
+        UserModel = OrgModel;
+        userType = "org";
+        break;
     }
+
+    // Check if user exists in the specific model
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Delete any existing OTP records for this email
-    await smsStoreModel.deleteMany({ email });
+    // Delete any existing OTP records for this email and type
+    await smsStoreModel.deleteMany({ email, type: "forgot-password" });
 
     // Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Store new OTP with type for forgot password
+    // Store new OTP with type and role for forgot password
     const store = new smsStoreModel({
       email,
       otp,
       who: user._id,
       type: "forgot-password",
+      role: role, // Store the role for additional security
     });
     await store.save();
 
@@ -274,12 +289,17 @@ const sendForgotPasswordOtp = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const { email, otp, newPassword } = req.body;
+  const { email, otp, newPassword, role } = req.body;
 
   try {
+    // Validate role
+    if (!role || !["caregiver", "volunteer", "organization"].includes(role)) {
+      return res.status(400).json({ message: "Invalid or missing role" });
+    }
+
     // Find the OTP record
     const record = await smsStoreModel
-      .findOne({ email, type: "forgot-password" })
+      .findOne({ email, type: "forgot-password", role: role })
       .sort({ createdAt: -1 });
     if (
       !record ||
@@ -289,27 +309,37 @@ const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
 
-    // Find user in any model
-    let user = await ClientModel.findOne({ email });
-    let UserModel = ClientModel;
-    if (!user) {
-      user = await VolunteerModel.findOne({ email });
-      UserModel = VolunteerModel;
+    // Map role to model
+    let UserModel;
+    let isOrg = false;
+    switch (role) {
+      case "caregiver":
+        UserModel = ClientModel;
+        break;
+      case "volunteer":
+        UserModel = VolunteerModel;
+        break;
+      case "organization":
+        UserModel = OrgModel;
+        isOrg = true;
+        break;
     }
-    if (!user) {
-      user = await OrgModel.findOne({ email });
-      UserModel = OrgModel;
-    }
+
+    // Find user in the specific model
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Hash the new password
-    const bcrypt = require("bcrypt");
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    // Update password - hash for clients/volunteers, plain text for orgs
+    let passwordToSave = newPassword;
+    if (!isOrg) {
+      const bcrypt = require("bcrypt");
+      passwordToSave = await bcrypt.hash(newPassword, 10);
+    }
 
     // Update password
-    await UserModel.findByIdAndUpdate(user._id, { password: hashedPassword });
+    await UserModel.findByIdAndUpdate(user._id, { password: passwordToSave });
 
     // Delete the OTP record
     await smsStoreModel.findByIdAndDelete(record._id);

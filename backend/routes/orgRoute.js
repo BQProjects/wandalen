@@ -13,6 +13,7 @@ const {
   uploadProfilePicture,
   updatePassword,
   deleteAccount,
+  setInitialPassword,
 } = require("../components/org");
 
 const orgRouter = express.Router();
@@ -21,6 +22,7 @@ orgRouter.use(cors());
 
 orgRouter.post("/login", orgLogin);
 orgRouter.post("/signup", orgSignUp);
+orgRouter.put("/set-initial-password/:orgId", setInitialPassword);
 orgRouter.post("/addClient", validateActiveSession, addClient);
 orgRouter.put("/editClient/:clientId", validateActiveSession, editClient);
 orgRouter.delete(

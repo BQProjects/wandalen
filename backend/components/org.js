@@ -344,6 +344,32 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+const setInitialPassword = async (req, res) => {
+  const { orgId } = req.params;
+  const { password } = req.body;
+
+  try {
+    const org = await OrgModel.findById(orgId);
+    if (!org) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+
+    // Check if password is already set
+    if (org.password && org.password.trim() !== "") {
+      return res.status(400).json({ message: "Password already set" });
+    }
+
+    // Set the initial password (plain text for orgs)
+    org.password = password;
+    await org.save();
+
+    res.json({ message: "Initial password set successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   orgLogin,
   orgSignUp,
@@ -356,4 +382,5 @@ module.exports = {
   uploadProfilePicture,
   updatePassword,
   deleteAccount,
+  setInitialPassword,
 };

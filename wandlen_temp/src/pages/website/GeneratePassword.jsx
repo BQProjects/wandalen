@@ -28,9 +28,12 @@ const GeneratePassword = () => {
     }
 
     try {
-      const res = await axios.put(`${DATABASE_URL}/org/editOrg/${id}`, {
-        password,
-      });
+      const res = await axios.put(
+        `${DATABASE_URL}/org/set-initial-password/${id}`,
+        {
+          password,
+        }
+      );
       console.log("Server response:", res.data);
       toast.success(
         "Password set successfully! You can now log in to your account."
