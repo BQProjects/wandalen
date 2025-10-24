@@ -54,7 +54,7 @@ const Blog = () => {
               {t("blog.header.title")}
             </div>
             <div
-              className="text-[#381207] font-['Poppins'] text-5xl lg:text-4xl font-semibold leading-[136%]"
+              className="text-[#381207] font-['Poppins'] text-5xl lg:text-5xl font-semibold leading-[136%]"
               style={{ letterSpacing: "-0.48px" }}
             >
               {t("blog.header.subtitle")}

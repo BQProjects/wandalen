@@ -130,16 +130,18 @@ const SelectVideo = () => {
 
         {/* Centered Text */}
         <div className="relative text-center max-w-4xl mx-auto px-4">
-          <div className="flex justify-center items-center gap-5">
-            <span className="text-[#ede4dc] font-['Poppins'] text-8xl font-semibold leading-[136%]">
+          <div className="flex flex-col justify-center items-center gap-2.5">
+            <div className="welcome text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
               Welcome
-            </span>
-            <span className="text-[#a6a643] font-['Poppins'] text-8xl font-semibold leading-[normal]">
-              {firstName}
-            </span>
-            <span className="text-[#ede4dc] font-['Poppins'] text-8xl font-semibold leading-[136%]">
-              !
-            </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="text-[#a6a643] font-['Poppins'] text-8xl font-semibold leading-[normal]">
+                {firstName}
+              </div>
+              <div className="text text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
+                !
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -31,8 +31,8 @@ const VideoOrganization = () => {
     review: "",
     rating: 5,
   });
-  const [userReviewed, setUserReviewed] = useState(false);
-  const [justSubmitted, setJustSubmitted] = useState(false);
+  const [userType, setUserType] = useState("");
+  const [canReview, setCanReview] = useState(false);
 
   // Add this new state for pagination
   const [currentPage, setCurrentPage] = useState(0);
@@ -147,7 +147,8 @@ const VideoOrganization = () => {
       });
       setReviews(res.data.reviews || []);
 
-      if (userId && res.data.hasReviewed) {
+      // Only check review status for users who can review
+      if (canReview && userId && res.data.hasReviewed) {
         setUserReviewed(true);
         setShowReviewForm(false);
       }
@@ -199,6 +200,12 @@ const VideoOrganization = () => {
   };
 
   useEffect(() => {
+    // Check user type - organization users cannot review
+    const userType = localStorage.getItem("userType");
+    const canReview = userType === "client" || userType === "volunteer";
+    setCanReview(canReview);
+    setShowReviewForm(canReview); // Only show review form for clients/volunteers
+
     // Always fetch these
     getVideo();
     addView();
@@ -403,80 +410,84 @@ const VideoOrganization = () => {
           )}
 
           {/* Review Form Section */}
-          <div className="mt-8 pb-10">
-            <h3 className="text-2xl font-semibold text-brown mb-6">
-              {userReviewed || justSubmitted
-                ? t("videoClient.thanksForReview")
-                : t("videoClient.shareExperience")}
-            </h3>
+          {canReview && (
+            <div className="mt-8 pb-10">
+              <h3 className="text-2xl font-semibold text-brown mb-6">
+                {userReviewed || justSubmitted
+                  ? t("videoClient.thanksForReview")
+                  : t("videoClient.shareExperience")}
+              </h3>
 
-            {/* Only show form if user hasn't reviewed AND hasn't just submitted */}
-            {!userReviewed && !justSubmitted && showReviewForm && (
-              <form
-                onSubmit={handleReviewSubmit}
-                className="bg-[#381207] p-6 rounded-lg shadow-lg"
-              >
-                <div className="mb-6">
-                  <label
-                    htmlFor="review"
-                    className="block text-[#EDE4DC] font-medium mb-2"
-                  >
-                    {t("videoClient.yourReview")}
-                  </label>
-                  <textarea
-                    id="review"
-                    rows="4"
-                    value={reviewForm.review}
-                    onChange={(e) =>
-                      setReviewForm({ ...reviewForm, review: e.target.value })
-                    }
-                    className="w-full p-3 border placeholder:text-[#EDE4DC]  text-[#EDE4DC]  border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
-                    placeholder={t("videoClient.reviewPlaceholder")}
-                    required
-                  ></textarea>
-                </div>
-
-                {/* Repositioned stars and submit button */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div className="mb-4 sm:mb-0">
+              {/* Only show form if user hasn't reviewed AND hasn't just submitted */}
+              {!userReviewed && !justSubmitted && showReviewForm && (
+                <form
+                  onSubmit={handleReviewSubmit}
+                  className="bg-[#381207] p-6 rounded-lg shadow-lg"
+                >
+                  <div className="mb-6">
                     <label
-                      htmlFor="rating"
+                      htmlFor="review"
                       className="block text-[#EDE4DC] font-medium mb-2"
                     >
-                      {t("videoClient.rating")}
+                      {t("videoClient.yourReview")}
                     </label>
-                    <div className="flex items-center gap-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          type="button"
-                          onClick={() =>
-                            setReviewForm({ ...reviewForm, rating: star })
-                          }
-                          className="focus:outline-none"
-                        >
-                          <img
-                            src={
-                              star <= reviewForm.rating ? StarFilled : StarEmpty
-                            }
-                            alt="Star"
-                            className="w-6 h-6"
-                          />
-                        </button>
-                      ))}
-                    </div>
+                    <textarea
+                      id="review"
+                      rows="4"
+                      value={reviewForm.review}
+                      onChange={(e) =>
+                        setReviewForm({ ...reviewForm, review: e.target.value })
+                      }
+                      className="w-full p-3 border placeholder:text-[#EDE4DC]  text-[#EDE4DC]  border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
+                      placeholder={t("videoClient.reviewPlaceholder")}
+                      required
+                    ></textarea>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="bg-[#A6A643] hover:bg-accent text-[#EDE4DC] font-medium py-2 px-6 rounded-lg transition-colors self-end"
-                  >
-                    {t("videoClient.submitReview")}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
+                  {/* Repositioned stars and submit button */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="mb-4 sm:mb-0">
+                      <label
+                        htmlFor="rating"
+                        className="block text-[#EDE4DC] font-medium mb-2"
+                      >
+                        {t("videoClient.rating")}
+                      </label>
+                      <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() =>
+                              setReviewForm({ ...reviewForm, rating: star })
+                            }
+                            className="focus:outline-none"
+                          >
+                            <img
+                              src={
+                                star <= reviewForm.rating
+                                  ? StarFilled
+                                  : StarEmpty
+                              }
+                              alt="Star"
+                              className="w-6 h-6"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="bg-[#A6A643] hover:bg-accent text-[#EDE4DC] font-medium py-2 px-6 rounded-lg transition-colors self-end"
+                    >
+                      {t("videoClient.submitReview")}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <Footer />
