@@ -151,16 +151,14 @@ const SelectVideo = () => {
           <div className="bg-[#dd9219] rounded-2xl p-8 text-center text-[#381207] mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <h3 className="text-2xl font-semibold text-[#381207]">
-                Activity Monitoring Notice
+                {t("selectVideo.activityMonitoring.title")}
               </h3>
             </div>
             <p className="text-lg max-w-3xl mx-auto leading-relaxed mb-4">
-              We have detected unusual viewing activity. Your account is being
-              monitored for suspicious behavior.
+              {t("selectVideo.activityMonitoring.message1")}
             </p>
             <p className="text-lg max-w-3xl mx-auto leading-relaxed">
-              You can continue watching videos, but please be aware that
-              excessive activity may result in account restrictions.
+              {t("selectVideo.activityMonitoring.message2")}
             </p>
           </div>
         )}

@@ -1107,6 +1107,11 @@
             "title": "Your Favorite Videos",
             "subtitle": "Easily find and enjoy the videos you love most, anytime.",
             "emptyState": "No nature videos available at the moment."
+        },
+        "activityMonitoring": {
+            "title": "Activity Monitoring Notice",
+            "message1": "We have detected unusual viewing activity. Your account is being monitored for suspicious behavior.",
+            "message2": "You can continue watching videos, but please be aware that excessive activity may result in account restrictions."
         }
     },
     "clientHeader": {
