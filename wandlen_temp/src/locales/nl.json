@@ -1101,6 +1101,11 @@
             "title": "Je favoriete video's",
             "subtitle": "Vind en geniet gemakkelijk van de video's waar je het meest van houdt, altijd.",
             "emptyState": "Geen natuurvideo's beschikbaar op dit moment."
+        },
+        "activityMonitoring": {
+            "title": "Activiteitsbewaking Melding",
+            "message1": "We hebben ongebruikelijke kijkactiviteit gedetecteerd. Uw account wordt gecontroleerd op verdachte gedragingen.",
+            "message2": "U kunt doorgaan met het bekijken van video's, maar houd er rekening mee dat overmatige activiteit kan leiden tot accountbeperkingen."
         }
     },
     "clientHeader": {

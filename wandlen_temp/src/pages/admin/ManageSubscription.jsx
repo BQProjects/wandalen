@@ -124,6 +124,8 @@ const ManageSubscription = () => {
           company: client.company,
           phoneNo: client.phoneNo,
           country: client.country,
+          videosWatched: client.dailyWatchCount || 0,
+          lastWatchDate: client.lastWatchDate,
         };
       });
       setSubscriptions(mappedSubscriptions);
@@ -154,6 +156,12 @@ const ManageSubscription = () => {
         if (sortConfig.key === "startDate" || sortConfig.key === "endDate") {
           aValue = aValue !== "N/A" ? new Date(aValue) : new Date(0);
           bValue = bValue !== "N/A" ? new Date(bValue) : new Date(0);
+        }
+
+        // Handle numeric sorting for videos watched
+        if (sortConfig.key === "videosWatched") {
+          aValue = Number(aValue) || 0;
+          bValue = Number(bValue) || 0;
         }
 
         if (aValue < bValue) {
@@ -224,7 +232,7 @@ const ManageSubscription = () => {
       <div className="w-full bg-[#ede4dc]/[.30] rounded-[0.625rem] overflow-hidden">
         {/* Header Row */}
         <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
-          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+          <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               First Name
             </div>
@@ -234,7 +242,7 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+          <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Last Name
             </div>
@@ -244,7 +252,7 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[16%] min-w-[120px]">
+          <div className="flex items-center gap-2 w-[14%] min-w-[110px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Plan Type
             </div>
@@ -254,7 +262,7 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[12%] min-w-[80px]">
+          <div className="flex items-center gap-2 w-[10%] min-w-[70px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Status
             </div>
@@ -264,7 +272,7 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+          <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Start Date
             </div>
@@ -274,7 +282,7 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[14%] min-w-[100px]">
+          <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               End Date
             </div>
@@ -284,7 +292,17 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[13%] min-w-[110px]">
+          <div className="flex items-center gap-2 w-[11%] min-w-[80px]">
+            <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
+              V.Viewed
+            </div>
+            <SortIcon
+              column="videosWatched"
+              sortConfig={sortConfig}
+              onSort={handleSort}
+            />
+          </div>
+          <div className="flex items-center gap-2 w-[11%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Payment
             </div>
@@ -294,7 +312,7 @@ const ManageSubscription = () => {
               onSort={handleSort}
             />
           </div>
-          <div className="flex items-center gap-2 w-[3%] min-w-[40px]">
+          <div className="flex items-center gap-2 w-[6%] min-w-[50px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
               Action
             </div>
@@ -310,22 +328,22 @@ const ManageSubscription = () => {
             }`}
             onClick={() => handleRowClick(sub)}
           >
-            <div className="w-[14%] min-w-[100px] pr-4">
+            <div className="w-[12%] min-w-[90px] pr-4">
               <div className="text-[#381207] font-['Poppins'] font-medium truncate">
                 {sub.firstName}
               </div>
             </div>
-            <div className="w-[14%] min-w-[100px] pr-4">
+            <div className="w-[12%] min-w-[90px] pr-4">
               <div className="text-[#381207] font-['Poppins'] font-medium truncate">
                 {sub.lastName}
               </div>
             </div>
-            <div className="w-[16%] min-w-[120px] pr-4">
+            <div className="w-[14%] min-w-[110px] pr-4">
               <div className="text-[#381207] font-['Poppins'] truncate">
                 {sub.planType}
               </div>
             </div>
-            <div className="w-[12%] min-w-[80px] pr-4">
+            <div className="w-[10%] min-w-[70px] pr-4">
               <div className="flex items-center gap-2">
                 <svg
                   width={10}
@@ -356,17 +374,22 @@ const ManageSubscription = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[14%] min-w-[100px] pr-4">
+            <div className="w-[12%] min-w-[90px] pr-4">
               <div className="text-[#381207] font-['Poppins'] text-sm truncate">
                 {sub.startDate}
               </div>
             </div>
-            <div className="w-[14%] min-w-[100px] pr-4">
+            <div className="w-[12%] min-w-[90px] pr-4">
               <div className="text-[#381207] font-['Poppins'] text-sm truncate">
                 {sub.endDate}
               </div>
             </div>
-            <div className="w-[13%] min-w-[110px] pr-4">
+            <div className="w-[11%] min-w-[80px] pr-4">
+              <div className="text-[#381207] font-['Poppins'] text-center font-medium">
+                {sub.videosWatched}
+              </div>
+            </div>
+            <div className="w-[11%] min-w-[90px] pr-4">
               <div className="flex items-center gap-2">
                 <svg
                   width={10}
@@ -387,7 +410,7 @@ const ManageSubscription = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[3%] min-w-[40px] flex justify-center">
+            <div className="w-[6%] min-w-[50px] flex justify-center">
               <svg
                 width={16}
                 height={16}

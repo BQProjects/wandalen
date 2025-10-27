@@ -147,44 +147,40 @@ const SelectVideo = () => {
       </div>
 
       <div className="mx-auto relative px-4 sm:px-10 md:px-20 pt-20">
-        {watchLimit && watchLimit.limitReached ? (
-          <div className="bg-[#381207] rounded-2xl p-8 text-center text-[#ede4dc] mb-20">
+        {watchLimit && watchLimit.limitReached && (
+          <div className="bg-[#dd9219] rounded-2xl p-8 text-center text-[#381207] mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <h3 className="text-2xl font-semibold text-[#dd9219]">
-                Daily Video Limit Reached
+              <h3 className="text-2xl font-semibold text-[#381207]">
+                {t("selectVideo.activityMonitoring.title")}
               </h3>
             </div>
             <p className="text-lg max-w-3xl mx-auto leading-relaxed mb-4">
-              You have watched {watchLimit.dailyWatchCount} videos today. The
-              daily limit is {watchLimit.maxLimit} videos per day.
+              {t("selectVideo.activityMonitoring.message1")}
             </p>
-            {watchLimit.resetTime && (
-              <p className="text-lg max-w-3xl mx-auto leading-relaxed">
-                Your limit will reset at midnight (
-                {new Date(watchLimit.resetTime).toLocaleString()}).
-              </p>
-            )}
+            <p className="text-lg max-w-3xl mx-auto leading-relaxed">
+              {t("selectVideo.activityMonitoring.message2")}
+            </p>
           </div>
-        ) : (
-          <VideoGridWithFilters
-            videos={videos}
-            onVideoSelect={handleVideoSelect}
-            title={t("selectVideo.grid.title")}
-            subtitle={t("selectVideo.grid.subtitle")}
-            customFilterOptions={null}
-            showFilters={true}
-            showStats={true}
-            isClientView={true}
-            emptyStateMessage={t("selectVideo.grid.emptyState")}
-            showResultsCount={true}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-            activeFilters={activeFilters}
-            onFilterChange={setActiveFilters}
-            totalPages={Math.ceil(total / itemsPerPage)}
-            total={total} // Pass total matching videos
-          />
         )}
+
+        <VideoGridWithFilters
+          videos={videos}
+          onVideoSelect={handleVideoSelect}
+          title={t("selectVideo.grid.title")}
+          subtitle={t("selectVideo.grid.subtitle")}
+          customFilterOptions={null}
+          showFilters={true}
+          showStats={true}
+          isClientView={true}
+          emptyStateMessage={t("selectVideo.grid.emptyState")}
+          showResultsCount={true}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          activeFilters={activeFilters}
+          onFilterChange={setActiveFilters}
+          totalPages={Math.ceil(total / itemsPerPage)}
+          total={total} // Pass total matching videos
+        />
 
         {/* TODO: need to change the favorites section to pagination section */}
         {/* Favorites Section */}
