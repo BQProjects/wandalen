@@ -214,6 +214,14 @@ const SubscriptionOverview = () => {
                     {subscription.paymentStatus || "N/A"}
                   </p>
                 </div>
+                <div>
+                  <label className="text-[#4b4741] font-['Poppins'] block mb-2">
+                    Videos watched (24h)
+                  </label>
+                  <p className="text-[#381207] font-['Poppins'] text-lg">
+                    {subscription.videosWatched || 0}
+                  </p>
+                </div>
               </div>
               <div className="space-y-6">
                 <div>
@@ -230,6 +238,18 @@ const SubscriptionOverview = () => {
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {subscription.planType}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-[#4b4741] font-['Poppins'] block mb-2">
+                    Last watch date
+                  </label>
+                  <p className="text-[#381207] font-['Poppins'] text-lg">
+                    {subscription.lastWatchDate
+                      ? new Date(
+                          subscription.lastWatchDate
+                        ).toLocaleDateString()
+                      : "Never"}
                   </p>
                 </div>
               </div>
