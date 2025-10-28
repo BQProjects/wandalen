@@ -9,6 +9,7 @@ import Quote from "../../assets/Quote.svg";
 import Footer from "../../components/Footer";
 import axios from "axios";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
+import toast from "react-hot-toast";
 
 const VideoAdmin = () => {
   const { id } = useParams();
@@ -58,6 +59,25 @@ const VideoAdmin = () => {
           clientError
         );
       }
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    if (!window.confirm("Are you sure you want to delete this review?")) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${DATABASE_URL}/admin/delete-review/${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${sessionId}`,
+        },
+      });
+      fetchReviews(); // Refresh reviews
+      toast.success("Review deleted successfully");
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      toast.error("Error deleting review");
     }
   };
 
@@ -233,13 +253,13 @@ const VideoAdmin = () => {
                             />
                           </div>
                         </div>
-                        <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                        <div className="text-lg sm:text-xl font-bold text-brown mb-2">
                           {review.username || "Anonymous"}
                         </div>
                         <div className="text-brown font-medium mb-4 text-sm sm:text-base">
                           {review.review}
                         </div>
-                        <div className="flex items-center gap-1 mb-4">
+                        <div className="flex items-center justify-evenly mb-4 w-full">
                           {[...Array(5)].map((_, i) => (
                             <img
                               key={i}
@@ -249,6 +269,12 @@ const VideoAdmin = () => {
                             />
                           ))}
                         </div>
+                        <button
+                          onClick={() => handleDeleteReview(review._id)}
+                          className="bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg text-sm transition-colors"
+                        >
+                          Delete Review
+                        </button>
                       </div>
                     ))}
                 </div>

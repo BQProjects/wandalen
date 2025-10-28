@@ -42,6 +42,7 @@ const {
   updateAdmin,
   deleteAdmin,
   getClientPaymentDetails,
+  deleteReview,
 } = require("../components/admin");
 const { getAllReviews } = require("../components/client");
 
@@ -74,6 +75,7 @@ adminRouter.delete("/delete-client/:clientId", deleteClient);
 adminRouter.post("/uploadVideo", uploadVideo);
 adminRouter.get("/get-video/:videoId", getVideo);
 adminRouter.get("/get-reviews/:videoId", getAllReviews);
+adminRouter.delete("/delete-review/:reviewId", deleteReview);
 adminRouter.put("/toggle-video-approval/:videoId", toggleVideoApproval);
 adminRouter.post(
   "/upload-thumbnail-to-vimeo",

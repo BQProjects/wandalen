@@ -8,6 +8,7 @@ const {
   requestVideo,
   addReview,
   getAllReviews,
+  deleteReview,
   getAllvideos,
   getAccountInfo,
   deleteAccount,
@@ -42,6 +43,11 @@ clientRouter.post("/login", clientLogin);
 clientRouter.post("/request-video", validateActiveSession, requestVideo);
 clientRouter.post("/add-review", validateActiveSession, addReview);
 clientRouter.get("/get-reviews/:videoId", validateActiveSession, getAllReviews);
+clientRouter.delete(
+  "/delete-review/:videoId",
+  validateActiveSession,
+  deleteReview
+);
 clientRouter.get("/get-all-videos", validateActiveSession, getAllvideos);
 clientRouter.get(
   "/get-account/:clientId",

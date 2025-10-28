@@ -1149,7 +1149,8 @@
         "loginToLike": "Log in om video's leuk te vinden",
         "loginToReview": "Log in om een beoordeling in te dienen",
         "reviewSuccess": "Beoordeling succesvol ingediend!",
-        "reviewError": "Beoordeling indienen mislukt. Probeer het opnieuw."
+        "reviewError": "Beoordeling indienen mislukt. Probeer het opnieuw.",
+        "deleteReview": "Verwijder beoordeling"
     },
     "patientProfile": {
         "removeImage": "Afbeelding verwijderen",
