@@ -620,6 +620,32 @@ const getAllReviews = async (req, res) => {
   }
 };
 
+const deleteReview = async (req, res) => {
+  const { videoId } = req.params;
+  const { clientId } = req.body;
+
+  try {
+    const review = await ReviewModel.findOneAndDelete({
+      video: videoId,
+      clientId: clientId,
+    });
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    // Remove from video's reviews array
+    await VideoModel.findByIdAndUpdate(videoId, {
+      $pull: { reviews: review._id },
+    });
+
+    res.json({ message: "Review deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const getVideo = async (req, res) => {
   const { videoId } = req.params;
   try {
@@ -1612,6 +1638,7 @@ module.exports = {
   deleteAccount,
   addReview,
   getAllReviews,
+  deleteReview,
   getVideo,
   addView,
   addLike,

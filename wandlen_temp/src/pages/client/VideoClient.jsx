@@ -191,6 +191,28 @@ const VideoClient = () => {
     }
   };
 
+  const handleDeleteReview = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      toast.error(t("videoClient.loginToReview"));
+      return;
+    }
+
+    try {
+      await axios.delete(`${DATABASE_URL}/client/delete-review/${id}`, {
+        data: { clientId: userId },
+        headers: { Authorization: `Bearer ${sessionId}` },
+      });
+      setUserReviewed(false);
+      setShowReviewForm(true);
+      fetchReviews();
+      toast.success("Review deleted successfully");
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      toast.error("Error deleting review");
+    }
+  };
+
   useEffect(() => {
     // Always fetch these
     getVideo();
@@ -372,13 +394,13 @@ const VideoClient = () => {
                             />
                           </div>
                         </div>
-                        <div className="text-lg sm:text-xl font-semibold text-brown mb-2">
+                        <div className="text-lg sm:text-xl font-bold text-brown mb-2">
                           {review.username || "Anonymous"}
                         </div>
                         <div className="text-brown font-medium mb-4 text-sm sm:text-base">
                           {review.review}
                         </div>
-                        <div className="flex items-center gap-1 mb-4">
+                        <div className="flex items-center justify-evenly mb-4 w-full">
                           {[...Array(5)].map((_, i) => (
                             <img
                               key={i}
@@ -388,6 +410,14 @@ const VideoClient = () => {
                             />
                           ))}
                         </div>
+                        {review.clientId === localStorage.getItem("userId") && (
+                          <button
+                            onClick={handleDeleteReview}
+                            className="bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg text-sm transition-colors"
+                          >
+                            {t("videoClient.deleteReview")}
+                          </button>
+                        )}
                       </div>
                     ))}
                 </div>

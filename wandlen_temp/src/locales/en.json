@@ -1155,7 +1155,8 @@
         "loginToLike": "Please login to like videos",
         "loginToReview": "Please login to submit a review",
         "reviewSuccess": "Review submitted successfully!",
-        "reviewError": "Failed to submit review. Please try again."
+        "reviewError": "Failed to submit review. Please try again.",
+        "deleteReview": "Delete Review"
     },
     "patientProfile": {
         "removeImage": "Remove Image",

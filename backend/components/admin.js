@@ -7,6 +7,7 @@ const VideoModel = require("../models/videoModel");
 const videoRequestModel = require("../models/videoRequestModel");
 const BlogModel = require("../models/blogModel");
 const TrainingModel = require("../models/trainingModel");
+const ReviewModel = require("../models/reviewModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 const vimeoService = require("../services/vimeoService");
 
@@ -1017,6 +1018,28 @@ const getClientPaymentDetails = async (req, res) => {
   }
 };
 
+const deleteReview = async (req, res) => {
+  const { reviewId } = req.params;
+
+  try {
+    const review = await ReviewModel.findByIdAndDelete(reviewId);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    // Remove from video's reviews array
+    await VideoModel.findByIdAndUpdate(review.video, {
+      $pull: { reviews: review._id },
+    });
+
+    res.json({ message: "Review deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllOrgData,
@@ -1052,4 +1075,5 @@ module.exports = {
   getClientPaymentDetails,
   getVimeoUploadTicket,
   getVimeoVideoDetails,
+  deleteReview,
 };
