@@ -197,7 +197,7 @@ const ManageClients = () => {
         <div className="relative text-center max-w-4xl mx-auto px-4">
           <div className="flex flex-col justify-center items-center gap-2.5">
             <div className="welcome text-[#ede4dc] text-center font-['Poppins'] text-8xl font-semibold leading-[136%]">
-              Welcome
+              {t("manageClients.welcome")}
             </div>
             <div className="flex items-center gap-1">
               <div className="text-[#a6a643] font-['Poppins'] text-8xl font-semibold leading-[normal]">

@@ -1106,7 +1106,8 @@
             "title": "Activiteitsbewaking Melding",
             "message1": "We hebben ongebruikelijke kijkactiviteit gedetecteerd. Uw account wordt gecontroleerd op verdachte gedragingen.",
             "message2": "U kunt doorgaan met het bekijken van video's, maar houd er rekening mee dat overmatige activiteit kan leiden tot accountbeperkingen."
-        }
+        },
+        "welcome": "Welkom"
     },
     "clientHeader": {
         "navigation": {
@@ -1216,7 +1217,8 @@
         "clientUpdatedSuccess": "Cliënt succesvol bijgewerkt",
         "clientAddedSuccess": "Cliënt succesvol toegevoegd",
         "clientDeletedSuccess": "Cliënt succesvol verwijderd",
-        "clientDeleteError": "Cliënt verwijderen mislukt"
+        "clientDeleteError": "Cliënt verwijderen mislukt",
+        "welcome": "Welkom"
     },
     "organizationProfile": {
         "accountInfo": "Account Informatie",
