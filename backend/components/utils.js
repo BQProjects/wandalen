@@ -4,7 +4,6 @@ const SubscriptionModel = require("../models/subscriptionModel");
 const ClientModel = require("../models/clientModel");
 const VolunteerModel = require("../models/volunteerModel");
 const OrgModel = require("../models/orgModel");
-const TestimonialModel = require("../models/testimonialModel");
 const crypto = require("crypto");
 const axios = require("axios");
 const { sendEmail, emailTemplates } = require("../services/emailService");
@@ -463,16 +462,6 @@ const subscribeHealthcareQuote = async (req, res) => {
   }
 };
 
-const getTestimonials = async (req, res) => {
-  try {
-    const testimonials = await TestimonialModel.find();
-    res.status(200).json(testimonials);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 module.exports = {
   verifyOtp,
   resendOtp,
@@ -482,5 +471,4 @@ module.exports = {
   sendForgotPasswordOtp,
   resetPassword,
   subscribeHealthcareQuote,
-  getTestimonials,
 };

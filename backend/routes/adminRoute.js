@@ -26,14 +26,6 @@ const {
   createTraining,
   updateTraining,
   deleteTraining,
-  getTestimonials,
-  createTestimonial,
-  updateTestimonial,
-  deleteTestimonial,
-  getMedia,
-  createMedia,
-  updateMedia,
-  deleteMedia,
   deleteVolunteer,
   approveOrg,
   updateOrg,
@@ -76,14 +68,6 @@ adminRouter.get("/trainings", getTrainings);
 adminRouter.post("/trainings", createTraining);
 adminRouter.put("/trainings/:id", updateTraining);
 adminRouter.delete("/trainings/:id", deleteTraining);
-adminRouter.get("/testimonials", getTestimonials);
-adminRouter.post("/testimonials", createTestimonial);
-adminRouter.put("/testimonials/:id", updateTestimonial);
-adminRouter.delete("/testimonials/:id", deleteTestimonial);
-adminRouter.get("/media", getMedia);
-adminRouter.post("/media", createMedia);
-adminRouter.put("/media/:id", updateMedia);
-adminRouter.delete("/media/:id", deleteMedia);
 adminRouter.put("/approve-org/:orgId", approveOrg);
 adminRouter.put("/update-org/:orgId", updateOrg);
 adminRouter.delete("/delete-request/:orgId", deleteOrg);
