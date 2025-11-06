@@ -35,8 +35,6 @@ const AdminSidebar = () => {
         videosRes,
         requestsRes,
         subscriptionsRes,
-        mediaRes,
-        testimonialsRes,
       ] = await Promise.all([
         axios.get(`${DATABASE_URL}/admin/all-clients`, {
           headers: { Authorization: `Bearer ${sessionId}` },
@@ -60,16 +58,6 @@ const AdminSidebar = () => {
             headers: { Authorization: `Bearer ${sessionId}` },
           })
           .catch(() => ({ data: { subscriptions: [] } })), // Handle if this endpoint fails
-        axios
-          .get(`${DATABASE_URL}/admin/media`, {
-            headers: { Authorization: `Bearer ${sessionId}` },
-          })
-          .catch(() => ({ data: [] })), // Handle if this endpoint fails
-        axios
-          .get(`${DATABASE_URL}/admin/testimonials`, {
-            headers: { Authorization: `Bearer ${sessionId}` },
-          })
-          .catch(() => ({ data: [] })), // Handle if this endpoint fails
       ]);
 
       // Prepare data for Excel sheets
@@ -186,29 +174,6 @@ const AdminSidebar = () => {
           : "N/A",
       }));
 
-      const mediaData = (mediaRes.data || []).map((media, index) => ({
-        "S.No": index + 1,
-        Title: media.title || "N/A",
-        "News Outlet": media.source || "N/A",
-        Link: media.link || "N/A",
-        "Banner URL": media.banner || "N/A",
-        "Created At": media.createdAt
-          ? new Date(media.createdAt).toLocaleDateString()
-          : "N/A",
-      }));
-
-      const testimonialsData = (testimonialsRes.data || []).map(
-        (testimonial, index) => ({
-          "S.No": index + 1,
-          Name: testimonial.name || "N/A",
-          Text: testimonial.text || "N/A",
-          "Photo URL": testimonial.photo || "N/A",
-          "Created At": testimonial.createdAt
-            ? new Date(testimonial.createdAt).toLocaleDateString()
-            : "N/A",
-        })
-      );
-
       // Create workbook
       const wb = XLSX.utils.book_new();
 
@@ -219,8 +184,6 @@ const AdminSidebar = () => {
       const videosWs = XLSX.utils.json_to_sheet(videosData);
       const requestsWs = XLSX.utils.json_to_sheet(requestsData);
       const subscriptionsWs = XLSX.utils.json_to_sheet(subscriptionsData);
-      const mediaWs = XLSX.utils.json_to_sheet(mediaData);
-      const testimonialsWs = XLSX.utils.json_to_sheet(testimonialsData);
 
       XLSX.utils.book_append_sheet(wb, clientsWs, "Clients");
       XLSX.utils.book_append_sheet(wb, volunteersWs, "Volunteers");
@@ -232,8 +195,6 @@ const AdminSidebar = () => {
         subscriptionsWs,
         "Newsletter Subscriptions"
       );
-      XLSX.utils.book_append_sheet(wb, mediaWs, "Media Coverage");
-      XLSX.utils.book_append_sheet(wb, testimonialsWs, "Testimonials");
 
       // Generate filename with current date
       const now = new Date();
@@ -247,7 +208,7 @@ const AdminSidebar = () => {
       document.getElementById("downloadBtn").innerText = originalText;
       document.getElementById("downloadBtn").disabled = false;
 
-      toast.success("Data downloaded successfully!");
+        toast.success("Data downloaded successfully!");
     } catch (error) {
       console.error("Error downloading data:", error);
       toast.error("Error downloading data. Please try again.");
@@ -410,42 +371,6 @@ const AdminSidebar = () => {
     {
       label: "Training Details",
       path: "/admin/training-details",
-      icon: (
-        <svg
-          width={18}
-          height={19}
-          viewBox="0 0 18 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M2.25 5.003H1.5V3.5H3.003V5.003H2.25ZM2.25 10.253H1.5V8.75H3.003V10.253H2.25ZM1.5 15.503H3.003V14H1.5V15.503ZM6 3.5H5.25V5H16.5V3.5H6ZM5.25 8.75H16.5V10.25H5.25V8.75ZM6 14H5.25V15.5H16.5V14H6Z"
-            fill="#7A756E"
-          />
-        </svg>
-      ),
-    },
-    {
-      label: "Testimonials",
-      path: "/admin/testimonials",
-      icon: (
-        <svg
-          width={18}
-          height={19}
-          viewBox="0 0 18 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M2.25 5.003H1.5V3.5H3.003V5.003H2.25ZM2.25 10.253H1.5V8.75H3.003V10.253H2.25ZM1.5 15.503H3.003V14H1.5V15.503ZM6 3.5H5.25V5H16.5V3.5H6ZM5.25 8.75H16.5V10.25H5.25V8.75ZM6 14H5.25V15.5H16.5V14H6Z"
-            fill="#7A756E"
-          />
-        </svg>
-      ),
-    },
-    {
-      label: "Media Coverage",
-      path: "/admin/media",
       icon: (
         <svg
           width={18}

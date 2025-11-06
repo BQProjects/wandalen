@@ -208,32 +208,16 @@ const WebsiteHeader = () => {
               </Link>
 
               <Link
-                to="/gratis"
+                to="/blog"
                 className="flex flex-col justify-center items-start"
-                onMouseEnter={() => setHoveredItem("gratis")}
+                onMouseEnter={() => setHoveredItem("blog")}
                 onMouseLeave={() => setHoveredItem(null)}
-                onClick={() => setActiveItem("gratis")}
-              >
-                <div className="body text-[#381207] font-poppins font-medium text-lg md:text-xl leading-[136%]">
-                  {t("header.blog")}
-                </div>
-                {(hoveredItem === "gratis" || activeItem === "gratis") && (
-                  <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
-                )}
-              </Link>
-
-              <Link
-                to="/media"
-                className="flex flex-col justify-center items-start"
-                onMouseEnter={() => setHoveredItem("media")}
-                onMouseLeave={() => setHoveredItem(null)}
-                onClick={() => setActiveItem("media")}
+                onClick={() => setActiveItem("blog")}
               >
                 <div className="body text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
-                  {t("header.media")}
+                  {t("header.blog")}
                 </div>
-                {(hoveredItem === "media" ||
-                  activeItem === "media") && (
+                {(hoveredItem === "blog" || activeItem === "blog") && (
                   <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
                 )}
               </Link>
@@ -374,18 +358,11 @@ const WebsiteHeader = () => {
                   {t("header.subscriptions")}
                 </Link>
                 <Link
-                  to="/gratis"
+                  to="/blog"
                   className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("header.blog")}
-                </Link>
-                <Link
-                  to="/media"
-                  className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t("header.media")}
                 </Link>
                 <div className="flex flex-col items-center gap-2">
                   <Link

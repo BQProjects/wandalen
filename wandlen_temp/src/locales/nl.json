@@ -6,8 +6,7 @@
         "logout": "Uitloggen",
         "becomeVolunteer": "Word vrijwilliger",
         "subscribe": "Abonneren",
-        "blog": "Gratis",
-        "media": "Media",
+        "blog": "Blog",
         "english": "Engels",
         "dutch": "Nederlands",
         "login": "Inloggen",
@@ -1681,19 +1680,5 @@
         "message": "Uw betaling is geannuleerd. U kunt het opnieuw proberen wanneer u er klaar voor bent.",
         "tryAgain": "Probeer opnieuw",
         "goHome": "Ga naar home"
-    },
-    "viewBlog": {
-        "blogTitle": "Blog",
-        "loading": "Laden...",
-        "notFound": "Blog niet gevonden.",
-        "downloadableResources": "Downloadbare Bronnen",
-        "download": "Downloaden"
-    },
-    "media": {
-        "header": {
-            "title": "In de media"
-        },
-        "loading": "Laden...",
-        "readMore": "Lees meer"
     }
 }

@@ -28,7 +28,6 @@ import Training from "../pages/website/Traning";
 import VolunteerSignupForm from "../pages/website/VolunteerSignup";
 import ViewBlog from "../pages/website/ViewBlog";
 import Blog from "../pages/website/Blog";
-import Media from "../pages/website/Media";
 import GeneratePassword from "../pages/website/GeneratePassword";
 import ReadMoreAboutTina from "../pages/website/ReadMoreAboutTina";
 
@@ -75,8 +74,6 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Otp from "../pages/website/OTP";
 import FutureVideos from "../pages/volunteer/FutureVideos";
 import PrivacyPolicy from "../pages/website/PrivacyPolicy";
-import Testimonail from "../pages/admin/Testimonials";
-import MediaCoverage from "../pages/admin/Media";
 
 export const router = createBrowserRouter([
   {
@@ -100,12 +97,8 @@ export const router = createBrowserRouter([
         element: <Subscribe />,
       },
       {
-        path: "gratis",
+        path: "blog",
         element: <Blog />,
-      },
-      {
-        path: "media",
-        element: <Media />,
       },
       {
         path: "blog/:id",
@@ -351,14 +344,6 @@ export const router = createBrowserRouter([
       {
         path: "training-details",
         element: <TrainingDetails />,
-      },
-      {
-        path: "testimonials",
-        element: <Testimonail />,
-      },
-      {
-        path: "media",
-        element: <MediaCoverage />,
       },
       {
         path: "update-credentials",
