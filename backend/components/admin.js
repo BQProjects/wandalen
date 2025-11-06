@@ -7,6 +7,8 @@ const VideoModel = require("../models/videoModel");
 const videoRequestModel = require("../models/videoRequestModel");
 const BlogModel = require("../models/blogModel");
 const TrainingModel = require("../models/trainingModel");
+const TestimonialModel = require("../models/testimonialModel");
+const MediaModel = require("../models/mediaModel");
 const ReviewModel = require("../models/reviewModel");
 const { sendEmail, emailTemplates } = require("../services/emailService");
 const vimeoService = require("../services/vimeoService");
@@ -270,8 +272,16 @@ const getBlog = async (req, res) => {
 
 const createBlog = async (req, res) => {
   try {
-    const { title, content, imgUrl, author, date } = req.body;
-    const newBlog = new BlogModel({ title, content, imgUrl, author, date });
+    const { title, content, imgUrl, author, date, downloadableResources } =
+      req.body;
+    const newBlog = new BlogModel({
+      title,
+      content,
+      imgUrl,
+      author,
+      date,
+      downloadableResources,
+    });
     await newBlog.save();
     res.status(201).json(newBlog);
   } catch (error) {
@@ -283,10 +293,11 @@ const createBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content, imgUrl, author, date } = req.body;
+    const { title, content, imgUrl, author, date, downloadableResources } =
+      req.body;
     const updatedBlog = await BlogModel.findByIdAndUpdate(
       id,
-      { title, content, imgUrl, author, date },
+      { title, content, imgUrl, author, date, downloadableResources },
       { new: true }
     );
     if (!updatedBlog) {
@@ -369,6 +380,125 @@ const deleteTraining = async (req, res) => {
       return res.status(404).json({ message: "Training not found" });
     }
     res.status(200).json({ message: "Training deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getTestimonials = async (req, res) => {
+  try {
+    const testimonials = await TestimonialModel.find();
+    res.status(200).json(testimonials);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const createTestimonial = async (req, res) => {
+  try {
+    const { name, text, photo } = req.body;
+    const newTestimonial = new TestimonialModel({
+      name,
+      text,
+      photo,
+    });
+    await newTestimonial.save();
+    res.status(201).json(newTestimonial);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateTestimonial = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, text, photo } = req.body;
+    const updatedTestimonial = await TestimonialModel.findByIdAndUpdate(
+      id,
+      { name, text, photo },
+      { new: true }
+    );
+    if (!updatedTestimonial) {
+      return res.status(404).json({ message: "Testimonial not found" });
+    }
+    res.status(200).json(updatedTestimonial);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteTestimonial = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedTestimonial = await TestimonialModel.findByIdAndDelete(id);
+    if (!deletedTestimonial) {
+      return res.status(404).json({ message: "Testimonial not found" });
+    }
+    res.status(200).json({ message: "Testimonial deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getMedia = async (req, res) => {
+  try {
+    const media = await MediaModel.find();
+    res.status(200).json(media);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const createMedia = async (req, res) => {
+  try {
+    const { title, source, link, banner } = req.body;
+    const newMedia = new MediaModel({
+      title,
+      source,
+      link,
+      banner,
+    });
+    await newMedia.save();
+    res.status(201).json(newMedia);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateMedia = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, source, link, banner } = req.body;
+    const updatedMedia = await MediaModel.findByIdAndUpdate(
+      id,
+      { title, source, link, banner },
+      { new: true }
+    );
+    if (!updatedMedia) {
+      return res.status(404).json({ message: "Media item not found" });
+    }
+    res.status(200).json(updatedMedia);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteMedia = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedMedia = await MediaModel.findByIdAndDelete(id);
+    if (!deletedMedia) {
+      return res.status(404).json({ message: "Media item not found" });
+    }
+    res.status(200).json({ message: "Media item deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -1059,6 +1189,14 @@ module.exports = {
   createTraining,
   updateTraining,
   deleteTraining,
+  getTestimonials,
+  createTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+  getMedia,
+  createMedia,
+  updateMedia,
+  deleteMedia,
   deleteVolunteer,
   approveOrg,
   updateOrg,
