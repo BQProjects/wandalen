@@ -12,8 +12,10 @@ const BlogForm = () => {
   const [coverImage, setCoverImage] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
   const [imgUrl, setImgUrl] = useState("");
+  const [downloadableResources, setDownloadableResources] = useState([]);
+  const [uploadingResource, setUploadingResource] = useState(false);
   const [content, setContent] = useState([]);
-  const [loading, setLoading] = useState(isEdit);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { DATABASE_URL } = useContext(DatabaseContext);
 
@@ -24,6 +26,7 @@ const BlogForm = () => {
   }, [id, isEdit]);
 
   const fetchBlog = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${DATABASE_URL}/admin/blogs/${id}`);
       const blog = response.data;
@@ -38,6 +41,7 @@ const BlogForm = () => {
             : item
         )
       );
+      setDownloadableResources(blog.downloadableResources || []);
     } catch (error) {
       console.error("Error fetching blog:", error);
     } finally {
@@ -101,6 +105,53 @@ const BlogForm = () => {
     setContent(content.filter((_, i) => i !== index));
   };
 
+  const addDownloadableResource = () => {
+    setDownloadableResources([
+      ...downloadableResources,
+      { name: "", url: "", file: null },
+    ]);
+  };
+
+  const handleResourceNameChange = (index, name) => {
+    const newResources = [...downloadableResources];
+    newResources[index].name = name;
+    setDownloadableResources(newResources);
+  };
+
+  const handleResourceFileChange = async (index, file) => {
+    if (!file) return;
+
+    setUploadingResource(true);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "wandelen");
+      data.append("cloud_name", "dojwaepbj");
+
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/dojwaepbj/auto/upload",
+        data
+      );
+
+      const newResources = [...downloadableResources];
+      newResources[index].url = res.data.secure_url;
+      newResources[index].file = file;
+      setDownloadableResources(newResources);
+      toast.success("Resource uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading resource:", error);
+      toast.error("Error uploading resource");
+    } finally {
+      setUploadingResource(false);
+    }
+  };
+
+  const removeDownloadableResource = (index) => {
+    setDownloadableResources(
+      downloadableResources.filter((_, i) => i !== index)
+    );
+  };
+
   const handleSubmit = async () => {
     try {
       let finalImgUrl = imgUrl;
@@ -145,6 +196,10 @@ const BlogForm = () => {
         imgUrl: finalImgUrl,
         content: finalContent,
         author: "Admin", // You can make this dynamic if needed
+        downloadableResources: downloadableResources.map((resource) => ({
+          name: resource.name,
+          url: resource.url,
+        })),
       };
 
       if (isEdit) {
@@ -341,6 +396,98 @@ const BlogForm = () => {
             Add Image
           </button>
         </div>
+      </div>
+
+      {/* Downloadable Resources Section */}
+      <div className="flex flex-col items-start gap-4 p-6 w-full rounded-2xl bg-[#f7f6f4] mb-6">
+        <div className="self-stretch text-[#381207] font-['Poppins'] text-lg font-medium leading-[normal]">
+          Downloadable Resources
+        </div>
+
+        {downloadableResources.map((resource, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-start gap-2 self-stretch p-4 rounded-lg border border-[#b3b1ac] bg-white"
+          >
+            <div className="flex flex-col items-start gap-2 self-stretch">
+              <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+                Resource Name *
+              </div>
+              <input
+                type="text"
+                value={resource.name}
+                onChange={(e) =>
+                  handleResourceNameChange(index, e.target.value)
+                }
+                placeholder="Enter resource name (e.g., 'Guide PDF', 'Report 2024')"
+                className="flex items-center gap-2.5 self-stretch p-3 h-11 rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643]"
+              />
+            </div>
+
+            <div className="flex flex-col items-start gap-2 self-stretch">
+              <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
+                Upload File *
+              </div>
+              <div className="flex flex-col items-center gap-2.5 self-stretch p-3 rounded-lg border border-[#b3b1ac]">
+                {resource.url ? (
+                  <div className="flex items-center gap-2 w-full">
+                    <span className="text-green-600 font-medium">
+                      ✓ File uploaded
+                    </span>
+                    <a
+                      href={resource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline text-sm"
+                    >
+                      View file
+                    </a>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    <div
+                      className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white text-center font-['Poppins'] font-medium leading-[136%] cursor-pointer hover:bg-[#8f9b3a] transition-colors"
+                      onClick={() =>
+                        document
+                          .getElementById(`resource-upload-${index}`)
+                          .click()
+                      }
+                    >
+                      {uploadingResource ? "Uploading..." : "Upload File"}
+                    </div>
+                    <span className="text-sm text-gray-500">
+                      Supported formats: PDF, DOC, DOCX, XLS, XLSX, etc.
+                    </span>
+                  </div>
+                )}
+                <input
+                  id={`resource-upload-${index}`}
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar"
+                  onChange={(e) =>
+                    handleResourceFileChange(index, e.target.files[0])
+                  }
+                  className="hidden"
+                  disabled={uploadingResource}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() => removeDownloadableResource(index)}
+              className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm hover:bg-red-600 transition-colors"
+            >
+              Remove Resource
+            </button>
+          </div>
+        ))}
+
+        <button
+          onClick={addDownloadableResource}
+          className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white font-['Poppins'] font-medium leading-[136%] hover:bg-[#8f9b3a] transition-colors"
+        >
+          Add Downloadable Resource
+        </button>
       </div>
 
       {/* Action Buttons */}

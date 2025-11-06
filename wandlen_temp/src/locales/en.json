@@ -7,6 +7,7 @@
         "becomeVolunteer": "Become a volunteer",
         "subscribe": "Subscribe",
         "blog": "Blog",
+        "media": "Media",
         "english": "English",
         "dutch": "Dutch",
         "login": "Log in",
@@ -1735,5 +1736,19 @@
         "message": "Your payment was cancelled. You can try again when you're ready.",
         "tryAgain": "Try Again",
         "goHome": "Go Home"
+    },
+    "viewBlog": {
+        "blogTitle": "Blog",
+        "loading": "Loading...",
+        "notFound": "Blog not found.",
+        "downloadableResources": "Downloadable Resources",
+        "download": "Download"
+    },
+    "media": {
+        "header": {
+            "title": "In the Media"
+        },
+        "loading": "Loading...",
+        "readMore": "Read more"
     }
 }
