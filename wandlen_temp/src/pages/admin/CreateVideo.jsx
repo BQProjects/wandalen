@@ -479,11 +479,11 @@ const CreateVideo = () => {
     duration: "",
     province: "",
     municipality: "",
-    season: "",
-    natureType: "",
-    soundStimuli: "",
-    animals: "",
+    season: [], // Changed to array
+    natureType: [], // Changed to array
+    animals: [], // Changed to array
     tags: [], // Changed to array
+    customTags: "", // New field for extra tags
     imgUrl: "",
     url: "",
   });
@@ -525,6 +525,13 @@ const CreateVideo = () => {
     setFormData({ ...formData, tags: selectedOptions });
   };
 
+  // Handle multiple selection for season, natureType, animals
+  const handleMultipleChange = (e) => {
+    const { name, selectedOptions } = e.target;
+    const values = Array.from(selectedOptions, (option) => option.value);
+    setFormData({ ...formData, [name]: values });
+  };
+
   // Load video data if in edit mode
   useEffect(() => {
     if (editMode && videoId) {
@@ -563,10 +570,16 @@ const CreateVideo = () => {
           description: videoData.description,
           duration: videoData.duration,
           location: videoData.location,
-          season: videoData.season,
-          natureType: videoData.natureType,
+          season: videoData.season
+            ? videoData.season.split(",").map((s) => s.trim())
+            : [],
+          natureType: videoData.natureType
+            ? videoData.natureType.split(",").map((s) => s.trim())
+            : [],
           soundStimuli: videoData.soundStimuli,
-          animals: videoData.animals,
+          animals: videoData.animals
+            ? videoData.animals.split(",").map((s) => s.trim())
+            : [],
           tags: videoData.tags
             .split(",")
             .map((tag) => tag.trim())
@@ -646,7 +659,7 @@ const CreateVideo = () => {
     e.preventDefault();
     setIsLoading(true);
     setUploadProgress(0);
-    setCurrentStep("Starting upload...");
+    setCurrentStep("Upload starten...");
     setUploadStats({
       uploadedSize: 0,
       totalSize: 0,
@@ -660,7 +673,7 @@ const CreateVideo = () => {
     try {
       // Upload video file directly to Vimeo only if it's an actual file (not a link)
       if (videoFile && videoFile.type !== "link") {
-        setCurrentStep("Preparing direct upload to Vimeo...");
+        setCurrentStep("Direct upload naar Vimeo voorbereiden...");
 
         // Step 1: Get upload ticket from backend
         const ticketResponse = await axios.post(
@@ -681,7 +694,7 @@ const CreateVideo = () => {
         console.log("Got Vimeo upload ticket:", ticket);
 
         // Step 2: Upload directly to Vimeo from client
-        setCurrentStep("Uploading video directly to Vimeo...");
+        setCurrentStep("Video direct naar Vimeo uploaden...");
 
         await new Promise((resolveUpload, rejectUpload) => {
           const xhr = new XMLHttpRequest();
@@ -692,7 +705,7 @@ const CreateVideo = () => {
                 (event.loaded / event.total) * 100
               );
               setUploadProgress(percentComplete);
-              setCurrentStep(`Uploading to Vimeo... ${percentComplete}%`);
+              setCurrentStep(`Naar Vimeo uploaden... ${percentComplete}%`);
               setUploadStats((prev) => ({
                 ...prev,
                 uploadedSize: event.loaded,
@@ -731,7 +744,7 @@ const CreateVideo = () => {
         });
 
         // Step 3: Complete the upload and get video URL from backend
-        setCurrentStep("Completing upload and getting video URL...");
+        setCurrentStep("Upload voltooien en video URL ophalen...");
 
         // Wait a moment for Vimeo to process
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -750,7 +763,7 @@ const CreateVideo = () => {
 
         // Upload thumbnail if exists
         if (coverImage) {
-          setCurrentStep("Uploading thumbnail to Vimeo...");
+          setCurrentStep("Thumbnail naar Vimeo uploaden...");
           const thumbnailFormData = new FormData();
           thumbnailFormData.append("thumbnail", coverImage);
           thumbnailFormData.append("videoId", ticket.videoId);
@@ -776,7 +789,7 @@ const CreateVideo = () => {
         }
 
         setUploadProgress(100);
-        setCurrentStep("Video uploaded successfully!");
+        setCurrentStep("Video succesvol geüpload!");
       } else if (coverImage && !videoFile && editMode) {
         // If only updating thumbnail in edit mode
         setCurrentStep("Uploading thumbnail to Vimeo...");
@@ -821,7 +834,9 @@ const CreateVideo = () => {
         }
       }
 
-      setCurrentStep(editMode ? "Updating video..." : "Creating video...");
+      setCurrentStep(editMode ? "Video bijwerken..." : "Video aanmaken...");
+
+      const allTags = [...formData.tags];
 
       const payload = {
         title: formData.title,
@@ -834,7 +849,11 @@ const CreateVideo = () => {
         nature: formData.natureType,
         sound: formData.soundStimuli,
         animals: formData.animals,
-        tags: formData.tags.join(", "), // Changed to string to match backend expectation
+        tags: allTags, // array
+        customTags: formData.customTags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0),
         imgUrl: imgUrl, // Cover URL
         duration: formData.duration,
       };
@@ -852,9 +871,9 @@ const CreateVideo = () => {
         );
         if (res.status === 200) {
           setUploadProgress(100);
-          setCurrentStep("Video updated successfully!");
+          setCurrentStep("Video succesvol bijgewerkt!");
           setTimeout(() => {
-            toast.success("Video updated successfully");
+            toast.success("Video succesvol bijgewerkt");
             navigate("/admin/all-videos");
           }, 1000);
         } else {
@@ -873,9 +892,9 @@ const CreateVideo = () => {
         );
         if (res.status === 201) {
           setUploadProgress(100);
-          setCurrentStep("Video created successfully!");
+          setCurrentStep("Video succesvol aangemaakt!");
           setTimeout(() => {
-            toast.success("Video uploaded successfully");
+            toast.success("Video succesvol geüpload");
             navigate("/admin/all-videos");
           }, 1000);
         } else {
@@ -884,9 +903,11 @@ const CreateVideo = () => {
       }
     } catch (error) {
       console.error("Error:", error);
-      setCurrentStep("Error occurred");
+      setCurrentStep("Fout opgetreden");
       toast.error(
-        `An error occurred: ${error.response?.data?.message || error.message}`
+        `Er is een fout opgetreden: ${
+          error.response?.data?.message || error.message
+        }`
       );
     } finally {
       setIsLoading(false);
@@ -906,11 +927,13 @@ const CreateVideo = () => {
         description: "",
         duration: "",
         location: "",
-        season: "",
-        natureType: "",
-        soundStimuli: "",
-        animals: "",
+        season: [],
+        natureType: [],
+        animals: [],
         tags: [], // Reset to empty array
+        customTags: "",
+        imgUrl: "",
+        url: "",
       });
       setCoverImage(null);
       setVideoFile(null);
@@ -931,10 +954,21 @@ const CreateVideo = () => {
         duration: res.data.duration,
         province: res.data.province || "",
         municipality: res.data.municipality || "",
-        season: res.data.season,
-        natureType: res.data.nature,
-        soundStimuli: res.data.sound,
-        animals: res.data.animals,
+        season: Array.isArray(res.data.season)
+          ? res.data.season
+          : res.data.season
+          ? res.data.season.split(",").map((s) => s.trim())
+          : [],
+        natureType: Array.isArray(res.data.nature)
+          ? res.data.nature
+          : res.data.nature
+          ? res.data.nature.split(",").map((s) => s.trim())
+          : [],
+        animals: Array.isArray(res.data.animals)
+          ? res.data.animals
+          : res.data.animals
+          ? res.data.animals.split(",").map((s) => s.trim())
+          : [],
         tags: Array.isArray(res.data.tags)
           ? res.data.tags
           : res.data.tags
@@ -943,6 +977,9 @@ const CreateVideo = () => {
               .map((tag) => tag.trim())
               .filter((tag) => tag.length > 0)
           : [],
+        customTags: Array.isArray(res.data.customTags)
+          ? res.data.customTags.join(", ")
+          : res.data.customTags || "",
         imgUrl: res.data.imgUrl,
         url: res.data.url,
       });
@@ -968,7 +1005,7 @@ const CreateVideo = () => {
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#a6a643]"></div>
               </div>
               <h3 className="text-lg font-medium text-[#381207] mb-2">
-                {editMode ? "Updating Video" : "Creating Video"}
+                {editMode ? "Video bijwerken" : "Video maken"}
               </h3>
               <p className="text-sm text-[#7a756e] mb-4">{currentStep}</p>
 
@@ -987,21 +1024,21 @@ const CreateVideo = () => {
               {uploadStats.totalSize > 0 && (
                 <div className="mt-4 space-y-2 text-sm text-[#7a756e]">
                   <div className="flex justify-between items-center">
-                    <span>Uploaded:</span>
+                    <span>Geüpload:</span>
                     <span className="font-medium text-[#381207]">
                       {formatBytes(uploadStats.uploadedSize)} /{" "}
                       {formatBytes(uploadStats.totalSize)}
                     </span>
                   </div>
                   {/* <div className="flex justify-between items-center">
-                    <span>Estimated time:</span>
+                    <span>Geschatte tijd:</span>
                     <span className="font-medium text-[#381207]">
                       {formatTime(uploadStats.estimatedTime)}
                     </span>
                   </div> */}
                   {/* {uploadStats.uploadedSize > 0 && uploadStats.startTime && (
                     <div className="flex justify-between items-center">
-                      <span>Upload speed:</span>
+                      <span>Uploadsnelheid:</span>
                       <span className="font-medium text-[#381207]">
                         {formatBytes(
                           uploadStats.uploadedSize /
@@ -1020,14 +1057,14 @@ const CreateVideo = () => {
 
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-medium text-[#381207] font-[Poppins] text-center mb-8">
-          {editMode ? "Edit Video" : "Create Video"}
+          {editMode ? "Video bewerken" : "Video maken"}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Cover Page Upload */}
           <div className="bg-[#f7f6f4] rounded-2xl p-6">
             <h2 className="text-lg font-medium font-[Poppins] text-[#381207] mb-4">
-              Cover page
+              Omslagpagina
             </h2>
             <div className="border-2 border-dashed border-[#e5e3df] rounded-lg p-8 h-64 flex flex-col items-center justify-center bg-[#f7f6f4]">
               {coverImage ? (
@@ -1048,7 +1085,7 @@ const CreateVideo = () => {
                     onClick={() => setCoverImage(null)}
                     className="mt-2 text-red-500 font-[Poppins] text-sm hover:underline"
                   >
-                    Remove
+                    Verwijderen
                   </button>
                 </div>
               ) : (
@@ -1064,7 +1101,7 @@ const CreateVideo = () => {
                     htmlFor="cover-upload"
                     className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium"
                   >
-                    Upload Image
+                    Afbeelding uploaden
                   </label>
                 </>
               )}
@@ -1092,7 +1129,7 @@ const CreateVideo = () => {
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                       </svg>
                       <span className="text-[#381207] font-medium font-[Poppins]">
-                        Current Video URL
+                        Huidige video URL
                       </span>
                     </div>
                     <p className="text-[#7a756e] text-sm break-all mb-4 font-[Poppins] px-4">
@@ -1117,14 +1154,14 @@ const CreateVideo = () => {
                           d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                         />
                       </svg>
-                      Download/View Video
+                      Video downloaden/bekijken
                     </a>
                   </div>
                   <button
                     onClick={() => setShowUploadOptions(true)}
                     className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium"
                   >
-                    Upload New Video
+                    Nieuwe video uploaden
                   </button>
                 </div>
               ) : videoFile ? (
@@ -1142,7 +1179,7 @@ const CreateVideo = () => {
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                           </svg>
                           <span className="text-[#381207] font-medium font-[Poppins]">
-                            Video Link Added
+                            Video link toegevoegd
                           </span>
                         </div>
                         <p className="text-[#7a756e] text-sm break-all mb-3 font-[Poppins] px-4">
@@ -1157,7 +1194,7 @@ const CreateVideo = () => {
                         }}
                         className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
                       >
-                        Remove
+                        Verwijderen
                       </button>
                     </div>
                   ) : (
@@ -1168,7 +1205,7 @@ const CreateVideo = () => {
                         controls
                         className="w-full max-h-40 mx-auto mb-4 rounded object-contain"
                       >
-                        Your browser does not support the video tag.
+                        Uw browser ondersteunt de videotag niet.
                       </video>
                       <p className="text-[#381207] text-sm font-[Poppins]">
                         {videoFile.name}
@@ -1180,7 +1217,7 @@ const CreateVideo = () => {
                         }}
                         className="mt-2 text-red-500 text-sm font-[Poppins] hover:underline"
                       >
-                        Remove
+                        Verwijderen
                       </button>
                     </>
                   )}
@@ -1199,7 +1236,7 @@ const CreateVideo = () => {
                       onClick={() => setShowUploadOptions(true)}
                       className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium mb-4"
                     >
-                      Upload Video
+                      Video uploaden
                     </button>
                   ) : (
                     <>
@@ -1207,7 +1244,7 @@ const CreateVideo = () => {
                         htmlFor="video-upload"
                         className="cursor-pointer font-[Poppins] bg-[#a6a643] text-white px-4 py-2 rounded-lg hover:bg-[#8b8b3a] transition font-medium mb-4 block"
                       >
-                        Choose File
+                        Bestand kiezen
                       </label>
 
                       {/* Upload Options */}
@@ -1220,7 +1257,7 @@ const CreateVideo = () => {
                         >
                           <img src={UploadIcon} alt="Upload Icon" />
                           <span className="text-[#4b4741] font-[Poppins] text-sm">
-                            Upload from computer
+                            Uploaden vanaf computer
                           </span>
                         </div>
                         <div
@@ -1229,7 +1266,7 @@ const CreateVideo = () => {
                         >
                           <img src={LinkIcon} alt="Link Icon" />
                           <span className="text-[#381207] font-[Poppins] text-sm font-medium">
-                            Add link
+                            Link toevoegen
                           </span>
                         </div>
                       </div>
@@ -1240,7 +1277,7 @@ const CreateVideo = () => {
                           onClick={() => setShowUploadOptions(false)}
                           className="text-[#7a756e] text-sm font-[Poppins] hover:text-[#381207] transition"
                         >
-                          ← Back to Current Video
+                          ← Terug naar huidige video
                         </button>
                       )}
                     </>
@@ -1254,14 +1291,14 @@ const CreateVideo = () => {
         {/* Video Info Form */}
         <div className="bg-[#f7f6f4] rounded-2xl p-8">
           <h2 className="text-lg font-medium font-[Poppins] text-[#381207] mb-6">
-            Video Info
+            Video informatie
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
               <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                Title *
+                Titel *
               </label>
               <input
                 type="text"
@@ -1270,28 +1307,28 @@ const CreateVideo = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="Enter a clear and concise title"
+                placeholder="Voer een duidelijke en beknopte titel in"
               />
             </div>
 
             {/* Description */}
             <div>
               <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                Description
+                Beschrijving
               </label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg h-24 focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="What's this video about? Share key highlights or purpose..."
+                placeholder="Waar gaat deze video over? Deel belangrijke hoogtepunten of doel..."
               />
             </div>
 
             {/* Video Duration */}
             <div>
               <label className="block text-[#381207] font-[Poppins] font-medium mb-2">
-                Video duration (minutes)
+                Videoduur (minuten)
               </label>
               <input
                 type="number"
@@ -1300,7 +1337,7 @@ const CreateVideo = () => {
                 onChange={handleInputChange}
                 min="0"
                 className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
-                placeholder="Enter duration in minutes"
+                placeholder="Voer duur in minuten in"
               />
             </div>
 
@@ -1308,7 +1345,7 @@ const CreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Province
+                  Provincie
                 </label>
                 <select
                   name="province"
@@ -1316,7 +1353,7 @@ const CreateVideo = () => {
                   onChange={handleInputChange}
                   className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
                 >
-                  <option value="">-Select an option-</option>
+                  <option value="">-Selecteer een optie-</option>
                   <option value="Drenthe">Drenthe</option>
                   <option value="Flevoland">Flevoland</option>
                   <option value="Friesland">Friesland</option>
@@ -1333,7 +1370,7 @@ const CreateVideo = () => {
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Municipality
+                  Gemeente
                 </label>
                 <select
                   name="municipality"
@@ -1344,8 +1381,8 @@ const CreateVideo = () => {
                 >
                   <option value="">
                     {formData.province
-                      ? "-Select an option-"
-                      : "Select Province First"}
+                      ? "-Selecteer een optie-"
+                      : "Selecteer provincie eerst"}
                   </option>
                   {/* Municipality options will be populated based on selected province */}
                   {formData.province &&
@@ -1364,32 +1401,47 @@ const CreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Season
+                  Seizoen
                 </label>
                 <select
+                  multiple
                   name="season"
                   value={formData.season}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
+                  onChange={handleMultipleChange}
+                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none min-h-[120px]"
                 >
-                  <option value="">-Select an option-</option>
-                  <option value="spring">Spring</option>
-                  <option value="summer">Summer</option>
-                  <option value="autumn">Autumn</option>
+                  <option value="lente">Lente</option>
+                  <option value="zomer">Zomer</option>
+                  <option value="herfst">Herfst</option>
                   <option value="winter">Winter</option>
                 </select>
+                <p className="text-sm text-[#7a756e] mt-1 font-[Poppins]">
+                  Houd Ctrl (Cmd op Mac) ingedrukt om meerdere te selecteren
+                </p>
+                {formData.season.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {formData.season.map((season, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-[#f0f0f0] text-[#381207] text-sm rounded-full"
+                      >
+                        {season}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Nature Type
+                  Natuurtype
                 </label>
                 <select
+                  multiple
                   name="natureType"
                   value={formData.natureType}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
+                  onChange={handleMultipleChange}
+                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none min-h-[120px]"
                 >
-                  <option value="">-Select an option-</option>
                   <option value="Bos">Bos</option>
                   <option value="Heide">Heide</option>
                   <option value="Duinen">Duinen</option>
@@ -1399,6 +1451,21 @@ const CreateVideo = () => {
                   </option>
                   <option value="Stadsgroen & park">Stadsgroen & park</option>
                 </select>
+                <p className="text-sm text-[#7a756e] mt-1 font-[Poppins]">
+                  Houd Ctrl (Cmd op Mac) ingedrukt om meerdere te selecteren
+                </p>
+                {formData.natureType.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {formData.natureType.map((type, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-[#f0f0f0] text-[#381207] text-sm rounded-full"
+                      >
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1406,15 +1473,15 @@ const CreateVideo = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
-                  Animals
+                  Dieren
                 </label>
                 <select
+                  multiple
                   name="animals"
                   value={formData.animals}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none"
+                  onChange={handleMultipleChange}
+                  className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f] appearance-none min-h-[120px]"
                 >
-                  <option value="">-Select an option-</option>
                   <option value="Vogels">Vogels</option>
                   <option value="Eenden">Eenden</option>
                   <option value="Reeen">Reeen</option>
@@ -1430,6 +1497,21 @@ const CreateVideo = () => {
                   <option value="Libellen">Libellen</option>
                   <option value="Zwanen">Zwanen</option>
                 </select>
+                <p className="text-sm text-[#7a756e] mt-1 font-[Poppins]">
+                  Houd Ctrl (Cmd op Mac) ingedrukt om meerdere te selecteren
+                </p>
+                {formData.animals.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {formData.animals.map((animal, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-[#f0f0f0] text-[#381207] text-sm rounded-full"
+                      >
+                        {animal}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1451,7 +1533,7 @@ const CreateVideo = () => {
                 ))}
               </select>
               <p className="text-sm text-[#7a756e] mt-1 font-[Poppins]">
-                Hold Ctrl (Cmd on Mac) to select multiple tags
+                Houd Ctrl (Cmd op Mac) ingedrukt om meerdere tags te selecteren
               </p>
               {formData.tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -1467,6 +1549,21 @@ const CreateVideo = () => {
               )}
             </div>
 
+            {/* Extra Tags */}
+            <div>
+              <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
+                Extra tags
+              </label>
+              <input
+                type="text"
+                name="customTags"
+                value={formData.customTags}
+                onChange={handleInputChange}
+                className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                placeholder="Voer extra tags in, gescheiden door komma's"
+              />
+            </div>
+
             {/* Action Buttons */}
             <div className="flex justify-end gap-4 pt-4">
               <button
@@ -1474,7 +1571,7 @@ const CreateVideo = () => {
                 onClick={handleCancel}
                 className="px-6 py-2 bg-[#e5e3df] font-[Poppins] text-[#4b4741] rounded-lg hover:bg-gray-300 transition font-medium"
               >
-                Cancel
+                Annuleren
               </button>
               <button
                 type="submit"
@@ -1488,12 +1585,12 @@ const CreateVideo = () => {
                 {isLoading ? (
                   <div className="flex items-center gap-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    {editMode ? "Updating..." : "Creating..."}
+                    {editMode ? "Bijwerken..." : "Maken..."}
                   </div>
                 ) : editMode ? (
-                  "Update Video"
+                  "Video bijwerken"
                 ) : (
-                  "Submit"
+                  "Versturen"
                 )}
               </button>
             </div>
@@ -1530,13 +1627,13 @@ const CreateVideo = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 style={{ marginBottom: "20px", color: "#381207" }}>
-              Add Video Link
+              Video link toevoegen
             </h3>
             <input
               type="text"
               value={linkInput}
               onChange={(e) => setLinkInput(e.target.value)}
-              placeholder="Enter Google Drive or video link"
+              placeholder="Voer Google Drive of video link in"
               style={{
                 width: "100%",
                 padding: "10px",
@@ -1568,7 +1665,7 @@ const CreateVideo = () => {
                   cursor: "pointer",
                 }}
               >
-                Cancel
+                Annuleren
               </button>
               <button
                 type="button"
@@ -1582,7 +1679,7 @@ const CreateVideo = () => {
                   cursor: "pointer",
                 }}
               >
-                Add Link
+                Link toevoegen
               </button>
             </div>
           </div>

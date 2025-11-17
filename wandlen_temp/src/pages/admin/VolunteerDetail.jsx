@@ -22,8 +22,8 @@ const VolunteerDetail = () => {
         setVolunteer(response.data);
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching volunteer data:", err);
-        setError("Failed to load volunteer details");
+        console.error("Fout bij het ophalen van vrijwilligersgegevens:", err);
+        setError("Kan vrijwilligersgegevens niet laden");
         setLoading(false);
       }
     };
@@ -42,17 +42,18 @@ const VolunteerDetail = () => {
       await axios.put(`${DATABASE_URL}/volunteer/${id}/confirm`, {
         status: "confirmed",
       });
-      toast.success("Volunteer confirmed successfully!");
+      toast.success("Vrijwilliger succesvol bevestigd!");
     } catch (err) {
-      console.error("Error confirming volunteer:", err);
-      toast.error("Failed to confirm volunteer");
+      console.error("Fout bij het bevestigen van vrijwilliger:", err);
+      toast.error("Kan vrijwilliger niet bevestigen");
     }
   };
 
   if (loading)
-    return <div className="flex-1 p-6">Loading volunteer details...</div>;
+    return <div className="flex-1 p-6">Vrijwilligersgegevens laden...</div>;
   if (error) return <div className="flex-1 p-6 text-red-500">{error}</div>;
-  if (!volunteer) return <div className="flex-1 p-6">Volunteer not found</div>;
+  if (!volunteer)
+    return <div className="flex-1 p-6">Vrijwilliger niet gevonden</div>;
 
   return (
     <div className="flex-1 bg-white p-6 mx-auto">
@@ -76,7 +77,7 @@ const VolunteerDetail = () => {
           </svg>
         </button>
         <h1 className="text-2xl font-semibold text-[#381207] font-['Poppins']">
-          Volunteer Details with Meeting Details
+          Vrijwilligersgegevens met vergaderdetails
         </h1>
       </div>
 
@@ -88,14 +89,14 @@ const VolunteerDetail = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
-                  <p className="text-[#4b4741] font-['Poppins']">First name</p>
+                  <p className="text-[#4b4741] font-['Poppins']">Voornaam</p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {volunteer.firstName}
                   </p>
                 </div>
                 <div>
                   <p className="text-[#4b4741] font-['Poppins']">
-                    Phone number
+                    Telefoonnummer
                   </p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {volunteer.phoneNumber}
@@ -104,14 +105,14 @@ const VolunteerDetail = () => {
               </div>
               <div className="space-y-4">
                 <div>
-                  <p className="text-[#4b4741] font-['Poppins']">Last Name</p>
+                  <p className="text-[#4b4741] font-['Poppins']">Achternaam</p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {volunteer.lastName}
                   </p>
                 </div>
                 <div>
                   <p className="text-[#4b4741] font-['Poppins']">
-                    Contact Email
+                    Contact e-mail
                   </p>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {volunteer.email}
@@ -120,15 +121,15 @@ const VolunteerDetail = () => {
               </div>
             </div>
             <div className="mt-6">
-              <p className="text-[#4b4741] font-['Poppins']">Address</p>
+              <p className="text-[#4b4741] font-['Poppins']">Adres</p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
                 {volunteer.address}
               </p>
             </div>
             <div className="mt-6">
-              <p className="text-[#4b4741] font-['Poppins']">Note</p>
+              <p className="text-[#4b4741] font-['Poppins']">Notitie</p>
               <p className="text-[#381207] font-['Poppins'] text-lg">
-                {volunteer.notes || "No notes provided"}
+                {volunteer.notes || "Geen notities opgegeven"}
               </p>
             </div>
           </div>
@@ -137,7 +138,7 @@ const VolunteerDetail = () => {
         {/* Practical Information */}
         <div className="p-6 rounded-2xl bg-[#381207] text-white">
           <h2 className="text-2xl font-semibold mb-6 font-['Poppins']">
-            Practical Information
+            Praktische informatie
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-start gap-4">
@@ -155,10 +156,10 @@ const VolunteerDetail = () => {
               </svg>
               <div>
                 <p className="text-2xl font-semibold font-['Poppins']">
-                  Location
+                  Locatie
                 </p>
                 <p className="text-xl font-medium font-['Poppins']">
-                  {volunteer.address || "Location not specified"}
+                  {volunteer.address || "Locatie niet opgegeven"}
                 </p>
               </div>
             </div>
@@ -177,10 +178,10 @@ const VolunteerDetail = () => {
               </svg>
               <div>
                 <p className="text-2xl font-semibold font-['Poppins']">
-                  Postal Code
+                  Postcode
                 </p>
                 <p className="text-xl font-medium font-['Poppins']">
-                  {volunteer.postal || "Postal code not specified"}
+                  {volunteer.postal || "Postcode niet opgegeven"}
                 </p>
               </div>
             </div>

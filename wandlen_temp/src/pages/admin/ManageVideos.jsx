@@ -85,12 +85,12 @@ const ManageVideos = () => {
           )
         );
         toast.success(
-          `Video ${!currentStatus ? "approved" : "unapproved"} successfully`
+          `Video succesvol ${!currentStatus ? "goedgekeurd" : "afgekeurd"}`
         );
       }
     } catch (error) {
       console.error("Error toggling video approval:", error);
-      toast.error("Error updating video approval status");
+      toast.error("Fout bij het bijwerken van video goedkeuringsstatus");
     }
   };
 
@@ -98,9 +98,9 @@ const ManageVideos = () => {
   const approveAllVideos = async () => {
     if (
       !window.confirm(
-        `Are you sure you want to approve all ${
+        `Weet je zeker dat je alle ${
           sortedVideos.filter((v) => !v.isApproved).length
-        } videos?`
+        } video's wilt goedkeuren?`
       )
     ) {
       return;
@@ -138,11 +138,11 @@ const ManageVideos = () => {
       );
 
       toast.success(
-        `Approval complete!\nApproved: ${successCount}\nErrors: ${errorCount}`
+        `Goedkeuring voltooid!\nGoedgekeurd: ${successCount}\nFouten: ${errorCount}`
       );
     } catch (error) {
       console.error("Error approving all videos:", error);
-      toast.error("Error approving videos");
+      toast.error("Fout bij het goedkeuren van video's");
     } finally {
       setIsApproving(false);
     }
@@ -159,7 +159,7 @@ const ManageVideos = () => {
       link.click();
       document.body.removeChild(link);
     } else {
-      toast.error("Video URL not available");
+      toast.error("Video URL niet beschikbaar");
     }
   };
 
@@ -248,24 +248,24 @@ const ManageVideos = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
-          Volunteer Video Submissions
+          Vrijwilliger Video Inzendingen
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl mb-4">
-          View, download, and keep track of all videos submitted by your
-          volunteers.
+          Bekijk, download en houd bij alle video's die door je vrijwilligers
+          zijn ingezonden.
         </p>
         <div className="flex flex-wrap gap-4">
           <button
             onClick={() => navigate("/admin/all-videos")}
             className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors"
           >
-            Go to All Videos
+            Ga naar Alle Video's
           </button>
           <button
             className="px-6 py-2 font-[Poppins] bg-[#a6a643] text-white rounded-lg hover:bg-[#8b8b3a] transition font-medium"
             onClick={() => navigate("/admin/create-video")}
           >
-            Create Video
+            Video Aanmaken
           </button>
           <button
             className={`px-6 py-2 font-[Poppins] rounded-lg transition font-medium ${
@@ -275,7 +275,9 @@ const ManageVideos = () => {
             }`}
             onClick={() => setShowVolunteerOnly(!showVolunteerOnly)}
           >
-            {showVolunteerOnly ? "Show All Videos" : "Show Volunteer Videos"}
+            {showVolunteerOnly
+              ? "Toon Alle Video's"
+              : "Toon Vrijwilliger Video's"}
           </button>
           <button
             className="px-6 py-2 font-[Poppins] bg-[#d97706] text-white rounded-lg hover:bg-[#b45309] transition font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -283,16 +285,16 @@ const ManageVideos = () => {
             disabled={isApproving || sortedVideos.length === 0}
           >
             {isApproving
-              ? "Approving..."
-              : `Approve All (${
+              ? "Goedkeuren..."
+              : `Alles Goedkeuren (${
                   sortedVideos.filter((v) => !v.isApproved).length
                 })`}
           </button>
         </div>
         <div className="mt-4 text-[#381207] font-['Poppins']">
-          Total Videos: {sortedVideos.length} | Showing {indexOfFirstVideo + 1}-
+          Totaal Video's: {sortedVideos.length} | Toont {indexOfFirstVideo + 1}-
           {Math.min(indexOfLastVideo, sortedVideos.length)}
-          {showVolunteerOnly && " (Volunteer Videos Only)"}
+          {showVolunteerOnly && " (Alleen Vrijwilliger Video's)"}
         </div>
       </div>
 
@@ -302,7 +304,7 @@ const ManageVideos = () => {
         <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
           <div className="flex items-center gap-2 w-[22%] min-w-[220px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Video Title
+              Video Titel
             </div>
             <SortIcon
               column="title"
@@ -312,7 +314,7 @@ const ManageVideos = () => {
           </div>
           <div className="flex items-center gap-2 w-[32%] min-w-[300px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Video Description
+              Video Beschrijving
             </div>
             <SortIcon
               column="description"
@@ -322,7 +324,7 @@ const ManageVideos = () => {
           </div>
           <div className="flex items-center gap-2 w-[18%] min-w-[180px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Submitted By
+              Ingezonden Door
             </div>
             <SortIcon
               column="uploadedBy"
@@ -332,7 +334,7 @@ const ManageVideos = () => {
           </div>
           <div className="flex items-center gap-2 w-[15%] min-w-[140px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Submitted
+              Ingezonden
             </div>
             <SortIcon
               column="createdAt"
@@ -342,7 +344,7 @@ const ManageVideos = () => {
           </div>
           <div className="flex items-center gap-2 w-[13%] min-w-[120px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Actions
+              Acties
             </div>
             <SortIcon
               column="isApproved"
@@ -374,7 +376,7 @@ const ManageVideos = () => {
               <div className="text-[#381207] font-['Poppins'] truncate">
                 {video.uploadedBy
                   ? `${video.uploadedBy.firstName} ${video.uploadedBy.lastName}`
-                  : "Unknown"}
+                  : "Onbekend"}
               </div>
             </div>
             <div className="w-[15%] min-w-[140px] pr-4">
@@ -393,13 +395,13 @@ const ManageVideos = () => {
                   className="w-4 h-4 text-[#a6a643] bg-gray-100 border-gray-300 rounded focus:ring-[#a6a643] focus:ring-2"
                 />
                 <span className="text-[#381207] font-['Poppins'] text-sm">
-                  {video.isApproved ? "Yes" : "No"}
+                  {video.isApproved ? "Ja" : "Nee"}
                 </span>
               </div>
               <button
                 onClick={() => downloadVideo(video.url, video.title)}
                 className="px-3 py-2 flex items-center gap-2"
-                title="Download video for editing"
+                title="Download video voor bewerking"
               >
                 <svg
                   width={16}
@@ -437,7 +439,7 @@ const ManageVideos = () => {
             disabled={currentPage === 1}
             className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            Previous
+            Vorige
           </button>
 
           <div className="flex gap-1">
@@ -501,7 +503,7 @@ const ManageVideos = () => {
             disabled={currentPage === totalPages}
             className="px-4 py-2 bg-[#a6a643] text-white rounded-md hover:bg-[#8b8b3a] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            Next
+            Volgende
           </button>
         </div>
       )}

@@ -46,7 +46,7 @@ const AdminDashboard = () => {
       });
     } catch (err) {
       console.error("Error fetching dashboard stats:", err);
-      setError("Failed to load dashboard data");
+      setError("Dashboardgegevens laden mislukt");
     } finally {
       setLoading(false);
     }
@@ -61,9 +61,7 @@ const AdminDashboard = () => {
       <div className="flex-1 bg-[#f7f6f4] p-6 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a6a643] mx-auto mb-4"></div>
-          <p className="text-[#381207] font-['Poppins']">
-            Loading dashboard...
-          </p>
+          <p className="text-[#381207] font-['Poppins']">Dashboard laden...</p>
         </div>
       </div>
     );
@@ -78,7 +76,7 @@ const AdminDashboard = () => {
             onClick={fetchStats}
             className="bg-[#a6a643] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#8b8b3a] transition-colors"
           >
-            Try Again
+            Probeer opnieuw
           </button>
         </div>
       </div>
@@ -93,8 +91,8 @@ const AdminDashboard = () => {
           Admin Dashboard
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          Manage care organizations, families, volunteers, and all platform
-          activities in one place.
+          Beheer zorgorganisaties, families, vrijwilligers en alle
+          platformactiviteiten op één plek.
         </p>
       </div>
 
@@ -102,10 +100,10 @@ const AdminDashboard = () => {
       <div className="bg-[#ede4dc] rounded-2xl p-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
-            View RFQ Submissions
+            RFQ inzendingen bekijken
           </h2>
           <p className="text-lg text-[#381207] font-['Poppins']">
-            Track new requests and manage your responses seamlessly.
+            Nieuwe verzoeken volgen en uw reacties naadloos beheren.
           </p>
         </div>
         <button
@@ -114,7 +112,7 @@ const AdminDashboard = () => {
             window.location.href = "/admin/manage";
           }}
         >
-          Manage Quotes
+          Offertes beheren
         </button>
       </div>
 
@@ -139,13 +137,13 @@ const AdminDashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
-              Total Care Organization
+              Totaal zorgorganisatie
             </h3>
             <p className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
               {stats.organizations}
             </p>
             <p className="text-lg text-[#381207] font-['Poppins']">
-              Organizations currently supporting patients.
+              Organisaties die momenteel patiënten ondersteunen.
             </p>
           </div>
         </div>
@@ -172,13 +170,13 @@ const AdminDashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
-              Total Families
+              Totaal families
             </h3>
             <p className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
               {stats.families}
             </p>
             <p className="text-lg text-[#381207] font-['Poppins']">
-              Families active across all plans.
+              Families actief in alle plannen.
             </p>
           </div>
         </div>
@@ -203,13 +201,13 @@ const AdminDashboard = () => {
         </div>
         <div>
           <h3 className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
-            Active Volunteers
+            Actieve vrijwilligers
           </h3>
           <p className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
             {stats.volunteers}
           </p>
           <p className="text-lg text-[#381207] font-['Poppins']">
-            Volunteers currently helping across communities.
+            Vrijwilligers die momenteel helpen in gemeenschappen.
           </p>
         </div>
       </div>
@@ -230,13 +228,13 @@ const AdminDashboard = () => {
         </div>
         <div>
           <h3 className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
-            Total Videos
+            Totaal video's
           </h3>
           <p className="text-2xl font-medium text-[#381207] font-['Poppins'] mb-2">
             {stats.videos}
           </p>
           <p className="text-lg text-[#381207] font-['Poppins']">
-            Videos uploaded by volunteers.
+            Video's geüpload door vrijwilligers.
           </p>
         </div>
       </div>

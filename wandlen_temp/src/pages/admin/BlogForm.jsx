@@ -137,10 +137,10 @@ const BlogForm = () => {
       newResources[index].url = res.data.secure_url;
       newResources[index].file = file;
       setDownloadableResources(newResources);
-      toast.success("Resource uploaded successfully");
+      toast.success("Bron succesvol geüpload");
     } catch (error) {
       console.error("Error uploading resource:", error);
-      toast.error("Error uploading resource");
+      toast.error("Fout bij uploaden bron");
     } finally {
       setUploadingResource(false);
     }
@@ -204,15 +204,15 @@ const BlogForm = () => {
 
       if (isEdit) {
         await axios.put(`${DATABASE_URL}/admin/blogs/${id}`, body);
-        toast.success("Blog updated successfully");
+        toast.success("Blog succesvol bijgewerkt");
       } else {
         await axios.post(`${DATABASE_URL}/admin/blogs`, body);
-        toast.success("Blog created successfully");
+        toast.success("Blog succesvol aangemaakt");
       }
       navigate("/admin/all-blog");
     } catch (error) {
       console.error(`Error ${isEdit ? "updating" : "creating"} blog:`, error);
-      toast.error(`Error ${isEdit ? "updating" : "creating"} blog`);
+      toast.error(`Fout bij ${isEdit ? "bijwerken" : "aanmaken"} blog`);
     }
   };
 
@@ -221,28 +221,29 @@ const BlogForm = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Laden...</div>;
   }
 
   return (
     <div className="w-full min-h-screen bg-white p-6">
-      {/* Header */}
       <div className="mb-8">
         <div className="text-[#dd9219] font-['Poppins'] text-2xl font-semibold leading-[136%] mb-2">
-          Blog Management
+          Blog Beheer
         </div>
         <div className="text-[#381207] font-['Poppins'] text-5xl font-medium leading-[136%]">
-          {isEdit ? "Edit Blog" : "Create Blog"}
+          {isEdit ? "Blog Bewerken" : "Blog Aanmaken"}
         </div>
         <div className="text-[#381207] font-['Poppins'] text-lg leading-[136%] mt-2">
-          {isEdit ? "Update the blog details." : "Create a new blog post."}
+          {isEdit
+            ? "Werk de blog details bij."
+            : "Maak een nieuwe blog post aan."}
         </div>
       </div>
 
       {/* Cover Image Section */}
       <div className="flex flex-col items-start gap-4 p-6 w-full rounded-2xl bg-[#f7f6f4] mb-6">
         <div className="self-stretch text-[#381207] font-['Poppins'] text-lg font-medium leading-[normal]">
-          Blog cover page
+          Blog omslagpagina
         </div>
         <div className="flex flex-col justify-center items-center gap-2.5 self-stretch pt-16 pb-16 pl-24 pr-24 rounded-lg border-2 border-dashed border-[#e5e3df] bg-[#f7f6f4] relative">
           {coverPreview ? (
@@ -256,7 +257,7 @@ const BlogForm = () => {
               className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white text-center font-['Poppins'] font-medium leading-[136%] cursor-pointer"
               onClick={() => document.getElementById("cover-upload").click()}
             >
-              Upload Image
+              Afbeelding Uploaden
             </div>
           )}
           <input
@@ -274,13 +275,13 @@ const BlogForm = () => {
         {/* Title */}
         <div className="flex flex-col items-start gap-2 self-stretch">
           <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Blog title *
+            Blog titel *
           </div>
           <input
             type="text"
             value={title}
             onChange={handleTitleChange}
-            placeholder="Enter a clear and concise title"
+            placeholder="Voer een duidelijke en beknopte titel in"
             className="flex items-center gap-2.5 self-stretch p-3 h-11 rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643]"
           />
         </div>
@@ -288,7 +289,7 @@ const BlogForm = () => {
         {/* Date */}
         <div className="flex flex-col items-start gap-2 self-stretch">
           <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Blog date *
+            Blog datum *
           </div>
           <input
             type="date"
@@ -309,14 +310,14 @@ const BlogForm = () => {
                 <textarea
                   value={item.value}
                   onChange={(e) => handleContentChange(index, e.target.value)}
-                  placeholder="What's this blog about? Share key highlights or content..."
+                  placeholder="Waar gaat deze blog over? Deel belangrijke hoogtepunten of inhoud..."
                   className="flex items-center gap-2.5 self-stretch p-3 min-h-[100px] rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643] resize-vertical"
                 />
                 <button
                   onClick={() => removeContent(index)}
                   className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm"
                 >
-                  Remove
+                  Verwijder
                 </button>
               </>
             ) : item.type === "heading" ? (
@@ -325,14 +326,14 @@ const BlogForm = () => {
                   type="text"
                   value={item.value}
                   onChange={(e) => handleContentChange(index, e.target.value)}
-                  placeholder="Enter heading text..."
+                  placeholder="Voer koptekst in..."
                   className="flex items-center gap-2.5 self-stretch p-3 h-11 rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] font-semibold leading-[normal] focus:outline-none focus:border-[#a6a643]"
                 />
                 <button
                   onClick={() => removeContent(index)}
                   className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm"
                 >
-                  Remove
+                  Verwijder
                 </button>
               </>
             ) : (
@@ -351,7 +352,7 @@ const BlogForm = () => {
                         document.getElementById(`image-upload-${index}`).click()
                       }
                     >
-                      Upload Image
+                      Afbeelding Uploaden
                     </div>
                   )}
                   <input
@@ -368,7 +369,7 @@ const BlogForm = () => {
                   onClick={() => removeContent(index)}
                   className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm"
                 >
-                  Remove
+                  Verwijder
                 </button>
               </>
             )}
@@ -381,19 +382,19 @@ const BlogForm = () => {
             onClick={addHeading}
             className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#e5e3df] text-[#4b4741] font-['Poppins'] font-medium leading-[136%] hover:bg-[#d5d3cf] transition-colors"
           >
-            Add Heading
+            Kop Toevoegen
           </button>
           <button
             onClick={addParagraph}
             className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#e5e3df] text-[#4b4741] font-['Poppins'] font-medium leading-[136%] hover:bg-[#d5d3cf] transition-colors"
           >
-            Add paragraph
+            Paragraaf Toevoegen
           </button>
           <button
             onClick={addImage}
             className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#e5e3df] text-[#4b4741] font-['Poppins'] font-medium leading-[136%] hover:bg-[#d5d3cf] transition-colors"
           >
-            Add Image
+            Afbeelding Toevoegen
           </button>
         </div>
       </div>
@@ -401,7 +402,7 @@ const BlogForm = () => {
       {/* Downloadable Resources Section */}
       <div className="flex flex-col items-start gap-4 p-6 w-full rounded-2xl bg-[#f7f6f4] mb-6">
         <div className="self-stretch text-[#381207] font-['Poppins'] text-lg font-medium leading-[normal]">
-          Downloadable Resources
+          Downloadbare Bronnen
         </div>
 
         {downloadableResources.map((resource, index) => (
@@ -411,7 +412,7 @@ const BlogForm = () => {
           >
             <div className="flex flex-col items-start gap-2 self-stretch">
               <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Resource Name *
+                Bron Naam *
               </div>
               <input
                 type="text"
@@ -419,20 +420,20 @@ const BlogForm = () => {
                 onChange={(e) =>
                   handleResourceNameChange(index, e.target.value)
                 }
-                placeholder="Enter resource name (e.g., 'Guide PDF', 'Report 2024')"
+                placeholder="Voer bron naam in (bijv. 'Gids PDF', 'Rapport 2024')"
                 className="flex items-center gap-2.5 self-stretch p-3 h-11 rounded-lg border border-[#b3b1ac] text-[#381207] font-['Poppins'] leading-[normal] focus:outline-none focus:border-[#a6a643]"
               />
             </div>
 
             <div className="flex flex-col items-start gap-2 self-stretch">
               <div className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Upload File *
+                Bestand Uploaden *
               </div>
               <div className="flex flex-col items-center gap-2.5 self-stretch p-3 rounded-lg border border-[#b3b1ac]">
                 {resource.url ? (
                   <div className="flex items-center gap-2 w-full">
                     <span className="text-green-600 font-medium">
-                      ✓ File uploaded
+                      ✓ Bestand geüpload
                     </span>
                     <a
                       href={resource.url}
@@ -440,7 +441,7 @@ const BlogForm = () => {
                       rel="noopener noreferrer"
                       className="text-blue-600 underline text-sm"
                     >
-                      View file
+                      Bestand bekijken
                     </a>
                   </div>
                 ) : (
@@ -453,10 +454,10 @@ const BlogForm = () => {
                           .click()
                       }
                     >
-                      {uploadingResource ? "Uploading..." : "Upload File"}
+                      {uploadingResource ? "Uploaden..." : "Bestand Uploaden"}
                     </div>
                     <span className="text-sm text-gray-500">
-                      Supported formats: PDF, DOC, DOCX, XLS, XLSX, etc.
+                      Ondersteunde formaten: PDF, DOC, DOCX, XLS, XLSX, etc.
                     </span>
                   </div>
                 )}
@@ -477,7 +478,7 @@ const BlogForm = () => {
               onClick={() => removeDownloadableResource(index)}
               className="mt-2 py-1 px-3 rounded bg-red-500 text-white text-sm hover:bg-red-600 transition-colors"
             >
-              Remove Resource
+              Bron Verwijderen
             </button>
           </div>
         ))}
@@ -486,7 +487,7 @@ const BlogForm = () => {
           onClick={addDownloadableResource}
           className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white font-['Poppins'] font-medium leading-[136%] hover:bg-[#8f9b3a] transition-colors"
         >
-          Add Downloadable Resource
+          Downloadbare Bron Toevoegen
         </button>
       </div>
 
@@ -496,13 +497,13 @@ const BlogForm = () => {
           onClick={handleCancel}
           className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#e5e3df] text-[#4b4741] font-['Poppins'] font-medium leading-[136%] hover:bg-[#d5d3cf] transition-colors"
         >
-          Cancel
+          Annuleren
         </button>
         <button
           onClick={handleSubmit}
           className="flex justify-center items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white font-['Poppins'] font-medium leading-[136%] hover:bg-[#8f9b3a] transition-colors"
         >
-          {isEdit ? "Update" : "Upload"}
+          {isEdit ? "Bijwerken" : "Uploaden"}
         </button>
       </div>
     </div>

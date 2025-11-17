@@ -91,7 +91,7 @@ const AllVideos = () => {
   };
 
   const handleVideoDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this video?")) {
+    if (window.confirm("Weet je zeker dat je deze video wilt verwijderen?")) {
       try {
         const res = await axios.delete(
           `${DATABASE_URL}/volunteer/deleteVideo/${id}`,
@@ -102,14 +102,16 @@ const AllVideos = () => {
           }
         );
         if (res.status === 200) {
-          toast.success("Video deleted successfully");
+          toast.success("Video succesvol verwijderd");
           fetchVideos(currentPage, activeFilters); // Refresh the list with current page/filters
         } else {
-          toast.error("Failed to delete video");
+          toast.error("Verwijderen van video mislukt");
         }
       } catch (error) {
         console.error("Error deleting video:", error);
-        toast.error("An error occurred while deleting the video");
+        toast.error(
+          "Er is een fout opgetreden bij het verwijderen van de video"
+        );
       }
     }
   };
@@ -187,8 +189,8 @@ const AllVideos = () => {
         <VideoGridWithFilters
           videos={videos}
           onVideoSelect={handleVideoSelect}
-          title="All Videos"
-          subtitle="Manage all videos in the system."
+          title="Alle Video's"
+          subtitle="Beheer alle video's in het systeem."
           showFilters={true}
           showStats={true}
           isClientView={false}

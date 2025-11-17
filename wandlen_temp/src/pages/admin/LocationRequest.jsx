@@ -50,7 +50,9 @@ const LocationRequest = () => {
   }, []);
   const handleDelete = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this location request?")
+      window.confirm(
+        "Weet je zeker dat je deze locatie aanvraag wilt verwijderen?"
+      )
     ) {
       try {
         await axios.delete(`${DATABASE_URL}/admin/video-req/${id}`);
@@ -173,10 +175,10 @@ const LocationRequest = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
-          Location Request form
+          Locatie Aanvraag Formulier
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          Select and add members from this location request.
+          Selecteer en voeg leden toe van deze locatie aanvraag.
         </p>
       </div>
 
@@ -190,7 +192,7 @@ const LocationRequest = () => {
               onClick={() => handleSort("email")}
             >
               <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-                Email
+                E-mail
               </div>
               {getSortIcon("email")}
             </div>
@@ -199,7 +201,7 @@ const LocationRequest = () => {
               onClick={() => handleSort("location")}
             >
               <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-                Location
+                Locatie
               </div>
               {getSortIcon("location")}
             </div>
@@ -209,7 +211,7 @@ const LocationRequest = () => {
               onClick={() => handleSort("link")}
             >
               <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-                Google Maps Link
+                Google Maps Koppeling
               </div>
               {getSortIcon("link")}
             </div>
@@ -218,13 +220,13 @@ const LocationRequest = () => {
               onClick={() => handleSort("currentStatus")}
             >
               <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-                Video Created
+                Video Aangemaakt
               </div>
               {getSortIcon("currentStatus")}
             </div>
             <div className="w-[80px] min-w-[80px] flex justify-center items-center py-3">
               <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-                Actions
+                Acties
               </div>
             </div>
           </div>
@@ -245,13 +247,13 @@ const LocationRequest = () => {
                 </div>
                 <div className="flex-1 px-2 py-3 min-w-[120px] overflow-x-auto [&::-webkit-scrollbar]:hidden scrollbar-none">
                   <div className="text-[#381207] font-['Poppins'] whitespace-nowrap">
-                    {user.location || "No location provided"}
+                    {user.location || "Geen locatie opgegeven"}
                   </div>
                 </div>
 
                 <div className="flex-1 px-2 py-3 min-w-[180px] overflow-x-auto [&::-webkit-scrollbar]:hidden scrollbar-none">
                   <div className="text-[#381207] font-['Poppins'] underline whitespace-nowrap">
-                    {user.link || "No link provided"}
+                    {user.link || "Geen link opgegeven"}
                   </div>
                 </div>
                 <div className="flex-1 px-2 py-3 min-w-[120px] flex justify-center items-center">

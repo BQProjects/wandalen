@@ -36,8 +36,8 @@ const UpdateCredentail = () => {
       });
       setAdmins(res.data);
     } catch (error) {
-      console.error("Error fetching admins:", error);
-      showMessage("error", "Failed to load admin accounts");
+      console.error("Fout bij het ophalen van admins:", error);
+      showMessage("error", "Kan admin accounts niet laden");
     }
   };
 
@@ -56,13 +56,13 @@ const UpdateCredentail = () => {
     setLoading(true);
 
     if (newAdmin.password !== newAdmin.confirmPassword) {
-      showMessage("error", "Passwords do not match");
+      showMessage("error", "Wachtwoorden komen niet overeen");
       setLoading(false);
       return;
     }
 
     if (newAdmin.password.length < 6) {
-      showMessage("error", "Password must be at least 6 characters long");
+      showMessage("error", "Wachtwoord moet minimaal 6 tekens lang zijn");
       setLoading(false);
       return;
     }
@@ -79,7 +79,7 @@ const UpdateCredentail = () => {
         }
       );
 
-      showMessage("success", "New admin account created successfully");
+      showMessage("success", "Nieuwe admin account succesvol aangemaakt");
       setNewAdmin({
         email: "",
         password: "",
@@ -87,10 +87,10 @@ const UpdateCredentail = () => {
       });
       fetchAdmins(); // Refresh admin list
     } catch (error) {
-      console.error("Error creating admin:", error);
+      console.error("Fout bij het aanmaken van admin:", error);
       showMessage(
         "error",
-        error.response?.data?.message || "Failed to create admin account"
+        error.response?.data?.message || "Kan admin account niet aanmaken"
       );
     } finally {
       setLoading(false);
@@ -125,13 +125,13 @@ const UpdateCredentail = () => {
     setLoading(true);
 
     if (editForm.password && editForm.password !== editForm.confirmPassword) {
-      showMessage("error", "Passwords do not match");
+      showMessage("error", "Wachtwoorden komen niet overeen");
       setLoading(false);
       return;
     }
 
     if (editForm.password && editForm.password.length < 6) {
-      showMessage("error", "Password must be at least 6 characters long");
+      showMessage("error", "Wachtwoord moet minimaal 6 tekens lang zijn");
       setLoading(false);
       return;
     }
@@ -157,7 +157,7 @@ const UpdateCredentail = () => {
         }
       );
 
-      showMessage("success", "Admin account updated successfully");
+      showMessage("success", "Admin account succesvol bijgewerkt");
       setEditingAdmin(null);
       setEditForm({
         email: "",
@@ -167,10 +167,10 @@ const UpdateCredentail = () => {
       });
       fetchAdmins(); // Refresh admin list
     } catch (error) {
-      console.error("Error updating admin:", error);
+      console.error("Fout bij het bijwerken van admin:", error);
       showMessage(
         "error",
-        error.response?.data?.message || "Failed to update admin account"
+        error.response?.data?.message || "Kan admin account niet bijwerken"
       );
     } finally {
       setLoading(false);
@@ -181,7 +181,7 @@ const UpdateCredentail = () => {
   const handleDeleteAdmin = async (adminId) => {
     if (
       !window.confirm(
-        "Are you sure you want to delete this admin account? This action cannot be undone."
+        "Weet je zeker dat je dit admin account wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
       )
     ) {
       return;
@@ -193,13 +193,13 @@ const UpdateCredentail = () => {
         headers: { Authorization: `Bearer ${sessionId}` },
       });
 
-      showMessage("success", "Admin account deleted successfully");
+      showMessage("success", "Admin account succesvol verwijderd");
       fetchAdmins(); // Refresh admin list
     } catch (error) {
-      console.error("Error deleting admin:", error);
+      console.error("Fout bij het verwijderen van admin:", error);
       showMessage(
         "error",
-        error.response?.data?.message || "Failed to delete admin account"
+        error.response?.data?.message || "Kan admin account niet verwijderen"
       );
     } finally {
       setLoading(false);
@@ -211,10 +211,10 @@ const UpdateCredentail = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
-          Admin Account Management
+          Beheer van Admin Accounts
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          Create and manage administrator accounts for the platform.
+          Maak en beheer administrator accounts voor het platform.
         </p>
       </div>
 
@@ -235,8 +235,8 @@ const UpdateCredentail = () => {
       <div className="mb-8">
         <nav className="flex space-x-8">
           {[
-            { id: "create", label: "Create Admin", icon: "+" },
-            { id: "manage", label: "Manage Admins", icon: "" },
+            { id: "create", label: "Admin Aanmaken", icon: "+" },
+            { id: "manage", label: "Admins Beheren", icon: "" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -260,7 +260,7 @@ const UpdateCredentail = () => {
         {activeTab === "create" && (
           <div className="p-8">
             <h2 className="text-2xl font-semibold text-[#381207] font-['Poppins'] mb-6">
-              Create New Admin Account
+              Nieuwe Admin Account Aanmaken
             </h2>
             <form onSubmit={handleCreateAdmin} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -275,14 +275,14 @@ const UpdateCredentail = () => {
                       setNewAdmin({ ...newAdmin, email: e.target.value })
                     }
                     className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
-                    placeholder="admin@example.com"
+                    placeholder="admin@voorbeeld.com"
                     required
                   />
                 </div>
                 <div></div>
                 <div>
                   <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
-                    Password *
+                    Wachtwoord *
                   </label>
                   <input
                     type="password"
@@ -291,14 +291,14 @@ const UpdateCredentail = () => {
                       setNewAdmin({ ...newAdmin, password: e.target.value })
                     }
                     className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
-                    placeholder="Enter password"
+                    placeholder="Voer wachtwoord in"
                     required
                     minLength="6"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
-                    Confirm Password *
+                    Bevestig Wachtwoord *
                   </label>
                   <input
                     type="password"
@@ -310,7 +310,7 @@ const UpdateCredentail = () => {
                       })
                     }
                     className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
-                    placeholder="Confirm password"
+                    placeholder="Bevestig wachtwoord"
                     required
                   />
                 </div>
@@ -321,7 +321,7 @@ const UpdateCredentail = () => {
                   disabled={loading}
                   className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-['Poppins'] font-medium transition-colors"
                 >
-                  {loading ? "Creating..." : "Create Admin Account"}
+                  {loading ? "Aanmaken..." : "Admin Account Aanmaken"}
                 </button>
               </div>
             </form>
@@ -332,7 +332,7 @@ const UpdateCredentail = () => {
         {activeTab === "manage" && (
           <div className="p-8">
             <h2 className="text-2xl font-semibold text-[#381207] font-['Poppins'] mb-6">
-              Manage Admin Accounts
+              Admin Accounts Beheren
             </h2>
 
             <div className="space-y-4">
@@ -347,7 +347,7 @@ const UpdateCredentail = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
-                            Email Address
+                            E-mailadres
                           </label>
                           <input
                             type="email"
@@ -364,7 +364,7 @@ const UpdateCredentail = () => {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
-                            Current Password *
+                            Huidig Wachtwoord *
                           </label>
                           <input
                             type="password"
@@ -376,13 +376,13 @@ const UpdateCredentail = () => {
                               })
                             }
                             className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
-                            placeholder="Enter current password"
+                            placeholder="Voer huidig wachtwoord in"
                             required
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
-                            New Password (optional)
+                            Nieuw Wachtwoord (optioneel)
                           </label>
                           <input
                             type="password"
@@ -394,13 +394,13 @@ const UpdateCredentail = () => {
                               })
                             }
                             className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
-                            placeholder="Enter new password"
+                            placeholder="Voer nieuw wachtwoord in"
                             minLength="6"
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#4b4741] font-['Poppins'] mb-2">
-                            Confirm New Password
+                            Bevestig Nieuw Wachtwoord
                           </label>
                           <input
                             type="password"
@@ -412,7 +412,7 @@ const UpdateCredentail = () => {
                               })
                             }
                             className="w-full px-4 py-3 border border-[#e5e3df] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent bg-white font-['Poppins']"
-                            placeholder="Confirm new password"
+                            placeholder="Bevestig nieuw wachtwoord"
                           />
                         </div>
                       </div>
@@ -422,14 +422,14 @@ const UpdateCredentail = () => {
                           onClick={handleCancelEdit}
                           className="px-6 py-2 text-[#381207] border border-[#e5e3df] rounded-lg hover:bg-[#ede4dc]/[.5] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-offset-2 font-['Poppins'] transition-colors"
                         >
-                          Cancel
+                          Annuleren
                         </button>
                         <button
                           type="submit"
                           disabled={loading}
                           className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-['Poppins'] font-medium transition-colors"
                         >
-                          {loading ? "Updating..." : "Update Admin"}
+                          {loading ? "Bijwerken..." : "Admin Bijwerken"}
                         </button>
                       </div>
                     </form>
@@ -441,7 +441,7 @@ const UpdateCredentail = () => {
                           {admin.email}
                         </h3>
                         <p className="text-sm text-[#4b4741] font-['Poppins']">
-                          Created:{" "}
+                          Aangemaakt:{" "}
                           {new Date(admin.createdAt).toLocaleDateString()}
                         </p>
                       </div>
@@ -450,14 +450,14 @@ const UpdateCredentail = () => {
                           onClick={() => handleEditAdmin(admin)}
                           className="px-4 py-2 bg-[#dd9219] text-white rounded-lg hover:bg-[#c4a016] focus:outline-none focus:ring-2 focus:ring-[#dd9219] focus:ring-offset-2 font-['Poppins'] transition-colors"
                         >
-                          Edit
+                          Bewerken
                         </button>
                         {admins.length > 1 && (
                           <button
                             onClick={() => handleDeleteAdmin(admin._id)}
                             className="px-4 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 font-['Poppins'] transition-colors"
                           >
-                            Delete
+                            Verwijderen
                           </button>
                         )}
                       </div>
@@ -470,10 +470,11 @@ const UpdateCredentail = () => {
             {admins.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-[#4b4741] font-['Poppins'] text-lg mb-2">
-                  No admin accounts found
+                  Geen admin accounts gevonden
                 </div>
                 <p className="text-[#4b4741] font-['Poppins'] text-sm">
-                  Create your first admin account using the "Create Admin" tab.
+                  Maak je eerste admin account aan met behulp van de "Admin
+                  Aanmaken" tab.
                 </p>
               </div>
             )}

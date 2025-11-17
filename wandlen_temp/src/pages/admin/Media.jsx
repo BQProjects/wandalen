@@ -20,7 +20,7 @@ const Media = () => {
       const data = response.data;
       setMediaItems(data);
     } catch (error) {
-      console.error("Error fetching media items:", error);
+      console.error("Fout bij het ophalen van media items:", error);
     } finally {
       setLoading(false);
     }
@@ -33,39 +33,41 @@ const Media = () => {
       try {
         await axios.put(`${DATABASE_URL}/admin/media/${media._id}`, dataToSend);
         fetchMediaItems();
-        toast.success("Media item updated successfully");
+        toast.success("Media item succesvol bijgewerkt");
       } catch (error) {
-        console.error("Error updating media item:", error);
-        toast.error("Error updating media item");
+        console.error("Fout bij het bijwerken van media item:", error);
+        toast.error("Fout bij het bijwerken van media item");
       }
     } else {
       // create
       try {
         await axios.post(`${DATABASE_URL}/admin/media`, dataToSend);
         fetchMediaItems();
-        toast.success("Media item created successfully");
+        toast.success("Media item succesvol aangemaakt");
       } catch (error) {
-        console.error("Error creating media item:", error);
-        toast.error("Error creating media item");
+        console.error("Fout bij het aanmaken van media item:", error);
+        toast.error("Fout bij het aanmaken van media item");
       }
     }
   };
 
   const handleDelete = async (media) => {
-    if (window.confirm("Are you sure you want to delete this media item?")) {
+    if (
+      window.confirm("Weet je zeker dat je dit media item wilt verwijderen?")
+    ) {
       try {
         await axios.delete(`${DATABASE_URL}/admin/media/${media._id}`);
         fetchMediaItems();
-        toast.success("Media item deleted successfully");
+        toast.success("Media item succesvol verwijderd");
       } catch (error) {
-        console.error("Error deleting media item:", error);
-        toast.error("Error deleting media item");
+        console.error("Fout bij het verwijderen van media item:", error);
+        toast.error("Fout bij het verwijderen van media item");
       }
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Laden...</div>;
   }
 
   return (
@@ -157,7 +159,7 @@ const MediaSection = ({ media, onEdit, onDelete }) => {
               {media.source}
             </div>
             <div className="text-[#4b4741] font-['Poppins'] text-sm mt-1">
-              Media Coverage
+              Media Dekking
             </div>
           </div>
         </div>
@@ -166,20 +168,20 @@ const MediaSection = ({ media, onEdit, onDelete }) => {
             onClick={onEdit}
             className="px-4 py-2 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5201] transition-colors"
           >
-            Edit
+            Bewerken
           </button>
           <button
             onClick={onDelete}
             className="px-4 py-2 rounded-lg bg-red-500 text-white font-['Poppins'] font-medium hover:bg-red-600 transition-colors"
           >
-            Delete
+            Verwijderen
           </button>
         </div>
       </div>
       <div className="bg-[#ede4dc] rounded-2xl w-full p-4 md:p-6">
         <div>
           <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Article Title
+            Artikel Titel
           </label>
           <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
             "{media.title}"
@@ -187,7 +189,7 @@ const MediaSection = ({ media, onEdit, onDelete }) => {
         </div>
         <div className="mt-4">
           <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            News Outlet
+            Nieuwsbron
           </label>
           <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
             {media.source}
@@ -195,7 +197,7 @@ const MediaSection = ({ media, onEdit, onDelete }) => {
         </div>
         <div className="mt-4">
           <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Article Link
+            Artikel Link
           </label>
           <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1 break-all">
             {media.link}
@@ -231,10 +233,10 @@ const MediaModal = ({ media, onSave, onClose }) => {
 
       const imageUrl = cloudinaryResponse.data.secure_url;
       setBanner(imageUrl);
-      toast.success("Banner uploaded successfully");
+      toast.success("Banner succesvol geüpload");
     } catch (error) {
-      console.error("Error uploading banner:", error);
-      toast.error("Error uploading banner");
+      console.error("Fout bij het uploaden van banner:", error);
+      toast.error("Fout bij het uploaden van banner");
     } finally {
       setUploading(false);
     }
@@ -254,51 +256,51 @@ const MediaModal = ({ media, onSave, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 md:p-8 w-full max-w-2xl mx-4">
         <h2 className="text-2xl font-semibold text-[#381207] mb-6">
-          {media ? "Edit Media Item" : "Add New Media Item"}
+          {media ? "Media Item Bewerken" : "Nieuw Media Item Toevoegen"}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="space-y-6 mb-6">
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Article Title *
+                Artikel Titel *
               </label>
               <textarea
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full p-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] leading-[normal] h-24 resize-none"
-                placeholder="Enter the article title"
+                placeholder="Voer de artikel titel in"
                 required
               />
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                News Outlet *
+                Nieuwsbron *
               </label>
               <input
                 type="text"
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
                 className="w-full p-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] leading-[normal]"
-                placeholder="e.g., NOS, De Stentor, RTV Oost"
+                placeholder="bijv., NOS, De Stentor, RTV Oost"
                 required
               />
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Article Link *
+                Artikel Link *
               </label>
               <input
                 type="url"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
                 className="w-full p-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] leading-[normal]"
-                placeholder="https://example.com/article"
+                placeholder="https://voorbeeld.com/artikel"
                 required
               />
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Banner Image
+                Banner Afbeelding
               </label>
               <input
                 type="file"
@@ -308,13 +310,13 @@ const MediaModal = ({ media, onSave, onClose }) => {
                 disabled={uploading}
               />
               {uploading && (
-                <p className="text-sm text-gray-500">Uploading...</p>
+                <p className="text-sm text-gray-500">Uploaden...</p>
               )}
               {banner && (
                 <div className="mt-2">
                   <img
                     src={banner}
-                    alt="Banner Preview"
+                    alt="Banner Voorvertoning"
                     className="w-32 h-20 rounded-lg object-cover"
                   />
                 </div>
@@ -322,14 +324,14 @@ const MediaModal = ({ media, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Banner URL (or upload above)
+                Banner URL (of upload hierboven)
               </label>
               <input
                 type="url"
                 value={banner}
                 onChange={(e) => setBanner(e.target.value)}
                 className="w-full p-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] leading-[normal]"
-                placeholder="Enter Cloudinary URL or upload file above"
+                placeholder="Voer Cloudinary URL in of upload bestand hierboven"
               />
             </div>
           </div>
@@ -339,13 +341,13 @@ const MediaModal = ({ media, onSave, onClose }) => {
               onClick={onClose}
               className="px-6 py-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] font-medium hover:bg-gray-50 transition-colors"
             >
-              Cancel
+              Annuleren
             </button>
             <button
               type="submit"
               className="px-6 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5201] transition-colors"
             >
-              {media ? "Update" : "Create"}
+              {media ? "Bijwerken" : "Aanmaken"}
             </button>
           </div>
         </form>

@@ -48,14 +48,14 @@ const VideoAdmin = () => {
       });
       setReviews(res.data.reviews || []);
     } catch (error) {
-      console.error("Error fetching reviews:", error);
+      console.error("Fout bij het ophalen van beoordelingen:", error);
       // If admin endpoint doesn't exist, try client endpoint
       try {
         const res = await axios.get(`${DATABASE_URL}/client/get-reviews/${id}`);
         setReviews(res.data.reviews || []);
       } catch (clientError) {
         console.error(
-          "Error fetching reviews from client endpoint:",
+          "Fout bij het ophalen van beoordelingen van client endpoint:",
           clientError
         );
       }
@@ -63,7 +63,9 @@ const VideoAdmin = () => {
   };
 
   const handleDeleteReview = async (reviewId) => {
-    if (!window.confirm("Are you sure you want to delete this review?")) {
+    if (
+      !window.confirm("Weet je zeker dat je deze beoordeling wilt verwijderen?")
+    ) {
       return;
     }
 
@@ -74,28 +76,28 @@ const VideoAdmin = () => {
         },
       });
       fetchReviews(); // Refresh reviews
-      toast.success("Review deleted successfully");
+      toast.success("Beoordeling succesvol verwijderd");
     } catch (error) {
-      console.error("Error deleting review:", error);
-      toast.error("Error deleting review");
+      console.error("Fout bij het verwijderen van beoordeling:", error);
+      toast.error("Fout bij het verwijderen van beoordeling");
     }
   };
 
   useEffect(() => {
     const fetchVideo = async () => {
       try {
-        console.log("Fetching video with ID:", id);
+        console.log("Video ophalen met ID:", id);
         const res = await axios.get(`${DATABASE_URL}/admin/get-video/${id}`, {
           headers: {
             Authorization: `Bearer ${sessionId}`,
           },
         });
-        console.log("Video data received:", res.data);
+        console.log("Video data ontvangen:", res.data);
         console.log("Video URL (imgUrl):", res.data.imgUrl);
         setVideo(res.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching video:", error);
+        console.error("Fout bij het ophalen van video:", error);
         setLoading(false);
       }
     };
@@ -124,7 +126,7 @@ const VideoAdmin = () => {
 
               {/* Video Title */}
               <h2 className="text-2xl sm:text-3xl font-semibold text-brown mb-6 sm:mb-8">
-                {video ? video.title : "Loading..."}
+                {video ? video.title : "Laden..."}
               </h2>
 
               {/* Video Player */}
@@ -149,13 +151,13 @@ const VideoAdmin = () => {
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "16/9" }}
                     onError={(e) => {
-                      console.error("Video failed to load:", e);
+                      console.error("Video kon niet worden geladen:", e);
                       e.target.src = BgVideo;
                     }}
-                    onLoadStart={() => console.log("Video loading started")}
-                    onCanPlay={() => console.log("Video can play")}
+                    onLoadStart={() => console.log("Video laden gestart")}
+                    onCanPlay={() => console.log("Video kan spelen")}
                   >
-                    Your browser does not support the video tag.
+                    Je browser ondersteunt de video tag niet.
                   </video>
                 )}
               </div>
@@ -187,7 +189,7 @@ const VideoAdmin = () => {
                   <button
                     onClick={goToPreviousPage}
                     className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center shadow-md focus:outline-none"
-                    aria-label="Previous reviews"
+                    aria-label="Vorige beoordelingen"
                   >
                     <svg
                       width="24"
@@ -212,7 +214,7 @@ const VideoAdmin = () => {
                   <button
                     onClick={goToNextPage}
                     className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center shadow-md focus:outline-none"
-                    aria-label="Next reviews"
+                    aria-label="Volgende beoordelingen"
                   >
                     <svg
                       width="24"
@@ -285,7 +287,7 @@ const VideoAdmin = () => {
             <div className="flex justify-center items-center mt-10 pb-8 sm:pb-16">
               <div className="text-center">
                 <div className="text-lg sm:text-xl text-brown font-medium">
-                  Nog geen beoordelingen
+                  Geen beoordelingen beschikbaar
                 </div>
                 <div className="text-sm sm:text-base text-gray-600 mt-2">
                   Wees de eerste om deze video te beoordelen!

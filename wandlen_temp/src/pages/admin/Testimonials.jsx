@@ -20,7 +20,7 @@ const Testimonials = () => {
       const data = response.data;
       setTestimonials(data);
     } catch (error) {
-      console.error("Error fetching testimonials:", error);
+      console.error("Fout bij het ophalen van testimonials:", error);
     } finally {
       setLoading(false);
     }
@@ -36,41 +36,43 @@ const Testimonials = () => {
           dataToSend
         );
         fetchTestimonials();
-        toast.success("Testimonial updated successfully");
+        toast.success("Testimonial succesvol bijgewerkt");
       } catch (error) {
-        console.error("Error updating testimonial:", error);
-        toast.error("Error updating testimonial");
+        console.error("Fout bij het bijwerken van testimonial:", error);
+        toast.error("Fout bij het bijwerken van testimonial");
       }
     } else {
       // create
       try {
         await axios.post(`${DATABASE_URL}/admin/testimonials`, dataToSend);
         fetchTestimonials();
-        toast.success("Testimonial created successfully");
+        toast.success("Testimonial succesvol aangemaakt");
       } catch (error) {
-        console.error("Error creating testimonial:", error);
-        toast.error("Error creating testimonial");
+        console.error("Fout bij het aanmaken van testimonial:", error);
+        toast.error("Fout bij het aanmaken van testimonial");
       }
     }
   };
 
   const handleDelete = async (testimonial) => {
-    if (window.confirm("Are you sure you want to delete this testimonial?")) {
+    if (
+      window.confirm("Weet je zeker dat je deze testimonial wilt verwijderen?")
+    ) {
       try {
         await axios.delete(
           `${DATABASE_URL}/admin/testimonials/${testimonial._id}`
         );
         fetchTestimonials();
-        toast.success("Testimonial deleted successfully");
+        toast.success("Testimonial succesvol verwijderd");
       } catch (error) {
-        console.error("Error deleting testimonial:", error);
-        toast.error("Error deleting testimonial");
+        console.error("Fout bij het verwijderen van testimonial:", error);
+        toast.error("Fout bij het verwijderen van testimonial");
       }
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Laden...</div>;
   }
 
   return (
@@ -142,7 +144,7 @@ const TestimonialSection = ({ testimonial, onEdit, onDelete }) => {
               {testimonial.name}
             </div>
             <div className="text-[#4b4741] font-['Poppins'] text-sm mt-1">
-              Testimonial
+              Getuigenis
             </div>
           </div>
         </div>
@@ -151,20 +153,20 @@ const TestimonialSection = ({ testimonial, onEdit, onDelete }) => {
             onClick={onEdit}
             className="px-4 py-2 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5201] transition-colors"
           >
-            Edit
+            Bewerken
           </button>
           <button
             onClick={onDelete}
             className="px-4 py-2 rounded-lg bg-red-500 text-white font-['Poppins'] font-medium hover:bg-red-600 transition-colors"
           >
-            Delete
+            Verwijderen
           </button>
         </div>
       </div>
       <div className="bg-[#ede4dc] rounded-2xl w-full p-4 md:p-6">
         <div>
           <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Testimonial Text
+            Testimonial Tekst
           </label>
           <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
             "{testimonial.text}"
@@ -172,7 +174,7 @@ const TestimonialSection = ({ testimonial, onEdit, onDelete }) => {
         </div>
         <div className="mt-4">
           <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Photo URL
+            Foto URL
           </label>
           <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1 break-all">
             {testimonial.photo}
@@ -207,10 +209,10 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
 
       const imageUrl = cloudinaryResponse.data.secure_url;
       setPhoto(imageUrl);
-      toast.success("Photo uploaded successfully");
+      toast.success("Foto succesvol geüpload");
     } catch (error) {
-      console.error("Error uploading photo:", error);
-      toast.error("Error uploading photo");
+      console.error("Fout bij het uploaden van foto:", error);
+      toast.error("Fout bij het uploaden van foto");
     } finally {
       setUploading(false);
     }
@@ -229,13 +231,15 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 md:p-8 w-full max-w-2xl mx-4">
         <h2 className="text-2xl font-semibold text-[#381207] mb-6">
-          {testimonial ? "Edit Testimonial" : "Add New Testimonial"}
+          {testimonial
+            ? "Testimonial Bewerken"
+            : "Nieuwe Testimonial Toevoegen"}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="space-y-6 mb-6">
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Name
+                Naam
               </label>
               <input
                 type="text"
@@ -247,7 +251,7 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Testimonial Text
+                Testimonial Tekst
               </label>
               <textarea
                 value={text}
@@ -258,7 +262,7 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Photo
+                Foto
               </label>
               <input
                 type="file"
@@ -268,13 +272,13 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
                 disabled={uploading}
               />
               {uploading && (
-                <p className="text-sm text-gray-500">Uploading...</p>
+                <p className="text-sm text-gray-500">Uploaden...</p>
               )}
               {photo && (
                 <div className="mt-2">
                   <img
                     src={photo}
-                    alt="Preview"
+                    alt="Voorvertoning"
                     className="w-20 h-20 rounded-full object-cover"
                   />
                 </div>
@@ -282,14 +286,14 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Photo URL (or upload above)
+                Foto URL (of upload hierboven)
               </label>
               <input
                 type="url"
                 value={photo}
                 onChange={(e) => setPhoto(e.target.value)}
                 className="w-full p-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] leading-[normal]"
-                placeholder="Enter Cloudinary URL or upload file above"
+                placeholder="Voer Cloudinary URL in of upload bestand hierboven"
               />
             </div>
           </div>
@@ -299,14 +303,14 @@ const TestimonialModal = ({ testimonial, onSave, onClose }) => {
               onClick={onClose}
               className="px-6 py-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] font-medium hover:bg-gray-50 transition-colors"
             >
-              Cancel
+              Annuleren
             </button>
             <button
               type="submit"
               className="px-6 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5201] transition-colors"
               disabled={uploading}
             >
-              {testimonial ? "Update" : "Create"}
+              {testimonial ? "Bijwerken" : "Aanmaken"}
             </button>
           </div>
         </form>

@@ -50,9 +50,7 @@ const SubscriberModal = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-[#381207]">
-            Subscriber Details
-          </h2>
+          <h2 className="text-2xl font-bold text-[#381207]">Abonnee Details</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -64,7 +62,7 @@ const SubscriberModal = ({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              First Name
+              Voornaam
             </label>
             <p className="mt-1 text-[#381207] font-medium">
               {subscriber.firstName || "N/A"}
@@ -73,7 +71,7 @@ const SubscriberModal = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Last Name
+              Achternaam
             </label>
             <p className="mt-1 text-[#381207] font-medium">
               {subscriber.lastName || "N/A"}
@@ -109,14 +107,14 @@ const SubscriberModal = ({
                 />
               </svg>
               <span className="text-[#381207] font-medium">
-                {subscriber.isActive ? "Active" : "Inactive"}
+                {subscriber.isActive ? "Actief" : "Inactief"}
               </span>
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Subscribed Date
+              Abonnementsdatum
             </label>
             <p className="mt-1 text-[#381207] font-medium">
               {subscriber.subscribedAt
@@ -127,10 +125,10 @@ const SubscriberModal = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Notes
+              Notities
             </label>
             <p className="mt-1 text-[#381207] font-medium">
-              {subscriber.notes || "No notes available"}
+              {subscriber.notes || "Geen notities beschikbaar"}
             </p>
           </div>
         </div>
@@ -140,7 +138,7 @@ const SubscriberModal = ({
             onClick={onClose}
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
           >
-            Close
+            Sluiten
           </button>
           {subscriber.isActive ? (
             <button
@@ -150,7 +148,7 @@ const SubscriberModal = ({
               }}
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
             >
-              Unsubscribe
+              Uitschrijven
             </button>
           ) : (
             <button
@@ -160,7 +158,7 @@ const SubscriberModal = ({
               }}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
             >
-              Reactivate
+              Heractiveren
             </button>
           )}
         </div>
@@ -268,23 +266,25 @@ const ManageSubscribers = () => {
   };
 
   const handleUnsubscribe = async (email) => {
-    if (window.confirm("Are you sure you want to unsubscribe this user?")) {
+    if (
+      window.confirm("Weet je zeker dat je deze gebruiker wilt uitschrijven?")
+    ) {
       try {
         const res = await axios.post(`${DATABASE_URL}/utils/unsubscribe`, {
           email,
         });
-        toast.success("User unsubscribed successfully");
+        toast.success("Gebruiker succesvol uitgeschreven");
         fetchSubscriptions(); // Refresh the list
       } catch (error) {
         console.error("Error unsubscribing user:", error);
-        toast.error("Error unsubscribing user. Please try again.");
+        toast.error("Fout bij uitschrijven gebruiker. Probeer het opnieuw.");
       }
     }
   };
 
   const handleReactivate = async (email) => {
     if (
-      window.confirm("Are you sure you want to reactivate this subscription?")
+      window.confirm("Weet je zeker dat je dit abonnement wilt heractiveren?")
     ) {
       try {
         // We need to create a reactivate endpoint or update the existing unsubscribe endpoint
@@ -293,13 +293,13 @@ const ManageSubscribers = () => {
         if (subscription) {
           // You might want to create a specific reactivate endpoint in the backend
           toast.error(
-            "Reactivation feature needs to be implemented in backend"
+            "Heractiveringsfunctie moet geïmplementeerd worden in backend"
           );
           // fetchSubscriptions(); // Refresh the list
         }
       } catch (error) {
         console.error("Error reactivating subscription:", error);
-        toast.error("Error reactivating subscription. Please try again.");
+        toast.error("Fout bij heractiveren abonnement. Probeer het opnieuw.");
       }
     }
   };
@@ -312,7 +312,7 @@ const ManageSubscribers = () => {
     return (
       <div className="flex-1 bg-[#f7f6f4] p-6 overflow-y-auto">
         <div className="flex items-center justify-center h-64">
-          <div className="text-xl text-[#381207]">Loading subscribers...</div>
+          <div className="text-xl text-[#381207]">Abonnees laden...</div>
         </div>
       </div>
     );
@@ -332,11 +332,11 @@ const ManageSubscribers = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
-          Newsletter Subscribers
+          Nieuwsbrief Abonnees
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          Manage and view all newsletter subscribers in one place. Click on any
-          row to view detailed information.
+          Beheer en bekijk alle nieuwsbrief abonnees op één plek. Klik op een
+          rij voor gedetailleerde informatie.
         </p>
       </div>
 
@@ -346,7 +346,7 @@ const ManageSubscribers = () => {
         <div className="flex-1 max-w-md">
           <input
             type="text"
-            placeholder="Search by name, email, or notes..."
+            placeholder="Zoeken op naam, e-mail of notities..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent"
@@ -361,15 +361,15 @@ const ManageSubscribers = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:border-transparent"
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+            <option value="all">Alle</option>
+            <option value="active">Actief</option>
+            <option value="inactive">Inactief</option>
           </select>
         </div>
 
         {/* Results Count */}
         <div className="text-[#381207] font-medium">
-          {filteredSubscriptions.length} subscriber
+          {filteredSubscriptions.length} abonnee
           {filteredSubscriptions.length !== 1 ? "s" : ""}
         </div>
       </div>
@@ -380,7 +380,7 @@ const ManageSubscribers = () => {
         <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
           <div className="flex items-center gap-2 w-[23%] min-w-[170px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Full Name
+              Volledige Naam
             </div>
             <SortIcon
               column="firstName"
@@ -400,7 +400,7 @@ const ManageSubscribers = () => {
           </div>
           <div className="flex items-center gap-2 w-[22%] min-w-[160px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Subscribed Date
+              Abonnementsdatum
             </div>
             <SortIcon
               column="subscribedAt"
@@ -415,7 +415,7 @@ const ManageSubscribers = () => {
           </div>
           <div className="flex items-center gap-2 w-[15%] min-w-[110px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Actions
+              Acties
             </div>
           </div>
         </div>
@@ -466,7 +466,7 @@ const ManageSubscribers = () => {
                     />
                   </svg>
                   <span className="text-[#381207] font-['Poppins'] text-xs">
-                    {subscription.isActive ? "Active" : "Inactive"}
+                    {subscription.isActive ? "Actief" : "Inactief"}
                   </span>
                 </div>
               </div>
@@ -487,18 +487,18 @@ const ManageSubscribers = () => {
                   }`}
                   title={
                     subscription.isActive
-                      ? "Unsubscribe user"
-                      : "Reactivate subscription"
+                      ? "Gebruiker uitschrijven"
+                      : "Abonnement heractiveren"
                   }
                 >
-                  {subscription.isActive ? "Unsubscribe" : "Reactivate"}
+                  {subscription.isActive ? "Uitschrijven" : "Heractiveren"}
                 </button>
               </div>
             </div>
           ))
         ) : (
           <div className="flex items-center justify-center p-8 text-[#381207] font-['Poppins']">
-            No subscribers found matching your criteria.
+            No abonnees gevonden die aan uw criteria voldoen.
           </div>
         )}
       </div>
@@ -507,7 +507,7 @@ const ManageSubscribers = () => {
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h3 className="text-lg font-semibold text-[#381207] mb-2">
-            Total Subscribers
+            Totaal Abonnees
           </h3>
           <p className="text-3xl font-bold text-[#a6a643]">
             {subscriptions.length}
@@ -515,7 +515,7 @@ const ManageSubscribers = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h3 className="text-lg font-semibold text-[#381207] mb-2">
-            Active Subscribers
+            Actieve Abonnees
           </h3>
           <p className="text-3xl font-bold text-green-600">
             {subscriptions.filter((sub) => sub.isActive).length}
@@ -523,7 +523,7 @@ const ManageSubscribers = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h3 className="text-lg font-semibold text-[#381207] mb-2">
-            Inactive Subscribers
+            Inactieve Abonnees
           </h3>
           <p className="text-3xl font-bold text-red-600">
             {subscriptions.filter((sub) => !sub.isActive).length}

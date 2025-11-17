@@ -136,7 +136,18 @@ const getAllvideos = async (req, res) => {
     // Build filter query object
     const query = {};
     if (search) {
-      query.title = { $regex: search, $options: "i" };
+      query.$or = query.$or || [];
+      query.$or.push(
+        { title: { $regex: search, $options: "i" } },
+        { tags: { $elemMatch: { $regex: search, $options: "i" } } },
+        { customTags: { $elemMatch: { $regex: search, $options: "i" } } },
+        { season: { $elemMatch: { $regex: search, $options: "i" } } },
+        { nature: { $elemMatch: { $regex: search, $options: "i" } } },
+        { animals: { $elemMatch: { $regex: search, $options: "i" } } },
+        { location: { $regex: search, $options: "i" } },
+        { province: { $regex: search, $options: "i" } },
+        { municipality: { $regex: search, $options: "i" } }
+      );
     }
     if (duration) {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
@@ -172,7 +183,8 @@ const getAllvideos = async (req, res) => {
           { location: searchPattern },
           { province: searchPattern },
           { municipality: searchPattern },
-          { tags: { $in: [loc] } }
+          { tags: { $in: [loc] } },
+          { customTags: { $elemMatch: { $regex: loc, $options: "i" } } }
         );
       });
     }
@@ -196,14 +208,14 @@ const getAllvideos = async (req, res) => {
       const seasons = Array.isArray(season) ? season : [season];
       query.$or = query.$or || [];
       seasons.forEach((s) => {
-        query.$or.push({ season: s }, { tags: { $in: [s] } });
+        query.$or.push({ season: { $in: [s] } }, { tags: { $in: [s] } });
       });
     }
     if (nature) {
       const natures = Array.isArray(nature) ? nature : [nature];
       query.$or = query.$or || [];
       natures.forEach((n) => {
-        query.$or.push({ nature: n }, { tags: { $in: [n] } });
+        query.$or.push({ nature: { $in: [n] } }, { tags: { $in: [n] } });
       });
     }
     if (animals) {
@@ -211,7 +223,7 @@ const getAllvideos = async (req, res) => {
       query.$or = query.$or || [];
       animalList.forEach((animal) => {
         query.$or.push(
-          { animals: { $regex: animal, $options: "i" } },
+          { animals: { $in: [animal] } },
           { tags: { $in: [animal] } }
         );
       });
@@ -220,7 +232,7 @@ const getAllvideos = async (req, res) => {
       const sounds = Array.isArray(sound) ? sound : [sound];
       query.$or = query.$or || [];
       sounds.forEach((s) => {
-        query.$or.push({ sound: s }, { tags: { $in: [s] } });
+        query.$or.push({ sound: { $in: [s] } }, { tags: { $in: [s] } });
       });
     }
 
@@ -741,12 +753,15 @@ const uploadVideo = async (req, res) => {
     title,
     url,
     location,
+    province,
+    municipality,
     description,
     season,
     nature,
     sound,
     animals,
     tags,
+    customTags,
     imgUrl,
     duration,
   } = req.body;
@@ -758,12 +773,57 @@ const uploadVideo = async (req, res) => {
       url,
       uploaderModel: "Admin",
       location,
+      province,
+      municipality,
       description,
-      season,
-      nature,
-      sound,
-      animals,
-      tags,
+      season: Array.isArray(season)
+        ? season
+        : season
+        ? season
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s)
+        : [],
+      nature: Array.isArray(nature)
+        ? nature
+        : nature
+        ? nature
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s)
+        : [],
+      sound: Array.isArray(sound)
+        ? sound
+        : sound
+        ? sound
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s)
+        : [],
+      animals: Array.isArray(animals)
+        ? animals
+        : animals
+        ? animals
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s)
+        : [],
+      tags: Array.isArray(tags)
+        ? tags
+        : tags
+        ? tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t)
+        : [],
+      customTags: Array.isArray(customTags)
+        ? customTags
+        : customTags
+        ? customTags
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t)
+        : [],
       imgUrl,
       duration,
       uploadedBy: req.user?.id, // This would come from auth middleware if available

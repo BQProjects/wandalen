@@ -24,7 +24,7 @@ const OrganizationCreated = () => {
 
   const handleCreateUser = () => {
     // Placeholder for create user logic
-    console.log("Create or update user");
+    console.log("Gebruiker aanmaken of bijwerken");
   };
 
   const handleCloseModal = () => {
@@ -66,14 +66,16 @@ const OrganizationCreated = () => {
             {/* Success Message */}
             <div className="text-center mb-6">
               <h2 className="text-2xl font-semibold text-[#381207] font-['Poppins'] mb-4">
-                Organization{" "}
-                {user?.requestStates === "approved" ? "Updated" : "Created"}{" "}
-                Successfully!
+                Organisatie{" "}
+                {user?.requestStates === "approved"
+                  ? "Bijgewerkt"
+                  : "Aangemaakt"}{" "}
+                Succesvol!
               </h2>
               <p className="text-xl text-[#381207] font-['Poppins'] font-medium">
-                We've sent login details to{" "}
-                {user?.contactPerson?.email || user?.email || "[Contact Email]"}
-                . They can now log in and add their patients or members.
+                We hebben inloggegevens gestuurd naar{" "}
+                {user?.contactPerson?.email || user?.email || "[Contact Email]"}{" "}
+                . Ze kunnen nu inloggen en hun patiënten of leden toevoegen.
               </p>
             </div>
 
@@ -83,13 +85,13 @@ const OrganizationCreated = () => {
                 onClick={handleBackToHome}
                 className="px-6 py-3 rounded-lg bg-[#a6a643] text-[#381207] font-['Poppins'] font-medium hover:bg-[#8f9b3a]"
               >
-                Back to RFQ forms
+                Terug naar RFQ formulieren
               </button>
               <button
                 onClick={handleCloseModal}
                 className="px-6 py-3 rounded-lg bg-[#a6a643] text-[#381207] font-['Poppins'] font-medium hover:bg-[#8f9b3a]"
               >
-                Done
+                Klaar
               </button>
             </div>
           </div>
@@ -116,7 +118,7 @@ const OrganizationCreated = () => {
           </svg>
         </button>
         <h1 className="text-2xl font-semibold text-[#381207] font-['Poppins']">
-          Submission details
+          Inzendingsdetails
         </h1>
       </div>
 
@@ -139,13 +141,17 @@ const OrganizationCreated = () => {
           <div className="grid grid-cols-1 gap-6">
             <div className="space-y-4">
               <div>
-                <p className="text-[#8d8d8d] font-['Poppins']">Full name</p>
+                <p className="text-[#8d8d8d] font-['Poppins']">
+                  Volledige naam
+                </p>
                 <p className="text-[#381207] font-['Poppins'] text-lg">
                   {user?.contactPerson?.fullName || "John"}
                 </p>
               </div>
               <div>
-                <p className="text-[#8d8d8d] font-['Poppins']">Phone number</p>
+                <p className="text-[#8d8d8d] font-['Poppins']">
+                  Telefoonnummer
+                </p>
                 <p className="text-[#381207] font-['Poppins'] text-lg">
                   {user?.phoneNo || "+31 6 1234 5678"}
                 </p>
@@ -154,14 +160,14 @@ const OrganizationCreated = () => {
           </div>
 
           <div>
-            <p className="text-[#8d8d8d] font-['Poppins']">Address</p>
+            <p className="text-[#8d8d8d] font-['Poppins']">Adres</p>
             <p className="text-[#381207] font-['Poppins'] text-lg">
               {user?.address || "Dominee C. Keersstraat 798151 AB Lemelerveld"}
             </p>
           </div>
 
           <div>
-            <p className="text-[#8d8d8d] font-['Poppins']">Notes</p>
+            <p className="text-[#8d8d8d] font-['Poppins']">Notities</p>
             <p className="text-[#381207] font-['Poppins'] text-lg">
               {user?.notes ||
                 "We're looking to start this plan by mid-August for a small group of caregivers. Please let us know if early onboarding support is available, and if we can upgrade the number of users later."}
@@ -191,12 +197,12 @@ const OrganizationCreated = () => {
               </svg>
             </div>
             <div className="text-[#381207] font-['Poppins'] text-lg font-medium mb-4">
-              Complete the User & Plan Information
+              Vul de Gebruiker & Plan Informatie In
             </div>
             <div className="grid gap-4">
               <div>
                 <label className="block text-[#381207] font-['Poppins'] font-medium mb-2">
-                  Amount Paid
+                  Bedrag Betaald
                 </label>
                 <input
                   className="border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -205,7 +211,7 @@ const OrganizationCreated = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-['Poppins'] font-medium mb-2">
-                  Plan Valid From
+                  Plan Geldig Vanaf
                 </label>
                 <input
                   type="date"
@@ -219,7 +225,7 @@ const OrganizationCreated = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-['Poppins'] font-medium mb-2">
-                  Plan Valid To
+                  Plan Geldig Tot
                 </label>
                 <input
                   type="date"
@@ -233,7 +239,7 @@ const OrganizationCreated = () => {
               </div>
               <div>
                 <label className="block text-[#381207] font-['Poppins'] font-medium mb-2">
-                  Client Limit
+                  Klant Limiet
                 </label>
                 <input
                   className="border border-[#B3B1AC] p-2 rounded-md w-full"
