@@ -72,7 +72,8 @@ const DawnForest = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full min-h-screen bg-accent">
+    // " will-change-transform backface-hidden transform-gpu " due to dashed line artifact
+    <div className="flex flex-col md:flex-row w-full min-h-screen bg-[#1f1915] will-change-transform backface-hidden transform-gpu">
       {/* Image - Full width on mobile, half width on md+ */}
       <div className="w-full md:w-1/2">
         <img
