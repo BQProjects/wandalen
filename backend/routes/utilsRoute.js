@@ -9,6 +9,7 @@ const {
   sendForgotPasswordOtp,
   resetPassword,
   subscribeHealthcareQuote,
+  getTestimonials,
 } = require("../components/utils");
 const validateActiveSession = require("../utils/middleware");
 
@@ -24,5 +25,6 @@ utilRouter.post("/subscribe", subscribe);
 utilRouter.get("/subscriptions", validateActiveSession, getAllSubscriptions);
 utilRouter.post("/unsubscribe", unsubscribe);
 utilRouter.post("/subscribe-healthcare-quote", subscribeHealthcareQuote);
+utilRouter.get("/testimonials", getTestimonials);
 
 module.exports = utilRouter;

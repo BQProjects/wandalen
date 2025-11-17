@@ -18,6 +18,7 @@ import Mute from "../../assets/Mute.svg";
 import UnMute from "../../assets/UnMute.svg";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ScrollingTestimonials from "../../components/ScrollingTestimonials";
 
 const MessageUs = () => {
   const { t, i18n } = useTranslation();
@@ -392,16 +393,44 @@ const Aran = () => {
       videoRef.current.muted = !isMuted;
     }
   };
+
+  const brands = [
+    { src: "/brand1.svg", alt: "NOS", url: "https://nos.nl" },
+    {
+      src: "/Brand2.png",
+      alt: "Vroege Vogels",
+      url: "https://www.bnnvara.nl/vroegevogels",
+    },
+    { src: "/brand3.svg", alt: "NPO Radio 5", url: "https://www.nporadio5.nl" },
+    { src: "/brand4.svg", alt: "De Stentor", url: "https://www.destentor.nl" },
+    { src: "/brand5.svg", alt: "rtv Oost", url: "https://www.oost.nl/" },
+    { src: "/brand6.svg", alt: "Tubantia", url: "https://www.tubantia.nl" },
+    { src: "/brand7.svg", alt: "NPO Radio 1", url: "https://www.nporadio1.nl" },
+  ];
+
+  const duplicatedBrands = [...brands, ...brands];
   return (
     <>
-      <style>{`.scroll-container::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`.scroll-wrapper::-webkit-scrollbar { display: none; }
+.scroll-wrapper { overflow: hidden; }
+.scroll-track { display: flex; width: 200%; align-items: center; }
+.scroll-item { flex: 0 0 auto; }
+.scroll-track img { display: block; }
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll {
+  animation: scroll 35s linear infinite;
+  will-change: transform;
+}`}</style>
       {/* Main Section */}
       <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[86vh] bg-cover bg-center bg-no-repeat overflow-hidden">
         {/* Background Video */}
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover z-0 bg-[#2A341F]"
-          src="/BgVideo.mp4"
+          src="/NewBgVideo.mp4"
           autoPlay
           muted={isMuted}
           loop
@@ -613,6 +642,84 @@ const Aran = () => {
       </div>
 
       <DawnForest />
+
+      {/* Impact Counters Section */}
+      <div className="flex flex-shrink-0 flex-col justify-center items-center w-full min-h-[564px] bg-[#ede4dc] py-10 sm:py-12 md:py-16 px-4 sm:px-10 md:px-20">
+        <div className="mb-10">
+          <div className="text-[#A6A643] font-['Poppins'] text-3xl sm:text-4xl font-semibold leading-[160%] mb-8">
+            {t("impactCounters.title")}
+          </div>
+          <div className="text-[#381207] font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+            Our nature walks are widely shared — in newspapers, on radio and TV,
+            and online.
+          </div>
+        </div>
+        <div className="w-full">
+          <div className="flex flex-wrap justify-center items-center w-full gap-12">
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#F7F6F4]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                90+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.natureVideos")}
+              </div>
+            </div>
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#F7F6F4]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                450+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.virtualKm")}
+              </div>
+            </div>
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#F7F6F4]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                20+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.volunteerFilmmakers")}
+              </div>
+            </div>
+            <div className="inline-flex flex-col flex-shrink-0 justify-center items-center gap-2 pt-4 pb-6 px-6 h-[10.375rem] w-[300px] rounded-2xl bg-[#F7F6F4]">
+              <div className="text-[#a6a643] text-center font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
+                240+
+              </div>
+              <div className="text-[#2a341f] text-center font-['Poppins'] text-base sm:text-lg leading-[136%]">
+                {t("impactCounters.uniqueRoutes")}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Brand Images Scrolling Row */}
+      <div className="w-full pt-20 bg-white">
+        <div className="w-[95%] mx-auto overflow-hidden scroll-wrapper">
+          <div className="scroll-track animate-scroll gap-6 sm:gap-8 lg:gap-12">
+            {duplicatedBrands.map((brand, index) => (
+              <div
+                key={index}
+                className="flex justify-center items-center flex-shrink-0 scroll-item"
+              >
+                <a href={brand.url} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={brand.src}
+                    alt={brand.alt}
+                    className="w-[200px] h-[120px] object-contain"
+                  />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex mx-auto w-full justify-center mt-16 mb-14">
+        <button
+          className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
+          onClick={() => (window.location.href = "/media")}
+        >
+          {t("media.header.title")}
+        </button>
+        </div>
+      </div>
 
       <RequestCard />
 
@@ -991,7 +1098,7 @@ const Aran = () => {
       </div>
 
       {/* Positive Experiences Section */}
-      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-10 md:px-20">
+      <div className="w-full bg-[#EDE4DC] py-10 sm:py-12  px-4 sm:px-10 md:px-20">
         <div className="mx-auto">
           {/* Header Section */}
           <div className="text-left mb-8 sm:mb-12 md:mb-16">
@@ -1010,9 +1117,9 @@ const Aran = () => {
           </div>
 
           {/* Three Cards Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-8xl mx-auto">
+          {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-8xl mx-auto">*/}
             {/* Card 1 - Family Connection */}
-            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-16 md:space-y-20 justify-end">
+            {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-16 md:space-y-20 justify-end">
               <div className="">
                 <svg
                   width={48}
@@ -1036,10 +1143,10 @@ const Aran = () => {
                   {t("dawnForest.threeCards.familyConnection.description")}
                 </p>
               </div>
-            </div>
+            </div>*/}
 
             {/* Card 2 - Calm & Comfort */}
-            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 justify-end">
+            {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 justify-end">
               <div className="flex-shrink-0">
                 <svg
                   width={48}
@@ -1063,10 +1170,10 @@ const Aran = () => {
                   {t("dawnForest.threeCards.calmComfort.description")}
                 </p>
               </div>
-            </div>
+            </div>*/}
 
             {/* Card 3 - Sharing Memories */}
-            <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 md:space-y-17 justify-end">
+            {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 md:space-y-17 justify-end">
               <div className="flex-shrink-0">
                 <svg
                   width={48}
@@ -1090,11 +1197,14 @@ const Aran = () => {
                   {t("dawnForest.threeCards.sharingMemories.description")}
                 </p>
               </div>
-            </div>
-          </div>
+            </div>*/}
+          {/* </div>*/}
         </div>
       </div>
-      {/* Impact Counters Section */}
+
+      <ScrollingTestimonials /> 
+
+      {/* Impact Counters Section
       <div className="flex flex-shrink-0 justify-center items-center w-full min-h-[564px] bg-[#1f1915] py-10 sm:py-12 md:py-16 lg:py-24">
         <div className="flex flex-col items-center gap-8">
           <div className="text-white text-center font-['Poppins'] text-3xl sm:text-4xl lg:text-5xl font-medium leading-[160%] mb-8">
@@ -1135,7 +1245,7 @@ const Aran = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Discover Routes Near You Section */}
       <div

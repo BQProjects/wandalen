@@ -208,19 +208,34 @@ const WebsiteHeader = () => {
               </Link>
 
               <Link
-                to="/blog"
+                to="/gratis"
                 className="flex flex-col justify-center items-start"
-                onMouseEnter={() => setHoveredItem("blog")}
+                onMouseEnter={() => setHoveredItem("gratis")}
                 onMouseLeave={() => setHoveredItem(null)}
-                onClick={() => setActiveItem("blog")}
+                onClick={() => setActiveItem("gratis")}
               >
-                <div className="body text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
+                <div className="body text-[#381207] font-poppins font-medium text-lg md:text-xl leading-[136%]">
                   {t("header.blog")}
                 </div>
-                {(hoveredItem === "blog" || activeItem === "blog") && (
+                {(hoveredItem === "gratis" || activeItem === "gratis") && (
                   <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
                 )}
               </Link>
+
+              <Link
+                to="/media"
+                className="flex flex-col justify-center items-start"
+                onMouseEnter={() => setHoveredItem("media")}
+                onMouseLeave={() => setHoveredItem(null)}
+                onClick={() => setActiveItem("media")}
+              >
+                <div className="body text-[#381207] font-poppins text-lg md:text-xl font-medium leading-[136%]">
+                  {t("header.media")}
+                </div>
+                {(hoveredItem === "media" || activeItem === "media") && (
+                  <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
+                )}
+              </Link> 
 
               {/* Language selector */}
               <div className="relative" ref={languageMenuRef}>
@@ -358,12 +373,19 @@ const WebsiteHeader = () => {
                   {t("header.subscriptions")}
                 </Link>
                 <Link
-                  to="/blog"
+                  to="/gratis"
                   className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("header.blog")}
                 </Link>
+                <Link
+                  to="/media"
+                  className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t("header.media")}
+                </Link> 
                 <div className="flex flex-col items-center gap-2">
                   <Link
                     to="/login"
