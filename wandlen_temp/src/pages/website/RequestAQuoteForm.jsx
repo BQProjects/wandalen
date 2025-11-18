@@ -780,7 +780,7 @@ const RequestAQuoteForm = () => {
                 <span className="text-[#2a341f] text-sm">
                   {t("requestQuoteForm.form.labels.agreeToTerms")}{" "}
                   <Link
-                    to="/terms"
+                    to="/voorwaarden"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[#5b6502] hover:text-[#4a5201] underline"

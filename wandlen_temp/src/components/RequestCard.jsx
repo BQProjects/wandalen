@@ -158,7 +158,7 @@ const RequestCard = () => {
                   </div>
                 </div>
               </div>
-              <Link to="/request-quote" className="w-full sm:w-auto">
+              <Link to="/offerte-aanvragen" className="w-full sm:w-auto">
                 <button className="w-full sm:w-auto px-4 py-2 rounded-lg bg-[#5b6502] hover:bg-[#a6a643] text-white font-['Poppins'] text-lg sm:text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
                   {t("requestCard.careInstitutions.button")}
                 </button>
@@ -287,7 +287,7 @@ const RequestCard = () => {
                   </div>
                 </div>
               </div>
-              <Link to="/subscribe" className="w-full sm:w-auto">
+              <Link to="/abonneren" className="w-full sm:w-auto">
                 <button className="w-full sm:w-auto px-4 py-2 rounded-lg bg-[#5b6502] hover:bg-[#a6a643] text-white font-['Poppins'] text-lg sm:text-xl font-medium tracking-tight cursor-pointer hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-[#5b6502] focus:ring-opacity-50">
                   {t("requestCard.homeUsers.button")}
                 </button>

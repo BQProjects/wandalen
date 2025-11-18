@@ -271,7 +271,7 @@ const Subscribe = () => {
   };
 
   const handleHealthcareClick = () => {
-    navigate("/request-quote");
+    navigate("/offerte-aanvragen");
   };
 
   return (

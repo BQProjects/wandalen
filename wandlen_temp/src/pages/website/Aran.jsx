@@ -395,17 +395,46 @@ const Aran = () => {
   };
 
   const brands = [
-    { src: "/brand1.svg", alt: "NOS", url: "https://nos.nl" },
+    {
+      src: "/brand1.svg",
+      alt: "NOS",
+      url: "https://nos.nl/regio/overijssel/artikel/661025-bos-en-heide-in-de-huiskamer-tina-filmt-voor-wie-niet-meer-zelf-kan-lopen",
+    },
     {
       src: "/Brand2.png",
       alt: "Vroege Vogels",
-      url: "https://www.bnnvara.nl/vroegevogels",
+      url: "https://www.bnnvara.nl/vroegevogels/artikelen/virtueel-wandelen-voor-mensen-met-dementie",
     },
-    { src: "/brand3.svg", alt: "NPO Radio 5", url: "https://www.nporadio5.nl" },
-    { src: "/brand4.svg", alt: "De Stentor", url: "https://www.destentor.nl" },
-    { src: "/brand5.svg", alt: "rtv Oost", url: "https://www.oost.nl/" },
-    { src: "/brand6.svg", alt: "Tubantia", url: "https://www.tubantia.nl" },
-    { src: "/brand7.svg", alt: "NPO Radio 1", url: "https://www.nporadio1.nl" },
+    {
+      src: "/brand3.svg",
+      alt: "NPO Radio 5",
+      url: "https://www.nporadio5.nl/fragmenten/bertop5/01987a09-8923-73de-ac0b-06a0b58e9738/2025-08-05-tina-filmt-heide-en-bos-voor-wie-niet-meer-zelf-kan-lopen",
+    },
+    {
+      src: "/brand4.svg",
+      alt: "De Stentor",
+      url: "https://www.destentor.nl/dalfsen/tina-zorgt-met-haar-video-s-voor-een-glimlach-in-verpleeg-hui-zen-je-denkt-waarom-is-dit-er-nog-niet~abeab09e/",
+    },
+    {
+      src: "/brand5.svg",
+      alt: "rtv Oost",
+      url: "https://www.oost.nl/nieuws/3549694/bos-en-heide-in-de-huiskamer-tina-filmt-voor-wie-niet-meer-zelf-kan-lopen",
+    },
+    {
+      src: "/brand6.svg",
+      alt: "Tubantia",
+      url: "https://www.tubantia.nl/rijssen-holten/tina-zorgt-met-haar-video-s-voor-een-glimlach-in-verpleeg-hui-zen-je-denkt-waarom-is-dit-er-nog-niet~abeab09e/?slug_rd=1",
+    },
+    {
+      src: "/brand7.svg",
+      alt: "NPO Radio 1",
+      url: "https://www.bnnvara.nl/vroegevogels/artikelen/virtueel-wandelen-voor-mensen-met-dementie",
+    },
+    {
+      src: "/brand8.svg",
+      alt: "AD",
+      url: "https://www.ad.nl/video/productie/paul-de-leeuw-zingt-mr-blue-met-zoon-toby-en-ontroert-ahoy-1960918",
+    },
   ];
 
   const duplicatedBrands = [...brands, ...brands];
@@ -475,12 +504,12 @@ const Aran = () => {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
-              <Link to="/request-quote">
+              <Link to="/offerte-aanvragen">
                 <button className="cursor-pointer flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#a6a643] hover:bg-[#5B6502] text-white font-[Poppins] text-base sm:text-lg md:text-xl font-medium leading-[136%] w-full sm:w-auto">
                   {t("aran.hero.requestQuote")}
                 </button>
               </Link>
-              <Link to="/subscribe">
+              <Link to="/abonneren">
                 <button className="cursor-pointer text-white hover:text-[#A6A643] flex justify-center items-center gap-2 py-2 px-4 rounded-lg border-2 border-[#abb53b] hover:bg-[#ffffb6] font-[Poppins] text-base sm:text-lg md:text-xl font-medium leading-[136%] w-full sm:w-auto mt-2 sm:mt-0">
                   {t("aran.hero.viewPlans")}
                 </button>
@@ -633,7 +662,7 @@ const Aran = () => {
           <div className="mt-8 sm:mt-12 text-center">
             <button
               className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
-              onClick={() => (window.location.href = "/subscribe")}
+              onClick={() => (window.location.href = "/abonneren")}
             >
               {t("positiveExperiences.watchNow")}
             </button>
@@ -712,12 +741,12 @@ const Aran = () => {
           </div>
         </div>
         <div className="flex mx-auto w-full justify-center mt-16 mb-14">
-        <button
-          className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
-          onClick={() => (window.location.href = "/media")}
-        >
-          {t("media.header.title")}
-        </button>
+          <button
+            className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
+            onClick={() => (window.location.href = "/media")}
+          >
+            {t("media.header.title")}
+          </button>
         </div>
       </div>
 
@@ -1043,10 +1072,10 @@ const Aran = () => {
             <Link
               to={
                 activeTab === "organizations"
-                  ? "/request-quote"
+                  ? "/offerte-aanvragen"
                   : activeTab === "Thuis"
-                  ? "/subscribe"
-                  : "/volunteer-signup"
+                  ? "/abonneren"
+                  : "/vrijwilliger-aanmelden"
               }
               className="w-full sm:w-auto"
             >
@@ -1110,7 +1139,7 @@ const Aran = () => {
             </h2>
             <button
               className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A6A643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg hover:bg-[#8a8f39] transition-all focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50"
-              onClick={() => (window.location.href = "/subscribe")}
+              onClick={() => (window.location.href = "/abonneren")}
             >
               {t("positiveExperiences.watchNow")}
             </button>
@@ -1118,8 +1147,8 @@ const Aran = () => {
 
           {/* Three Cards Section */}
           {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-8xl mx-auto">*/}
-            {/* Card 1 - Family Connection */}
-            {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-16 md:space-y-20 justify-end">
+          {/* Card 1 - Family Connection */}
+          {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-16 md:space-y-20 justify-end">
               <div className="">
                 <svg
                   width={48}
@@ -1145,8 +1174,8 @@ const Aran = () => {
               </div>
             </div>*/}
 
-            {/* Card 2 - Calm & Comfort */}
-            {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 justify-end">
+          {/* Card 2 - Calm & Comfort */}
+          {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 justify-end">
               <div className="flex-shrink-0">
                 <svg
                   width={48}
@@ -1172,8 +1201,8 @@ const Aran = () => {
               </div>
             </div>*/}
 
-            {/* Card 3 - Sharing Memories */}
-            {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 md:space-y-17 justify-end">
+          {/* Card 3 - Sharing Memories */}
+          {/* <div className="bg-[#f7f6f4] rounded-2xl p-6 sm:p-8 flex flex-col text-left h-full space-y-8 sm:space-y-12 md:space-y-17 justify-end">
               <div className="flex-shrink-0">
                 <svg
                   width={48}
@@ -1202,7 +1231,7 @@ const Aran = () => {
         </div>
       </div>
 
-      <ScrollingTestimonials /> 
+      <ScrollingTestimonials />
 
       {/* Impact Counters Section
       <div className="flex flex-shrink-0 justify-center items-center w-full min-h-[564px] bg-[#1f1915] py-10 sm:py-12 md:py-16 lg:py-24">
@@ -1308,7 +1337,7 @@ const Aran = () => {
                 ref={scrollRef}
                 className="scroll-container flex gap-4 overflow-x-auto whitespace-nowrap flex-1"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                onClick={() => (window.location.href = "/subscribe")}
+                onClick={() => (window.location.href = "/abonneren")}
               >
                 <button className="cursor-pointer px-6 py-3 rounded-lg text-[18px] border border-white/30 text-white font-['Poppins'] hover:bg-white/10 transition-all">
                   Dalfsen
@@ -1390,14 +1419,14 @@ const Aran = () => {
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <button
                   className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                  onClick={() => (window.location.href = "/subscribe")}
+                  onClick={() => (window.location.href = "/abonneren")}
                 >
                   {t("dawnForest.discoverRoutes.exploreFeature")}
                 </button>
 
                 <button
                   className="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-[#A6A643] text-white font-['Poppins'] text-xl font-medium hover:bg-[#5B6502] transition-all"
-                  onClick={() => (window.location.href = "/become-volunteer")}
+                  onClick={() => (window.location.href = "/word-vrijwilliger")}
                 >
                   {t("dawnForest.discoverRoutes.moreAboutVolunteering")}
                 </button>
@@ -1428,7 +1457,9 @@ const Aran = () => {
                   <div className="flex justify-start">
                     <button
                       className="cursor-pointer px-3 sm:px-4 py-2 bg-[#a6a643] text-white font-['Poppins'] text-base sm:text-lg md:text-xl font-medium rounded-lg transition-all hover:bg-[#8a8f39] focus:outline-none focus:ring-2 focus:ring-[#a6a643] focus:ring-opacity-50 w-full sm:w-auto"
-                      onClick={() => (window.location.href = "/read-more")}
+                      onClick={() =>
+                        (window.location.href = "/lees-meer-over-tina")
+                      }
                     >
                       {t("dawnForest.tinaSection.readMore")}
                     </button>

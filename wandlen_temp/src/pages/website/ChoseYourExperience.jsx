@@ -38,7 +38,7 @@ const ChooseYourExperience = () => {
               </p>
             </div>
 
-            <Link to="/request-quote">
+            <Link to="/offerte-aanvragen">
               <button className="bg-[#5b6502] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#4a5302] transition-colors">
                 {t("chooseYourExperience.organization.button")}
               </button>
@@ -64,7 +64,7 @@ const ChooseYourExperience = () => {
               </p>
             </div>
 
-            <Link to="/subscribe">
+            <Link to="/abonneren">
               <button className="bg-[#5b6502] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#4a5302] transition-colors">
                 {t("chooseYourExperience.family.button")}
               </button>

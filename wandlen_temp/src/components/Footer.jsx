@@ -54,7 +54,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/ourVission"
+                  to="/onze-aanpak"
                   className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.ourVision")}
@@ -62,7 +62,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/subscribe"
+                  to="/abonneren"
                   className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.subscriptions")}
@@ -70,7 +70,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/become-volunteer"
+                  to="/word-vrijwilliger"
                   className="hover:text-[#a6a643] transition-colors inline-block py-1 font-[Poppins]"
                 >
                   {t("footer.volunteer")}
@@ -204,20 +204,20 @@ const Footer = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-xs sm:text-sm opacity-75">
               <Link
-                to="/terms"
+                to="/voorwaarden"
                 className="hover:text-[#a6a643] transition-colors font-[Poppins] text-center sm:text-left"
               >
                 {t("footer.termsAndConditions")}
               </Link>
               <Link
-                to="/privacy-policy"
+                to="/privacybeleid"
                 className="hover:text-[#a6a643] transition-colors font-[Poppins] text-center sm:text-left"
               >
                 {t("footer.privacyPolicy")}
               </Link>
               {/* <span className="hidden sm:inline text-[#ede4dc]/60">&</span>
               <Link
-                to="/agreement"
+                to="/overeenkomst"
                 className="hover:text-[#a6a643] transition-colors font-[Poppins] text-center sm:text-left"
               >
                 {t("footer.privacyPolicy")}

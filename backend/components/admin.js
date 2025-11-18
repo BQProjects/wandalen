@@ -639,7 +639,7 @@ const approveOrg = async (req, res) => {
       // Create password setup link
       const passwordLink = `${
         process.env.FRONTEND_URL || "https://virtueelwandelen.nl"
-      }/generate-pass/${updatedOrg._id}`;
+      }/wachtwoord-genereren/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = false for new approvals)
       await sendEmail(
@@ -717,7 +717,7 @@ const updateOrg = async (req, res) => {
       // For updates, we don't include password setup link in customer email
       const passwordLink = `${
         process.env.FRONTEND_URL || "https://virtueelwandelen.nl"
-      }/generate-pass/${updatedOrg._id}`;
+      }/wachtwoord-genereren/${updatedOrg._id}`;
 
       // Send email to customer (isUpdate = true for updates, no password link)
       await sendEmail(
