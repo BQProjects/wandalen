@@ -32,11 +32,11 @@ const AdminLogin = () => {
         console.log("Login successful, navigating to /admin");
         window.location.href = "/admin";
       } else {
-        toast.error(data.message || "Invalid credentials");
+        toast.error(data.message || "Ongeldige inloggegevens");
       }
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Login failed");
+      toast.error("Inloggen mislukt");
     }
   };
 
@@ -46,10 +46,10 @@ const AdminLogin = () => {
         onSubmit={handleLogin}
         className="bg-white p-8 rounded shadow-md w-96"
       >
-        <h2 className="text-2xl mb-4">Admin Login</h2>
+        <h2 className="text-2xl mb-4">Admin Inloggen</h2>
         <input
           type="email"
-          placeholder="Email"
+          placeholder="E-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 mb-4 border rounded"
@@ -57,7 +57,7 @@ const AdminLogin = () => {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Wachtwoord"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 mb-4 border rounded"
@@ -67,7 +67,7 @@ const AdminLogin = () => {
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded"
         >
-          Login
+          Inloggen
         </button>
       </form>
     </div>

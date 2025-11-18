@@ -16,15 +16,17 @@ const ManageVolunteer = () => {
   };
 
   const handleDelete = async (volunteerId) => {
-    if (window.confirm("Are you sure you want to delete this volunteer?")) {
+    if (
+      window.confirm("Weet je zeker dat je deze vrijwilliger wilt verwijderen?")
+    ) {
       try {
         await axios.delete(
           `${DATABASE_URL}/admin/delete-volunteer/${volunteerId}`
         );
         setUsers(users.filter((user) => user._id !== volunteerId));
-        console.log("Volunteer deleted successfully");
+        console.log("Vrijwilliger succesvol verwijderd");
       } catch (error) {
-        console.error("Error deleting volunteer:", error);
+        console.error("Fout bij het verwijderen van vrijwilliger:", error);
       }
     }
   };
@@ -36,7 +38,7 @@ const ManageVolunteer = () => {
       setOriginalUsers(res.data);
       console.log(res.data);
     } catch (error) {
-      console.error("Error fetching volunteers:", error);
+      console.error("Fout bij het ophalen van vrijwilligers:", error);
     }
   };
 
@@ -152,10 +154,10 @@ const ManageVolunteer = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
-          Volunteer list view from form
+          Vrijwilliger lijstweergave van formulier
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          Select and add members from this quote request.
+          Selecteer en voeg leden toe van dit offerteverzoek.
         </p>
       </div>
 
@@ -168,7 +170,7 @@ const ManageVolunteer = () => {
             onClick={() => handleSort("firstName")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              First Name
+              Voornaam
             </div>
             {getSortIcon("firstName")}
           </div>
@@ -177,7 +179,7 @@ const ManageVolunteer = () => {
             onClick={() => handleSort("lastName")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Last Name
+              Achternaam
             </div>
             {getSortIcon("lastName")}
           </div>
@@ -186,7 +188,7 @@ const ManageVolunteer = () => {
             onClick={() => handleSort("phoneNumber")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Phone Number
+              Telefoonnummer
             </div>
             {getSortIcon("phoneNumber")}
           </div>
@@ -195,13 +197,13 @@ const ManageVolunteer = () => {
             onClick={() => handleSort("email")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Contact Email
+              Contact E-mail
             </div>
             {getSortIcon("email")}
           </div>
           <div className="flex items-center gap-2 w-[19%] min-w-[170px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Actions
+              Acties
             </div>
           </div>
         </div>
@@ -239,12 +241,12 @@ const ManageVolunteer = () => {
                 className="px-3 py-1 rounded bg-[#dd9219] text-white font-['Poppins'] text-sm hover:bg-[#c4a016] transition-colors"
                 onClick={() => handleViewDetails(user._id)}
               >
-                View Details
+                Bekijk Details
               </button>
               <button
                 className="p-1 rounded hover:bg-red-100 transition-colors"
                 onClick={() => handleDelete(user._id)}
-                title="Delete Volunteer"
+                title="Verwijder Vrijwilliger"
               >
                 <svg
                   width={16}

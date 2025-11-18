@@ -70,7 +70,7 @@ const BecomeVolunteer = () => {
             </div>
             <button
               className="bg-[#a6a643] hover:bg-[#8f8f3d] font-['Poppins'] text-white px-4 py-2 rounded-lg text-lg font-medium transition-colors hidden lg:block"
-              onClick={() => (window.location.href = "/volunteer-signup")}
+              onClick={() => (window.location.href = "/vrijwilliger-aanmelden")}
             >
               {t("becomeVolunteer.howItWorks.knowMore")}
             </button>
@@ -152,7 +152,9 @@ const BecomeVolunteer = () => {
               <div className="flex flex-wrap gap-4 pt-4">
                 <button
                   className="bg-[#a6a643] hover:bg-[#8f8f3d] text-white font-['Poppins'] px-4 py-2 rounded-lg text-lg font-medium transition-colors"
-                  onClick={() => (window.location.href = "/volunteer-signup")}
+                  onClick={() =>
+                    (window.location.href = "/vrijwilliger-aanmelden")
+                  }
                 >
                   {t("becomeVolunteer.benefits.joinVolunteer")}
                 </button>

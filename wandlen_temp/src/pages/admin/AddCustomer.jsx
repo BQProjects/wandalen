@@ -198,14 +198,14 @@ const AddCustomer = () => {
 
       if (isUpdate) {
         toast.success(
-          `Organization ${action} successfully! ` +
-            `Confirmation emails have been sent to the customer and admin team.`
+          `Organisatie succesvol bijgewerkt! ` +
+            `Bevestigingsmails zijn verzonden naar de klant en het admin team.`
         );
       } else {
         toast.success(
-          `Organization ${action} successfully! ` +
-            `Confirmation emails have been sent to the customer and admin team. ` +
-            `The customer will receive a password setup link to complete their account activation.`
+          `Organisatie succesvol aangemaakt! ` +
+            `Bevestigingsmails zijn verzonden naar de klant en het admin team. ` +
+            `De klant ontvangt een wachtwoord instellingslink om de account activering te voltooien.`
         );
       }
 
@@ -220,7 +220,7 @@ const AddCustomer = () => {
         error.response?.data || "No response data"
       );
       toast.error(
-        `Error creating/updating organization: ${error.message}. Please try again.`
+        `Fout bij het aanmaken/bijwerken van organisatie: ${error.message}. Probeer het opnieuw.`
       );
     }
   };
@@ -244,8 +244,8 @@ const AddCustomer = () => {
         </button>
         <h1 className="text-2xl font-semibold text-brown">
           {user?.requestStates === "approved"
-            ? "Edit Customer"
-            : "Add Customer"}
+            ? "Klant Bewerken"
+            : "Klant Toevoegen"}
         </h1>
       </div>
 
@@ -272,12 +272,12 @@ const AddCustomer = () => {
             </svg>
           </div>
           <div className="text-brown font-base text-lg font-medium mb-4">
-            Complete the User & Plan Information
+            Voltooi de Gebruiker & Plan Informatie
           </div>
           <div className="grid gap-4">
             <div>
               <label className="block text-brown font-base font-medium mb-2">
-                Amount Paid
+                Bedrag Betaald
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -287,7 +287,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-brown font-base font-medium mb-2">
-                Plan Valid From
+                Plan Geldig Vanaf
               </label>
               <input
                 type="date"
@@ -298,7 +298,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-brown font-base font-medium mb-2">
-                Plan Valid To
+                Plan Geldig Tot
               </label>
               <input
                 type="date"
@@ -309,7 +309,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-brown font-base font-medium mb-2">
-                Client Limit
+                Klant Limiet
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -326,8 +326,8 @@ const AddCustomer = () => {
               onClick={handleCreateUser}
             >
               {user?.requestStates === "approved"
-                ? "Update User"
-                : "Create User"}
+                ? "Gebruiker Bijwerken"
+                : "Gebruiker Aanmaken"}
             </button>
           </div>
         </div>
@@ -337,12 +337,12 @@ const AddCustomer = () => {
         {/* Organization Details */}
         <div>
           <h2 className="text-2xl font-medium text-muted-foreground mb-4">
-            Organization Details
+            Organisatie Details
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Organization Name
+                Organisatienaam
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -352,7 +352,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Contact Email
+                Contact E-mail
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -362,7 +362,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Phone Number
+                Telefoonnummer
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -382,7 +382,7 @@ const AddCustomer = () => {
             </div> */}
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Street
+                Straat
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -392,7 +392,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Postal Code
+                Postcode
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -402,7 +402,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                City
+                Stad
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -423,16 +423,15 @@ const AddCustomer = () => {
           </div>
         </div>
 
-
         {/* Contact Person */}
         <div>
           <h2 className="text-2xl font-medium text-muted-foreground mb-4">
-            Contact Person
+            Contactpersoon
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Full Name
+                Volledige Naam
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -442,7 +441,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Job Title / Position
+                Functie / Positie
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -452,7 +451,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Email Address
+                E-mailadres
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -462,7 +461,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Phone Number
+                Telefoonnummer
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -476,12 +475,12 @@ const AddCustomer = () => {
         {/* Organization & Target Group */}
         <div>
           <h2 className="text-2xl font-medium text-muted-foreground mb-4">
-            Organization & Target Group
+            Organisatie & Doelgroep
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Total Number of Clients
+                Totaal Aantal Cliënten
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -490,7 +489,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Number of Locations
+                Aantal Locaties
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -500,20 +499,22 @@ const AddCustomer = () => {
             </div>
             <div className="md:col-span-2">
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Type of care organization
+                Soort zorgorganisatie
               </label>
               <select
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
                 value={soortZorgorganisatie}
                 onChange={(e) => setSoortZorgorganisatie(e.target.value)}
               >
-                <option value="">Select type</option>
-                <option value="Nursing home">Nursing home</option>
-                <option value="Disability care">Disability care</option>
-                <option value="Mental health care">Mental health care</option>
-                <option value="Home care">Home care</option>
-                <option value="Day care">Day care</option>
-                <option value="Other">Other</option>
+                <option value="">Selecteer type</option>
+                <option value="Nursing home">Verpleeghuis</option>
+                <option value="Disability care">Gehandicaptenzorg</option>
+                <option value="Mental health care">
+                  Geestelijke gezondheidszorg
+                </option>
+                <option value="Home care">Thuiszorg</option>
+                <option value="Day care">Dagopvang</option>
+                <option value="Other">Anders</option>
               </select>
             </div>
           </div>
@@ -522,12 +523,12 @@ const AddCustomer = () => {
         {/* Use of Virtual Walking */}
         <div>
           <h2 className="text-2xl font-medium text-muted-foreground mb-4">
-            Use of Virtual Walking
+            Gebruik van Virtueel Wandelen
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Estimated number of clients who will use the platform
+                Geschat aantal cliënten dat het platform zal gebruiken
               </label>
               <input
                 className="input border border-[#B3B1AC] p-2 rounded-md w-full"
@@ -537,7 +538,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Desired start date of use
+                Gewenste startdatum van gebruik
               </label>
               <input
                 type="date"
@@ -557,7 +558,7 @@ const AddCustomer = () => {
           <div className="space-y-4">
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Do you need onboarding and integration support?
+                Heeft u behoefte aan onboarding en integratieondersteuning?
               </label>
               <div className="flex gap-4">
                 <div className="flex items-center gap-2">
@@ -567,7 +568,7 @@ const AddCustomer = () => {
                     checked={needSupport}
                     onChange={() => setNeedSupport(true)}
                   />
-                  <span className="text-dark-green font-base text-sm">Yes</span>
+                  <span className="text-dark-green font-base text-sm">Ja</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -576,19 +577,20 @@ const AddCustomer = () => {
                     checked={!needSupport}
                     onChange={() => setNeedSupport(false)}
                   />
-                  <span className="text-dark-green font-base text-sm">No</span>
+                  <span className="text-dark-green font-base text-sm">Nee</span>
                 </div>
               </div>
               <textarea
                 className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"
                 value={additionalServices}
                 onChange={(e) => setAdditionalServices(e.target.value)}
-                placeholder="Details about support needed"
+                placeholder="Details over benodigde ondersteuning"
               ></textarea>
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Additional services or custom solutions you are interested in?
+                Aanvullende diensten of maatwerkoplossingen waarin u
+                geïnteresseerd bent?
               </label>
               <textarea
                 className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"
@@ -598,7 +600,7 @@ const AddCustomer = () => {
             </div>
             <div>
               <label className="block text-muted-foreground font-base text-sm mb-2">
-                Notes
+                Notities
               </label>
               <textarea
                 className="input border border-[#B3B1AC] p-2 rounded-md h-32 py-2 resize-none w-full"

@@ -398,7 +398,18 @@ const getAllvideos = async (req, res) => {
       isApproved: true, // Only show approved videos to clients
     };
     if (search) {
-      query.title = { $regex: search, $options: "i" };
+      query.$or = query.$or || [];
+      query.$or.push(
+        { title: { $regex: search, $options: "i" } },
+        { tags: { $elemMatch: { $regex: search, $options: "i" } } },
+        { customTags: { $elemMatch: { $regex: search, $options: "i" } } },
+        { season: { $elemMatch: { $regex: search, $options: "i" } } },
+        { nature: { $elemMatch: { $regex: search, $options: "i" } } },
+        { animals: { $elemMatch: { $regex: search, $options: "i" } } },
+        { location: { $regex: search, $options: "i" } },
+        { province: { $regex: search, $options: "i" } },
+        { municipality: { $regex: search, $options: "i" } }
+      );
     }
     if (duration) {
       const durationFilters = Array.isArray(duration) ? duration : [duration];
@@ -434,7 +445,8 @@ const getAllvideos = async (req, res) => {
           { location: searchPattern },
           { province: searchPattern },
           { municipality: searchPattern },
-          { tags: { $in: [loc] } }
+          { tags: { $in: [loc] } },
+          { customTags: { $elemMatch: { $regex: loc, $options: "i" } } }
         );
       });
     }

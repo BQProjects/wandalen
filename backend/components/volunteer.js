@@ -111,6 +111,7 @@ const uploadVideos = async (req, res) => {
     sound,
     animals,
     tags,
+    customTags,
     imgUrl,
     duration,
     id,
@@ -131,6 +132,7 @@ const uploadVideos = async (req, res) => {
       sound,
       animals,
       tags,
+      customTags,
       imgUrl,
       duration,
       uploadedBy: id,
@@ -173,7 +175,18 @@ const selfUploaded = async (req, res) => {
 
     // Add search filter
     if (search) {
-      query.title = { $regex: search, $options: "i" };
+      query.$or = query.$or || [];
+      query.$or.push(
+        { title: { $regex: search, $options: "i" } },
+        { tags: { $elemMatch: { $regex: search, $options: "i" } } },
+        { customTags: { $elemMatch: { $regex: search, $options: "i" } } },
+        { season: { $elemMatch: { $regex: search, $options: "i" } } },
+        { nature: { $elemMatch: { $regex: search, $options: "i" } } },
+        { animals: { $elemMatch: { $regex: search, $options: "i" } } },
+        { location: { $regex: search, $options: "i" } },
+        { province: { $regex: search, $options: "i" } },
+        { municipality: { $regex: search, $options: "i" } }
+      );
     }
 
     // Add duration filter
@@ -202,7 +215,7 @@ const selfUploaded = async (req, res) => {
       }
     }
 
-    // Add other filters
+    // Add location filter
     if (location) {
       const locations = Array.isArray(location) ? location : [location];
       // Search in location, province, and municipality fields
@@ -212,7 +225,8 @@ const selfUploaded = async (req, res) => {
         query.$or.push(
           { location: searchPattern },
           { province: searchPattern },
-          { municipality: searchPattern }
+          { municipality: searchPattern },
+          { customTags: { $elemMatch: { $regex: loc, $options: "i" } } }
         );
       });
     }

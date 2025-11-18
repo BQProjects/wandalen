@@ -25,7 +25,7 @@ const ManageQuote = () => {
   const handleDelete = async (userId) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this organization request?"
+        "Weet u zeker dat u deze organisatieverzoek wilt verwijderen?"
       )
     ) {
       try {
@@ -194,7 +194,7 @@ const ManageQuote = () => {
             onClick={() => handleSort("firstName")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              First Name
+              Voornaam
             </div>
             {getSortIcon("firstName")}
           </div>
@@ -203,7 +203,7 @@ const ManageQuote = () => {
             onClick={() => handleSort("lastName")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Last Name
+              Achternaam
             </div>
             {getSortIcon("lastName")}
           </div>
@@ -212,7 +212,7 @@ const ManageQuote = () => {
             onClick={() => handleSort("orgName")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Organization
+              Organisatie
             </div>
             {getSortIcon("orgName")}
           </div>
@@ -221,7 +221,7 @@ const ManageQuote = () => {
             onClick={() => handleSort("phoneNo")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Phone
+              Telefoon
             </div>
             {getSortIcon("phoneNo")}
           </div>
@@ -230,7 +230,7 @@ const ManageQuote = () => {
             onClick={() => handleSort("email")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Email
+              E-mail
             </div>
             {getSortIcon("email")}
           </div>
@@ -239,7 +239,7 @@ const ManageQuote = () => {
             onClick={() => handleSort("createdAt")}
           >
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Date
+              Datum
             </div>
             {getSortIcon("createdAt")}
           </div>
@@ -250,7 +250,7 @@ const ManageQuote = () => {
           </div>
           <div className="w-[120px] min-w-[120px] flex justify-center items-center py-3">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Actions
+              Acties
             </div>
           </div>
         </div>
@@ -320,12 +320,12 @@ const ManageQuote = () => {
                   }
                 }}
               >
-                {user.requestStates === "approved" ? "Edit" : "Add"}
+                {user.requestStates === "approved" ? "Bewerken" : "Toevoegen"}
               </button>
               <button
                 className="p-1 rounded hover:bg-red-100 transition-colors"
                 onClick={() => handleDelete(user._id)}
-                title="Delete Request"
+                title="Verzoek Verwijderen"
               >
                 <svg
                   width={16}

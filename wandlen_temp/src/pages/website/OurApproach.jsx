@@ -60,7 +60,7 @@ const OurApproach = () => {
                 {/* CTA Button */}
                 <div className="flex justify-start ">
                   <Link
-                    to="/choose-experience"
+                    to="/kies-ervaring"
                     className="flex items-center w-fit gap-2.5 py-2 px-5 rounded-lg bg-primary text-white font-[Poppins]  text-base sm:text-lg md:text-xl font-medium leading-[136%] hover:bg-opacity-90 transition-colors"
                   >
                     {t("ourApproach.ctaButton")}

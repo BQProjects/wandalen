@@ -133,7 +133,7 @@ const WebsiteHeader = () => {
           </Link>
 
           <Link
-            to="/ourVission"
+            to="/onze-aanpak"
             className="flex flex-col justify-center items-start"
             onMouseEnter={() => setHoveredItem("ourVission")}
             onMouseLeave={() => setHoveredItem(null)}
@@ -176,7 +176,7 @@ const WebsiteHeader = () => {
           ) : (
             <>
               <Link
-                to="/become-volunteer"
+                to="/word-vrijwilliger"
                 className="flex flex-col justify-center items-start"
                 onMouseEnter={() => setHoveredItem("volunteer")}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -192,7 +192,7 @@ const WebsiteHeader = () => {
               </Link>
 
               <Link
-                to="/subscribe"
+                to="/abonneren"
                 className="flex flex-col justify-center items-start"
                 onMouseEnter={() => setHoveredItem("subscribe")}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -235,7 +235,7 @@ const WebsiteHeader = () => {
                 {(hoveredItem === "media" || activeItem === "media") && (
                   <div className="w-[1.5625rem] h-0.5 bg-[#381207]" />
                 )}
-              </Link> 
+              </Link>
 
               {/* Language selector */}
               <div className="relative" ref={languageMenuRef}>
@@ -329,7 +329,7 @@ const WebsiteHeader = () => {
               {t("header.welcome")}
             </Link>
             <Link
-              to="/ourVission"
+              to="/onze-aanpak"
               className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -359,14 +359,14 @@ const WebsiteHeader = () => {
             ) : (
               <>
                 <Link
-                  to="/become-volunteer"
+                  to="/word-vrijwilliger"
                   className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("header.becomeVolunteer")}
                 </Link>
                 <Link
-                  to="/subscribe"
+                  to="/abonneren"
                   className="text-brown font-['Poppins'] text-lg font-medium hover:text-dark-olive transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -385,7 +385,7 @@ const WebsiteHeader = () => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t("header.media")}
-                </Link> 
+                </Link>
                 <div className="flex flex-col items-center gap-2">
                   <Link
                     to="/login"

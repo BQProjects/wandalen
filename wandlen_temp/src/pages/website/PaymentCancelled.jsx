@@ -33,7 +33,7 @@ const PaymentCancelled = () => {
         </p>
         <div className="flex gap-4">
           <button
-            onClick={() => navigate("/subscribe")}
+            onClick={() => navigate("/abonneren")}
             className="flex-1 px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors font-medium"
           >
             {t("paymentCancelled.tryAgain") || "Try Again"}

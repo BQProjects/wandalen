@@ -29,8 +29,8 @@ const SubscriptionOverview = () => {
       );
       setPaymentDetails(res.data);
     } catch (error) {
-      console.error("Error fetching payment details:", error);
-      toast.error("Failed to fetch payment details from Stripe");
+      console.error("Fout bij het ophalen van betalingsgegevens:", error);
+      toast.error("Kan betalingsgegevens niet ophalen van Stripe");
     } finally {
       setLoading(false);
     }
@@ -41,7 +41,7 @@ const SubscriptionOverview = () => {
     // If we only have basic data, we could fetch full client details here
     // For now, we'll use the data passed from ManageSubscription
     if (!clientData) {
-      toast.error("No subscription data available");
+      toast.error("Geen abonnementsgegevens beschikbaar");
       navigate("/admin/manage-subscription");
     } else if (clientData.clientId) {
       // Fetch Stripe payment details
@@ -54,7 +54,9 @@ const SubscriptionOverview = () => {
   };
 
   const handleCancelSubscription = async () => {
-    if (!window.confirm("Are you sure you want to cancel this subscription?")) {
+    if (
+      !window.confirm("Weet je zeker dat je dit abonnement wilt annuleren?")
+    ) {
       return;
     }
 
@@ -71,16 +73,16 @@ const SubscriptionOverview = () => {
       );
 
       if (response.data.success) {
-        toast.success("Subscription cancelled successfully");
+        toast.success("Abonnement succesvol geannuleerd");
         // Refresh the page to show updated status
         window.location.reload();
       } else {
-        toast.error(response.data.message || "Failed to cancel subscription");
+        toast.error(response.data.message || "Kan abonnement niet annuleren");
       }
     } catch (error) {
-      console.error("Error cancelling subscription:", error);
+      console.error("Fout bij het annuleren van abonnement:", error);
       toast.error(
-        error.response?.data?.message || "Failed to cancel subscription"
+        error.response?.data?.message || "Kan abonnement niet annuleren"
       );
     } finally {
       setLoading(false);
@@ -90,7 +92,7 @@ const SubscriptionOverview = () => {
   if (!clientData) {
     return (
       <div className="min-h-screen bg-[#ede4dc] p-6 flex items-center justify-center">
-        <p className="text-[#381207] font-['Poppins'] text-xl">Loading...</p>
+        <p className="text-[#381207] font-['Poppins'] text-xl">Laden...</p>
       </div>
     );
   }
@@ -121,7 +123,7 @@ const SubscriptionOverview = () => {
           </svg>
         </button>
         <h1 className="text-[#381207] text-center font-['Poppins'] text-4xl font-medium">
-          Subscription Overview
+          Abonnementsoverzicht
         </h1>
         <div className="w-32"></div> {/* Spacer for centering */}
       </div>
@@ -165,13 +167,13 @@ const SubscriptionOverview = () => {
                       </svg>
                       <span className="text-[#381207] font-['Poppins'] text-lg">
                         {subscription.status === "Trial"
-                          ? "7 day Trial"
+                          ? "7-daagse Proefperiode"
                           : subscription.status === "Active"
-                          ? "Active Subscription"
+                          ? "Actief Abonnement"
                           : subscription.status === "Cancelled"
-                          ? "Cancelled"
+                          ? "Geannuleerd"
                           : subscription.status === "Expired"
-                          ? "Expired"
+                          ? "Verlopen"
                           : subscription.status}
                       </span>
                     </div>
@@ -187,8 +189,8 @@ const SubscriptionOverview = () => {
                       className="px-4 py-2 border border-[#2a341f] rounded-md text-[#2a341f] font-['Poppins'] hover:bg-[#2a341f] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ml-auto"
                     >
                       {subscription.status === "Cancelled"
-                        ? "Cancelled"
-                        : "Cancel Subscription"}
+                        ? "Geannuleerd"
+                        : "Abonnement Annuleren"}
                     </button>
                   </div>
                 </div>
@@ -200,7 +202,7 @@ const SubscriptionOverview = () => {
               <div className="space-y-6">
                 <div>
                   <label className="text-[#4b4741] font-['Poppins'] block mb-2">
-                    Start date
+                    Startdatum
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {subscription.startDate}
@@ -208,7 +210,7 @@ const SubscriptionOverview = () => {
                 </div>
                 <div>
                   <label className="text-[#4b4741] font-['Poppins'] block mb-2">
-                    Last payment
+                    Laatste betaling
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {subscription.paymentStatus || "N/A"}
@@ -216,7 +218,7 @@ const SubscriptionOverview = () => {
                 </div>
                 <div>
                   <label className="text-[#4b4741] font-['Poppins'] block mb-2">
-                    Videos watched (24h)
+                    Video's bekeken (24u)
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {subscription.videosWatched || 0}
@@ -226,7 +228,7 @@ const SubscriptionOverview = () => {
               <div className="space-y-6">
                 <div>
                   <label className="text-[#4b4741] font-['Poppins'] block mb-2">
-                    End date
+                    Einddatum
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {subscription.endDate}
@@ -242,14 +244,14 @@ const SubscriptionOverview = () => {
                 </div>
                 <div>
                   <label className="text-[#4b4741] font-['Poppins'] block mb-2">
-                    Last watch date
+                    Laatste bekijk datum
                   </label>
                   <p className="text-[#381207] font-['Poppins'] text-lg">
                     {subscription.lastWatchDate
                       ? new Date(
                           subscription.lastWatchDate
                         ).toLocaleDateString()
-                      : "Never"}
+                      : "Nooit"}
                   </p>
                 </div>
               </div>
@@ -260,10 +262,10 @@ const SubscriptionOverview = () => {
           <div className="bg-[#f7f6f4] rounded-2xl">
             <div className="p-6 border-b border-[#e5e3df]">
               <h3 className="text-[#381207] font-['Poppins'] text-2xl font-medium mb-2">
-                Payments
+                Betalingen
               </h3>
               <p className="text-[#4b4741] font-['Poppins']">
-                Keep track of payments from your customers in real time.
+                Houd betalingen van je klanten in realtime bij.
               </p>
             </div>
 
@@ -272,13 +274,13 @@ const SubscriptionOverview = () => {
               {loading && !paymentDetails ? (
                 <div className="flex justify-center items-center py-8">
                   <p className="text-[#4b4741] font-['Poppins']">
-                    Loading payment details...
+                    Betalingsgegevens laden...
                   </p>
                 </div>
               ) : !paymentDetails ? (
                 <div className="flex justify-center items-center py-8">
                   <p className="text-[#4b4741] font-['Poppins']">
-                    Unable to load payment details. Please try again later.
+                    Kan betalingsgegevens niet laden. Probeer het later opnieuw.
                   </p>
                 </div>
               ) : (
@@ -286,7 +288,7 @@ const SubscriptionOverview = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                        Amount
+                        Bedrag
                       </label>
                       <p className="text-[#381207] font-['Poppins']">
                         {paymentDetails?.stripe?.latestInvoice?.amount
@@ -316,7 +318,7 @@ const SubscriptionOverview = () => {
                     </div>
                     <div>
                       <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                        Payment Type
+                        Betalings Type
                       </label>
                       <p className="text-[#381207] font-['Poppins']">
                         {"Subscription"}
@@ -326,7 +328,7 @@ const SubscriptionOverview = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                        Stripe Customer ID
+                        Stripe Klant ID
                       </label>
                       <p className="text-[#381207] font-['Poppins']">
                         {clientData.stripeCustomerId || "N/A"}
@@ -334,7 +336,7 @@ const SubscriptionOverview = () => {
                     </div>
                     <div>
                       <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                        Stripe Subscription ID
+                        Stripe Abonnements ID
                       </label>
                       <p className="text-[#381207] font-['Poppins']">
                         {paymentDetails?.stripe?.subscriptionId || "N/A"}
@@ -342,7 +344,7 @@ const SubscriptionOverview = () => {
                     </div>
                     <div>
                       <label className="text-[#4b4741] font-['Poppins'] block mb-1">
-                        Cardholder name
+                        Kaarthouder naam
                       </label>
                       <p className="text-[#381207] font-['Poppins']">
                         {paymentDetails?.stripe?.paymentMethod
@@ -362,10 +364,10 @@ const SubscriptionOverview = () => {
           <div className="bg-[#f7f6f4] rounded-2xl sticky top-6">
             <div className="p-6 border-b border-[#e5e3df]">
               <h3 className="text-[#381207] font-['Poppins'] text-2xl font-medium text-center">
-                Subscription History
+                Abonnementsgeschiedenis
               </h3>
               <p className="text-[#4b4741] font-['Poppins'] text-sm text-center mt-2">
-                Track important subscription milestones and dates
+                Volg belangrijke abonnementsmijlpalen en datums
               </p>
             </div>
 
@@ -385,12 +387,12 @@ const SubscriptionOverview = () => {
                       subscription.trialEndDate
                     ) {
                       timelineEvents.push({
-                        title: "Trial Period",
+                        title: "Proefperiode",
                         date: subscription.trialEndDate || subscription.endDate,
                         description:
                           subscription.status === "Trial"
-                            ? "7-day trial ends"
-                            : "Trial period active",
+                            ? "7-daagse proefperiode eindigt"
+                            : "Proefperiode actief",
                         status:
                           subscription.status === "Trial"
                             ? "Active"
@@ -400,22 +402,22 @@ const SubscriptionOverview = () => {
 
                     // Subscription start event
                     timelineEvents.push({
-                      title: "Subscription Started",
+                      title: "Abonnement Gestart",
                       date: subscription.startDate,
                       description: subscription.planType
-                        ? `${subscription.planType} plan activated`
-                        : "Subscription activated",
+                        ? `${subscription.planType} plan geactiveerd`
+                        : "Abonnement geactiveerd",
                       status: "Completed",
                     });
 
                     // Subscription active/renewal event
                     if (subscription.status === "Active") {
                       timelineEvents.push({
-                        title: "Subscription Active",
+                        title: "Abonnement Actief",
                         date: subscription.startDate,
                         description: subscription.planType
-                          ? `Currently on ${subscription.planType} plan`
-                          : "Subscription is active",
+                          ? `Momenteel op ${subscription.planType} plan`
+                          : "Abonnement is actief",
                         status: "Active",
                       });
                     }
@@ -431,18 +433,18 @@ const SubscriptionOverview = () => {
 
                       timelineEvents.push({
                         title: isCancelled
-                          ? "Subscription Cancelled"
+                          ? "Abonnement Geannuleerd"
                           : isExpired
-                          ? "Subscription Expired"
-                          : "Subscription Ends",
+                          ? "Abonnement Verlopen"
+                          : "Abonnement Eindigt",
                         date:
                           subscription.endDate ||
                           paymentDetails?.stripe?.canceledAt,
                         description: isCancelled
-                          ? "Subscription has been cancelled"
+                          ? "Abonnement is geannuleerd"
                           : isExpired
-                          ? "Subscription has expired"
-                          : `Renews on ${subscription.endDate}`,
+                          ? "Abonnement is verlopen"
+                          : `Vernieuwt op ${subscription.endDate}`,
                         status:
                           isCancelled || isExpired ? "Completed" : "Upcoming",
                       });
@@ -463,13 +465,17 @@ const SubscriptionOverview = () => {
                                 : "bg-yellow-100 text-yellow-800"
                             }`}
                           >
-                            {event.status}
+                            {event.status === "Active"
+                              ? "Actief"
+                              : event.status === "Completed"
+                              ? "Voltooid"
+                              : "Aankomend"}
                           </span>
                         </div>
                         <p className="text-[#4b4741] font-['Poppins'] mb-1">
                           {event.date
                             ? new Date(event.date).toLocaleDateString()
-                            : "Date not available"}
+                            : "Datum niet beschikbaar"}
                         </p>
                         <p className="text-[#4b4741] font-['Poppins'] text-sm">
                           {event.description}

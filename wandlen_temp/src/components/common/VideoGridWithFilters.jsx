@@ -120,6 +120,7 @@ const VideoCard = ({
   location,
   thumbnail,
   tags = [],
+  customTags = [],
   views,
   likes,
   onSelect,
@@ -197,6 +198,20 @@ const VideoCard = ({
             </div>
           ))}
         </div>
+
+        {/* Custom Tags */}
+        {customTags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {customTags.map((tag, index) => (
+              <div
+                key={`custom-${index}`}
+                className="flex items-center gap-1 px-2 py-1 bg-[#f8f5f0] rounded-full text-xs text-[#381207]"
+              >
+                <span>{tag}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Stats */}
         {showStats && (
@@ -816,7 +831,7 @@ const VideoGridWithFilters = ({
                   <div key={filter} className="relative">
                     <input
                       type="text"
-                      placeholder="Zoek provincie, gemeente of plaats"
+                      placeholder="Zoek provincie, gemeente, plaats of tag"
                       value={activeFilters[filter]?.[0] || ""}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -904,6 +919,7 @@ const VideoGridWithFilters = ({
                 location={video.location}
                 thumbnail={video.imgUrl}
                 tags={video.tags || []}
+                customTags={video.customTags || []}
                 views={video.views ?? 0}
                 likes={video.likes ?? 0}
                 onSelect={() => onVideoSelect(video._id || video.id)}

@@ -60,47 +60,47 @@ const ManageSubscription = () => {
           : null;
 
         // Determine status based on subscriptionStatus field and dates
-        let status = "Inactive";
-        let paymentStatus = "Pending";
+        let status = "Inactief";
+        let paymentStatus = "In afwachting";
 
         if (client.subscriptionStatus === "cancelled") {
-          status = "Cancelled";
+          status = "Geannuleerd";
           paymentStatus =
             client.paymentStatus === "completed" || client.paymentVerified
-              ? "Paid"
-              : "Pending";
+              ? "Betaald"
+              : "In afwachting";
         } else if (client.subscriptionStatus === "trial") {
           // Check if trial is still active
           if (trialEndDate && now <= trialEndDate) {
-            status = "Trial";
-            paymentStatus = "Pending"; // During trial, payment is pending
+            status = "Proefperiode";
+            paymentStatus = "In afwachting"; // During trial, payment is pending
           } else if (endDate && now <= endDate) {
-            status = "Active";
-            paymentStatus = "Paid"; // Trial ended, subscription continued = Paid
+            status = "Actief";
+            paymentStatus = "Betaald"; // Trial ended, subscription continued = Paid
           } else {
-            status = "Expired";
+            status = "Verlopen";
             paymentStatus =
               client.paymentStatus === "completed" || client.paymentVerified
-                ? "Paid"
-                : "Pending";
+                ? "Betaald"
+                : "In afwachting";
           }
         } else if (client.subscriptionStatus === "active") {
           if (endDate && now <= endDate) {
-            status = "Active";
-            paymentStatus = "Paid"; // Active subscription = Paid
+            status = "Actief";
+            paymentStatus = "Betaald"; // Active subscription = Paid
           } else {
-            status = "Expired";
+            status = "Verlopen";
             paymentStatus =
               client.paymentStatus === "completed" || client.paymentVerified
-                ? "Paid"
-                : "Pending";
+                ? "Betaald"
+                : "In afwachting";
           }
         } else if (client.subscriptionStatus === "expired") {
-          status = "Expired";
+          status = "Verlopen";
           paymentStatus =
             client.paymentStatus === "completed" || client.paymentVerified
-              ? "Paid"
-              : "Pending";
+              ? "Betaald"
+              : "In afwachting";
         }
 
         return {
@@ -131,7 +131,7 @@ const ManageSubscription = () => {
       setSubscriptions(mappedSubscriptions);
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
-      toast.error("Failed to fetch subscriptions");
+      toast.error("Kan abonnementen niet ophalen");
     }
   };
 
@@ -189,13 +189,13 @@ const ManageSubscription = () => {
     if (!stripeSubscriptionId) {
       // No subscription, can delete directly
       const confirmDelete = window.confirm(
-        "Are you sure you want to delete this client?"
+        "Weet je zeker dat je deze klant wilt verwijderen?"
       );
       if (!confirmDelete) return;
     } else {
       // Has subscription, check if cancelled
       const confirmDelete = window.confirm(
-        "This client has a Stripe subscription. Make sure the subscription is cancelled in Stripe before deleting. Proceed with deletion?"
+        "Deze klant heeft een Stripe abonnement. Zorg ervoor dat het abonnement is geannuleerd in Stripe voordat je verwijdert. Doorgaan met verwijderen?"
       );
       if (!confirmDelete) return;
     }
@@ -212,7 +212,9 @@ const ManageSubscription = () => {
       fetchSubscriptions();
     } catch (error) {
       console.error("Error deleting client:", error);
-      toast.error(error.response?.data?.message || "Failed to delete client");
+      toast.error(
+        error.response?.data?.message || "Kan klant niet verwijderen"
+      );
     }
   };
 
@@ -221,10 +223,10 @@ const ManageSubscription = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-medium text-[#381207] font-['Poppins'] mb-4">
-          Manage Subscription Plans
+          Abonnementen Beheren
         </h1>
         <p className="text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          Track and manage all member subscriptions in one place.
+          Volg en beheer alle lid abonnementen op één plek.
         </p>
       </div>
 
@@ -234,7 +236,7 @@ const ManageSubscription = () => {
         <div className="flex items-center w-full py-4 px-6 h-16 border-b border-b-[#d9bbaa] bg-[#a6a643]/[.2]">
           <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              First Name
+              Voornaam
             </div>
             <SortIcon
               column="firstName"
@@ -244,7 +246,7 @@ const ManageSubscription = () => {
           </div>
           <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Last Name
+              Achternaam
             </div>
             <SortIcon
               column="lastName"
@@ -274,7 +276,7 @@ const ManageSubscription = () => {
           </div>
           <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Start Date
+              Startdatum
             </div>
             <SortIcon
               column="startDate"
@@ -284,7 +286,7 @@ const ManageSubscription = () => {
           </div>
           <div className="flex items-center gap-2 w-[12%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              End Date
+              Einddatum
             </div>
             <SortIcon
               column="endDate"
@@ -294,7 +296,7 @@ const ManageSubscription = () => {
           </div>
           <div className="flex items-center gap-2 w-[11%] min-w-[80px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              V.Viewed
+              V.Bekeken
             </div>
             <SortIcon
               column="videosWatched"
@@ -304,7 +306,7 @@ const ManageSubscription = () => {
           </div>
           <div className="flex items-center gap-2 w-[11%] min-w-[90px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Payment
+              Betaling
             </div>
             <SortIcon
               column="paymentStatus"
@@ -314,7 +316,7 @@ const ManageSubscription = () => {
           </div>
           <div className="flex items-center gap-2 w-[6%] min-w-[50px]">
             <div className="text-[#2a341f] font-['Poppins'] text-lg font-semibold">
-              Action
+              Actie
             </div>
           </div>
         </div>
@@ -357,13 +359,13 @@ const ManageSubscription = () => {
                     cy={5}
                     r={4}
                     fill={
-                      sub.status === "Active"
+                      sub.status === "Actief"
                         ? "#12B76A"
-                        : sub.status === "Trial"
+                        : sub.status === "Proefperiode"
                         ? "#FFBE41"
-                        : sub.status === "Cancelled"
+                        : sub.status === "Geannuleerd"
                         ? "#FF8C42"
-                        : sub.status === "Expired"
+                        : sub.status === "Verlopen"
                         ? "#FF674F"
                         : "#9CA3AF"
                     }
@@ -402,7 +404,9 @@ const ManageSubscription = () => {
                     cx={5}
                     cy={5}
                     r={4}
-                    fill={sub.paymentStatus === "Paid" ? "#12B76A" : "#FFBE41"}
+                    fill={
+                      sub.paymentStatus === "Betaald" ? "#12B76A" : "#FFBE41"
+                    }
                   />
                 </svg>
                 <div className="text-[#381207] font-['Poppins'] text-sm truncate">

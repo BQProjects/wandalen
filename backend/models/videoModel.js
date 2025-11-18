@@ -34,22 +34,26 @@ const VideoSchema = new Schema(
       index: true,
     },
     season: {
-      type: String,
+      type: [String],
       index: true,
     },
     nature: {
-      type: String,
+      type: [String],
       index: true,
     },
     sound: {
-      type: String,
+      type: [String],
       index: true,
     },
     animals: {
-      type: String,
+      type: [String],
       index: true,
     },
     tags: {
+      type: [String],
+      index: true,
+    },
+    customTags: {
       type: [String],
       index: true,
     },

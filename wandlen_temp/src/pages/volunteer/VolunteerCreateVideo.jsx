@@ -499,6 +499,7 @@ const VolunteerCreateVideo = () => {
     soundStimuli: "",
     animals: "",
     tags: [], // Changed to array
+    customTags: "", // New field for extra tags
     imgUrl: "",
     url: "",
   });
@@ -861,6 +862,7 @@ const VolunteerCreateVideo = () => {
         sound: formData.soundStimuli,
         animals: formData.animals,
         tags: formData.tags,
+        customTags: formData.customTags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
         imgUrl: imgUrl, // Cover URL
         duration: formData.duration,
         id: localStorage.getItem("userId"),
@@ -964,6 +966,7 @@ const VolunteerCreateVideo = () => {
         soundStimuli: "",
         animals: "",
         tags: [], // Reset to empty array
+        customTags: "",
       });
       setCoverImage(null);
       setVideoFile(null);
@@ -996,6 +999,7 @@ const VolunteerCreateVideo = () => {
               .map((tag) => tag.trim())
               .filter((tag) => tag.length > 0)
           : [],
+        customTags: Array.isArray(res.data.customTags) ? res.data.customTags.join(', ') : res.data.customTags || '',
         imgUrl: res.data.imgUrl,
         url: res.data.url,
       });
@@ -1554,6 +1558,21 @@ const VolunteerCreateVideo = () => {
                   ))}
                 </div>
               )}
+            </div>
+
+            {/* Extra Tags */}
+            <div>
+              <label className="block font-[Poppins] text-[#381207] font-medium mb-2">
+                Extra tags
+              </label>
+              <input
+                type="text"
+                name="customTags"
+                value={formData.customTags}
+                onChange={handleInputChange}
+                className="w-full p-3 border font-[Poppins] border-[#b3b1ac] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2a341f]"
+                placeholder="Voer extra tags in, gescheiden door komma's"
+              />
             </div>
 
             {/* Action Buttons */}

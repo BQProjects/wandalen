@@ -85,7 +85,9 @@ const Training = () => {
                 </p>
               </div>
               <button
-                onClick={() => (window.location.href = "/volunteer-signup")}
+                onClick={() =>
+                  (window.location.href = "/vrijwilliger-aanmelden")
+                }
                 className="bg-[#a6a643] text-white px-4 md:px-8 py-2 rounded-lg text-lg md:text-xl font-medium hover:bg-[#8d8f37] transition-colors duration-300 font-['Poppins']"
               >
                 {t("videoTraining.signupButton")}

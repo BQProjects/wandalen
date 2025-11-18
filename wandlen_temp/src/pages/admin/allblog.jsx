@@ -79,7 +79,7 @@ const BlogLibrary = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this blog?")) {
+    if (window.confirm("Weet je zeker dat je deze blog wilt verwijderen?")) {
       try {
         await axios.delete(`${DATABASE_URL}/admin/blogs/${id}`);
         fetchBlogs(); // Refetch after delete
@@ -116,18 +116,17 @@ const BlogLibrary = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Laden...</div>;
   }
 
   return (
     <div className="w-full p-4">
-      {/* Header Section */}
       <div className="mb-8">
         <div className="text-[#381207] font-['Poppins'] text-5xl font-medium leading-[136%]">
-          Blog Library
+          Blog Bibliotheek
         </div>
         <div className="text-[#381207] font-['Poppins'] text-lg leading-[136%] mt-2">
-          View, edit, and manage all blogs.
+          Bekijk, bewerk en beheer alle blogs.
         </div>
       </div>
 
@@ -137,7 +136,7 @@ const BlogLibrary = () => {
           onClick={handleCreate}
           className="inline-flex items-center gap-2.5 py-2 px-5 rounded-lg bg-[#a6a643] text-white font-['Poppins'] font-medium leading-[136%] hover:bg-[#8f9b3a] transition-colors"
         >
-          Create a blog
+          Blog aanmaken
         </button>
       </div>
 
@@ -160,23 +159,25 @@ const BlogLibrary = () => {
                   }}
                 >
                   {!blog.imgUrl && (
-                    <div className="text-[#381207] text-lg">No Image</div>
+                    <div className="text-[#381207] text-lg">
+                      Geen Afbeelding
+                    </div>
                   )}
                 </div>
                 <div className="absolute top-2 right-2 flex gap-2">
                   <button
                     onClick={() => handleEdit(blog._id)}
                     className="px-3 py-1 bg-[#dd9219] text-white text-xs rounded hover:bg-[#c47a15] transition-colors"
-                    title="Edit blog"
+                    title="Blog bewerken"
                   >
-                    Edit
+                    Bewerk
                   </button>
                   <button
                     onClick={() => handleDelete(blog._id)}
                     className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
-                    title="Delete blog"
+                    title="Blog verwijderen"
                   >
-                    Delete
+                    Verwijder
                   </button>
                 </div>
               </div>
@@ -187,7 +188,7 @@ const BlogLibrary = () => {
                   {blog.title}
                 </h3>
                 <p className="text-[#381207] text-sm mb-3 opacity-75">
-                  By {blog.author || "Unknown"}
+                  Door {blog.author || "Onbekend"}
                 </p>
                 <p className="text-[#4b4741] font-['Poppins'] text-sm">
                   {new Date(blog.date).toLocaleDateString()}
@@ -198,7 +199,7 @@ const BlogLibrary = () => {
         ) : (
           <div className="col-span-full text-center py-8">
             <p className="text-[#381207] font-['Poppins'] text-lg">
-              No blogs found.
+              Geen blogs gevonden.
             </p>
           </div>
         )}
@@ -212,7 +213,7 @@ const BlogLibrary = () => {
             disabled={currentPage === 1}
             className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Previous
+            Vorige
           </button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
@@ -232,7 +233,7 @@ const BlogLibrary = () => {
             disabled={currentPage === totalPages}
             className="px-3 py-2 bg-[#f8f5f0] text-[#381207] rounded hover:bg-[#e6d9cd] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Next
+            Volgende
           </button>
         </div>
       )}

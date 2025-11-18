@@ -20,7 +20,7 @@ const VolunteerTrainingDetails = () => {
       const data = response.data;
       setTrainings(data);
     } catch (error) {
-      console.error("Error fetching trainings:", error);
+      console.error("Fout bij het ophalen van trainingen:", error);
     } finally {
       setLoading(false);
     }
@@ -36,39 +36,41 @@ const VolunteerTrainingDetails = () => {
           dataToSend
         );
         fetchTrainings();
-        toast.success("Training updated successfully");
+        toast.success("Training succesvol bijgewerkt");
       } catch (error) {
-        console.error("Error updating training:", error);
-        toast.error("Error updating training");
+        console.error("Fout bij het bijwerken van de training:", error);
+        toast.error("Fout bij het bijwerken van de training");
       }
     } else {
       // create
       try {
         await axios.post(`${DATABASE_URL}/admin/trainings`, dataToSend);
         fetchTrainings();
-        toast.success("Training created successfully");
+        toast.success("Training succesvol aangemaakt");
       } catch (error) {
-        console.error("Error creating training:", error);
-        toast.error("Error creating training");
+        console.error("Fout bij het aanmaken van de training:", error);
+        toast.error("Fout bij het aanmaken van de training");
       }
     }
   };
 
   const handleDelete = async (training) => {
-    if (window.confirm("Are you sure you want to delete this training?")) {
+    if (
+      window.confirm("Weet je zeker dat je deze training wilt verwijderen?")
+    ) {
       try {
         await axios.delete(`${DATABASE_URL}/admin/trainings/${training._id}`);
         fetchTrainings();
-        toast.success("Training deleted successfully");
+        toast.success("Training succesvol verwijderd");
       } catch (error) {
-        console.error("Error deleting training:", error);
-        toast.error("Error deleting training");
+        console.error("Fout bij het verwijderen van de training:", error);
+        toast.error("Fout bij het verwijderen van de training");
       }
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Bezig met laden...</div>;
   }
 
   return (
@@ -137,13 +139,13 @@ const TrainingSection = ({ training, onEdit, onDelete }) => {
             onClick={onEdit}
             className="px-4 py-2 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5201] transition-colors"
           >
-            Edit
+            Bewerken
           </button>
           <button
             onClick={onDelete}
             className="px-4 py-2 rounded-lg bg-red-500 text-white font-['Poppins'] font-medium hover:bg-red-600 transition-colors"
           >
-            Delete
+            Verwijderen
           </button>
         </div>
       </div>
@@ -151,45 +153,45 @@ const TrainingSection = ({ training, onEdit, onDelete }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-              Date
+              Datum
             </label>
             <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
               {training.date
                 ? new Date(training.date).toLocaleDateString()
-                : "Not set"}
+                : "Niet ingesteld"}
             </p>
           </div>
           <div>
             <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-              Location
+              Locatie
             </label>
             <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
-              {training.location || "Not set"}
+              {training.location || "Niet ingesteld"}
             </p>
           </div>
           <div>
             <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-              Timing
+              Tijd
             </label>
             <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
-              {training.timing || "Not set"}
+              {training.timing || "Niet ingesteld"}
             </p>
           </div>
           <div>
             <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-              Created by
+              Gemaakt door
             </label>
             <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
-              {training.createdBy || "Not set"}
+              {training.createdBy || "Niet ingesteld"}
             </p>
           </div>
         </div>
         <div className="mt-4">
           <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-            Description
+            Beschrijving
           </label>
           <p className="text-[#4b4741] font-['Poppins'] leading-[normal] mt-1">
-            {training.description || "Not set"}
+            {training.description || "Niet ingesteld"}
           </p>
         </div>
       </div>
@@ -229,13 +231,13 @@ const TrainingModal = ({ training, onSave, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 md:p-8 w-full max-w-2xl mx-4">
         <h2 className="text-2xl font-semibold text-[#381207] mb-6">
-          {training ? "Edit Training" : "Add New Training"}
+          {training ? "Training bewerken" : "Nieuwe training toevoegen"}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Title
+                Titel
               </label>
               <input
                 type="text"
@@ -247,7 +249,7 @@ const TrainingModal = ({ training, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Date
+                Datum
               </label>
               <input
                 type="date"
@@ -259,7 +261,7 @@ const TrainingModal = ({ training, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Created by
+                Gemaakt door
               </label>
               <input
                 type="text"
@@ -271,7 +273,7 @@ const TrainingModal = ({ training, onSave, onClose }) => {
             </div>
             <div className="space-y-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Timing
+                Tijd
               </label>
               <input
                 type="text"
@@ -283,7 +285,7 @@ const TrainingModal = ({ training, onSave, onClose }) => {
             </div>
             <div className="space-y-2 md:col-span-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Location
+                Locatie
               </label>
               <input
                 type="text"
@@ -295,7 +297,7 @@ const TrainingModal = ({ training, onSave, onClose }) => {
             </div>
             <div className="space-y-2 md:col-span-2">
               <label className="text-[#381207] font-['Poppins'] font-medium leading-[normal]">
-                Description
+                Beschrijving
               </label>
               <textarea
                 value={description}
@@ -311,13 +313,13 @@ const TrainingModal = ({ training, onSave, onClose }) => {
               onClick={onClose}
               className="px-6 py-3 rounded-lg border border-[#b3b1ac] text-[#4b4741] font-['Poppins'] font-medium hover:bg-gray-50 transition-colors"
             >
-              Cancel
+              Annuleren
             </button>
             <button
               type="submit"
               className="px-6 py-3 rounded-lg bg-[#5b6502] text-white font-['Poppins'] font-medium hover:bg-[#4a5201] transition-colors"
             >
-              {training ? "Update" : "Create"}
+              {training ? "Bijwerken" : "Aanmaken"}
             </button>
           </div>
         </form>

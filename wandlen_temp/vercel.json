@@ -1,9 +1,80 @@
 {
-
-    "rewrites" : [
+    "redirects": [
         {
-            "source" : "/(.*)",
-            "destination" : "/"
+            "source": "/subscribe",
+            "destination": "/abonneren",
+            "permanent": true
+        },
+        {
+            "source": "/request-quote",
+            "destination": "/offerte-aanvragen",
+            "permanent": true
+        },
+        {
+            "source": "/volunteer-signup",
+            "destination": "/vrijwilliger-aanmelden",
+            "permanent": true
+        },
+        {
+            "source": "/become-volunteer",
+            "destination": "/word-vrijwilliger",
+            "permanent": true
+        },
+        {
+            "source": "/ourVission",
+            "destination": "/onze-aanpak",
+            "permanent": true
+        },
+        {
+            "source": "/read-more",
+            "destination": "/lees-meer-over-tina",
+            "permanent": true
+        },
+        {
+            "source": "/privacy-policy",
+            "destination": "/privacybeleid",
+            "permanent": true
+        },
+        {
+            "source": "/terms",
+            "destination": "/voorwaarden",
+            "permanent": true
+        },
+        {
+            "source": "/agreement",
+            "destination": "/overeenkomst",
+            "permanent": true
+        },
+        {
+            "source": "/choose-experience",
+            "destination": "/kies-ervaring",
+            "permanent": true
+        },
+        {
+            "source": "/generate-pass/:id",
+            "destination": "/wachtwoord-genereren/:id",
+            "permanent": true
+        },
+        {
+            "source": "/payment",
+            "destination": "/betaling",
+            "permanent": true
+        },
+        {
+            "source": "/payment-success",
+            "destination": "/betaling-gelukt",
+            "permanent": true
+        },
+        {
+            "source": "/payment-cancelled",
+            "destination": "/betaling-geannuleerd",
+            "permanent": true
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
         }
     ]
 }

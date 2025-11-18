@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Layout imports
 import AdminLayout from "../pages/admin/AdminLayout";
@@ -88,15 +88,15 @@ export const router = createBrowserRouter([
         element: <Aran />, // Landing page
       },
       {
-        path: "ourVission",
-        element: <OurApproach />, // Our Vision page
+        path: "onze-aanpak",
+        element: <OurApproach />, // Our Vision page (Dutch path)
       },
       {
-        path: "become-volunteer",
+        path: "word-vrijwilliger",
         element: <BecomeVolunteer />,
       },
       {
-        path: "subscribe",
+        path: "abonneren",
         element: <Subscribe />,
       },
       {
@@ -128,38 +128,83 @@ export const router = createBrowserRouter([
         element: <Training />,
       },
       {
-        path: "volunteer-signup",
+        path: "vrijwilliger-aanmelden",
         element: <VolunteerSignupForm />,
       },
       {
-        path: "request-quote",
+        path: "offerte-aanvragen",
         element: <RequestAQuoteForm />,
       },
       {
-        path: "choose-experience",
+        path: "kies-ervaring",
         element: <ChooseYourExperience />,
       },
       {
-        path: "generate-pass/:id",
+        path: "wachtwoord-genereren/:id",
         element: <GeneratePassword />,
       },
       {
-        path: "agreement",
+        path: "overeenkomst",
         element: <Agreement />,
       },
       {
-        path: "terms",
+        path: "voorwaarden",
         element: <TermnCondition />,
       },
       {
-        path: "privacy-policy",
+        path: "privacybeleid",
         element: <PrivacyPolicy />,
       },
       {
-        path: "read-more",
+        path: "lees-meer-over-tina",
         element: <ReadMoreAboutTina />,
       },
     ],
+  },
+  // Client-side redirects from old English routes to new Dutch routes
+  {
+    path: "/subscribe",
+    element: <Navigate to="/abonneren" replace />,
+  },
+  {
+    path: "/request-quote",
+    element: <Navigate to="/offerte-aanvragen" replace />,
+  },
+  {
+    path: "/volunteer-signup",
+    element: <Navigate to="/vrijwilliger-aanmelden" replace />,
+  },
+  {
+    path: "/become-volunteer",
+    element: <Navigate to="/word-vrijwilliger" replace />,
+  },
+  {
+    path: "/ourVission",
+    element: <Navigate to="/onze-aanpak" replace />,
+  },
+  {
+    path: "/read-more",
+    element: <Navigate to="/lees-meer-over-tina" replace />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <Navigate to="/privacybeleid" replace />,
+  },
+  {
+    path: "/terms",
+    element: <Navigate to="/voorwaarden" replace />,
+  },
+  {
+    path: "/agreement",
+    element: <Navigate to="/overeenkomst" replace />,
+  },
+  {
+    path: "/choose-experience",
+    element: <Navigate to="/kies-ervaring" replace />,
+  },
+  {
+    path: "/generate-pass/:id",
+    element: <Navigate to="/wachtwoord-genereren/:id" replace />,
   },
   // Authentication routes without layouts (no headers)
   {
