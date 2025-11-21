@@ -44,10 +44,55 @@ const Media = () => {
           {/* Header Section */}
           <div className="mb-16 text-left">
             <div
-              className="text-[#5B6502] font-['Poppins'] text-[32px] font-semibold leading-[136%] mb-4"
+              className="text-[#5B6502] font-['Poppins'] text-5xl font-semibold leading-[136%] mb-4"
               style={{ letterSpacing: "-0.32px" }}
             >
               {t("media.header.title")}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mx-auto mt-10">
+              {/* Video 1 - Mountain/Forest Scene */}
+              <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://player.vimeo.com/video/1125835751?h=cb1c1b43cb&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  frameborder="0"
+                  className="w-full h-full absolute inset-0 rounded-2xl"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  title="Video 1 homepage: titel under: Lemelerberg in de  winter"
+                ></iframe>
+              </div>
+
+              {/* Video 2 - Purple Lavender Scene */}
+              <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://player.vimeo.com/video/1125836067?h=b385661387&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  frameborder="0"
+                  className="w-full h-full absolute inset-0 rounded-2xl"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  title="Video 2 homepage: De IJssel over bij Den Nul"
+                ></iframe>
+              </div>
+
+              {/* Video 3 - Ocean Sunset Scene */}
+              <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://player.vimeo.com/video/1125836341?h=3c53c14e8c&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  frameborder="0"
+                  className="w-full h-full absolute inset-0 rounded-2xl"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  title="Video 3 homepage: title: Koeien kijken op het Boetelerveld"
+                ></iframe>
+              </div>
+
+              {/* Video 4 - Winter Forest Scene */}
+              <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] lg:h-[320px] rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://player.vimeo.com/video/1125836865?h=1976cd5af1&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  frameborder="0"
+                  className="w-full h-full absolute inset-0 rounded-2xl"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  title="Video 4 homepage: Een zomerse wandeling over de heide"
+                ></iframe>
+              </div>
             </div>
             {/* <div
               className="text-[#381207] font-['Poppins'] text-5xl lg:text-5xl font-semibold leading-[136%]"

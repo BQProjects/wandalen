@@ -679,8 +679,7 @@ const Aran = () => {
             {t("impactCounters.title")}
           </div>
           <div className="text-[#381207] font-['Poppins'] text-4xl sm:text-5xl font-semibold leading-[136%]">
-            Our nature walks are widely shared — in newspapers, on radio and TV,
-            and online.
+            {t("impactCounters.sharingDescription")}
           </div>
         </div>
         <div className="w-full">

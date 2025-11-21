@@ -179,10 +179,10 @@ const ManageQuote = () => {
       {/* Header Section */}
       <div className="mb-6 md:mb-8">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium text-[#381207] font-['Poppins'] mb-3 md:mb-4">
-          Manage Organizations
+          Organisaties Beheren
         </h1>
         <p className="text-lg md:text-xl text-[#381207] font-['Poppins'] max-w-2xl">
-          View and manage organization requests and approved organizations.
+          Bekijk en beheer organisatieverzoeken en goedgekeurde organisaties.
         </p>
       </div>
       {/* Content Section */}

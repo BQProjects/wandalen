@@ -67,7 +67,8 @@
         "natureVideos": "Nature videos",
         "virtualKm": "Kilometers virtually walked",
         "volunteerFilmmakers": "Volunteer filmmakers",
-        "uniqueRoutes": "Virtual walkers per day"
+        "uniqueRoutes": "Virtual walkers per day",
+        "sharingDescription": "Our nature walks are widely shared — in newspapers, on radio and TV, and online."
     },
     "aran": {
         "hero": {
@@ -227,6 +228,8 @@
         "subtitle": "Why we participate",
         "readMore": "Read More",
         "readLess": "Read Less",
+        "loading": "Loading testimonials...",
+        "noTestimonials": "No testimonials available yet.",
         "items": [
             "Virtueel Wandelen brings the nature to life with soothing nature walk videos for the elderly and people with dementia.",
             "Offering a beautiful walking experience does me good",
