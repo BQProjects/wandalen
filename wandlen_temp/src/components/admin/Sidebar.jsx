@@ -24,7 +24,7 @@ const AdminSidebar = () => {
 
       // Show loading state
       const originalText = document.getElementById("downloadBtn").innerText;
-      document.getElementById("downloadBtn").innerText = "Downloading...";
+      document.getElementById("downloadBtn").innerText = "Downloaden...";
       document.getElementById("downloadBtn").disabled = true;
 
       // Fetch all data
@@ -247,20 +247,21 @@ const AdminSidebar = () => {
       document.getElementById("downloadBtn").innerText = originalText;
       document.getElementById("downloadBtn").disabled = false;
 
-      toast.success("Data downloaded successfully!");
+      toast.success("Gegevens succesvol gedownload!");
     } catch (error) {
       console.error("Error downloading data:", error);
-      toast.error("Error downloading data. Please try again.");
+      toast.error("Fout bij downloaden van gegevens. Probeer het opnieuw.");
 
       // Reset button state on error
-      document.getElementById("downloadBtn").innerText = "Download All Data";
+      document.getElementById("downloadBtn").innerText =
+        "Alle Gegevens Downloaden";
       document.getElementById("downloadBtn").disabled = false;
     }
   };
 
   const menuItems = [
     {
-      label: "Overview",
+      label: "Overzicht",
       path: "/admin",
       icon: (
         <svg
@@ -278,7 +279,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Manage Quotes",
+      label: "Offertes Beheren",
       path: "/admin/manage",
       icon: (
         <svg
@@ -296,7 +297,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Manage Volunteers",
+      label: "Vrijwilligers Beheren",
       path: "/admin/manage-volunteer",
       icon: (
         <svg
@@ -318,7 +319,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Location Requests",
+      label: "Locatie Verzoeken",
       path: "/admin/location-request",
       icon: (
         <svg
@@ -336,7 +337,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Manage Videos",
+      label: "Video's Beheren",
       path: "/admin/manage-videos",
       icon: (
         <svg
@@ -354,7 +355,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Manage Subscriptions",
+      label: "Abonnementen Beheren",
       path: "/admin/manage-subscription",
       icon: (
         <svg
@@ -372,7 +373,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Newsletter Subscribers",
+      label: "Nieuwsbrief Abonnees",
       path: "/admin/manage-subscribers",
       icon: (
         <svg
@@ -408,7 +409,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Training Details",
+      label: "Trainingsdetails",
       path: "/admin/training-details",
       icon: (
         <svg
@@ -426,7 +427,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Testimonials",
+      label: "Getuigenissen",
       path: "/admin/testimonials",
       icon: (
         <svg
@@ -444,7 +445,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Media Coverage",
+      label: "Media Dekking",
       path: "/admin/media",
       icon: (
         <svg
@@ -462,7 +463,7 @@ const AdminSidebar = () => {
       ),
     },
     {
-      label: "Update Credentials",
+      label: "Inloggegevens Bijwerken",
       path: "/admin/update-credentials",
       icon: (
         <svg
@@ -556,7 +557,7 @@ const AdminSidebar = () => {
             strokeLinejoin="round"
           />
         </svg>
-        Download All Data
+        Alle Gegevens Downloaden
       </button>
 
       {/* Logout Button */}
@@ -566,7 +567,7 @@ const AdminSidebar = () => {
         }}
         className="py-2 px-4 w-full mt-auto mb-10 rounded-lg bg-[#381207] text-white font-['Poppins'] text-lg font-medium hover:bg-[#4a3a2a] transition-colors"
       >
-        Logout
+        Uitloggen
       </button>
     </div>
   );

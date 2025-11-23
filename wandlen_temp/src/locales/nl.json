@@ -67,7 +67,8 @@
         "natureVideos": "natuurvideo's",
         "virtualKm": "kilometer virtueel gewandeld",
         "volunteerFilmmakers": "vrijwillige filmers",
-        "uniqueRoutes": "virtuele wandelaars per dag"
+        "uniqueRoutes": "virtuele wandelaars per dag",
+        "sharingDescription": "Onze natuurwandelingen worden veel gedeeld — in kranten, op radio en TV, en online."
     },
     "aran": {
         "hero": {
@@ -372,6 +373,8 @@
         "subtitle": "waarom wij meedoen",
         "readMore": "Meer Lezen",
         "readLess": "Minder Lezen",
+        "loading": "Getuigenissen laden...",
+        "noTestimonials": "Nog geen getuigenissen beschikbaar.",
         "items": [
             "Virtueel Wandelen brengt de natuur tot leven met rustgevende natuurwandelvideo's voor ouderen en mensen met dementie.",
             "Een mooie wandelervaring aanbieden doet me goed",

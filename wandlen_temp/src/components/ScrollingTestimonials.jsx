@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { DatabaseContext } from "../contexts/DatabaseContext";
 import LeftArrow from "../assets/LeftArrow.svg";
@@ -30,6 +31,7 @@ const ScrollingTestimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const { DATABASE_URL } = React.useContext(DatabaseContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTestimonials();
@@ -75,7 +77,7 @@ const ScrollingTestimonials = () => {
     return (
       <div className="bg-[#ede4dc] py-20">
         <div className="w-full mx-auto text-center">
-          <div className="text-gray-600">Loading testimonials...</div>
+          <div className="text-gray-600">{t("testimonials.loading")}</div>
         </div>
       </div>
     );
@@ -85,7 +87,9 @@ const ScrollingTestimonials = () => {
     return (
       <div className="bg-[#ede4dc] py-20">
         <div className="w-full mx-auto text-center">
-          <div className="text-gray-600">No testimonials available yet.</div>
+          <div className="text-gray-600">
+            {t("testimonials.noTestimonials")}
+          </div>
         </div>
       </div>
     );

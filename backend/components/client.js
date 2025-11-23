@@ -1282,11 +1282,22 @@ const completeSignupAfterPayment = async (stripeSessionId) => {
     const now = new Date();
 
     // Trial end date
+    // Prefer Stripe's trial_end when present. If missing (e.g. promo codes alter behaviour),
+    // fall back to using the subscription's current_period_end + 1 day so the app's trial
+    // period is based on Stripe's billing window (helps when promo codes extend the period).
     let trialEnd;
     if (subscription.trial_end && !isNaN(subscription.trial_end)) {
       trialEnd = new Date(subscription.trial_end * 1000);
+    } else if (
+      subscription.current_period_end &&
+      !isNaN(subscription.current_period_end)
+    ) {
+      // Use Stripe's current_period_end and add 1 day (24 hours) so the app's trial end
+      trialEnd = new Date(
+        subscription.current_period_end * 1000 + 24 * 60 * 60 * 1000
+      );
     } else {
-      // Default to 7 days from now if trial_end is missing
+      // Default to 7 days from now if neither value is available
       trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
     }
 
@@ -1489,6 +1500,26 @@ const handleStripeWebhook = async (req, res) => {
           client.endDate = newEndDate;
           client.subscriptionStatus = updatedSubscription.status;
 
+          // Align trialEndDate with Stripe where appropriate. Prefer explicit trial_end
+          // when present (Stripe trial), otherwise compute trialEndDate as current_period_end + 1 day
+          // which ensures the app treats the trial/extension in line with Stripe promo/periods.
+          if (
+            updatedSubscription.trial_end &&
+            !isNaN(updatedSubscription.trial_end)
+          ) {
+            client.trialEndDate = new Date(
+              updatedSubscription.trial_end * 1000
+            );
+          } else if (
+            updatedSubscription.current_period_end &&
+            !isNaN(updatedSubscription.current_period_end)
+          ) {
+            client.trialEndDate = new Date(
+              updatedSubscription.current_period_end * 1000 +
+                24 * 60 * 60 * 1000
+            );
+          }
+
           // Check if trial ended
           if (
             updatedSubscription.status === "active" &&
@@ -1577,6 +1608,8 @@ const manualCompleteSignup = async (req, res) => {
         email: result.client.email,
         firstName: result.client.firstName,
         lastName: result.client.lastName,
+        trialEndDate: result.client.trialEndDate,
+        endDate: result.client.endDate,
       },
     });
   } catch (error) {

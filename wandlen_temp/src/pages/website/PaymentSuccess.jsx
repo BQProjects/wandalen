@@ -11,6 +11,7 @@ const PaymentSuccess = () => {
   const { DATABASE_URL } = useContext(DatabaseContext);
   const [status, setStatus] = useState("processing"); // processing, success, error
   const [errorMessage, setErrorMessage] = useState("");
+  const [trialEndDate, setTrialEndDate] = useState(null);
 
   useEffect(() => {
     const sessionId = searchParams.get("session_id");
@@ -33,6 +34,14 @@ const PaymentSuccess = () => {
 
         if (response.data.success) {
           console.log("Signup completed successfully:", response.data);
+          // capture trial/end dates returned by backend if available
+          if (response.data.client?.trialEndDate) {
+            try {
+              setTrialEndDate(new Date(response.data.client.trialEndDate));
+            } catch (e) {
+              console.warn("Invalid trialEndDate from server", e);
+            }
+          }
           setStatus("success");
         } else {
           console.error("Signup completion failed:", response.data);
@@ -128,6 +137,12 @@ const PaymentSuccess = () => {
               {t("paymentSuccess.success.message") ||
                 "Your account has been created successfully. You can now log in and start your 7-day free trial."}
             </p>
+            {trialEndDate && (
+              <p className="text-[#7a756e] mb-6">
+                {t("paymentSuccess.success.trialEndsOn") ||
+                  `Your trial ends on ${trialEndDate.toLocaleDateString()}`}
+              </p>
+            )}
             <button
               onClick={handleGoToLogin}
               className="w-full px-6 py-3 bg-[#5b6502] text-white rounded-lg hover:bg-[#4a5502] transition-colors font-medium"
